@@ -25,7 +25,7 @@ namespace ax
         const std::shared_ptr<addressable> subscriber; // TODO: may be necessary to genericize subscriber
         const std::shared_ptr<addressable> publisher;
         
-        event() = default;
+        event() = delete;
         event(const event& that) = default;
         event(event&& that) = default;
         event& operator=(const event&) = default;
