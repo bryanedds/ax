@@ -1,4 +1,4 @@
-Ax - The Axiomatic C++ Core Library.
+Ax - The Axiomatic Core C++ Library.
 ===
 
 Features
