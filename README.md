@@ -1,2 +1,2 @@
-Om-Render - a modern, real-time 3D rendering engine.
+Ax - The Axiomatic C++ Core Library.
 ===
