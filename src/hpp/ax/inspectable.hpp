@@ -1,5 +1,5 @@
-#ifndef ax_inspectable_hpp
-#define ax_inspectable_hpp
+#ifndef AX_INSPECTABLE_HPP
+#define AX_INSPECTABLE_HPP
 
 #include <cstddef>
 #include <functional>

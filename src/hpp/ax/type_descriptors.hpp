@@ -1,5 +1,5 @@
-#ifndef ax_type_descriptors_hpp
-#define ax_type_descriptors_hpp
+#ifndef AX_TYPE_DESCRIPTORS_HPP
+#define AX_TYPE_DESCRIPTORS_HPP
 
 #include <cstddef>
 #include <functional>

@@ -1,5 +1,5 @@
-#ifndef ax_choice3_hpp
-#define ax_choice3_hpp
+#ifndef AX_CHOICE3_HPP
+#define AX_CHOICE3_HPP
 
 #include <cstddef>
 #include <stdexcept>

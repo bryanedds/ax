@@ -1,5 +1,5 @@
-#ifndef ax_triple_hpp
-#define ax_triple_hpp
+#ifndef AX_TRIPLE_HPP
+#define AX_TRIPLE_HPP
 
 #include <cstddef>
 #include <stdexcept>
@@ -8,6 +8,7 @@
 
 namespace ax
 {
+    // TODO: build product types up to product7.
     template<typename First, typename Second, typename Third>
     class triple
     {

@@ -1,5 +1,5 @@
-#ifndef ax_hash_hpp
-#define ax_hash_hpp
+#ifndef AX_HASH_HPP
+#define AX_HASH_HPP
 
 #include <cstddef>
 #include <numeric>

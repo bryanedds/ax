@@ -1,5 +1,5 @@
-#ifndef ax_castable_hpp
-#define ax_castable_hpp
+#ifndef AX_CASTABLE_HPP
+#define AX_CASTABLE_HPP
 
 #include <cstddef>
 #include <typeinfo>

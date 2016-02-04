@@ -1,5 +1,5 @@
-#ifndef ax_parser_hpp
-#define ax_parser_hpp
+#ifndef AX_PARSER_HPP
+#define AX_PARSER_HPP
 
 #include <cstddef>
 #include <string>

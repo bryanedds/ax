@@ -1,5 +1,5 @@
-#ifndef ax_field_hpp
-#define ax_field_hpp
+#ifndef AX_FIELD_HPP
+#define AX_FIELD_HPP
 
 #include <cstddef>
 #include <typeindex>

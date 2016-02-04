@@ -1,5 +1,5 @@
-#ifndef ax_type_hpp
-#define ax_type_hpp
+#ifndef AX_TYPE_HPP
+#define AX_TYPE_HPP
 
 #include <cstddef>
 #include <typeindex>

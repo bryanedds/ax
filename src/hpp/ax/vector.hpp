@@ -1,5 +1,5 @@
-#ifndef ax_vector_hpp
-#define ax_vector_hpp
+#ifndef AX_VECTOR_HPP
+#define AX_VECTOR_HPP
 
 #include <cstddef>
 #include <vector>

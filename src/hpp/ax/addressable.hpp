@@ -1,5 +1,5 @@
-#ifndef ax_addressable_hpp
-#define ax_addressable_hpp
+#ifndef AX_ADDRESSABLE_HPP
+#define AX_ADDRESSABLE_HPP
 
 #include <cstddef>
 

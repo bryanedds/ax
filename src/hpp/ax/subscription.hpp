@@ -1,5 +1,5 @@
-#ifndef ax_subscription_hpp
-#define ax_subscription_hpp
+#ifndef AX_SUBSCRIPTION_HPP
+#define AX_SUBSCRIPTION_HPP
 
 #include <cstddef>
 #include <memory>

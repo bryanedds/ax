@@ -1,5 +1,5 @@
-#ifndef ax_pair_hpp
-#define ax_pair_hpp
+#ifndef AX_PAIR_HPP
+#define AX_PAIR_HPP
 
 #include <cstddef>
 #include <stdexcept>
