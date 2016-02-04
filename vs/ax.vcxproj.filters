@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\tom">
+      <UniqueIdentifier>{311bf93f-2d1e-4b84-832a-778678e5f0e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tom">
+      <UniqueIdentifier>{06390f23-cb0e-4066-98f2-1fe5923c8f48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\blah">
+      <UniqueIdentifier>{75821d6e-864c-4e30-bf4b-53ee9dd63561}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\blah">
+      <UniqueIdentifier>{473a7295-7704-4baf-a501-9e32385a9d2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\rxml">
+      <UniqueIdentifier>{6955a512-a723-4ddd-84b3-7c960f280215}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ax">
+      <UniqueIdentifier>{b8b64a3f-1454-4021-b5be-9ae92f5cde00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ax">
+      <UniqueIdentifier>{a465dd24-8f0f-4e71-b250-21cf8127c704}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\hpp\blah\blah.hpp">
+      <Filter>Header Files\blah</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\rxml\rapidxml_utils.hpp">
+      <Filter>Header Files\rxml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\rxml\rapidxml.hpp">
+      <Filter>Header Files\rxml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\rxml\rapidxml_iterators.hpp">
+      <Filter>Header Files\rxml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\rxml\rapidxml_print.hpp">
+      <Filter>Header Files\rxml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\tom\tom.hpp">
+      <Filter>Header Files\tom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\event.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\eventable.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\field.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\hash.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\id.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\inspectable.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\logger.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\mailbox.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\name.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\option.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\parser.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\prelude.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\property.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\string.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\subscription.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\symbol.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\type.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\type_descriptor.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\type_descriptors.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\vector.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\address.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\addressable.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\barrier.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\castable.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\choice3.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\either.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\ax.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\cpp\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cpp\blah\blah.cpp">
+      <Filter>Source Files\blah</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cpp\tom\tom.cpp">
+      <Filter>Source Files\tom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cpp\ax\inspectable.cpp">
+      <Filter>Source Files\ax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cpp\ax\name.cpp">
+      <Filter>Source Files\ax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cpp\ax\parser.cpp">
+      <Filter>Source Files\ax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cpp\ax\string.cpp">
+      <Filter>Source Files\ax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cpp\ax\tests.cpp">
+      <Filter>Source Files\ax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cpp\ax\type.cpp">
+      <Filter>Source Files\ax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cpp\ax\type_descriptor.cpp">
+      <Filter>Source Files\ax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cpp\ax\type_descriptors.cpp">
+      <Filter>Source Files\ax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cpp\ax\address.cpp">
+      <Filter>Source Files\ax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cpp\ax\field.cpp">
+      <Filter>Source Files\ax</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
