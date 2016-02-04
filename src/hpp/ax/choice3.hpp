@@ -3,7 +3,6 @@
 
 #include <cstddef>
 #include <stdexcept>
-#include <functional>
 
 #include "prelude.hpp"
 

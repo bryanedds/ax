@@ -35,12 +35,14 @@
     <ClInclude Include="..\src\hpp\ax\mailbox.hpp" />
     <ClInclude Include="..\src\hpp\ax\name.hpp" />
     <ClInclude Include="..\src\hpp\ax\option.hpp" />
+    <ClInclude Include="..\src\hpp\ax\pair.hpp" />
     <ClInclude Include="..\src\hpp\ax\parser.hpp" />
     <ClInclude Include="..\src\hpp\ax\prelude.hpp" />
     <ClInclude Include="..\src\hpp\ax\property.hpp" />
     <ClInclude Include="..\src\hpp\ax\string.hpp" />
     <ClInclude Include="..\src\hpp\ax\subscription.hpp" />
     <ClInclude Include="..\src\hpp\ax\symbol.hpp" />
+    <ClInclude Include="..\src\hpp\ax\triple.hpp" />
     <ClInclude Include="..\src\hpp\ax\type.hpp" />
     <ClInclude Include="..\src\hpp\ax\type_descriptor.hpp" />
     <ClInclude Include="..\src\hpp\ax\type_descriptors.hpp" />

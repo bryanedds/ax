@@ -8,6 +8,8 @@
 #include "string.hpp"
 #include "vector.hpp"
 #include "id.hpp"
+#include "pair.hpp"
+#include "triple.hpp"
 #include "option.hpp"
 #include "either.hpp"
 #include "choice3.hpp"

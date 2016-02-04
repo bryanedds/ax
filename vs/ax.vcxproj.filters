@@ -131,6 +131,12 @@
     <ClInclude Include="..\src\hpp\ax\ax.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\pair.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\triple.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\cpp\main.cpp">

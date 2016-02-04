@@ -13,4 +13,4 @@ clang++ -std=c++14 -Wall -Wno-vexing-parse -pedantic -g -O2 -pthread -march=nati
 ../src/cpp/ax/string.cpp \
 ../src/cpp/ax/type_descriptors.cpp \
 ../src/cpp/main.cpp \
--o ./bin/om
+-o ./bin/ax

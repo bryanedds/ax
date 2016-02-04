@@ -1,4 +1,4 @@
-all:om
+all:ax
 
 $(shell mkdir -p ./bin)
 
@@ -42,7 +42,7 @@ OBJ_FILES=$(patsubst .cpp,.o,$(CPP_FILES))
 %.so:%.o
 	$(CXX) $(CPPFLAGS) $^ -shared -o $@ $(LDFLAGS)
 
-om:$(OBJ_FILES)
+ax:$(OBJ_FILES)
 	$(CXX) $(CPPFLAGS) $^ -o ./bin/$@ $(LDFLAGS)
 
 .PRECIOUS: $(OBJ_FILES)

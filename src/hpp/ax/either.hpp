@@ -3,8 +3,6 @@
 
 #include <cstddef>
 #include <stdexcept>
-#include <functional>
-#include <string>
 
 #include "prelude.hpp"
 
@@ -47,7 +45,6 @@ namespace ax
         constraint(either);
         using right_type = R;
         using left_type = L;
-
         template<typename A, typename B>
         using reify = either<A, B>;
         

@@ -1,4 +1,4 @@
-all:om
+all:ax
 
 CPPFLAGS += -stdlib=libc++
 CPPFLAGS += -std=c++14 -Wall -pedantic
@@ -40,7 +40,7 @@ OBJ_FILES=$(patsubst .cpp,.o,$(CPP_FILES))
 %.so:%.o
 	$(CXX) $(CPPFLAGS) $^ -shared -o $@ $(LDFLAGS)
 
-om:$(OBJ_FILES)
+ax:$(OBJ_FILES)
 	$(CXX) $(CPPFLAGS) $^ -o $@ $(LDFLAGS)
 
 .PRECIOUS: $(OBJ_FILES)
