@@ -15,3 +15,7 @@ Features
 - ...and a couple other odds and ends :)
 
 Makes a good base for non-trivial projects like renderers, game engines, and other real-ass shit!
+
+WIP
+---
+Note this project has not reached alpha-status, so not recommended for use in production without serious care. Tests are coming along over time, however :)
