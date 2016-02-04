@@ -6,7 +6,7 @@ Features
 
 - A publisher-neutral event system
 - Optimized dynamic type casting system
-- Functional sum and product types including option, either, choice3, pair and triple, along with macros for automatic derivation.
+- Functional sum and product types including option, either, choice3, pair and triple, w/ macros for automatic derivation.
 - A type-safe pattern matching system for said sum types
 - A dynamic property system
 - A dynamic type inspection and serialization system
