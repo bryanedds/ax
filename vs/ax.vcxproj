@@ -23,7 +23,7 @@
     <ClInclude Include="..\src\hpp\ax\addressable.hpp" />
     <ClInclude Include="..\src\hpp\ax\barrier.hpp" />
     <ClInclude Include="..\src\hpp\ax\castable.hpp" />
-    <ClInclude Include="..\src\hpp\ax\choice3.hpp" />
+    <ClInclude Include="..\src\hpp\ax\choice.hpp" />
     <ClInclude Include="..\src\hpp\ax\either.hpp" />
     <ClInclude Include="..\src\hpp\ax\event.hpp" />
     <ClInclude Include="..\src\hpp\ax\eventable.hpp" />
@@ -42,7 +42,7 @@
     <ClInclude Include="..\src\hpp\ax\string.hpp" />
     <ClInclude Include="..\src\hpp\ax\subscription.hpp" />
     <ClInclude Include="..\src\hpp\ax\symbol.hpp" />
-    <ClInclude Include="..\src\hpp\ax\triple.hpp" />
+    <ClInclude Include="..\src\hpp\ax\record.hpp" />
     <ClInclude Include="..\src\hpp\ax\type.hpp" />
     <ClInclude Include="..\src\hpp\ax\type_descriptor.hpp" />
     <ClInclude Include="..\src\hpp\ax\type_descriptors.hpp" />

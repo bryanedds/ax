@@ -122,9 +122,6 @@
     <ClInclude Include="..\src\hpp\ax\castable.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\choice3.hpp">
-      <Filter>Header Files\ax</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\hpp\ax\either.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
@@ -134,7 +131,10 @@
     <ClInclude Include="..\src\hpp\ax\pair.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\triple.hpp">
+    <ClInclude Include="..\src\hpp\ax\choice.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\record.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
   </ItemGroup>

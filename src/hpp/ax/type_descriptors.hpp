@@ -11,6 +11,11 @@
 #include <unordered_map>
 
 #include "prelude.hpp"
+#include "pair.hpp"
+#include "record.hpp"
+#include "option.hpp"
+#include "either.hpp"
+#include "choice.hpp"
 #include "symbol.hpp"
 #include "type_descriptor.hpp"
 
@@ -492,26 +497,26 @@ namespace ax
     };
 
     template<typename C>
-    class choice3_descriptor : public type_descriptor
+    class choice_descriptor : public type_descriptor
     {
     protected:
 
         void inspect_value_impl(const void* source_ptr, void* target_ptr) const override
         {
-            constrain(C, choice3);
+            constrain(C, choice);
             assign_value_vptr<C>(source_ptr, target_ptr);
         }
 
         void inject_value_impl(const void* source_ptr, void* target_ptr) const override
         {
-            constrain(C, choice3);
+            constrain(C, choice);
             assign_value_vptr<C>(source_ptr, target_ptr);
         }
 
         void read_value_impl(const symbol& source_symbol, void* target_ptr) const override
         {
             // read target value from source symbol
-            constrain(C, choice3);
+            constrain(C, choice);
             var* choice_ptr = static_cast<C*>(target_ptr);
             match2(source_symbol,
             [&](val& source_tree)
@@ -566,7 +571,7 @@ namespace ax
 
         void write_value_impl(const void* source_ptr, symbol& target_symbol) const override
         {
-            constrain(C, choice3);
+            constrain(C, choice);
             val* choice_ptr = static_cast<const C*>(source_ptr);
             match3(*choice_ptr,
             [&](val& first_value)

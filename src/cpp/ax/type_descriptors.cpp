@@ -4,7 +4,7 @@
 
 #include "../../hpp/ax/type_descriptors.hpp"
 
-#include "../../hpp/ax/choice3.hpp"
+#include "../../hpp/ax/choice.hpp"
 #include "../../hpp/ax/string.hpp"
 #include "../../hpp/ax/vector.hpp"
 #include "../../hpp/ax/name.hpp"
@@ -380,15 +380,15 @@ namespace ax
         register_type_descriptor<either<std::string, std::size_t>>(std::make_shared<either_descriptor<either<std::string, std::size_t>>>());
         register_type_descriptor<either<std::string, std::string>>(std::make_shared<either_descriptor<either<std::string, std::string>>>());
 
-        // choice3 type descriptors
-        register_type_descriptor<choice3<bool, bool, bool>>(std::make_shared<choice3_descriptor<choice3<bool, bool, bool>>>());
-        register_type_descriptor<choice3<char, char, char>>(std::make_shared<choice3_descriptor<choice3<char, char, char>>>());
-        register_type_descriptor<choice3<int, int, int>>(std::make_shared<choice3_descriptor<choice3<int, int, int>>>());
-        register_type_descriptor<choice3<int32_t, int32_t, int32_t>>(std::make_shared<choice3_descriptor<choice3<int32_t, int32_t, int32_t>>>());
-        register_type_descriptor<choice3<int64_t, int64_t, int64_t>>(std::make_shared<choice3_descriptor<choice3<int64_t, int64_t, int64_t>>>());
-        register_type_descriptor<choice3<float, float, float>>(std::make_shared<choice3_descriptor<choice3<float, float, float>>>());
-        register_type_descriptor<choice3<double, double, double>>(std::make_shared<choice3_descriptor<choice3<double, double, double>>>());
-        register_type_descriptor<choice3<std::size_t, std::size_t, std::size_t>>(std::make_shared<choice3_descriptor<choice3<std::size_t, std::size_t, std::size_t>>>());
-        register_type_descriptor<choice3<std::string, std::string, std::string>>(std::make_shared<choice3_descriptor<choice3<std::string, std::string, std::string>>>());
+        // choice type descriptors
+        register_type_descriptor<choice<bool, bool, bool>>(std::make_shared<choice_descriptor<choice<bool, bool, bool>>>());
+        register_type_descriptor<choice<char, char, char>>(std::make_shared<choice_descriptor<choice<char, char, char>>>());
+        register_type_descriptor<choice<int, int, int>>(std::make_shared<choice_descriptor<choice<int, int, int>>>());
+        register_type_descriptor<choice<int32_t, int32_t, int32_t>>(std::make_shared<choice_descriptor<choice<int32_t, int32_t, int32_t>>>());
+        register_type_descriptor<choice<int64_t, int64_t, int64_t>>(std::make_shared<choice_descriptor<choice<int64_t, int64_t, int64_t>>>());
+        register_type_descriptor<choice<float, float, float>>(std::make_shared<choice_descriptor<choice<float, float, float>>>());
+        register_type_descriptor<choice<double, double, double>>(std::make_shared<choice_descriptor<choice<double, double, double>>>());
+        register_type_descriptor<choice<std::size_t, std::size_t, std::size_t>>(std::make_shared<choice_descriptor<choice<std::size_t, std::size_t, std::size_t>>>());
+        register_type_descriptor<choice<std::string, std::string, std::string>>(std::make_shared<choice_descriptor<choice<std::string, std::string, std::string>>>());
     }
 }

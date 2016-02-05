@@ -32,7 +32,7 @@ namespace ax
             { "option_none_value",   register_field<option<int>>              (offsetof(inspectable_test, option_none_value)) },
             { "either_right_value",  register_field<either<std::string, int>> (offsetof(inspectable_test, either_right_value)) },
             { "either_left_value",   register_field<either<std::string, int>> (offsetof(inspectable_test, either_left_value)) },
-            { "choice3_value",       register_field<choice3<int, int, int>>   (offsetof(inspectable_test, choice3_value)) }
+            { "choice_value",       register_field<choice<int, int, int>>   (offsetof(inspectable_test, choice_value)) }
         });
 
         std::shared_ptr<type_t> get_type_impl() const override
@@ -55,7 +55,7 @@ namespace ax
         option<int> option_none_value;
         either<std::string, int> either_right_value;
         either<std::string, int> either_left_value;
-        choice3<int, int, int> choice3_value;
+        choice<int, int, int> choice_value;
 
         inspectable_test() :
             bool_value(),
@@ -71,7 +71,7 @@ namespace ax
             option_none_value(),
             either_right_value(),
             either_left_value(),
-            choice3_value()
+            choice_value()
         { }
 
         inspectable_test(
@@ -88,7 +88,7 @@ namespace ax
             option<int> option_none_value,
             either<std::string, int> either_right_value,
             either<std::string, int> either_left_value,
-            choice3<int, int, int> choice3_value) :
+            choice<int, int, int> choice_value) :
             bool_value(bool_value),
             int_value(int_value),
             float_value(float_value),
@@ -102,7 +102,7 @@ namespace ax
             option_none_value(option_none_value),
             either_right_value(either_right_value),
             either_left_value(either_left_value),
-            choice3_value(choice3_value)
+            choice_value(choice_value)
         { }
     };
 
@@ -148,7 +148,7 @@ namespace ax
         CHECK(is_none(target.option_none_value));
         CHECK(*target.either_right_value == 4);
         CHECK(~target.either_left_value == "msg");
-        CHECK(get_third(target.choice3_value) == 3);
+        CHECK(get_third(target.choice_value) == 3);
     }
 
     TEST("castable works")
