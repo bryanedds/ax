@@ -19,20 +19,22 @@ namespace ax
 
         const std::shared_ptr<type_t> type = register_sub_type<inspectable_test>(typeid(inspectable),
         {
-            { "bool_value",          register_field<bool>                     (offsetof(inspectable_test, bool_value)) },
-            { "int_value",           register_field<int>                      (offsetof(inspectable_test, int_value)) },
-            { "float_value",         register_field<float>                    (offsetof(inspectable_test, float_value)) },
-            { "name_value",          register_field<name_t>                   (offsetof(inspectable_test, name_value)) },
-            { "address_value",       register_field<address>                  (offsetof(inspectable_test, address_value)) },
-            { "vector_int_value",    register_field<std::vector<int>>         (offsetof(inspectable_test, vector_int_value)) },
-            { "vector_string_value", register_field<std::vector<std::string>> (offsetof(inspectable_test, vector_string_value)) },
-            { "unique_int_value",    register_field<std::unique_ptr<int>>     (offsetof(inspectable_test, unique_int_value)) },
-            { "shared_int_value",    register_field<std::shared_ptr<int>>     (offsetof(inspectable_test, shared_int_value)) },
-            { "option_some_value",   register_field<option<int>>              (offsetof(inspectable_test, option_some_value)) },
-            { "option_none_value",   register_field<option<int>>              (offsetof(inspectable_test, option_none_value)) },
-            { "either_right_value",  register_field<either<std::string, int>> (offsetof(inspectable_test, either_right_value)) },
-            { "either_left_value",   register_field<either<std::string, int>> (offsetof(inspectable_test, either_left_value)) },
-            { "choice_value",       register_field<choice<int, int, int>>   (offsetof(inspectable_test, choice_value)) }
+            { "bool_value",             register_field<bool>                        (offsetof(inspectable_test, bool_value)) },
+            { "int_value",              register_field<int>                         (offsetof(inspectable_test, int_value)) },
+            { "float_value",            register_field<float>                       (offsetof(inspectable_test, float_value)) },
+            { "name_value",             register_field<name_t>                      (offsetof(inspectable_test, name_value)) },
+            { "address_value",          register_field<address>                     (offsetof(inspectable_test, address_value)) },
+            { "vector_int_value",       register_field<std::vector<int>>            (offsetof(inspectable_test, vector_int_value)) },
+            { "vector_string_value",    register_field<std::vector<std::string>>    (offsetof(inspectable_test, vector_string_value)) },
+            { "unique_int_value",       register_field<std::unique_ptr<int>>        (offsetof(inspectable_test, unique_int_value)) },
+            { "shared_int_value",       register_field<std::shared_ptr<int>>        (offsetof(inspectable_test, shared_int_value)) },
+            { "pair_value",             register_field<pair<int, int>>              (offsetof(inspectable_test, pair_value)) },
+            { "record_value",           register_field<record<int, int, int>>       (offsetof(inspectable_test, record_value)) },
+            { "option_some_value",      register_field<option<int>>                 (offsetof(inspectable_test, option_some_value)) },
+            { "option_none_value",      register_field<option<int>>                 (offsetof(inspectable_test, option_none_value)) },
+            { "either_right_value",     register_field<either<std::string, int>>    (offsetof(inspectable_test, either_right_value)) },
+            { "either_left_value",      register_field<either<std::string, int>>    (offsetof(inspectable_test, either_left_value)) },
+            { "choice_value",           register_field<choice<int, int, int>>       (offsetof(inspectable_test, choice_value)) }
         });
 
         std::shared_ptr<type_t> get_type_impl() const override
@@ -51,6 +53,8 @@ namespace ax
         std::vector<std::string> vector_string_value;
         std::unique_ptr<int> unique_int_value;
         std::shared_ptr<int> shared_int_value;
+        pair<int, int> pair_value;
+        record<int, int, int> record_value;
         option<int> option_some_value;
         option<int> option_none_value;
         either<std::string, int> either_right_value;
@@ -67,6 +71,8 @@ namespace ax
             vector_string_value(),
             unique_int_value(std::make_unique<int>()),
             shared_int_value(std::make_shared<int>()),
+            pair_value(),
+            record_value(),
             option_some_value(),
             option_none_value(),
             either_right_value(),
@@ -84,6 +90,8 @@ namespace ax
             const std::vector<std::string>& vector_string_value,
             int unique_int_value,
             int shared_int_value,
+            pair<int, int> pair_value,
+            record<int, int, int> record_value,
             option<int> option_some_value,
             option<int> option_none_value,
             either<std::string, int> either_right_value,
@@ -98,6 +106,8 @@ namespace ax
             vector_string_value(vector_string_value),
             unique_int_value(std::make_unique<int>(unique_int_value)),
             shared_int_value(std::make_shared<int>(shared_int_value)),
+            pair_value(pair_value),
+            record_value(record_value),
             option_some_value(option_some_value),
             option_none_value(option_none_value),
             either_right_value(either_right_value),
@@ -131,6 +141,7 @@ namespace ax
         inspectable_test source(
             true, 5, 10.0f, "jim bob", address("s/compton/la"),
             { 1, 3, 5 }, { "a", "bb", "ccc" }, 666, 777,
+            make_pair(50, 100), make_record(150, 200, 250),
             some(2), none<int>(), right<std::string>(4), left<std::string, int>("msg"), third<int, int>(3));
         inspectable_test target{};
         write_value(source, symbol);
@@ -144,6 +155,11 @@ namespace ax
         CHECK(target.vector_string_value == std::vector<std::string>({ "a", "bb", "ccc" }));
         CHECK(*target.unique_int_value == 666);
         CHECK(*target.shared_int_value == 777);
+        CHECK(fst(target.pair_value) == 50);
+        CHECK(snd(target.pair_value) == 100);
+        CHECK(fst(target.record_value) == 150);
+        CHECK(snd(target.record_value) == 200);
+        CHECK(thd(target.record_value) == 250);
         CHECK(*target.option_some_value == 2);
         CHECK(is_none(target.option_none_value));
         CHECK(*target.either_right_value == 4);

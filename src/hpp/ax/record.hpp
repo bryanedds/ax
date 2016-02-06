@@ -40,7 +40,7 @@ namespace ax
         friend B& snd(record<A, B, C>& rcd);
 
         template<typename A, typename B, typename C>
-        friend B& thd(record<A, B, C>& rcd);
+        friend C& thd(record<A, B, C>& rcd);
 
         template<typename A, typename B, typename C>
         friend const char* get_first_name(const record<A, B, C>& rcd);
@@ -90,7 +90,7 @@ namespace ax
     }
 
     template<typename First, typename Second, typename Third>
-    Second& fst(record<First, Second, Third>& rcd)
+    First& fst(record<First, Second, Third>& rcd)
     {
         return rcd.first;
     }
@@ -104,7 +104,7 @@ namespace ax
     template<typename First, typename Second, typename Third>
     Third& thd(record<First, Second, Third>& rcd)
     {
-        return rcd.rhird;
+        return rcd.third;
     }
 
     template<typename First, typename Second, typename Third>

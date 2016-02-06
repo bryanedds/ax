@@ -71,7 +71,7 @@ namespace ax
     }
 
     template<typename First, typename Second>
-    Second& fst(pair<First, Second>& pr)
+    First& fst(pair<First, Second>& pr)
     {
         return pr.first;
     }
