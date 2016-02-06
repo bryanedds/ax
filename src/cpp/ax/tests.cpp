@@ -190,7 +190,7 @@ namespace ax
               none \
               [right 4] \
               [left \"msg\"] \
-              [third 3]]";
+              [  third  3  ]  ]"; // a little extra whitespace to try to throw off parser
         std::stringstream sstr(str);
         sstr << std::noskipws; // apparently avoids skipping whitespace
         std::istream_iterator<char> iter(sstr);
