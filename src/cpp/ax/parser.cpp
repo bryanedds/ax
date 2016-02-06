@@ -1,3 +1,5 @@
+#include <istream>
+
 #include "../../hpp/rxml/rapidxml.hpp"
 
 #include "../../hpp/ax/parser.hpp"

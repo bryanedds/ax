@@ -11,6 +11,7 @@
 #include <unordered_map>
 
 #include "prelude.hpp"
+#include "string.hpp"
 #include "pair.hpp"
 #include "record.hpp"
 #include "option.hpp"
