@@ -557,26 +557,26 @@ namespace ax
                 // validate correct symbol name usage
                 val& symbol_name = source_tree[0];
                 val& symbol_value = source_tree[1];
-                val& left_name = get_left_name(*either_ptr);
                 val& right_name = get_right_name(*either_ptr);
+                val& left_name = get_left_name(*either_ptr);
                 if (!is_symbol_leaf(symbol_name))
                     throw std::invalid_argument("Expected source symbol tree with valid leaf names");
 
                 // populate target either
                 val& either_name = get_symbol_leaf(symbol_name);
-                if (either_name == left_name)
-                {
-                    typename E::left_type left_value_mvb{};
-                    val& type_descriptor = get_type_descriptor<typename E::left_type>();
-                    read_value_vptr(*type_descriptor, symbol_value, &left_value_mvb);
-                    *either_ptr = E(std::move(left_value_mvb));
-                }
-                else if (either_name == right_name)
+                if (either_name == right_name)
                 {
                     typename E::right_type right_value_mvb{};
                     val& type_descriptor = get_type_descriptor<typename E::right_type>();
                     read_value_vptr(*type_descriptor, symbol_value, &right_value_mvb);
-                    *either_ptr = E(std::move(right_value_mvb), false);
+                    *either_ptr = E(std::move(right_value_mvb));
+                }
+                else if (either_name == left_name)
+                {
+                    typename E::left_type left_value_mvb{};
+                    val& type_descriptor = get_type_descriptor<typename E::left_type>();
+                    read_value_vptr(*type_descriptor, symbol_value, &left_value_mvb);
+                    *either_ptr = E(std::move(left_value_mvb), false);
                 }
                 else
                 {

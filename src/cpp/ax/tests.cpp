@@ -1,3 +1,5 @@
+#include <istream>
+
 #include "../../hpp/tom/tom.hpp"
 
 #include "../../hpp/ax/ax.hpp"
@@ -5,10 +7,10 @@
 namespace ax
 {
     // A trivial program type to demonstrate the eventable program mixin.
-    class event_program : public eventable<event_program>
+    class eventable_test : public eventable<eventable_test>
     {
     protected:
-        enable_cast(event_program, eventable<event_program>);
+        enable_cast(eventable_test, eventable<eventable_test>);
     };
 
     class inspectable_test : public inspectable
@@ -121,10 +123,15 @@ namespace ax
         CHECK(ax::get_hash(0) == std::hash<int>()(0));
     }
 
+    TEST("castable works")
+    {
+        // TODO: implement
+    }
+
     TEST("events work")
     {
         var i = 0;
-        ax::event_program program{};
+        ax::eventable_test program{};
         val& event_address = address("event");
         val& participant = std::make_shared<ax::addressable>("participant");
         var handler = [&](val&, val&) { return ++i, true; };
@@ -167,14 +174,49 @@ namespace ax
         CHECK(get_third(target.choice_value) == 3);
     }
 
-    TEST("castable works")
-    {
-        // TODO: implement
-    }
-
     TEST("parser works")
     {
-        // TODO: implement
+        val& str =
+            "[true 5 10.0 \
+              \"jim bob\" \
+              \"s/compton/la\" \
+              [1 3 5] \
+              [\"a\" \"bb\" \"ccc\"] \
+              666 \
+              777 \
+              [50 100] \
+              [150 200 250] \
+              [some 2] \
+              none \
+              [right 4] \
+              [left \"msg\"] \
+              [third 3]]";
+        std::stringstream sstr(str);
+        sstr << std::noskipws; // apparently avoids skipping whitespace
+        std::istream_iterator<char> iter(sstr);
+        val& parse = parse_symbol_from_stream(iter, std::istream_iterator<char>());
+        val& symbol = get_parse_success(parse);
+        inspectable_test target{};
+        read_value(symbol, target);
+        CHECK(target.bool_value);
+        CHECK(target.int_value == 5);
+        CHECK(target.float_value == 10.0f);
+        CHECK(target.name_value == "jim bob");
+        CHECK(target.address_value == address("s/compton/la"));
+        CHECK(target.vector_int_value == std::vector<int>({ 1, 3, 5 }));
+        CHECK(target.vector_string_value == std::vector<std::string>({ "a", "bb", "ccc" }));
+        CHECK(*target.unique_int_value == 666);
+        CHECK(*target.shared_int_value == 777);
+        CHECK(fst(target.pair_value) == 50);
+        CHECK(snd(target.pair_value) == 100);
+        CHECK(fst(target.record_value) == 150);
+        CHECK(snd(target.record_value) == 200);
+        CHECK(thd(target.record_value) == 250);
+        CHECK(*target.option_some_value == 2);
+        CHECK(is_none(target.option_none_value));
+        CHECK(*target.either_right_value == 4);
+        CHECK(~target.either_left_value == "msg");
+        CHECK(get_third(target.choice_value) == 3);
     }
 
     TEST("properties work")

@@ -55,10 +55,10 @@ namespace ax
         either& operator=(either&&) = default;
         ~either() = default;
 
-        either(const R& right, bool) : is_right(true), right(right) { }
-        either(const L& left) : is_right(false), left(left) { }
-        either(R&& right, bool) : is_right(true), right(right) { }
-        either(L&& left) : is_right(false), left(left) { }
+        either(const R& right) : is_right(true), right(right) { }
+        either(const L& left, bool) : is_right(false), left(left) { }
+        either(R&& right) : is_right(true), right(right) { }
+        either(L&& left, bool) : is_right(false), left(left) { }
         explicit operator bool() const { return is_right; }
         explicit operator bool() { return is_right; }
 
@@ -142,25 +142,25 @@ namespace ax
     template<typename L, typename R>
     either<L, R> right(const R& right)
     {
-        return either<L, R>(right, false);
+        return either<L, R>(right);
     }
 
     template<typename L, typename R>
     either<L, R> left(const L& left)
     {
-        return either<L, R>(left);
+        return either<L, R>(left, false);
     }
 
     template<typename L, typename R>
     either<L, R> right(R&& right)
     {
-        return either<L, R>(right, false);
+        return either<L, R>(right);
     }
 
     template<typename L, typename R>
     either<L, R> left(L&& left)
     {
-        return either<L, R>(left);
+        return either<L, R>(left, false);
     }
 
     template<typename E, typename Lf, typename Rf>
@@ -185,8 +185,8 @@ namespace ax
     { \
     protected: \
     \
-        const char* get_left_name() const override { return #Rn; } \
         const char* get_right_name() const override { return #Ln; } \
+        const char* get_left_name() const override { return #Rn; } \
     \
     public: \
     \
@@ -194,29 +194,24 @@ namespace ax
         using either<Lt, Rt>::either; \
     }; \
     \
-    inline T Ln(const Lt& left_value) \
-    { \
-        return T(left_value); \
-    } \
-    \
     inline T Rn(const Rt& right_value) \
     { \
-        return T(right_value, false); \
+        return T(right_value); \
     } \
     \
-    inline T Ln(Lt&& left_mvb) \
+    inline T Ln(const Lt& left_value) \
     { \
-        return T(left_mvb); \
+        return T(left_value, false); \
     } \
     \
     inline T Rn(Rt&& right_mvb) \
     { \
-        return T(right_mvb, false); \
+        return T(right_mvb); \
     } \
     \
-    inline bool is_##Ln(const T& eir) \
+    inline T Ln(Lt&& left_mvb) \
     { \
-        return is_left(eir); \
+        return T(left_mvb, false); \
     } \
     \
     inline bool is_##Rn(const T& eir) \
@@ -224,9 +219,9 @@ namespace ax
         return is_right(eir); \
     } \
     \
-    inline const T::left_type& get_##Ln(const T& eir) \
+    inline bool is_##Ln(const T& eir) \
     { \
-        return get_left(eir); \
+        return is_left(eir); \
     } \
     \
     inline const T::right_type& get_##Rn(const T& eir) \
@@ -234,7 +229,7 @@ namespace ax
         return get_right(eir); \
     } \
     \
-    inline T::left_type& get_##Ln(T& eir) \
+    inline const T::left_type& get_##Ln(const T& eir) \
     { \
         return get_left(eir); \
     } \
@@ -242,6 +237,11 @@ namespace ax
     inline T::right_type& get_##Rn(T& eir) \
     { \
         return get_right(eir); \
+    } \
+    \
+    inline T::left_type& get_##Ln(T& eir) \
+    { \
+        return get_left(eir); \
     } \
     \
     using T##_sum_type = void

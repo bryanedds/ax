@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <string>
 #include <vector>
+#include <iterator>
 
 #include "prelude.hpp"
 #include "string.hpp"
@@ -30,39 +31,32 @@ namespace ax
         using either<std::string, T>::either;
     };
 
-    // Make a failed parse result.
-    template<typename T>
-    parse<T> parse_failure(const std::string& error_str)
-    {
-        return parse<T>(error_str);
-    }
-
     // Make a successful parse result.
     template<typename T>
     parse<T> parse_success(const T& t)
     {
-        return parse<T>(t, false);
+        return parse<T>(t);
     }
 
     // Make a failed parse result.
     template<typename T>
-    parse<T> parse_failure(std::string&& error_str)
+    parse<T> parse_failure(const std::string& error_str)
     {
-        return parse<T>(error_str);
+        return parse<T>(error_str, false);
     }
 
     // Make a successful parse result.
     template<typename T>
     parse<T> parse_success(T&& mvb)
     {
-        return parse<T>(mvb, false);
+        return parse<T>(mvb);
     }
 
-    // Query that a parse is a failure.
+    // Make a failed parse result.
     template<typename T>
-    bool is_parse_failure(const parse<T>& parse)
+    parse<T> parse_failure(std::string&& error_str)
     {
-        return is_left(parse);
+        return parse<T>(error_str, false);
     }
 
     // Query that a parse is successful.
@@ -72,11 +66,11 @@ namespace ax
         return is_right(parse);
     }
 
-    // Get the parse failure value.
+    // Query that a parse is a failure.
     template<typename T>
-    const std::string& get_parse_failure(const parse<T>& parse)
+    bool is_parse_failure(const parse<T>& parse)
     {
-        return get_left(parse);
+        return is_left(parse);
     }
 
     // Get the parse success value.
@@ -86,9 +80,16 @@ namespace ax
         return get_right(parse);
     }
 
+    // Get the parse failure value.
+    template<typename T>
+    const std::string& get_parse_failure(const parse<T>& parse)
+    {
+        return get_left(parse);
+    }
+
     // Try to run a parse, rewinding the parsing iterator upon failure.
     template<typename T, typename P>
-    parse<T> try_parse(std::string::const_iterator& iter, const std::string::const_iterator& end, P parser)
+    parse<T> try_parse(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end, P parser)
     {
         val iter_copy = iter;
         val& parse = parser(iter, end);
@@ -97,25 +98,25 @@ namespace ax
     }
 
     // Skip zero or more whitespace chars.
-    void skip_whitespace_many(std::string::const_iterator& iter, const std::string::const_iterator& end);
+    void skip_whitespace_many(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end);
 
     // Skip a char.
-    parse<unit> skip_char(std::string::const_iterator& iter, const std::string::const_iterator& end);
+    parse<unit> skip_char(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end);
 
     // Skip the given char.
-    parse<unit> skip_given_char(std::string::const_iterator& iter, const std::string::const_iterator& end, char chr);
+    parse<unit> skip_given_char(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end, char chr);
 
     // Parse a char.
-    parse<char> parse_char(std::string::const_iterator& iter, const std::string::const_iterator& end);
+    parse<char> parse_char(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end);
 
     // Parse a string until the given char is reached.
-    parse<std::string> parse_until_given_char(std::string::const_iterator& iter, const std::string::const_iterator& end, char chr);
+    parse<std::string> parse_until_given_char(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end, char chr);
 
     // Parse a string until any of the given chars are reached.
-    parse<std::string> parse_until_any_given_char(std::string::const_iterator& iter, const std::string::const_iterator& end, std::string chars);
+    parse<std::string> parse_until_any_given_char(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end, std::string chars);
 
-    // Parse a symbol value from a string.
-    parse<symbol> parse_symbol_from_string(std::string::const_iterator& iter, const std::string::const_iterator& end);
+    // Parse a symbol value from a std istream.
+    parse<symbol> parse_symbol_from_stream(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end);
 
     // Parse a symbol value from an xml buffer.
     parse<symbol> parse_symbol_from_xml_buffer(char* buffer);
