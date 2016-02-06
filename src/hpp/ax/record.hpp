@@ -153,32 +153,32 @@ namespace ax
         using record<Ft, St, Tt>::record; \
     }; \
     \
-    inline const T::first_type& Fn(const T& rcd) \
+    inline const T::first_type& get_##Fn(const T& rcd) \
     { \
         return fst(rcd); \
     } \
     \
-    inline const T::second_type& Sn(const T& rcd) \
+    inline const T::second_type& get_##Sn(const T& rcd) \
     { \
         return snd(rcd); \
     } \
     \
-    inline const T::third_type& Tn(const T& rcd) \
+    inline const T::third_type& get_##Tn(const T& rcd) \
     { \
         return thd(rcd); \
     } \
     \
-    inline T::first_type& Fn(T& rcd) \
+    inline T::first_type& get_##Fn(T& rcd) \
     { \
         return fst(rcd); \
     } \
     \
-    inline T::second_type& Sn(T& rcd) \
+    inline T::second_type& get_##Sn(T& rcd) \
     { \
         return snd(rcd); \
     } \
     \
-    inline T::third_type& Tn(T& rcd) \
+    inline T::third_type& get_##Tn(T& rcd) \
     { \
         return thd(rcd); \
     } \

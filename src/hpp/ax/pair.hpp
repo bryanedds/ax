@@ -121,22 +121,22 @@ namespace ax
         using pair<Ft, St>::pair; \
     }; \
     \
-    inline const T::first_type& Fn(const T& pr) \
+    inline const T::first_type& get_##Fn(const T& pr) \
     { \
         return fst(pr); \
     } \
     \
-    inline const T::second_type& Sn(const T& pr) \
+    inline const T::second_type& get_##Sn(const T& pr) \
     { \
         return snd(pr); \
     } \
     \
-    inline T::first_type& Fn(T& pr) \
+    inline T::first_type& get_##Fn(T& pr) \
     { \
         return fst(pr); \
     } \
     \
-    inline T::second_type& Sn(T& pr) \
+    inline T::second_type& get_##Sn(T& pr) \
     { \
         return snd(pr); \
     } \
