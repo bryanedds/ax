@@ -22,16 +22,16 @@ namespace ax
         virtual const char* get_second_name() const { return "second"; }
 
         template<typename A, typename B>
-        friend const A& first(const pair<A, B>& pr);
+        friend const A& fst(const pair<A, B>& pr);
 
         template<typename A, typename B>
-        friend const B& second(const pair<A, B>& pr);
+        friend const B& snd(const pair<A, B>& pr);
 
         template<typename A, typename B>
-        friend A& first(pair<A, B>& pr);
+        friend A& fst(pair<A, B>& pr);
 
         template<typename A, typename B>
-        friend B& second(pair<A, B>& pr);
+        friend B& snd(pair<A, B>& pr);
 
         template<typename A, typename B>
         friend const char* get_first_name(const pair<A, B>& pr);
@@ -59,25 +59,25 @@ namespace ax
     };
 
     template<typename First, typename Second>
-    const First& first(const pair<First, Second>& pr)
+    const First& fst(const pair<First, Second>& pr)
     {
         return pr.first;
     }
 
     template<typename First, typename Second>
-    const Second& second(const pair<First, Second>& pr)
+    const Second& snd(const pair<First, Second>& pr)
     {
         return pr.second;
     }
 
     template<typename First, typename Second>
-    Second& first(pair<First, Second>& pr)
+    Second& fst(pair<First, Second>& pr)
     {
         return pr.first;
     }
 
     template<typename First, typename Second>
-    Second& second(pair<First, Second>& pr)
+    Second& snd(pair<First, Second>& pr)
     {
         return pr.second;
     }
@@ -123,22 +123,22 @@ namespace ax
     \
     inline const T::first_type& Fn(const T& pr) \
     { \
-        return first(pr); \
+        return fst(pr); \
     } \
     \
     inline const T::second_type& Sn(const T& pr) \
     { \
-        return second(pr); \
+        return snd(pr); \
     } \
     \
     inline T::first_type& Fn(T& pr) \
     { \
-        return first(pr); \
+        return fst(pr); \
     } \
     \
     inline T::second_type& Sn(T& pr) \
     { \
-        return second(pr); \
+        return snd(pr); \
     } \
     \
     T make_##T(const T::first_type& first, const T::second_type& second) \

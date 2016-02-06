@@ -358,6 +358,121 @@ namespace ax
         }
     };
 
+    template<typename P>
+    class pair_descriptor : public type_descriptor
+    {
+    protected:
+
+        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override
+        {
+            constrain(P, pair);
+            assign_value_vptr<P>(source_ptr, target_ptr);
+        }
+
+        void inject_value_impl(const void* source_ptr, void* target_ptr) const override
+        {
+            constrain(P, pair);
+            assign_value_vptr<P>(source_ptr, target_ptr);
+        }
+
+        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override
+        {
+            // read target value from source symbol
+            constrain(P, pair);
+            var* pair_ptr = static_cast<P*>(target_ptr);
+            match2(source_symbol,
+            [&](val& source_tree)
+            {
+                // validate source tree size
+                if (source_tree.size() != 2)
+                    throw std::invalid_argument("Expected value tree with two children");
+
+                // populate target pair
+                typename P::first_type first_value_mvb{};
+                typename P::second_type second_value_mvb{};
+                val& first_type_descriptor = get_type_descriptor<typename P::first_type>();
+                val& second_type_descriptor = get_type_descriptor<typename P::second_type>();
+                read_value_vptr(*first_type_descriptor, source_tree[0], &first_value_mvb);
+                read_value_vptr(*second_type_descriptor, source_tree[1], &second_value_mvb);
+                *pair_ptr = P(std::move(first_value_mvb), std::move(second_value_mvb));
+            },
+            [&](val&) { throw std::invalid_argument("Expected source symbol tree."); });
+        }
+
+        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override
+        {
+            constrain(P, pair);
+            val* pair_ptr = static_cast<const P*>(source_ptr);
+            symbol::right_type symbol_tree_mvb{};
+            symbol_tree_mvb.resize(2_z);
+            val& first_type_descriptor = get_type_descriptor<typename P::first_type>();
+            val& second_type_descriptor = get_type_descriptor<typename P::second_type>();
+            write_value_vptr(*first_type_descriptor, static_cast<const void*>(&fst(*pair_ptr)), symbol_tree_mvb[0]);
+            write_value_vptr(*second_type_descriptor, static_cast<const void*>(&snd(*pair_ptr)), symbol_tree_mvb[1]);
+            target_symbol = symbol_tree(std::move(symbol_tree_mvb));
+        }
+    };
+
+    template<typename R>
+    class record_descriptor : public type_descriptor
+    {
+    protected:
+
+        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override
+        {
+            constrain(R, record);
+            assign_value_vptr<R>(source_ptr, target_ptr);
+        }
+
+        void inject_value_impl(const void* source_ptr, void* target_ptr) const override
+        {
+            constrain(R, record);
+            assign_value_vptr<R>(source_ptr, target_ptr);
+        }
+
+        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override
+        {
+            // read target value from source symbol
+            constrain(R, record);
+            var* record_ptr = static_cast<R*>(target_ptr);
+            match2(source_symbol,
+            [&](val& source_tree)
+            {
+                // validate source tree size
+                if (source_tree.size() != 3)
+                    throw std::invalid_argument("Expected value tree with three children");
+
+                // populate target record
+                typename R::first_type first_value_mvb{};
+                typename R::second_type second_value_mvb{};
+                typename R::third_type third_value_mvb{};
+                val& first_type_descriptor = get_type_descriptor<typename R::first_type>();
+                val& second_type_descriptor = get_type_descriptor<typename R::second_type>();
+                val& third_type_descriptor = get_type_descriptor<typename R::third_type>();
+                read_value_vptr(*first_type_descriptor, source_tree[0], &first_value_mvb);
+                read_value_vptr(*second_type_descriptor, source_tree[1], &second_value_mvb);
+                read_value_vptr(*third_type_descriptor, source_tree[2], &third_value_mvb);
+                *record_ptr = R(std::move(first_value_mvb), std::move(second_value_mvb), std::move(third_value_mvb));
+            },
+            [&](val&) { throw std::invalid_argument("Expected source symbol tree."); });
+        }
+
+        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override
+        {
+            constrain(R, record);
+            val* record_ptr = static_cast<const R*>(source_ptr);
+            symbol::right_type symbol_tree_mvb{};
+            symbol_tree_mvb.resize(3_z);
+            val& first_type_descriptor = get_type_descriptor<typename R::first_type>();
+            val& second_type_descriptor = get_type_descriptor<typename R::second_type>();
+            val& third_type_descriptor = get_type_descriptor<typename R::third_type>();
+            write_value_vptr(*first_type_descriptor, static_cast<const void*>(&fst(*record_ptr)), symbol_tree_mvb[0]);
+            write_value_vptr(*second_type_descriptor, static_cast<const void*>(&snd(*record_ptr)), symbol_tree_mvb[1]);
+            write_value_vptr(*third_type_descriptor, static_cast<const void*>(&thd(*record_ptr)), symbol_tree_mvb[2]);
+            target_symbol = symbol_tree(std::move(symbol_tree_mvb));
+        }
+    };
+
     template<typename T>
     class option_descriptor : public type_descriptor
     {
@@ -445,7 +560,7 @@ namespace ax
                 val& left_name = get_left_name(*either_ptr);
                 val& right_name = get_right_name(*either_ptr);
                 if (!is_symbol_leaf(symbol_name))
-                    throw std::invalid_argument("Expected source symbol tree with valid left names");
+                    throw std::invalid_argument("Expected source symbol tree with valid leaf names");
 
                 // populate target either
                 val& either_name = get_symbol_leaf(symbol_name);
@@ -532,7 +647,7 @@ namespace ax
                 val& second_name = get_second_name(*choice_ptr);
                 val& third_name = get_third_name(*choice_ptr);
                 if (!is_symbol_leaf(symbol_name))
-                    throw std::invalid_argument("Expected source symbol tree with valid left names");
+                    throw std::invalid_argument("Expected source symbol tree with valid leaf names");
 
                 // populate target choice
                 val& choice_name = get_symbol_leaf(symbol_name);

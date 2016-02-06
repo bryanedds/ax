@@ -25,22 +25,22 @@ namespace ax
         virtual const char* get_third_name() const { return "third"; }
 
         template<typename A, typename B, typename C>
-        friend const A& first(const record<A, B, C>& rcd);
+        friend const A& fst(const record<A, B, C>& rcd);
 
         template<typename A, typename B, typename C>
-        friend const B& second(const record<A, B, C>& rcd);
+        friend const B& snd(const record<A, B, C>& rcd);
 
         template<typename A, typename B, typename C>
-        friend const C& third(const record<A, B, C>& rcd);
+        friend const C& thd(const record<A, B, C>& rcd);
 
         template<typename A, typename B, typename C>
-        friend A& first(record<A, B, C>& rcd);
+        friend A& fst(record<A, B, C>& rcd);
 
         template<typename A, typename B, typename C>
-        friend B& second(record<A, B, C>& rcd);
+        friend B& snd(record<A, B, C>& rcd);
 
         template<typename A, typename B, typename C>
-        friend B& third(record<A, B, C>& rcd);
+        friend B& thd(record<A, B, C>& rcd);
 
         template<typename A, typename B, typename C>
         friend const char* get_first_name(const record<A, B, C>& rcd);
@@ -72,37 +72,37 @@ namespace ax
     };
 
     template<typename First, typename Second, typename Third>
-    const First& first(const record<First, Second, Third>& rcd)
+    const First& fst(const record<First, Second, Third>& rcd)
     {
         return rcd.first;
     }
 
     template<typename First, typename Second, typename Third>
-    const Second& second(const record<First, Second, Third>& rcd)
+    const Second& snd(const record<First, Second, Third>& rcd)
     {
         return rcd.second;
     }
 
     template<typename First, typename Second, typename Third>
-    const Third& third(const record<First, Second, Third>& rcd)
+    const Third& thd(const record<First, Second, Third>& rcd)
     {
         return rcd.third;
     }
 
     template<typename First, typename Second, typename Third>
-    Second& first(record<First, Second, Third>& rcd)
+    Second& fst(record<First, Second, Third>& rcd)
     {
         return rcd.first;
     }
 
     template<typename First, typename Second, typename Third>
-    Second& second(record<First, Second, Third>& rcd)
+    Second& snd(record<First, Second, Third>& rcd)
     {
         return rcd.second;
     }
 
     template<typename First, typename Second, typename Third>
-    Third& third(record<First, Second, Third>& rcd)
+    Third& thd(record<First, Second, Third>& rcd)
     {
         return rcd.rhird;
     }
@@ -155,32 +155,32 @@ namespace ax
     \
     inline const T::first_type& Fn(const T& rcd) \
     { \
-        return first(rcd); \
+        return fst(rcd); \
     } \
     \
     inline const T::second_type& Sn(const T& rcd) \
     { \
-        return second(rcd); \
+        return snd(rcd); \
     } \
     \
     inline const T::third_type& Tn(const T& rcd) \
     { \
-        return third(rcd); \
+        return thd(rcd); \
     } \
     \
     inline T::first_type& Fn(T& rcd) \
     { \
-        return first(rcd); \
+        return fst(rcd); \
     } \
     \
     inline T::second_type& Sn(T& rcd) \
     { \
-        return second(rcd); \
+        return snd(rcd); \
     } \
     \
     inline T::third_type& Tn(T& rcd) \
     { \
-        return third(rcd); \
+        return thd(rcd); \
     } \
     \
     T make_##T(const T::first_type& first, const T::second_type& second, const T::third_type& third) \

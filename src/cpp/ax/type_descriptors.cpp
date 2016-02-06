@@ -347,6 +347,28 @@ namespace ax
         register_type_descriptor<std::unordered_map<std::string, std::size_t>>(std::make_shared<unordered_map_descriptor<std::string, std::size_t>>());
         register_type_descriptor<std::unordered_map<std::string, std::string>>(std::make_shared<unordered_map_descriptor<std::string, std::string>>());
 
+        // pair type descriptors
+        register_type_descriptor<pair<bool, bool>>(std::make_shared<pair_descriptor<pair<bool, bool>>>());
+        register_type_descriptor<pair<char, char>>(std::make_shared<pair_descriptor<pair<char, char>>>());
+        register_type_descriptor<pair<int, int>>(std::make_shared<pair_descriptor<pair<int, int>>>());
+        register_type_descriptor<pair<int32_t, int32_t>>(std::make_shared<pair_descriptor<pair<int32_t, int32_t>>>());
+        register_type_descriptor<pair<int64_t, int64_t>>(std::make_shared<pair_descriptor<pair<int64_t, int64_t>>>());
+        register_type_descriptor<pair<float, float>>(std::make_shared<pair_descriptor<pair<float, float>>>());
+        register_type_descriptor<pair<double, double>>(std::make_shared<pair_descriptor<pair<double, double>>>());
+        register_type_descriptor<pair<std::size_t, std::size_t>>(std::make_shared<pair_descriptor<pair<std::size_t, std::size_t>>>());
+        register_type_descriptor<pair<std::string, std::string>>(std::make_shared<pair_descriptor<pair<std::string, std::string>>>());
+
+        // record type descriptors
+        register_type_descriptor<record<bool, bool, bool>>(std::make_shared<record_descriptor<record<bool, bool, bool>>>());
+        register_type_descriptor<record<char, char, char>>(std::make_shared<record_descriptor<record<char, char, char>>>());
+        register_type_descriptor<record<int, int, int>>(std::make_shared<record_descriptor<record<int, int, int>>>());
+        register_type_descriptor<record<int32_t, int32_t, int32_t>>(std::make_shared<record_descriptor<record<int32_t, int32_t, int32_t>>>());
+        register_type_descriptor<record<int64_t, int64_t, int64_t>>(std::make_shared<record_descriptor<record<int64_t, int64_t, int64_t>>>());
+        register_type_descriptor<record<float, float, float>>(std::make_shared<record_descriptor<record<float, float, float>>>());
+        register_type_descriptor<record<double, double, double>>(std::make_shared<record_descriptor<record<double, double, double>>>());
+        register_type_descriptor<record<std::size_t, std::size_t, std::size_t>>(std::make_shared<record_descriptor<record<std::size_t, std::size_t, std::size_t>>>());
+        register_type_descriptor<record<std::string, std::string, std::string>>(std::make_shared<record_descriptor<record<std::string, std::string, std::string>>>());
+
         // option type descriptors
         register_type_descriptor<option<bool>>(std::make_shared<option_descriptor<bool>>());
         register_type_descriptor<option<char>>(std::make_shared<option_descriptor<char>>());

@@ -48,6 +48,18 @@ namespace ax
 
     // Get the names of which an address consists.
     const std::vector<name_t>& get_names(const address& address);
+
+    // Adds a phantom type T to addresses.
+    // TODO: implement type-absorbing operators, a la -
+    // https://github.com/bryanedds/NuGameEngine/blob/master/Prime/Prime/Prime/TypeAbsorption.fs
+    template<typename T>
+    class address_t : public address
+    {
+    private:
+        constraint(address);
+        using phantom_type = T;
+        using address::address;
+    };
 }
 
 namespace std
