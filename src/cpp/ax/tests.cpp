@@ -6,6 +6,24 @@
 
 namespace ax
 {
+    // A trivial type to demonstrate the castable type.
+    class castable_a : public castable
+    {
+    protected:
+        enable_cast(castable_a, castable);
+    public:
+        int i = 0;
+    };
+
+    // A trivial type to demonstrate the castable type.
+    class castable_b : public castable_a
+    {
+    protected:
+        enable_cast(castable_b, castable_a);
+    public:
+        int j = 0;
+    };
+
     // A trivial program type to demonstrate the eventable program mixin.
     class eventable_test : public eventable<eventable_test>
     {
@@ -125,7 +143,47 @@ namespace ax
 
     TEST("castable works")
     {
-        // TODO: implement
+        castable_b b{};
+        b.i = 10;
+        b.j = 20;
+        const castable_a& a = cast<castable_a>(b);
+        CHECK(a.i == 10);
+        const castable& c = cast<castable>(b);
+        const castable_a& a2 = cast<castable_a>(c);
+        CHECK(a2.i == 10);
+        const castable_b& b2 = cast<castable_b>(c);
+        CHECK(b2.i == 10);
+        CHECK(b2.j == 20);
+    }
+
+    TEST("shared castable works")
+    {
+        std::shared_ptr<castable_b> b = std::make_shared<castable_b>();
+        b->i = 10;
+        b->j = 20;
+        std::shared_ptr<castable_a> a = cast<castable_a>(b);
+        CHECK(a->i == 10);
+        std::shared_ptr<castable> c = cast<castable>(b);
+        std::shared_ptr<castable_a> a2 = cast<castable_a>(c);
+        CHECK(a2->i == 10);
+        std::shared_ptr<castable_b> b2 = cast<castable_b>(c);
+        CHECK(b2->i == 10);
+        CHECK(b2->j == 20);
+    }
+
+    TEST("unique castable works")
+    {
+        std::unique_ptr<castable_b> b = std::make_unique<castable_b>();
+        b->i = 10;
+        b->j = 20;
+        std::unique_ptr<castable_a> a = cast<castable_a>(std::move(b));
+        CHECK(a->i == 10);
+        std::unique_ptr<castable> c = cast<castable>(std::move(a));
+        std::unique_ptr<castable_a> a2 = cast<castable_a>(std::move(c));
+        CHECK(a2->i == 10);
+        std::unique_ptr<castable_b> b2 = cast<castable_b>(std::move(a2));
+        CHECK(b2->i == 10);
+        CHECK(b2->j == 20);
     }
 
     TEST("events work")

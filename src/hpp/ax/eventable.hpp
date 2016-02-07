@@ -89,7 +89,7 @@ namespace ax
     unsubscriber<P> subscribe_event5(P& program, id_t subscription_id, const address& address, const std::shared_ptr<addressable>& subscriber, const H& handler)
     {
         constrain(P, eventable);
-        var subscription_detail_mvb = cast_unique<castable>(std::make_unique<subscription_detail<T, P>>(handler));
+        var subscription_detail_mvb = cast<castable>(std::make_unique<subscription_detail<T, P>>(handler));
         var subscriptions_opt = program.subscriptions_map.find(address);
         if (subscriptions_opt != std::end(program.subscriptions_map))
         {

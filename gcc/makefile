@@ -6,12 +6,12 @@ CPPFLAGS+=-std=c++14 -Wall -pedantic -Wextra
 CPPFLAGS+=-g -O2
 CPPFLAGS+=-pthread
 CPPFLAGS+=-march=native
-# CPPFLAGS+=-fsanitize=undefined,address
-# CPPFLAGS+=-DNDEBUG -fno-omit-frame-pointer
+#CPPFLAGS+=-fsanitize=undefined,address
+#CPPFLAGS+=-DNDEBUG -fno-omit-frame-pointer
 
 CXX=g++
 
-CPP_FILES=\
+CPP_FILES= \
 	../src/cpp/blah/blah.cpp \
 	../src/cpp/tom/tom.cpp \
 	../src/cpp/ax/inspectable.cpp \
