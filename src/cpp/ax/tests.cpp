@@ -279,6 +279,15 @@ namespace ax
 
     TEST("properties work")
     {
+        propertied p{};
+        attach(p, "x", 0);
+        CHECK(get<int>(p, "x") == 0);
+        set(p, "x", 5);
+        CHECK(get<int>(p, "x") == 5);
+    }
+
+    TEST("logging works")
+    {
         // TODO: implement
     }
 }

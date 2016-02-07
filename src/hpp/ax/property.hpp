@@ -79,23 +79,23 @@ namespace ax
     template<typename T>
     const property<T>& get_property(const property_map& properties, const name_t& name)
     {
-        val property_opt = properties.find(name);
-        if (property_opt != properties.end()) return *property_opt;
+        val& property_opt = properties.find(name);
+        if (property_opt != properties.end()) return cast<property<T>>(*property_opt->second);
         throw std::logic_error("No such property '"_s + get_name_str(name) + "'.");
     }
 
     template<typename T>
     property<T>& get_property(property_map& properties, const name_t& name)
     {
-        val property_opt = properties.find(name);
-        if (property_opt != properties.end()) return *property_opt;
+        val& property_opt = properties.find(name);
+        if (property_opt != properties.end()) return cast<property<T>>(*property_opt->second);
         throw std::logic_error("No such property '"_s + get_name_str(name) + "'.");
     }
 
     template<typename T>
     void attach_property(property_map& properties, const name_t& name, const T& value)
     {
-        properties.insert(name, std::make_unique<property<T>>(value));
+        properties.insert(std::make_pair(name, std::make_unique<property<T>>(value)));
     }
 
     template<typename T>
@@ -127,10 +127,10 @@ namespace ax
         friend T& set(propertied& propertied, const name_t& name, T&& value);
 
         template<typename T>
-        friend void attach_property(propertied& propertied, const name_t& name, const T& value);
+        friend void attach(propertied& propertied, const name_t& name, const T& value);
 
         template<typename T>
-        friend void attach_property(propertied& propertied, const name_t& name, T&& value);
+        friend void attach(propertied& propertied, const name_t& name, T&& value);
 
     public:
 
@@ -152,23 +152,23 @@ namespace ax
     template<typename T>
     T& set(propertied& propertied, const name_t& name, const T& value)
     {
-        return set_value<T>(get_property<T>(propertied.properties, name));
+        return set_value<T>(get_property<T>(propertied.properties, name), value);
     }
 
     template<typename T>
     T& set(propertied& propertied, const name_t& name, T&& value)
     {
-        return set_value<T>(get_property<T>(propertied.properties, name));
+        return set_value<T>(get_property<T>(propertied.properties, name), value);
     }
 
     template<typename T>
-    void attach_property(propertied& propertied, const name_t& name, const T& value)
+    void attach(propertied& propertied, const name_t& name, const T& value)
     {
         attach_property<T>(propertied.properties, name, value);
     }
 
     template<typename T>
-    void attach_property(propertied& propertied, const name_t& name, T&& value)
+    void attach(propertied& propertied, const name_t& name, T&& value)
     {
         attach_property<T>(propertied.properties, name, value);
     }
