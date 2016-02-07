@@ -62,15 +62,26 @@ namespace ax
         return property = value;
     }
 
-    // TODO: promote to full type that is inspectable
-    using property_map = std::unordered_map<name_t, std::unique_ptr<castable>>;
+    template<typename T>
+    T& set_value(property<T>& property, T&& value)
+    {
+        return property = value;
+    }
+
+    // TODO: type descriptor
+    class property_map : public std::unordered_map<name_t, std::unique_ptr<castable>>
+    {
+    public:
+        constraint(property_map);
+        using std::unordered_map<name_t, std::unique_ptr<castable>>::unordered_map;
+    };
 
     template<typename T>
-    property<T> get_property(const property_map& properties, const name_t& name)
+    const property<T>& get_property(const property_map& properties, const name_t& name)
     {
         val property_opt = properties.find(name);
         if (property_opt != properties.end()) return *property_opt;
-        throw std::logic_error("No such property.");
+        throw std::logic_error("No such property '"_s + get_name_str(name) + "'.");
     }
 
     template<typename T>
@@ -78,7 +89,88 @@ namespace ax
     {
         val property_opt = properties.find(name);
         if (property_opt != properties.end()) return *property_opt;
-        throw std::logic_error("No such property.");
+        throw std::logic_error("No such property '"_s + get_name_str(name) + "'.");
+    }
+
+    template<typename T>
+    void attach_property(property_map& properties, const name_t& name, const T& value)
+    {
+        properties.insert(name, std::make_unique<property<T>>(value));
+    }
+
+    template<typename T>
+    void attach_property(property_map& properties, const name_t& name, T&& value)
+    {
+        properties.insert(name, std::make_unique<property<T>>(value));
+    }
+
+    class propertied : public inspectable
+    {
+    private:
+
+        property_map properties;
+
+    protected:
+
+        enable_cast(propertied, inspectable);
+
+        template<typename T>
+        friend const T& get(const propertied& propertied, const name_t& name);
+
+        template<typename T>
+        friend T& get(propertied& propertied, const name_t& name);
+
+        template<typename T>
+        friend T& set(propertied& propertied, const name_t& name, const T& value);
+
+        template<typename T>
+        friend T& set(propertied& propertied, const name_t& name, T&& value);
+
+        template<typename T>
+        friend void attach_property(propertied& propertied, const name_t& name, const T& value);
+
+        template<typename T>
+        friend void attach_property(propertied& propertied, const name_t& name, T&& value);
+
+    public:
+
+        propertied() = default;
+    };
+
+    template<typename T>
+    const T& get(const propertied& propertied, const name_t& name)
+    {
+        return get_value<T>(get_property<T>(propertied.properties, name));
+    }
+
+    template<typename T>
+    T& get(propertied& propertied, const name_t& name)
+    {
+        return get_value<T>(get_property<T>(propertied.properties, name));
+    }
+
+    template<typename T>
+    T& set(propertied& propertied, const name_t& name, const T& value)
+    {
+        return set_value<T>(get_property<T>(propertied.properties, name));
+    }
+
+    template<typename T>
+    T& set(propertied& propertied, const name_t& name, T&& value)
+    {
+        return set_value<T>(get_property<T>(propertied.properties, name));
+    }
+
+    template<typename T>
+    void attach_property(propertied& propertied, const name_t& name, const T& value)
+    {
+        attach_property<T>(propertied.properties, name, value);
+    }
+
+    template<typename T>
+    void attach_property(propertied& propertied, const name_t& name, T&& value)
+    {
+        attach_property<T>(propertied.properties, name, value);
     }
 }
 
