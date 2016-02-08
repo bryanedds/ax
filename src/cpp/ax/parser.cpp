@@ -1,8 +1,8 @@
 #include <istream>
 
-#include "../../dpp/rxml/rapidxml.hpp"
+#include "../../dtl/rxml/rapidxml.hpp"
 
-#include "../../dpp/ax/parser.hpp"
+#include "../../dtl/ax/parser.hpp"
 
 namespace ax
 {

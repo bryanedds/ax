@@ -1,8 +1,8 @@
 #include <istream>
 
-#include "../../dpp/tom/tom.hpp"
+#include "../../dtl/tom/tom.hpp"
 
-#include "../../dpp/ax/ax.hpp"
+#include "../../dtl/ax/ax.hpp"
 
 namespace ax
 {
