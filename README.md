@@ -4,14 +4,15 @@ Ax - The Axiomatic Core C++ Library.
 Features
 ---
 
-- A publisher-neutral event system in **"events.hpp"**
-- Optimized dynamic type casting system in **"casting.hpp"**
-- Algebraic data types including option, either, choice, pair and record, w/ macros for automatic derivation, 
-and a type-safe pattern matching system in **"algebraic.hpp"**
-- A dynamic property system in **"properties.hpp"**
 - A light-weight reflection system in **"reflection.hpp"**
 - A serialization system in **"serialization.hpp"**
 - A generalized meta-language system in **"metalang.hpp"**
+- A publisher-neutral event system in **"events.hpp"**
+- Optimized dynamic type casting system in **"casting.hpp"**
+- A dynamic property system in **"properties.hpp"**
+- Functional operations map, filter, and fold (with more coming soon!) in **"functional.hpp"**
+- Algebraic data types including option, either, choice, pair and record, w/ macros for automatic derivation, 
+and a type-safe pattern matching system in **"algebraic.hpp"**
 - A couple other odds and ends in **"utility.hpp"**
 - Built in the clean and modular Data Abstration Style - https://github.com/bryanedds/das
 
