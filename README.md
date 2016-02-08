@@ -12,7 +12,7 @@ and a type-safe pattern matching system in **"algebraic.hpp"**
 - A light-weight reflection system in **"reflection.hpp"**
 - A serialization system in **"serialization.hpp"**
 - A generalized meta-language system in **"metalang.hpp"**
-- ...and a couple other odds and ends in **"utility.hpp"**
+- A couple other odds and ends in **"utility.hpp"**
 - Built in the clean and modular Data Abstration Style - https://github.com/bryanedds/das
 
 Makes a good base for non-trivial projects like renderers, game engines, and other real-ass shit that's needs to be built with good programming semantics.
