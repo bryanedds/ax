@@ -1,5 +1,5 @@
 #CPPFLAGS += -stdlib=libc++
-CPPFLAGS += -std=c++14 -Wall -pedantic
+CPPFLAGS += -std=c++14 -Wall -Wextra -pedantic
 CPPFLAGS += -g -O2
 CPPFLAGS += -pthread
 CPPFLAGS += -march=native
@@ -24,7 +24,9 @@ CPP_FILES= \
 OBJ_FILES=$(subst src,bin/obj,$(subst .cpp,.o,$(CPP_FILES)))
 
 
-all: $(OBJ_FILES)
+all: bin/ax
+
+bin/ax: $(OBJ_FILES)
 	$(CXX) $(CPPFLAGS) $^ -o bin/ax $(LDFLAGS)
 
 clean:
