@@ -21,7 +21,7 @@ namespace ax
         using reify = event<A>;
 
         const T data;
-        const address address;
+        const ax::address address;
         const std::shared_ptr<addressable> subscriber; // TODO: may be necessary to genericize subscriber
         const std::shared_ptr<addressable> publisher;
         
