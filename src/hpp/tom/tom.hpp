@@ -16,7 +16,7 @@
 #define TEST_O_MATIC_VERSION_STRING "0.4.3"
 
 // Use of unconditional branches is a common technique in C++ metaprogramming.
-#if defined(_WIN32)
+#if defined(_MSC_VER)
     #pragma warning(disable: 4127)
 #endif
 

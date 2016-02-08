@@ -11,12 +11,12 @@
 #include <cstddef>
 
 // Variable shadowing is a good thing when doing functional-style programming.
-#if defined(_WIN32)
+#if defined(_MSC_VER)
     #pragma warning(disable: 4456)
 #endif
 
 // Use of unconditional branches is a common technique in C++ metaprogramming.
-#if defined(_WIN32)
+#if defined(_MSC_VER)
     #pragma warning(disable: 4127)
 #endif
 
