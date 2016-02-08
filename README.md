@@ -6,10 +6,10 @@ Features
 
 - A light-weight reflection system in **"reflection.hpp"**
 - A serialization system in **"serialization.hpp"**
-- A generalized meta-language system in **"metalang.hpp"**
-- A publisher-neutral event system in **"events.hpp"**
-- Optimized dynamic type casting system in **"casting.hpp"**
+- A publisher-neutral C++ event system in **"events.hpp"**
 - A dynamic property system in **"properties.hpp"**
+- Optimized dynamic type casting system in **"casting.hpp"**
+- A generalized meta-language system in **"metalang.hpp"**
 - Functional operations map, filter, and fold (with more coming soon!) in **"functional.hpp"**
 - Algebraic data types including option, either, choice, pair and record, w/ macros for automatic derivation, 
 and a type-safe pattern matching system in **"algebraic.hpp"**
