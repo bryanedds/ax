@@ -34,7 +34,7 @@ namespace ax
     // The alias for a field vector.
     using field_vector = std::vector<std::pair<name_t, std::shared_ptr<field>>>;
 
-    // Register a field for inspection.
+    // Register a field for reflection.
     template<typename T>
     field register_field(std::size_t value_offset)
     {

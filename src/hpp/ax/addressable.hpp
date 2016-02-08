@@ -17,7 +17,7 @@ namespace ax
     // mutable identities is overly complicating in practice, and in theory actually makes no
     // sense anyways.
     //
-    // TODO: make this inspectable.
+    // TODO: make this reflectable.
     class addressable : public castable
     {
     private:

@@ -31,30 +31,30 @@ namespace ax
         enable_cast(eventable_test, eventable<eventable_test>);
     };
 
-    class inspectable_test : public inspectable
+    class reflectable_test : public reflectable
     {
     protected:
 
-        enable_cast(inspectable_test, inspectable);
+        enable_cast(reflectable_test, reflectable);
 
-        const std::shared_ptr<type_t> type = register_sub_type<inspectable_test>(typeid(inspectable),
+        const std::shared_ptr<type_t> type = register_sub_type<reflectable_test>(typeid(reflectable),
         {
-            { "bool_value",             register_field<bool>                        (offsetof(inspectable_test, bool_value)) },
-            { "int_value",              register_field<int>                         (offsetof(inspectable_test, int_value)) },
-            { "float_value",            register_field<float>                       (offsetof(inspectable_test, float_value)) },
-            { "name_value",             register_field<name_t>                      (offsetof(inspectable_test, name_value)) },
-            { "address_value",          register_field<address>                     (offsetof(inspectable_test, address_value)) },
-            { "vector_int_value",       register_field<std::vector<int>>            (offsetof(inspectable_test, vector_int_value)) },
-            { "vector_string_value",    register_field<std::vector<std::string>>    (offsetof(inspectable_test, vector_string_value)) },
-            { "unique_int_value",       register_field<std::unique_ptr<int>>        (offsetof(inspectable_test, unique_int_value)) },
-            { "shared_int_value",       register_field<std::shared_ptr<int>>        (offsetof(inspectable_test, shared_int_value)) },
-            { "pair_value",             register_field<pair<int, int>>              (offsetof(inspectable_test, pair_value)) },
-            { "record_value",           register_field<record<int, int, int>>       (offsetof(inspectable_test, record_value)) },
-            { "option_some_value",      register_field<option<int>>                 (offsetof(inspectable_test, option_some_value)) },
-            { "option_none_value",      register_field<option<int>>                 (offsetof(inspectable_test, option_none_value)) },
-            { "either_right_value",     register_field<either<std::string, int>>    (offsetof(inspectable_test, either_right_value)) },
-            { "either_left_value",      register_field<either<std::string, int>>    (offsetof(inspectable_test, either_left_value)) },
-            { "choice_value",           register_field<choice<int, int, int>>       (offsetof(inspectable_test, choice_value)) }
+            { "bool_value",             register_field<bool>                        (offsetof(reflectable_test, bool_value)) },
+            { "int_value",              register_field<int>                         (offsetof(reflectable_test, int_value)) },
+            { "float_value",            register_field<float>                       (offsetof(reflectable_test, float_value)) },
+            { "name_value",             register_field<name_t>                      (offsetof(reflectable_test, name_value)) },
+            { "address_value",          register_field<address>                     (offsetof(reflectable_test, address_value)) },
+            { "vector_int_value",       register_field<std::vector<int>>            (offsetof(reflectable_test, vector_int_value)) },
+            { "vector_string_value",    register_field<std::vector<std::string>>    (offsetof(reflectable_test, vector_string_value)) },
+            { "unique_int_value",       register_field<std::unique_ptr<int>>        (offsetof(reflectable_test, unique_int_value)) },
+            { "shared_int_value",       register_field<std::shared_ptr<int>>        (offsetof(reflectable_test, shared_int_value)) },
+            { "pair_value",             register_field<pair<int, int>>              (offsetof(reflectable_test, pair_value)) },
+            { "record_value",           register_field<record<int, int, int>>       (offsetof(reflectable_test, record_value)) },
+            { "option_some_value",      register_field<option<int>>                 (offsetof(reflectable_test, option_some_value)) },
+            { "option_none_value",      register_field<option<int>>                 (offsetof(reflectable_test, option_none_value)) },
+            { "either_right_value",     register_field<either<std::string, int>>    (offsetof(reflectable_test, either_right_value)) },
+            { "either_left_value",      register_field<either<std::string, int>>    (offsetof(reflectable_test, either_left_value)) },
+            { "choice_value",           register_field<choice<int, int, int>>       (offsetof(reflectable_test, choice_value)) }
         });
 
         std::shared_ptr<type_t> get_type_impl() const override
@@ -81,7 +81,7 @@ namespace ax
         either<std::string, int> either_left_value;
         choice<int, int, int> choice_value;
 
-        inspectable_test() :
+        reflectable_test() :
             bool_value(),
             int_value(),
             float_value(),
@@ -100,7 +100,7 @@ namespace ax
             choice_value()
         { }
 
-        inspectable_test(
+        reflectable_test(
             bool bool_value,
             int int_value,
             float float_value,
@@ -203,12 +203,12 @@ namespace ax
     TEST("read and write value works")
     {
         symbol symbol{};
-        inspectable_test source(
+        reflectable_test source(
             true, 5, 10.0f, "jim bob", address("s/compton/la"),
             { 1, 3, 5 }, { "a", "bb", "ccc" }, 666, 777,
             make_pair(50, 100), make_record(150, 200, 250),
             some(2), none<int>(), right<std::string>(4), left<std::string, int>("msg"), third<int, int>(3));
-        inspectable_test target{};
+        reflectable_test target{};
         write_value(source, symbol);
         read_value(symbol, target);
         CHECK(target.bool_value);
@@ -254,7 +254,7 @@ namespace ax
         std::istream_iterator<char> iter(sstr);
         val& parse = parse_symbol_from_stream(iter, std::istream_iterator<char>());
         val& symbol = get_parse_success(parse);
-        inspectable_test target{};
+        reflectable_test target{};
         read_value(symbol, target);
         CHECK(target.bool_value);
         CHECK(target.int_value == 5);

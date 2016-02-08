@@ -104,7 +104,7 @@ namespace ax
         properties.insert(name, std::make_unique<property<T>>(value));
     }
 
-    class propertied : public inspectable
+    class propertied : public reflectable
     {
     private:
 
@@ -112,7 +112,7 @@ namespace ax
 
     protected:
 
-        enable_cast(propertied, inspectable);
+        enable_cast(propertied, reflectable);
 
         template<typename T>
         friend const T& get(const propertied& propertied, const name_t& name);

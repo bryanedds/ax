@@ -3,7 +3,6 @@
 
 #include <string>
 #include <vector>
-#include <sstream> // NOTE: here only because GCC can't seem to locate fucking std::to_string()!
 
 #include "prelude.hpp"
 

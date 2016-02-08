@@ -1,5 +1,5 @@
-#ifndef AX_VECTOR_HPP
-#define AX_VECTOR_HPP
+#ifndef AX_FUNCTIONAL_HPP
+#define AX_FUNCTIONAL_HPP
 
 #include <cstddef>
 #include <vector>
@@ -7,7 +7,7 @@
 #include "prelude.hpp"
 
 template<typename U, typename T, typename F>
-std::vector<U> map_vector(const std::vector<T>& source, const F& mapper)
+std::vector<U> map(const std::vector<T>& source, const F& mapper)
 {
     std::vector<U> mapped{};
     for (val& elem : source)
@@ -16,7 +16,7 @@ std::vector<U> map_vector(const std::vector<T>& source, const F& mapper)
 }
 
 template<typename T, typename F>
-std::vector<T> filter_vector(const std::vector<T>& source, const F& predicate)
+std::vector<T> filter(const std::vector<T>& source, const F& predicate)
 {
     std::vector<T> filtered{};
     for (val& elem : source)
@@ -26,7 +26,7 @@ std::vector<T> filter_vector(const std::vector<T>& source, const F& predicate)
 }
 
 template<typename T, typename S, typename F>
-S fold_vector(const std::vector<T>& source, const S& seed, const F& folder)
+S fold(const std::vector<T>& source, const S& seed, const F& folder)
 {
     S state(seed);
     for (val& elem : source)

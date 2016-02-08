@@ -65,7 +65,7 @@ namespace ax
     // Get the field vector of a type.
     const field_vector& get_field_vector(const type_t& type);
 
-    // Register a type for inspection that has a base type.
+    // Register a type for reflection that has a base type.
     template<typename T>
     std::shared_ptr<type_t> register_any_type(std::shared_ptr<std::type_index> base_type_index_opt, std::initializer_list<std::pair<name_t, field>> field_init_list)
     {
@@ -79,7 +79,7 @@ namespace ax
         return type;
     }
 
-    // Register a type for inspection.
+    // Register a type for reflection.
     template<typename T>
     std::shared_ptr<type_t> register_sub_type(const std::type_info& base_type_info, std::initializer_list<std::pair<name_t, field>> field_init_list)
     {
@@ -87,7 +87,7 @@ namespace ax
         return register_any_type<T>(base_type_index_ptr, field_init_list);
     }
 
-    // Register a type for inspection.
+    // Register a type for reflection.
     template<typename T>
     std::shared_ptr<type_t> register_type(std::initializer_list<std::pair<name_t, field>> field_init_list)
     {

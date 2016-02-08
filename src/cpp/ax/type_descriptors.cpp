@@ -6,7 +6,7 @@
 
 #include "../../hpp/ax/choice.hpp"
 #include "../../hpp/ax/string.hpp"
-#include "../../hpp/ax/vector.hpp"
+#include "../../hpp/ax/functional.hpp"
 #include "../../hpp/ax/name.hpp"
 #include "../../hpp/ax/address.hpp"
 
@@ -270,7 +270,7 @@ namespace ax
     {
         val* address_ptr = static_cast<const address*>(source_ptr);
         val& address_names = get_names(*address_ptr);
-        val& address_strs = map_vector<std::string>(address_names, get_name_str);
+        val& address_strs = map<std::string>(address_names, get_name_str);
         target_symbol = symbol_leaf(join_strings(address_strs, '/'));
     }
 

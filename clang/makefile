@@ -14,7 +14,7 @@ CXX=clang++
 CPP_FILES= \
 	../src/cpp/blah/blah.cpp \
 	../src/cpp/tom/tom.cpp \
-	../src/cpp/ax/inspectable.cpp \
+	../src/cpp/ax/reflectable.cpp \
 	../src/cpp/ax/field.cpp \
 	../src/cpp/ax/type_descriptor.cpp \
 	../src/cpp/ax/parser.cpp \

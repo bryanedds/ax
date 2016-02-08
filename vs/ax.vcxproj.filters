@@ -30,6 +30,12 @@
     <Filter Include="Header Files\ax">
       <UniqueIdentifier>{a465dd24-8f0f-4e71-b250-21cf8127c704}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Library Files">
+      <UniqueIdentifier>{5d5012b9-6131-4d32-8f9f-59aa56147868}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library Files\ax">
+      <UniqueIdentifier>{ddd5e392-7fa9-4c15-8c4a-9349b35f87f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\hpp\blah\blah.hpp">
@@ -63,12 +69,6 @@
       <Filter>Header Files\ax</Filter>
     </ClInclude>
     <ClInclude Include="..\src\hpp\ax\id.hpp">
-      <Filter>Header Files\ax</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\inspectable.hpp">
-      <Filter>Header Files\ax</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\logger.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
     <ClInclude Include="..\src\hpp\ax\mailbox.hpp">
@@ -107,25 +107,16 @@
     <ClInclude Include="..\src\hpp\ax\type_descriptors.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\vector.hpp">
-      <Filter>Header Files\ax</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\hpp\ax\address.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
     <ClInclude Include="..\src\hpp\ax\addressable.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\barrier.hpp">
-      <Filter>Header Files\ax</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\hpp\ax\castable.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
     <ClInclude Include="..\src\hpp\ax\either.hpp">
-      <Filter>Header Files\ax</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\ax.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
     <ClInclude Include="..\src\hpp\ax\pair.hpp">
@@ -137,6 +128,57 @@
     <ClInclude Include="..\src\hpp\ax\record.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\propertied.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\logging.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lpp\ax\events.hpp">
+      <Filter>Library Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lpp\ax\properties.hpp">
+      <Filter>Library Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lpp\ax\serialization.hpp">
+      <Filter>Library Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lpp\ax\algebraic.hpp">
+      <Filter>Library Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\unparser.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\reflectable.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lpp\ax\reflection.hpp">
+      <Filter>Library Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\ax.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lpp\ax\casting.hpp">
+      <Filter>Library Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lpp\ax\functional.hpp">
+      <Filter>Library Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lpp\ax\utility.hpp">
+      <Filter>Library Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lpp\ax\metalang.hpp">
+      <Filter>Library Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hpp\ax\functional.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lpp\ax\logging.hpp">
+      <Filter>Library Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lpp\ax\mailbox.hpp">
+      <Filter>Library Files\ax</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\cpp\main.cpp">
@@ -147,9 +189,6 @@
     </ClCompile>
     <ClCompile Include="..\src\cpp\tom\tom.cpp">
       <Filter>Source Files\tom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\cpp\ax\inspectable.cpp">
-      <Filter>Source Files\ax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\cpp\ax\name.cpp">
       <Filter>Source Files\ax</Filter>
@@ -176,6 +215,9 @@
       <Filter>Source Files\ax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\cpp\ax\field.cpp">
+      <Filter>Source Files\ax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cpp\ax\reflectable.cpp">
       <Filter>Source Files\ax</Filter>
     </ClCompile>
   </ItemGroup>

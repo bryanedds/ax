@@ -8,7 +8,7 @@
 
 #include "prelude.hpp"
 #include "type.hpp"
-#include "inspectable.hpp"
+#include "reflectable.hpp"
 #include "symbol.hpp"
 
 namespace ax
@@ -26,8 +26,8 @@ namespace ax
         template<typename T, typename D>
         friend std::shared_ptr<D> register_type_descriptor(const std::shared_ptr<D>& type_descriptor);
 
-        friend void inspect_value_vptr(const type_descriptor& type_descriptor, const inspectable& source, const field& field, void* target_ptr);
-        friend void inject_value_vptr(const type_descriptor& type_descriptor, const field& field, const void* source_ptr, inspectable& target);
+        friend void inspect_value_vptr(const type_descriptor& type_descriptor, const reflectable& source, const field& field, void* target_ptr);
+        friend void inject_value_vptr(const type_descriptor& type_descriptor, const field& field, const void* source_ptr, reflectable& target);
         friend void read_value_vptr(const type_descriptor& type_descriptor, const symbol& source_symbol, void* target_ptr);
         friend void write_value_vptr(const type_descriptor& type_descriptor, const void* source_ptr, symbol& target_symbol);
 
@@ -98,15 +98,15 @@ namespace ax
         target_ptr_t->reset(new typename T::element_type(**source_ptr_t));
     }
 
-    // Inspect a value of an inspectable value, placing it into a void ptr.
-    void inspect_value_vptr(const type_descriptor& type_descriptor, const inspectable& source, const field& field, void* target_ptr);
+    // Inspect a value of an reflectable value, placing it into a void ptr.
+    void inspect_value_vptr(const type_descriptor& type_descriptor, const reflectable& source, const field& field, void* target_ptr);
 
-    // Inject a value into an inspectable value, via a void ptr.
-    void inject_value_vptr(const type_descriptor& type_descriptor, const field& field, const void* source_ptr, inspectable& target);
+    // Inject a value into an reflectable value, via a void ptr.
+    void inject_value_vptr(const type_descriptor& type_descriptor, const field& field, const void* source_ptr, reflectable& target);
 
-    // Inspect a value of an inspectable value.
+    // Inspect a value of an reflectable value.
     template<typename T>
-    void inspect_value(const inspectable& source, const field& field, T& target)
+    void inspect_value(const reflectable& source, const field& field, T& target)
     {
         val& type_index = get_type_index(field);
         if (type_index != std::type_index(typeid(T))) throw std::invalid_argument("Field is not of required type.");
@@ -115,9 +115,9 @@ namespace ax
         inspect_value_vptr(*type_descriptor, source, field, target_ptr);
     }
 
-    // Inject a value into an inspectable value.
+    // Inject a value into an reflectable value.
     template<typename T>
-    void inject_value(const field& field, const T& source, inspectable& target)
+    void inject_value(const field& field, const T& source, reflectable& target)
     {
         val& type_index = get_type_index(field);
         if (type_index != std::type_index(typeid(T))) throw std::invalid_argument("Field is not of required type.");
@@ -132,14 +132,14 @@ namespace ax
     // Write a value to a symbol, via a void ptr.
     void write_value_vptr(const type_descriptor& type_descriptor, const void* source_ptr, symbol& target_symbol);
 
-    // Read an inspectable value from a symbol.
-    void read_value(const symbol& source_symbol, inspectable& target_inspectable);
+    // Read an reflectable value from a symbol.
+    void read_value(const symbol& source_symbol, reflectable& target_reflectable);
 
-    // Write an inspectable value to a symbol.
-    void write_value(const inspectable& source_inspectable, symbol& target_symbol);
+    // Write an reflectable value to a symbol.
+    void write_value(const reflectable& source_reflectable, symbol& target_symbol);
 
-    // A generalized type descriptor for inspectable types.
-    class inspectable_descriptor : public type_descriptor
+    // A generalized type descriptor for reflectable types.
+    class reflectable_descriptor : public type_descriptor
     {
     protected:
 
