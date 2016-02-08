@@ -38,7 +38,7 @@ template<typename Cr>
 std::vector<typename Cr::value_type> to_vector(const Cr& source)
 {
     constrain_as_container(Cr);
-    return std::vector<typename Cr::value_type>(source.cbegin(), source.cend());
+    return {source.cbegin(), source.cend()};
 }
 
 #endif
