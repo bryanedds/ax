@@ -84,9 +84,9 @@ namespace ax
     {
         if (!subscription.subscriber_opt.expired())
         {
-            val& subscriber = subscription.subscriber_opt.lock();
-            val& event = ax::event<T>(event_data, event_address, subscriber, publisher);
-            val& subscription_detail_opt = try_cast<subscription_detail<T, P>>(*subscription.subscription_detail);
+            Val& subscriber = subscription.subscriber_opt.lock();
+            Val& event = ax::event<T>(event_data, event_address, subscriber, publisher);
+            Val& subscription_detail_opt = try_cast<subscription_detail<T, P>>(*subscription.subscription_detail);
             if (subscription_detail_opt) return publish_subscription_detail(**subscription_detail_opt, event, program);
             return true;
         }

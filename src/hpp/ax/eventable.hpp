@@ -57,8 +57,8 @@ namespace ax
     id_t get_subscription_id(P& program)
     {
         constrain(P, eventable);
-        val& pred_id = *program.pred_id;
-        val& succ_id = succ(pred_id);
+        Val& pred_id = *program.pred_id;
+        Val& succ_id = succ(pred_id);
         program.pred_id = std::make_unique<id_t>(succ_id);
         return succ_id;
     }
@@ -67,18 +67,18 @@ namespace ax
     void unsubscribe_event(P& program, id_t subscription_id)
     {
         constrain(P, eventable);
-        val& unsubscription_opt = program.unsubscription_map.find(subscription_id);
+        Val& unsubscription_opt = program.unsubscription_map.find(subscription_id);
         if (unsubscription_opt != std::end(program.unsubscription_map))
         {
-            val& subscriptions_opt = program.subscriptions_map.find(unsubscription_opt->second.first);
+            Val& subscriptions_opt = program.subscriptions_map.find(unsubscription_opt->second.first);
             if (subscriptions_opt != std::end(program.subscriptions_map))
             {
-                var& subscriptions = *subscriptions_opt->second;
+                Var& subscriptions = *subscriptions_opt->second;
                 subscriptions.erase(
                     std::remove_if(
                         std::begin(subscriptions),
                         std::end(subscriptions),
-                        [unsubscription_opt](val& subscription)
+                        [unsubscription_opt](Val& subscription)
                         { return subscription->subscriber_opt.lock().get() == unsubscription_opt->second.second.lock().get(); }));
                 program.unsubscription_map.erase(unsubscription_opt);
             }
@@ -89,17 +89,17 @@ namespace ax
     unsubscriber<P> subscribe_event5(P& program, id_t subscription_id, const address& address, const std::shared_ptr<addressable>& subscriber, const H& handler)
     {
         constrain(P, eventable);
-        var subscription_detail_mvb = cast<castable>(std::make_unique<subscription_detail<T, P>>(handler));
-        var subscriptions_opt = program.subscriptions_map.find(address);
+        Var subscription_detail_mvb = cast<castable>(std::make_unique<subscription_detail<T, P>>(handler));
+        Var subscriptions_opt = program.subscriptions_map.find(address);
         if (subscriptions_opt != std::end(program.subscriptions_map))
         {
-            val& subscription = std::make_shared<ax::subscription>(subscription_id, subscriber, std::move(subscription_detail_mvb));
+            Val& subscription = std::make_shared<ax::subscription>(subscription_id, subscriber, std::move(subscription_detail_mvb));
             subscriptions_opt->second->push_back(subscription);
         }
         else
         {
-            val& subscription = std::make_shared<ax::subscription>(subscription_id, subscriber, std::move(subscription_detail_mvb));
-            var subscriptions_mvb = std::make_unique<subscription_list>();
+            Val& subscription = std::make_shared<ax::subscription>(subscription_id, subscriber, std::move(subscription_detail_mvb));
+            Var subscriptions_mvb = std::make_unique<subscription_list>();
             subscriptions_mvb->push_back(subscription);
             program.subscriptions_map.insert(std::make_pair(address, std::move(subscriptions_mvb)));
         }
@@ -118,13 +118,13 @@ namespace ax
     void publish_event(P& program, const T& event_data, const address& event_address, const std::shared_ptr<addressable>& publisher)
     {
         constrain(P, eventable);
-        val& subscriptions_opt = program.subscriptions_map.find(event_address);
+        Val& subscriptions_opt = program.subscriptions_map.find(event_address);
         if (subscriptions_opt != std::end(program.subscriptions_map))
         {
-            val subscriptions_copy = *subscriptions_opt->second; 
-            for (val& subscription : subscriptions_copy)
+            Val subscriptions_copy = *subscriptions_opt->second; 
+            for (Val& subscription : subscriptions_copy)
             {
-                val cascade = publish_subscription<T, P>(*subscription, event_data, event_address, publisher, program);
+                Val cascade = publish_subscription<T, P>(*subscription, event_data, event_address, publisher, program);
                 if (!cascade) break;
             }
         }

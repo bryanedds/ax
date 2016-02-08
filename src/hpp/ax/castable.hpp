@@ -52,16 +52,16 @@ namespace ax
     template<typename T>
     option<const T*> try_cast(const castable& castable)
     {
-        val type_index = std::type_index(typeid(T));
-        val* t_opt(static_cast<const T*>(castable.try_cast(type_index)));
+        Val type_index = std::type_index(typeid(T));
+        Val* t_opt(static_cast<const T*>(castable.try_cast(type_index)));
         return t_opt ? some<const T*>(t_opt) : none<const T*>();
     }
 
     template<typename T>
     option<T*> try_cast(castable& castable)
     {
-        val type_index = std::type_index(typeid(T));
-        var* t_opt(static_cast<T*>(castable.try_cast(type_index)));
+        Val type_index = std::type_index(typeid(T));
+        Var* t_opt(static_cast<T*>(castable.try_cast(type_index)));
         return t_opt ? some<T*>(t_opt) : none<T*>();
     }
 
@@ -80,7 +80,7 @@ namespace ax
     template<typename U, typename T>
     std::shared_ptr<U> try_cast(const std::shared_ptr<T>& source)
     {
-        var u_opt = try_cast<U>(*source);
+        Var u_opt = try_cast<U>(*source);
         if (u_opt) return std::shared_ptr<U>(source, *u_opt);
         return std::shared_ptr<U>();
     }
@@ -88,7 +88,7 @@ namespace ax
     template<typename U, typename T>
     std::shared_ptr<U> cast(const std::shared_ptr<T>& source)
     {
-        var u_opt = try_cast<U>(*source);
+        Var u_opt = try_cast<U>(*source);
         if (u_opt) return std::shared_ptr<U>(source, *u_opt);
         throw std::logic_error("Invalid cast.");
     }
@@ -96,7 +96,7 @@ namespace ax
     template<typename U, typename T>
     std::unique_ptr<U> cast(std::unique_ptr<T>&& source)
     {
-        var u_opt = try_cast<U>(*source);
+        Var u_opt = try_cast<U>(*source);
         if (u_opt)
         {
             source.release();

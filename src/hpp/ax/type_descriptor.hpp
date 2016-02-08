@@ -55,8 +55,8 @@ namespace ax
     std::shared_ptr<D> register_type_descriptor(const std::shared_ptr<D>& type_descriptor)
     {
         constrain(D, type_descriptor);
-        val& type_index = std::type_index(typeid(T));
-        var insertion = type_descriptor::type_descriptor_map.emplace(type_index, type_descriptor);
+        Val& type_index = std::type_index(typeid(T));
+        Var insertion = type_descriptor::type_descriptor_map.emplace(type_index, type_descriptor);
         if (!insertion.second) insertion.first->second = type_descriptor;
         return type_descriptor;
     }
@@ -65,7 +65,7 @@ namespace ax
     template<typename T>
     std::shared_ptr<type_descriptor> get_type_descriptor()
     {
-        val& type_index = std::type_index(typeid(T));
+        Val& type_index = std::type_index(typeid(T));
         return get_type_descriptor(type_index);
     }
 
@@ -73,8 +73,8 @@ namespace ax
     template<typename T>
     void assign_value_vptr(const void* source_ptr, void* target_ptr)
     {
-        val* source_ptr_t = static_cast<const T*>(source_ptr);
-        var* target_ptr_t = static_cast<T*>(target_ptr);
+        Val* source_ptr_t = static_cast<const T*>(source_ptr);
+        Var* target_ptr_t = static_cast<T*>(target_ptr);
         *target_ptr_t = *source_ptr_t;
     }
 
@@ -83,8 +83,8 @@ namespace ax
     void assign_unique_ptr_vptr(const void* source_ptr, void* target_ptr)
     {
         //constrain_as_unique_ptr(T);
-        val* source_ptr_t = static_cast<const T*>(source_ptr);
-        var* target_ptr_t = static_cast<T*>(target_ptr);
+        Val* source_ptr_t = static_cast<const T*>(source_ptr);
+        Var* target_ptr_t = static_cast<T*>(target_ptr);
         target_ptr_t->reset(new typename T::element_type(**source_ptr_t));
     }
 
@@ -93,8 +93,8 @@ namespace ax
     void assign_shared_ptr_vptr(const void* source_ptr, void* target_ptr)
     {
         //constrain_as_shared_ptr(T);
-        val* source_ptr_t = static_cast<const T*>(source_ptr);
-        var* target_ptr_t = static_cast<T*>(target_ptr);
+        Val* source_ptr_t = static_cast<const T*>(source_ptr);
+        Var* target_ptr_t = static_cast<T*>(target_ptr);
         target_ptr_t->reset(new typename T::element_type(**source_ptr_t));
     }
 
@@ -108,10 +108,10 @@ namespace ax
     template<typename T>
     void inspect_value(const reflectable& source, const field& field, T& target)
     {
-        val& type_index = get_type_index(field);
+        Val& type_index = get_type_index(field);
         if (type_index != std::type_index(typeid(T))) throw std::invalid_argument("Field is not of required type.");
-        val& type_descriptor = get_type_descriptor(type_index);
-        var* target_ptr = static_cast<void*>(&target);
+        Val& type_descriptor = get_type_descriptor(type_index);
+        Var* target_ptr = static_cast<void*>(&target);
         inspect_value_vptr(*type_descriptor, source, field, target_ptr);
     }
 
@@ -119,10 +119,10 @@ namespace ax
     template<typename T>
     void inject_value(const field& field, const T& source, reflectable& target)
     {
-        val& type_index = get_type_index(field);
+        Val& type_index = get_type_index(field);
         if (type_index != std::type_index(typeid(T))) throw std::invalid_argument("Field is not of required type.");
-        val& type_descriptor = get_type_descriptor(type_index);
-        val* source_ptr = static_cast<const void*>(&source);
+        Val& type_descriptor = get_type_descriptor(type_index);
+        Val* source_ptr = static_cast<const void*>(&source);
         inject_value_vptr(*type_descriptor, field, source_ptr, target);
     }
 

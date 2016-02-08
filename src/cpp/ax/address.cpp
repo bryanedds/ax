@@ -12,7 +12,7 @@ namespace ax
     address address::operator+(const address& right) const
     {
         std::vector<name_t> names_summed(names.cbegin(), names.cend());
-        for (val& name : right.names) names_summed.push_back(name);
+        for (Val& name : right.names) names_summed.push_back(name);
         return address(names_summed);
     }
 

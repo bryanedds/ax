@@ -188,12 +188,12 @@ namespace ax
 
     TEST("events work")
     {
-        var i = 0;
+        Var i = 0;
         ax::eventable_test program{};
-        val& event_address = address("event");
-        val& participant = std::make_shared<ax::addressable>("participant");
-        var handler = [&](val&, val&) { return ++i, true; };
-        var unsubscriber = ax::subscribe_event<std::string>(program, event_address, participant, handler);
+        Val& event_address = address("event");
+        Val& participant = std::make_shared<ax::addressable>("participant");
+        Var handler = [&](Val&, Val&) { return ++i, true; };
+        Var unsubscriber = ax::subscribe_event<std::string>(program, event_address, participant, handler);
         ax::publish_event(program, "Event handled!"_s, event_address, participant);
         unsubscriber(program);
         ax::publish_event(program, "Event unhandled."_s, event_address, participant);
@@ -234,7 +234,7 @@ namespace ax
 
     TEST("parser works")
     {
-        val& str =
+        Val& str =
             "[true 5 10.0 \
               \"jim bob\" \
               \"s/compton/la\" \
@@ -252,8 +252,8 @@ namespace ax
         std::stringstream sstr(str);
         sstr << std::noskipws; // apparently avoids skipping whitespace
         std::istream_iterator<char> iter(sstr);
-        val& parse = parse_symbol_from_stream(iter, std::istream_iterator<char>());
-        val& symbol = get_parse_success(parse);
+        Val& parse = parse_symbol_from_stream(iter, std::istream_iterator<char>());
+        Val& symbol = get_parse_success(parse);
         reflectable_test target{};
         read_value(symbol, target);
         CHECK(target.bool_value);

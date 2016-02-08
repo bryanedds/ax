@@ -169,7 +169,7 @@ namespace ax
     }
 
     template<typename C, typename FirstFn, typename SecondFn, typename ThirdFn>
-    var match3(const C& chc, FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn)
+    Var match3(const C& chc, FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn)
     {
         constrain(C, choice);
         switch (get_index(chc))
@@ -181,7 +181,7 @@ namespace ax
     }
 
     template<typename C, typename FirstFn, typename SecondFn, typename ThirdFn>
-    var match3(C& chc, FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn)
+    Var match3(C& chc, FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn)
     {
         constrain(C, choice);
         switch (get_index(chc))

@@ -79,7 +79,7 @@ namespace ax
     template<typename T>
     const property<T>& get_property(const property_map& properties, const name_t& name)
     {
-        val& property_opt = properties.find(name);
+        Val& property_opt = properties.find(name);
         if (property_opt != properties.end()) return cast<property<T>>(*property_opt->second);
         throw std::logic_error("No such property '"_s + get_name_str(name) + "'.");
     }
@@ -87,7 +87,7 @@ namespace ax
     template<typename T>
     property<T>& get_property(property_map& properties, const name_t& name)
     {
-        val& property_opt = properties.find(name);
+        Val& property_opt = properties.find(name);
         if (property_opt != properties.end()) return cast<property<T>>(*property_opt->second);
         throw std::logic_error("No such property '"_s + get_name_str(name) + "'.");
     }

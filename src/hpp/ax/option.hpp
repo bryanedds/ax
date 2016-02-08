@@ -90,7 +90,7 @@ namespace ax
     }
 
     template<typename O, typename Sf, typename Nf>
-    var match(const O& opt, Sf some_fn, Nf none_fn)
+    Var match(const O& opt, Sf some_fn, Nf none_fn)
     {
         constrain(O, option);
         if (is_none(opt)) return none_fn();
@@ -98,7 +98,7 @@ namespace ax
     }
 
     template<typename O, typename Sf, typename Nf>
-    var match(O& opt, Sf some_fn, Nf none_fn)
+    Var match(O& opt, Sf some_fn, Nf none_fn)
     {
         constrain(O, option);
         if (is_none(opt)) return none_fn();

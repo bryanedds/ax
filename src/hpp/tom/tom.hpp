@@ -30,7 +30,7 @@ namespace tom
     //! This type is used to store key/value pairs of data. It is used frequently, so a shorthand is useful.
     typedef std::map<std::string, std::string> strmap;
 
-    //! A logger recieves events, triggered throughout the course of the tests. 
+    //! A logger recieves events, triggered throughout the course of the tests.
     //! For example, the CHECK() macro supplied with the library triggers a "check" event and so on.
     class logger
     {

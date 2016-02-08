@@ -10,7 +10,7 @@ template<typename U, typename T, typename F>
 std::vector<U> map(const std::vector<T>& source, const F& mapper)
 {
     std::vector<U> mapped{};
-    for (val& elem : source)
+    for (Val& elem : source)
         mapped.emplace_back(mapper(elem));
     return mapped;
 }
@@ -19,7 +19,7 @@ template<typename T, typename F>
 std::vector<T> filter(const std::vector<T>& source, const F& predicate)
 {
     std::vector<T> filtered{};
-    for (val& elem : source)
+    for (Val& elem : source)
         if (predicate(elem))
             filtered.emplace_back(elem);
     return filtered;
@@ -29,7 +29,7 @@ template<typename T, typename S, typename F>
 S fold(const std::vector<T>& source, const S& seed, const F& folder)
 {
     S state(seed);
-    for (val& elem : source)
+    for (Val& elem : source)
         state = folder(state, elem);
     return state;
 }
