@@ -1,6 +1,6 @@
-#include "../hpp/tom/tom.hpp"
+#include "../dpp/tom/tom.hpp"
 
-#include "../hpp/ax/ax.hpp"
+#include "../dpp/ax/ax.hpp"
 
 int main(int, char*[])
 {
