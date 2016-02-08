@@ -25,7 +25,7 @@ namespace ax
 
     public:
 
-        constraint(property);
+        Constraint(property);
 
         template<typename A>
         using reify = property<A>;
@@ -72,7 +72,7 @@ namespace ax
     class property_map : public std::unordered_map<name_t, std::unique_ptr<castable>>
     {
     public:
-        constraint(property_map);
+        Constraint(property_map);
         using std::unordered_map<name_t, std::unique_ptr<castable>>::unordered_map;
     };
 

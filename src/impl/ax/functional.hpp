@@ -37,8 +37,8 @@ S fold(const std::vector<T>& source, const S& seed, const F& folder)
 template<typename Cr>
 std::vector<typename Cr::value_type> to_vector(const Cr& source)
 {
-    constrain_as_container(Cr);
-    return {source.cbegin(), source.cend()};
+    ConstrainAsContainer(Cr);
+    return { source.cbegin(), source.cend() };
 }
 
 #endif

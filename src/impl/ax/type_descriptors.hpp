@@ -367,20 +367,20 @@ namespace ax
 
         void inspect_value_impl(const void* source_ptr, void* target_ptr) const override
         {
-            constrain(P, pair);
+            Constrain(P, pair);
             assign_value_vptr<P>(source_ptr, target_ptr);
         }
 
         void inject_value_impl(const void* source_ptr, void* target_ptr) const override
         {
-            constrain(P, pair);
+            Constrain(P, pair);
             assign_value_vptr<P>(source_ptr, target_ptr);
         }
 
         void read_value_impl(const symbol& source_symbol, void* target_ptr) const override
         {
             // read target value from source symbol
-            constrain(P, pair);
+            Constrain(P, pair);
             Var* pair_ptr = static_cast<P*>(target_ptr);
             match2(source_symbol,
             [&](Val& source_tree)
@@ -403,7 +403,7 @@ namespace ax
 
         void write_value_impl(const void* source_ptr, symbol& target_symbol) const override
         {
-            constrain(P, pair);
+            Constrain(P, pair);
             Val* pair_ptr = static_cast<const P*>(source_ptr);
             symbol::right_type symbol_tree_mvb{};
             symbol_tree_mvb.resize(2_z);
@@ -422,20 +422,20 @@ namespace ax
 
         void inspect_value_impl(const void* source_ptr, void* target_ptr) const override
         {
-            constrain(R, record);
+            Constrain(R, record);
             assign_value_vptr<R>(source_ptr, target_ptr);
         }
 
         void inject_value_impl(const void* source_ptr, void* target_ptr) const override
         {
-            constrain(R, record);
+            Constrain(R, record);
             assign_value_vptr<R>(source_ptr, target_ptr);
         }
 
         void read_value_impl(const symbol& source_symbol, void* target_ptr) const override
         {
             // read target value from source symbol
-            constrain(R, record);
+            Constrain(R, record);
             Var* record_ptr = static_cast<R*>(target_ptr);
             match2(source_symbol,
             [&](Val& source_tree)
@@ -461,7 +461,7 @@ namespace ax
 
         void write_value_impl(const void* source_ptr, symbol& target_symbol) const override
         {
-            constrain(R, record);
+            Constrain(R, record);
             Val* record_ptr = static_cast<const R*>(source_ptr);
             symbol::right_type symbol_tree_mvb{};
             symbol_tree_mvb.resize(3_z);
@@ -534,20 +534,20 @@ namespace ax
 
         void inspect_value_impl(const void* source_ptr, void* target_ptr) const override
         {
-            constrain(E, either);
+            Constrain(E, either);
             assign_value_vptr<E>(source_ptr, target_ptr);
         }
 
         void inject_value_impl(const void* source_ptr, void* target_ptr) const override
         {
-            constrain(E, either);
+            Constrain(E, either);
             assign_value_vptr<E>(source_ptr, target_ptr);
         }
 
         void read_value_impl(const symbol& source_symbol, void* target_ptr) const override
         {
             // read target value from source symbol
-            constrain(E, either);
+            Constrain(E, either);
             Var* either_ptr = static_cast<E*>(target_ptr);
             match2(source_symbol,
             [&](Val& source_tree)
@@ -593,7 +593,7 @@ namespace ax
 
         void write_value_impl(const void* source_ptr, symbol& target_symbol) const override
         {
-            constrain(E, either);
+            Constrain(E, either);
             Val* either_ptr = static_cast<const E*>(source_ptr);
             match2(*either_ptr,
             [&](Val& right_value)
@@ -620,20 +620,20 @@ namespace ax
 
         void inspect_value_impl(const void* source_ptr, void* target_ptr) const override
         {
-            constrain(C, choice);
+            Constrain(C, choice);
             assign_value_vptr<C>(source_ptr, target_ptr);
         }
 
         void inject_value_impl(const void* source_ptr, void* target_ptr) const override
         {
-            constrain(C, choice);
+            Constrain(C, choice);
             assign_value_vptr<C>(source_ptr, target_ptr);
         }
 
         void read_value_impl(const symbol& source_symbol, void* target_ptr) const override
         {
             // read target value from source symbol
-            constrain(C, choice);
+            Constrain(C, choice);
             Var* choice_ptr = static_cast<C*>(target_ptr);
             match2(source_symbol,
             [&](Val& source_tree)
@@ -688,7 +688,7 @@ namespace ax
 
         void write_value_impl(const void* source_ptr, symbol& target_symbol) const override
         {
-            constrain(C, choice);
+            Constrain(C, choice);
             Val* choice_ptr = static_cast<const C*>(source_ptr);
             match3(*choice_ptr,
             [&](Val& first_value)

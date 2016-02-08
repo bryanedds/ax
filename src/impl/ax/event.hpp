@@ -15,7 +15,7 @@ namespace ax
     template<typename T>
     struct event
     {
-        constraint(event);
+        Constraint(event);
 
         template<typename A>
         using reify = event<A>;

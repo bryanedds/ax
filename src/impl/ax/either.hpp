@@ -43,7 +43,7 @@ namespace ax
 
     public:
 
-        constraint(either);
+        Constraint(either);
         using right_type = R;
         using left_type = L;
         template<typename A, typename B>
@@ -167,7 +167,7 @@ namespace ax
     template<typename E, typename Lf, typename Rf>
     auto match2(const E& eir, Rf right_fn, Lf left_fn)
     {
-        constrain(E, either);
+        Constrain(E, either);
         if (is_right(eir)) return right_fn(get_right(eir));
         return left_fn(get_left(eir));
     }
@@ -175,7 +175,7 @@ namespace ax
     template<typename E, typename Lf, typename Rf>
     auto match2(E& eir, Rf right_fn, Lf left_fn)
     {
-        constrain(E, either);
+        Constrain(E, either);
         if (is_right(eir)) return right_fn(get_right(eir));
         return left_fn(get_left(eir));
     }
@@ -191,7 +191,7 @@ namespace ax
     \
     public: \
     \
-        constraint(T); \
+        Constraint(T); \
         using either<Lt, Rt>::either; \
     }; \
     \

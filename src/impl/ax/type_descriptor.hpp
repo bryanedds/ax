@@ -39,7 +39,7 @@ namespace ax
 
     public:
 
-        constraint(type_descriptor);
+        Constraint(type_descriptor);
     };
 
     // The alias for a type descriptor map.
@@ -55,7 +55,7 @@ namespace ax
     template<typename T, typename D>
     std::shared_ptr<D> register_type_descriptor(const std::shared_ptr<D>& type_descriptor)
     {
-        constrain(D, type_descriptor);
+        Constrain(D, type_descriptor);
         Val& type_index = std::type_index(typeid(T));
         Var insertion = type_descriptor::type_descriptor_map.emplace(type_index, type_descriptor);
         if (!insertion.second) insertion.first->second = type_descriptor;
@@ -83,7 +83,7 @@ namespace ax
     template<typename T>
     void assign_unique_ptr_vptr(const void* source_ptr, void* target_ptr)
     {
-        //constrain_as_unique_ptr(T);
+        //ConstrainAsUniquePtr(T);
         Val* source_ptr_t = static_cast<const T*>(source_ptr);
         Var* target_ptr_t = static_cast<T*>(target_ptr);
         target_ptr_t->reset(new typename T::element_type(**source_ptr_t));
@@ -93,7 +93,7 @@ namespace ax
     template<typename T>
     void assign_shared_ptr_vptr(const void* source_ptr, void* target_ptr)
     {
-        //constrain_as_shared_ptr(T);
+        //ConstrainAsSharedPtr(T);
         Val* source_ptr_t = static_cast<const T*>(source_ptr);
         Var* target_ptr_t = static_cast<T*>(target_ptr);
         target_ptr_t->reset(new typename T::element_type(**source_ptr_t));

@@ -48,14 +48,14 @@ namespace ax
 
     public:
 
-        constraint(eventable);
+        Constraint(eventable);
         eventable() : pred_id(std::make_unique<id_t>()) { }
     };
 
     template<typename P>
     id_t get_subscription_id(P& program)
     {
-        constrain(P, eventable);
+        Constrain(P, eventable);
         Val& pred_id = *program.pred_id;
         Val& succ_id = succ(pred_id);
         program.pred_id = std::make_unique<id_t>(succ_id);
@@ -65,7 +65,7 @@ namespace ax
     template<typename P>
     void unsubscribe_event(P& program, id_t subscription_id)
     {
-        constrain(P, eventable);
+        Constrain(P, eventable);
         Val& unsubscription_opt = program.unsubscription_map.find(subscription_id);
         if (unsubscription_opt != std::end(program.unsubscription_map))
         {
@@ -87,7 +87,7 @@ namespace ax
     template<typename T, typename P, typename H>
     unsubscriber<P> subscribe_event5(P& program, id_t subscription_id, const address& address, const std::shared_ptr<addressable>& subscriber, const H& handler)
     {
-        constrain(P, eventable);
+        Constrain(P, eventable);
         Var subscription_detail_mvb = cast<castable>(std::make_unique<subscription_detail<T, P>>(handler));
         Var subscriptions_opt = program.subscriptions_map.find(address);
         if (subscriptions_opt != std::end(program.subscriptions_map))
@@ -109,14 +109,14 @@ namespace ax
     template<typename T, typename P, typename H>
     unsubscriber<P> subscribe_event(P& program, const address& address, const std::shared_ptr<addressable>& subscriber, const H& handler)
     {
-        constrain(P, eventable);
+        Constrain(P, eventable);
         return subscribe_event5<T, P>(program, get_subscription_id(program), address, subscriber, handler);
     }
 
     template<typename T, typename P>
     void publish_event(P& program, const T& event_data, const address& event_address, const std::shared_ptr<addressable>& publisher)
     {
-        constrain(P, eventable);
+        Constrain(P, eventable);
         Val& subscriptions_opt = program.subscriptions_map.find(event_address);
         if (subscriptions_opt != std::end(program.subscriptions_map))
         {

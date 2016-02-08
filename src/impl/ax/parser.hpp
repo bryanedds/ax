@@ -22,7 +22,7 @@ namespace ax
 
     public:
 
-        constraint(parse);
+        Constraint(parse);
         template<typename A>
         using reify = parse<A>;
         using either<std::string, T>::either;

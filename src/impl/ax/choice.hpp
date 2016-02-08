@@ -57,7 +57,7 @@ namespace ax
 
     public:
 
-        constraint(choice);
+        Constraint(choice);
 
         using first_type = First;
         using second_type = Second;
@@ -171,7 +171,7 @@ namespace ax
     template<typename C, typename FirstFn, typename SecondFn, typename ThirdFn>
     Var match3(const C& chc, FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn)
     {
-        constrain(C, choice);
+        Constrain(C, choice);
         switch (get_index(chc))
         {
         case 0_z: return first_fn(get_first(chc));
@@ -183,7 +183,7 @@ namespace ax
     template<typename C, typename FirstFn, typename SecondFn, typename ThirdFn>
     Var match3(C& chc, FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn)
     {
-        constrain(C, choice);
+        Constrain(C, choice);
         switch (get_index(chc))
         {
         case 0_z: return first_fn(get_first(chc));
@@ -204,7 +204,7 @@ namespace ax
     \
     public: \
     \
-        constraint(T); \
+        Constraint(T); \
         using choice<FirstType, SecondType, ThirdType>::choice; \
     }; \
     \

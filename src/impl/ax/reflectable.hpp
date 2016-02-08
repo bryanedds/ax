@@ -30,7 +30,7 @@ namespace ax
 
     public:
         
-        constraint(reflectable);
+        Constraint(reflectable);
         reflectable() = default;
     };
 

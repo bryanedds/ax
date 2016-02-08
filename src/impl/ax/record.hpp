@@ -53,7 +53,7 @@ namespace ax
 
     public:
 
-        constraint(record);
+        Constraint(record);
         using first_type = First;
         using second_type = Second;
         using third_type = Third;
@@ -149,7 +149,7 @@ namespace ax
     \
     public: \
     \
-        constraint(T); \
+        Constraint(T); \
         using record<Ft, St, Tt>::record; \
     }; \
     \

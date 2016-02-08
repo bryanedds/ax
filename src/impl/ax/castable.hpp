@@ -38,7 +38,7 @@ namespace ax
 
     public:
 
-        constraint(castable);
+        Constraint(castable);
 
         castable() = default;
         castable(const castable&) = delete;

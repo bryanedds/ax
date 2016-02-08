@@ -54,7 +54,7 @@ namespace ax
     class address_t : public address
     {
     private:
-        constraint(address);
+        Constraint(address);
         using phantom_type = T;
         using address::address;
     };

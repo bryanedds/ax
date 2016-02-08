@@ -41,7 +41,7 @@ namespace ax
 
     public:
 
-        constraint(pair);
+        Constraint(pair);
         using first_type = First;
         using second_type = Second;
         template<typename A, typename B>
@@ -117,7 +117,7 @@ namespace ax
     \
     public: \
     \
-        constraint(T); \
+        Constraint(T); \
         using pair<Ft, St>::pair; \
     }; \
     \

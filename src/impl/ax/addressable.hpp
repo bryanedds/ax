@@ -31,10 +31,11 @@ namespace ax
 
     public:
 
-        constraint(addressable);
+        Constraint(addressable);
         explicit addressable(const name_t& name) : name(name) { }
     };
 
+    // The name of the addressable instance.
     inline name_t get_name(const addressable& addressable)
     {
         return addressable.name;
