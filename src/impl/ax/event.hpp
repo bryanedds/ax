@@ -1,5 +1,5 @@
-#ifndef AX_EVENT_HPP
-#define AX_EVENT_HPP
+#ifndef IMPL_AX_EVENT_HPP
+#define IMPL_AX_EVENT_HPP
 
 #include <cstddef>
 #include <memory>

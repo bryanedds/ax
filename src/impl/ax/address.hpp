@@ -1,5 +1,5 @@
-#ifndef AX_ADDRESS_HPP
-#define AX_ADDRESS_HPP
+#ifndef IMPL_AX_ADDRESS_HPP
+#define IMPL_AX_ADDRESS_HPP
 
 #include <cstddef>
 #include <string>

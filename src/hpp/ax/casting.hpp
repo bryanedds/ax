@@ -1,6 +1,6 @@
-#ifndef AX_LIB_CASTING_HPP
-#define AX_LIB_CASTING_HPP
+#ifndef AX_CASTING_HPP
+#define AX_CASTING_HPP
 
-#include "../../dtl/ax/castable.hpp"
+#include "../../impl/ax/castable.hpp"
 
 #endif

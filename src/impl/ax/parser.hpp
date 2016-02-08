@@ -1,5 +1,5 @@
-#ifndef AX_PARSER_HPP
-#define AX_PARSER_HPP
+#ifndef IMPL_AX_PARSER_HPP
+#define IMPL_AX_PARSER_HPP
 
 #include <cstddef>
 #include <string>

@@ -1,7 +1,7 @@
-#ifndef AX_LIB_SERIALIZATION_HPP
-#define AX_LIB_SERIALIZATION_HPP
+#ifndef AX_SERIALIZATION_HPP
+#define AX_SERIALIZATION_HPP
 
-#include "../../dtl/ax/parser.hpp"
-#include "../../dtl/ax/unparser.hpp"
+#include "../../impl/ax/parser.hpp"
+#include "../../impl/ax/unparser.hpp"
 
 #endif

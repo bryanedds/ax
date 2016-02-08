@@ -1,10 +1,10 @@
-#ifndef AX_LIB_ALGEBRAIC_HPP
-#define AX_LIB_ALGEBRAIC_HPP
+#ifndef AX_ALGEBRAIC_HPP
+#define AX_ALGEBRAIC_HPP
 
-#include "../../dtl/ax/pair.hpp"
-#include "../../dtl/ax/record.hpp"
-#include "../../dtl/ax/option.hpp"
-#include "../../dtl/ax/either.hpp"
-#include "../../dtl/ax/choice.hpp"
+#include "../../impl/ax/pair.hpp"
+#include "../../impl/ax/record.hpp"
+#include "../../impl/ax/option.hpp"
+#include "../../impl/ax/either.hpp"
+#include "../../impl/ax/choice.hpp"
 
 #endif

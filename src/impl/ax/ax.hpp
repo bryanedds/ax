@@ -1,5 +1,5 @@
-#ifndef AX_AX_HPP
-#define AX_AX_HPP
+#ifndef IMPL_AX_AX_HPP
+#define IMPL_AX_AX_HPP
 
 #include "prelude.hpp"
 #include "hash.hpp"

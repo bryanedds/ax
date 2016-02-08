@@ -1,5 +1,5 @@
-#ifndef AX_RECORD_HPP
-#define AX_RECORD_HPP
+#ifndef IMPL_AX_RECORD_HPP
+#define IMPL_AX_RECORD_HPP
 
 #include <cstddef>
 #include <stdexcept>

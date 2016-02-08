@@ -1,6 +1,6 @@
-#ifndef AX_LIB_REFLECTION_HPP
-#define AX_LIB_REFLECTION_HPP
+#ifndef AX_REFLECTION_HPP
+#define AX_REFLECTION_HPP
 
-#include "../../dtl/ax/reflectable.hpp"
+#include "../../impl/ax/reflectable.hpp"
 
 #endif

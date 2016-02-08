@@ -1,5 +1,5 @@
-#ifndef AX_NAME_HPP
-#define AX_NAME_HPP
+#ifndef IMPL_AX_NAME_HPP
+#define IMPL_AX_NAME_HPP
 
 #include <cstddef>
 #include <string>

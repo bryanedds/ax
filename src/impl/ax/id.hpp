@@ -1,5 +1,5 @@
-#ifndef AX_ID_HPP
-#define AX_ID_HPP
+#ifndef IMPL_AX_ID_HPP
+#define IMPL_AX_ID_HPP
 
 #include <cstddef>
 #include <cstdint>

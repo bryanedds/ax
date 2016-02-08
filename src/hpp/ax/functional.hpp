@@ -1,6 +1,6 @@
-#ifndef AX_LIB_FUNCTIONAL_HPP
-#define AX_LIB_FUNCTIONAL_HPP
+#ifndef AX_FUNCTIONAL_HPP
+#define AX_FUNCTIONAL_HPP
 
-#include "../../dtl/ax/functional.hpp"
+#include "../../impl/ax/functional.hpp"
 
 #endif

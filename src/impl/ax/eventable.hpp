@@ -1,5 +1,5 @@
-#ifndef AX_EVENTABLE_HPP
-#define AX_EVENTABLE_HPP
+#ifndef IMPL_AX_EVENTABLE_HPP
+#define IMPL_AX_EVENTABLE_HPP
 
 #include <cstddef>
 #include <functional>

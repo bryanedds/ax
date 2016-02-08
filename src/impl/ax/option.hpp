@@ -1,5 +1,5 @@
-#ifndef AX_OPTION_HPP
-#define AX_OPTION_HPP
+#ifndef IMPL_AX_OPTION_HPP
+#define IMPL_AX_OPTION_HPP
 
 #include <cstddef>
 #include <functional>

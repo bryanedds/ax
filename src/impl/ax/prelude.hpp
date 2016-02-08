@@ -1,5 +1,5 @@
-#ifndef AX_PRELUDE_HPP
-#define AX_PRELUDE_HPP
+#ifndef IMPL_AX_PRELUDE_HPP
+#define IMPL_AX_PRELUDE_HPP
 
 // General Note: This library target C++14-conformant (or near-conformant) compilers.
 //

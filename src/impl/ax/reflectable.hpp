@@ -1,5 +1,5 @@
-#ifndef AX_REFLECTABLE_HPP
-#define AX_REFLECTABLE_HPP
+#ifndef IMPL_AX_REFLECTABLE_HPP
+#define IMPL_AX_REFLECTABLE_HPP
 
 #include <cstddef>
 #include <functional>

@@ -1,6 +1,6 @@
-#ifndef AX_LIB_LOGGING_HPP
-#define AX_LIB_LOGGING_HPP
+#ifndef AX_LOGGING_HPP
+#define AX_LOGGING_HPP
 
-#include "../../dtl/ax/logging.hpp"
+#include "../../impl/ax/logging.hpp"
 
 #endif

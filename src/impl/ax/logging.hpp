@@ -1,5 +1,5 @@
-#ifndef AX_LOGGING_HPP
-#define AX_LOGGING_HPP
+#ifndef IMPL_AX_LOGGING_HPP
+#define IMPL_AX_LOGGING_HPP
 
 #include "../blah/blah.hpp"
 

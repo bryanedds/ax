@@ -1,9 +1,9 @@
-#ifndef AX_LIB_UTILITY_HPP
-#define AX_LIB_UTILITY_HPP
+#ifndef AX_UTILITY_HPP
+#define AX_UTILITY_HPP
 
-#include "../../dtl/ax/prelude.hpp"
-#include "../../dtl/ax/hash.hpp"
-#include "../../dtl/ax/id.hpp"
-#include "../../dtl/ax/string.hpp"
+#include "../../impl/ax/prelude.hpp"
+#include "../../impl/ax/hash.hpp"
+#include "../../impl/ax/id.hpp"
+#include "../../impl/ax/string.hpp"
 
 #endif

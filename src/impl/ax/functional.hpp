@@ -1,5 +1,5 @@
-#ifndef AX_FUNCTIONAL_HPP
-#define AX_FUNCTIONAL_HPP
+#ifndef IMPL_AX_FUNCTIONAL_HPP
+#define IMPL_AX_FUNCTIONAL_HPP
 
 #include <cstddef>
 #include <vector>

@@ -1,5 +1,5 @@
-#ifndef AX_CHOICE_HPP
-#define AX_CHOICE_HPP
+#ifndef IMPL_AX_CHOICE_HPP
+#define IMPL_AX_CHOICE_HPP
 
 #include <cstddef>
 #include <stdexcept>

@@ -1,5 +1,5 @@
-#ifndef AX_EITHER_HPP
-#define AX_EITHER_HPP
+#ifndef IMPL_AX_EITHER_HPP
+#define IMPL_AX_EITHER_HPP
 
 #include <cstddef>
 #include <stdexcept>

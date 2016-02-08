@@ -1,6 +1,6 @@
-#ifndef AX_LIB_EVENTS_HPP
-#define AX_LIB_EVENTS_HPP
+#ifndef AX_EVENTS_HPP
+#define AX_EVENTS_HPP
 
-#include "../../dtl/ax/eventable.hpp"
+#include "../../impl/ax/eventable.hpp"
 
 #endif

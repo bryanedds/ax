@@ -1,5 +1,5 @@
-#ifndef AX_STRING_HPP
-#define AX_STRING_HPP
+#ifndef IMPL_AX_STRING_HPP
+#define IMPL_AX_STRING_HPP
 
 #include <string>
 #include <vector>

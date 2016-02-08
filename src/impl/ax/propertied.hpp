@@ -1,5 +1,5 @@
-#ifndef AX_PROPERTIED_HPP
-#define AX_PROPERTIED_HPP
+#ifndef IMPL_AX_PROPERTIED_HPP
+#define IMPL_AX_PROPERTIED_HPP
 
 #include <cstddef>
 

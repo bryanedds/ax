@@ -1,5 +1,5 @@
-#ifndef AX_SYMBOL_HPP
-#define AX_SYMBOL_HPP
+#ifndef IMPL_AX_SYMBOL_HPP
+#define IMPL_AX_SYMBOL_HPP
 
 #include <cstddef>
 #include <string>

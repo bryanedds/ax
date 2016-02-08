@@ -2,13 +2,13 @@
 #include <string>
 #include <vector>
 
-#include "../../dtl/ax/type_descriptors.hpp"
+#include "../../impl/ax/type_descriptors.hpp"
 
-#include "../../dtl/ax/choice.hpp"
-#include "../../dtl/ax/string.hpp"
-#include "../../dtl/ax/functional.hpp"
-#include "../../dtl/ax/name.hpp"
-#include "../../dtl/ax/address.hpp"
+#include "../../impl/ax/choice.hpp"
+#include "../../impl/ax/string.hpp"
+#include "../../impl/ax/functional.hpp"
+#include "../../impl/ax/name.hpp"
+#include "../../impl/ax/address.hpp"
 
 namespace ax
 {
