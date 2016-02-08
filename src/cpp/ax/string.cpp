@@ -16,9 +16,9 @@ namespace ax
     std::string join_strings(const std::vector<std::string>& strs, char delimiter)
     {
         std::string str_joined{};
-        val& begin = std::begin(strs);
-        val& end = std::end(strs);
-        for (var iter = begin; iter != end; ++iter)
+        Val& begin = std::begin(strs);
+        Val& end = std::end(strs);
+        for (Var iter = begin; iter != end; ++iter)
         {
             if (iter != begin) str_joined.push_back(delimiter);
             str_joined.append(*iter);
