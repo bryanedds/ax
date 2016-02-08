@@ -1,0 +1,37 @@
+sudo: false
+language: generic
+
+cache:
+  apt: true
+
+matrix:
+  include:
+    - env: CC=gcc-5 CXX=g++-5
+      addons:
+        apt:
+          packages: g++-5
+          sources: ubuntu-toolchain-r-test
+    - env: CC=gcc-4.9 CXX=g++-4.9
+      addons:
+        apt:
+          packages: g++-4.9
+          sources: ubuntu-toolchain-r-test
+    - env: CC=clang-3.8 CXX=clang++-3.8
+      addons:
+        apt:
+          packages: clang-3.8
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise']
+    - env: CC=clang-3.7 CXX=clang++-3.7
+      addons:
+        apt:
+          packages: clang-3.7
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7']
+    - env: CC=clang-3.6 CXX=clang++-3.6
+      addons:
+        apt:
+          packages: clang-3.6
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.6']
+
+script:
+  - make
+  - bin/ax
