@@ -40,7 +40,7 @@ namespace ax
     {
         if (iter != end)
         {
-            val chr = *iter;
+            Val chr = *iter;
             ++iter;
             return parse_success(chr);
         }
@@ -49,7 +49,7 @@ namespace ax
 
     parse<std::string> parse_until_given_char(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end, char chr)
     {
-        var success = false;
+        Var success = false;
         std::string str_mvb{};
         while (iter != end)
         {
@@ -70,11 +70,11 @@ namespace ax
 
     parse<std::string> parse_until_any_given_char(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end, std::string chars)
     {
-        var success = false;
+        Var success = false;
         std::string str_mvb{};
         while (iter != end)
         {
-            val chr = *iter;
+            Val chr = *iter;
             if (chars.find(chr, 0_z) == std::string::npos)
             {
                 str_mvb.push_back(chr);
@@ -93,7 +93,7 @@ namespace ax
     parse<symbol> parse_symbol_from_stream(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end)
     {
         skip_whitespace_many(iter, end);
-        if (val& parse = parse_char(iter, end))
+        if (Val& parse = parse_char(iter, end))
         {
             char chr = *parse;
             switch (chr)
@@ -104,25 +104,25 @@ namespace ax
                     std::vector<symbol> children_mvb{};
                     while (iter != end && *iter != ']')
                     {
-                        if (val& parse = parse_symbol_from_stream(iter, end)) children_mvb.push_back(*parse);
+                        if (Val& parse = parse_symbol_from_stream(iter, end)) children_mvb.push_back(*parse);
                         else return parse_failure<symbol>(~parse);
                         skip_whitespace_many(iter, end);
                     }
-                    if (val& parse = skip_given_char(iter, end, ']')) return parse_success(symbol_tree(std::move(children_mvb)));
+                    if (Val& parse = skip_given_char(iter, end, ']')) return parse_success(symbol_tree(std::move(children_mvb)));
                     else return parse_failure<symbol>(~parse);
                 }
                 case '\"':
                 {
-                    if (val& parse = parse_until_given_char(iter, end, '\"'))
+                    if (Val& parse = parse_until_given_char(iter, end, '\"'))
                     {
-                        if (val& parse2 = skip_given_char(iter, end, '\"')) return parse_success(symbol_leaf(*parse));
+                        if (Val& parse2 = skip_given_char(iter, end, '\"')) return parse_success(symbol_leaf(*parse));
                         else return parse_failure<symbol>(~parse2);
                     }
                     else return parse_failure<symbol>(~parse);
                 }
                 default:
                 {
-                    if (val& parse = parse_until_any_given_char(iter, end, "[]\" \n\r\t")) return parse_success(symbol_leaf(std::string(1, chr) + *parse));
+                    if (Val& parse = parse_until_any_given_char(iter, end, "[]\" \n\r\t")) return parse_success(symbol_leaf(std::string(1, chr) + *parse));
                     else return parse_failure<symbol>(~parse);
                 }
             }
@@ -133,10 +133,10 @@ namespace ax
     static symbol parse_symbol_from_xml_node(rapidxml::xml_node<char>* parent_node)
     {
         symbol::right_type symbol_tree{};
-        for (var* node = parent_node->first_node(); node != nullptr; node = node->next_sibling())
+        for (Var* node = parent_node->first_node(); node != nullptr; node = node->next_sibling())
         {
             symbol_tree.emplace_back(symbol_leaf(node->name()));
-            for (var* attribute = node->first_attribute(); attribute != nullptr; attribute = attribute->next_attribute())
+            for (Var* attribute = node->first_attribute(); attribute != nullptr; attribute = attribute->next_attribute())
                 symbol_tree.emplace_back(symbol_leaf(attribute->value()));
             symbol_tree.emplace_back(parse_symbol_from_xml_node(node));
         }
@@ -147,7 +147,7 @@ namespace ax
     {
         rapidxml::xml_document<char> document{};
         document.parse<rapidxml::parse_default>(buffer);
-        var* root = document.first_node();
+        Var* root = document.first_node();
         return parse_success(parse_symbol_from_xml_node(root));
     }
 }

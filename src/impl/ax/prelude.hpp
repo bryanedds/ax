@@ -21,10 +21,10 @@
 #endif
 
 // Short-hand for immutable auto.
-#define val auto const
+#define Val auto const
 
 // Short-hand for mutable auto.
-#define var auto
+#define Var auto
 
 // Declare a type to be constraint.
 #define constraint(constraint_name) \
@@ -101,9 +101,9 @@ namespace std
         constrain_as_container(Cr);
         constrain_as_iterator(It);
         Cr transformed{};
-        for (var it = begin; it != end; ++it)
+        for (Var it = begin; it != end; ++it)
         {
-            val& temp = fn(*it);
+            Val& temp = fn(*it);
             transformed.insert(std::end(transformed), temp);
         }
         return transformed;

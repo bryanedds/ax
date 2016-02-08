@@ -88,8 +88,8 @@ namespace ax
     template<typename T, typename P>
     parse<T> try_parse(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end, P parser)
     {
-        val iter_copy = iter;
-        val& parse = parser(iter, end);
+        Val iter_copy = iter;
+        Val& parse = parser(iter, end);
         if (!parse) iter = iter_copy;
         return parse;
     }

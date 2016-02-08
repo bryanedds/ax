@@ -24,8 +24,8 @@ namespace ax
 
     std::shared_ptr<type_t> get_type(std::type_index type_index)
     {
-        val& type_map = get_type_map();
-        val& type_iter = type_map.find(type_index);
+        Val& type_map = get_type_map();
+        Val& type_iter = type_map.find(type_index);
         if (type_iter == std::end(type_map)) throw std::runtime_error("Could not find type '"_s + type_index.name() + "'.");
         return type_iter->second;
     }
