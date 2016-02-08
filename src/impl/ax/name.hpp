@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "prelude.hpp"
-#include "hash.hpp"
 
 namespace ax
 {
@@ -32,11 +31,11 @@ namespace ax
         name_t& operator=(const name_t&) = default;
         name_t& operator=(name_t&&) = default;
         
-        name_t(const char* name_str) : name_t(std::string(name_str)) { }
-        name_t(const std::string& name_str) : hash_code(get_hash(name_str)), name_str(name_str) { }
-        explicit name_t(std::string&& name_str_mvb) : hash_code(get_hash(name_str_mvb)), name_str(std::move(name_str_mvb)) { }
-        explicit operator std::size_t() const { return hash_code; }
-        bool operator==(const name_t& that) const { return name_str == that.name_str; }
+        name_t(const char* name_str);
+        name_t(const std::string& name_str);
+        explicit name_t(std::string&& name_str_mvb);
+        explicit operator std::size_t() const;
+        bool operator==(const name_t& that) const;
     };
 
     // Get the string of which a name is composed.

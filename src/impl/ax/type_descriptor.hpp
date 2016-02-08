@@ -2,6 +2,7 @@
 #define IMPL_AX_TYPE_DESCRIPTOR_HPP
 
 #include <cstddef>
+#include <typeindex>
 #include <functional>
 #include <unordered_map>
 #include <memory>
@@ -148,6 +149,11 @@ namespace ax
         void read_value_impl(const symbol& source_symbol, void* target_ptr) const override;
         void write_value_impl(const void* source_ptr, symbol& target_symbol) const override;
     };
+
+    // Register the common type descriptors.
+    // NOTE: this is actually defined in type_descriptors.cpp, but exposed here so that the large
+    // type_descriptors.hpp need not be included to access this.
+    void register_common_type_descriptors();
 }
 
 #endif

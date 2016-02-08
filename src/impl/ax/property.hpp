@@ -3,7 +3,7 @@
 
 #include <cstddef>
 #include <stdexcept>
-#include <memory>
+#include <utility>
 #include <unordered_map>
 
 #include "prelude.hpp"

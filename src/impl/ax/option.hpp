@@ -2,7 +2,7 @@
 #define IMPL_AX_OPTION_HPP
 
 #include <cstddef>
-#include <functional>
+#include <stdexcept>
 
 namespace ax
 {

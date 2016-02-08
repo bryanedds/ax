@@ -1,5 +1,7 @@
 #include "../../impl/ax/type.hpp"
 
+#include "../../impl/ax/string.hpp"
+
 namespace ax
 {
     type_map type_t::type_map;

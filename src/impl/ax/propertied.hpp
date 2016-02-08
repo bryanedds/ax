@@ -4,6 +4,7 @@
 #include <cstddef>
 
 #include "prelude.hpp"
+#include "name.hpp"
 #include "reflectable.hpp"
 #include "property.hpp"
 

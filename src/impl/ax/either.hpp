@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 #include "prelude.hpp"
+#include "string.hpp"
 
 namespace ax
 {

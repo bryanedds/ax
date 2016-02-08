@@ -9,8 +9,8 @@
 #include "prelude.hpp"
 #include "id.hpp"
 #include "castable.hpp"
-#include "addressable.hpp"
 #include "address.hpp"
+#include "addressable.hpp"
 #include "subscription.hpp"
 
 namespace ax

@@ -8,8 +8,6 @@
 #include <unordered_map>
 
 #include "prelude.hpp"
-#include "string.hpp"
-#include "option.hpp"
 #include "name.hpp"
 #include "field.hpp"
 

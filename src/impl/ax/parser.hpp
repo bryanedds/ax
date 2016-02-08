@@ -3,12 +3,9 @@
 
 #include <cstddef>
 #include <string>
-#include <vector>
 #include <iterator>
 
 #include "prelude.hpp"
-#include "string.hpp"
-#include "option.hpp"
 #include "either.hpp"
 #include "symbol.hpp"
 

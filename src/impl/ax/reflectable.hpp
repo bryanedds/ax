@@ -2,8 +2,6 @@
 #define IMPL_AX_REFLECTABLE_HPP
 
 #include <cstddef>
-#include <functional>
-#include <unordered_map>
 #include <memory>
 
 #include "prelude.hpp"
@@ -25,7 +23,7 @@ namespace ax
     {
     protected:
 
-        enable_cast(reflectable, ax::castable);
+        enable_cast(reflectable, castable);
         const std::shared_ptr<type_t> type = register_type<reflectable>({});
         virtual std::shared_ptr<type_t> get_type_impl() const;
         friend std::shared_ptr<type_t> get_type(const reflectable& source);

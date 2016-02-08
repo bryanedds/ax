@@ -7,16 +7,16 @@
 // Uniform Call Syntax, and Filesystem. Modules would also be beneficiary, but to a limited extent
 // due to the small size of this library and its dependencies.
 
-// TODO: enable -wall, and selectively disable noise warnings.
+// TODO: enable -wall in VS, and selectively disable noise warnings.
 #include <cstddef>
 
 // Variable shadowing is a good thing when doing functional-style programming.
-#if defined(_WIN32)
+#if defined(_MSC_VER)
     #pragma warning(disable: 4456)
 #endif
 
 // Use of unconditional branches is a common technique in C++ metaprogramming.
-#if defined(_WIN32)
+#if defined(_MSC_VER)
     #pragma warning(disable: 4127)
 #endif
 

@@ -2,6 +2,7 @@
 #define IMPL_AX_TYPE_DESCRIPTORS_HPP
 
 #include <cstddef>
+#include <cstdint>
 #include <functional>
 #include <memory>
 #include <algorithm>
@@ -713,9 +714,6 @@ namespace ax
             });
         }
     };
-
-    // Register the common type descriptors.
-    void register_common_type_descriptors();
 }
 
 #endif
