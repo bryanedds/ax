@@ -40,7 +40,6 @@ namespace ax
         template<typename A>
         friend void unsubscribe_event(A& program, id_t subscription_id);
 
-        // TODO: SEHE: undeducible U. BGE: Not sure how to fix, or if necessary?
         template<typename U, typename A, typename H>
         friend unsubscriber<A> subscribe_event5(A& program, id_t subscription_id, const address& address, const std::shared_ptr<addressable>& subscriber, const H& handler);
 
