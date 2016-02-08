@@ -9,6 +9,7 @@
 
 // TODO: enable -wall in VS, and selectively disable noise warnings.
 #include <cstddef>
+#include <type_traits>
 
 // Variable shadowing is a good thing when doing functional-style programming.
 #if defined(_MSC_VER)
@@ -32,28 +33,38 @@
 
 // Assert a type constraint.
 #define constrain(type, constraint_name) \
-    typename type::constraint_name##_constraint assert_constraint_fn(); \
-    (void)&assert_constraint_fn
+    do { \
+        struct _unique_type {}; \
+        static_assert(!std::is_same<typename type::constraint_name##_constraint, _unique_type>::value, #type " needs to satisfy " #constraint_name "."); \
+    } while(false)
 
 // Assert a type is an iterator.
 #define constrain_as_iterator(type) \
-    typename type::iterator_category assert_iterator_constraint_fn(); \
-    (void)&assert_iterator_constraint_fn
+    do { \
+        struct _unique_type {}; \
+        static_assert(!std::is_same<typename type::iterator_category, _unique_type>::value, #type " needs to be an iterator."); \
+    } while(false)
 
 // Assert a type is a container.
 #define constrain_as_container(type) \
-    typename type::size_type assert_container_constraint_fn(); \
-    (void)&assert_container_constraint_fn
+    do { \
+        struct _unique_type {}; \
+        static_assert(!std::is_same<typename type::size_type, _unique_type>::value, #type " needs to be a container."); \
+    } while(false)
 
 // Assert a type is a unique ptr.
 #define constrain_as_unique_ptr(type) \
-    typename type::element_type assert_unique_ptr_constraint_fn(); \
-    (void)&assert_unique_ptr_constraint_fn
+    do { \
+        struct _unique_type {}; \
+        static_assert(!std::is_same<typename type::element_type, _unique_type>::value, #type " needs to be a unique_ptr."); \
+    } while(false)
 
 // Assert a type is a shared ptr.
 #define constrain_as_shared_ptr(type) \
-    typename type::element_type assert_shared_ptr_constraint_fn(); \
-    (void)&assert_shared_ptr_constraint_fn
+    do { \
+        struct _unique_type {}; \
+        static_assert(!std::is_same<typename type::element_type, _unique_type>::value, #type " needs to be a unique_ptr."); \
+    } while(false)
 
 // Enable std::size_t literals.
 // Hopefully can be replaced with a built-in operator""z soon.
