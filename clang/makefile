@@ -1,15 +1,15 @@
 all:ax
 
-CPPFLAGS += -stdlib=libc++
-CPPFLAGS += -std=c++14 -Wall -pedantic
-CPPFLAGS += -g -O2
-CPPFLAGS += -pthread
-CPPFLAGS += -march=native
-# CPPFLAGS += -fsanitize=undefined,address -Wextra
-# CPPFLAGS += -DNDEBUG
+CPPFLAGS+=-stdlib=libc++
+CPPFLAGS+=-std=c++14 -Wall -pedantic
+CPPFLAGS+=-g -O2
+CPPFLAGS+=-pthread
+CPPFLAGS+=-march=native
+#CPPFLAGS+=-fsanitize=undefined,address -Wextra
+#CPPFLAGS+=-DNDEBUG
 
 CXX=clang++
-# CC=clang
+#CC=clang
 
 CPP_FILES= \
 	../src/cpp/blah/blah.cpp \
