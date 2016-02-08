@@ -1,8 +1,6 @@
-Ax - The Axiomatic Core C++ Library.
-===
+# Ax - The Axiomatic Core C++ Library. [![Build Status](https://travis-ci.org/bryanedds/ax.svg?branch=master)](https://travis-ci.org/bryanedds/ax) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bryanedds/ax/blob/master/LICENSE.md) 
 
-Features
----
+## Features
 
 - A light-weight reflection system in **"reflection.hpp"**
 - A serialization system in **"serialization.hpp"**
@@ -19,6 +17,5 @@ Ax was built in the clean and modular Data Abstration Style - https://github.com
 
 This library makes a good base for non-trivial projects like renderers, game engines, and other real-ass shit that absolutely *needs* to be built with good programming semantics.
 
-WIP
----
+## WIP
 Note this project has not reached alpha-status, so not recommended for use in production without serious care. Tests are coming along over time, however :)
