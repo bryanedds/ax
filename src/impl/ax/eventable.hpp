@@ -27,8 +27,8 @@ namespace ax
     private:
 
         std::unique_ptr<id_t> pred_id;
-        subscriptions_map subscriptions_map;
-        unsubscription_map unsubscription_map;
+        ax::subscriptions_map subscriptions_map;
+        ax::unsubscription_map unsubscription_map;
 
     protected:
 
