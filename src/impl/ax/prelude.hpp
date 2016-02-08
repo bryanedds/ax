@@ -26,9 +26,6 @@
 // Short-hand for mutable auto.
 #define var auto
 
-// Declare a field is intended to be immutable, even tho it's not const to allow assignment.
-#define immutable
-
 // Declare a type to be constraint.
 #define constraint(constraint_name) \
     using constraint_name##_constraint = void
