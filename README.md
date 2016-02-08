@@ -8,15 +8,16 @@ Features
 - A serialization system in **"serialization.hpp"**
 - A publisher-neutral C++ event system in **"events.hpp"**
 - A dynamic property system in **"properties.hpp"**
-- Optimized dynamic type casting system in **"casting.hpp"**
 - A generalized meta-language system in **"metalang.hpp"**
+- Optimized dynamic type casting system in **"casting.hpp"**
 - Functional operations map, filter, and fold (with more coming soon!) in **"functional.hpp"**
 - Algebraic data types including option, either, choice, pair and record, w/ macros for automatic derivation, 
 and a type-safe pattern matching system in **"algebraic.hpp"**
 - A couple other odds and ends in **"utility.hpp"**
-- Built in the clean and modular Data Abstration Style - https://github.com/bryanedds/das
 
-Makes a good base for non-trivial projects like renderers, game engines, and other real-ass shit that's needs to be built with good programming semantics.
+Ax was built in the clean and modular Data Abstration Style - https://github.com/bryanedds/das
+
+This library makes a good base for non-trivial projects like renderers, game engines, and other real-ass shit that absolutely *needs* to be built with good programming semantics.
 
 WIP
 ---
