@@ -2,7 +2,7 @@ CPPFLAGS += -std=c++14 -Wall -Wextra -pedantic
 CPPFLAGS += -g -O2
 CPPFLAGS += -pthread
 CPPFLAGS += -march=native
-CPPFLAGS += -fsanitize=undefined,address
+#CPPFLAGS += -fsanitize=undefined,address
 #CPPFLAGS += -DNDEBUG
 
 CPP_FILES = \
