@@ -3,9 +3,9 @@ CPPFLAGS += -g -O2
 CPPFLAGS += -pthread
 CPPFLAGS += -march=native
 CPPFLAGS += -fno-omit-frame-pointer
-CPPFLAGS += -fsanitize=undefined,dataflow,cfi,safe-stack,address
-#CPPFLAGS += -fsanitize=undefined,dataflow,cfi,safe-stack,thread
-#CPPFLAGS += -fsanitize=undefined,dataflow,cfi,safe-stack,memory
+CPPFLAGS += -fsanitize=undefined,address
+#CPPFLAGS += -fsanitize=undefined,thread
+#CPPFLAGS += -fsanitize=undefined,memory
 #CPPFLAGS += -DNDEBUG
 
 CPP_FILES = \
