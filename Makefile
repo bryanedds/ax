@@ -3,6 +3,7 @@ CPPFLAGS += -g -O2
 CPPFLAGS += -pthread
 CPPFLAGS += -march=native
 CPPFLAGS += -fno-omit-frame-pointer
+CPPFLAGS += -pie
 #CPPFLAGS += -fsanitize=undefined,address
 CPPFLAGS += -fsanitize=undefined,thread
 #CPPFLAGS += -fsanitize=undefined,memory
