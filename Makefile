@@ -2,7 +2,10 @@ CPPFLAGS += -std=c++14 -Wall -Wextra -pedantic
 CPPFLAGS += -g -O2
 CPPFLAGS += -pthread
 CPPFLAGS += -march=native
-#CPPFLAGS += -fsanitize=undefined,address
+CPPFLAGS += -fno-omit-frame-pointer
+CPPFLAGS += -fsanitize=undefined,dataflow,cfi,safe-stack,address
+#CPPFLAGS += -fsanitize=undefined,dataflow,cfi,safe-stack,thread
+#CPPFLAGS += -fsanitize=undefined,dataflow,cfi,safe-stack,memory
 #CPPFLAGS += -DNDEBUG
 
 CPP_FILES = \
