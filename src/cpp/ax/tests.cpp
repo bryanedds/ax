@@ -1,6 +1,6 @@
 #include <istream>
 
-#include "../../impl/tom/tom.hpp"
+#include "../../hpp/tom/tom.hpp"
 
 #include "../../impl/ax/ax.hpp"
 

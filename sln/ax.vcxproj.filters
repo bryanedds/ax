@@ -24,37 +24,37 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Impl%27n Files\tom">
-      <UniqueIdentifier>{311bf93f-2d1e-4b84-832a-778678e5f0e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Impl%27n Files\blah">
-      <UniqueIdentifier>{75821d6e-864c-4e30-bf4b-53ee9dd63561}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Impl%27n Files\rxml">
-      <UniqueIdentifier>{6955a512-a723-4ddd-84b3-7c960f280215}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Impl%27n Files\ax">
       <UniqueIdentifier>{a465dd24-8f0f-4e71-b250-21cf8127c704}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\blah">
+      <UniqueIdentifier>{75821d6e-864c-4e30-bf4b-53ee9dd63561}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\rxml">
+      <UniqueIdentifier>{6955a512-a723-4ddd-84b3-7c960f280215}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tom">
+      <UniqueIdentifier>{311bf93f-2d1e-4b84-832a-778678e5f0e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\impl\blah\blah.hpp">
-      <Filter>Impl%27n Files\blah</Filter>
+    <ClInclude Include="..\src\hpp\blah\blah.hpp">
+      <Filter>Header Files\blah</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\rxml\rapidxml_utils.hpp">
-      <Filter>Impl%27n Files\rxml</Filter>
+    <ClInclude Include="..\src\hpp\rxml\rapidxml_utils.hpp">
+      <Filter>Header Files\rxml</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\rxml\rapidxml.hpp">
-      <Filter>Impl%27n Files\rxml</Filter>
+    <ClInclude Include="..\src\hpp\rxml\rapidxml.hpp">
+      <Filter>Header Files\rxml</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\rxml\rapidxml_iterators.hpp">
-      <Filter>Impl%27n Files\rxml</Filter>
+    <ClInclude Include="..\src\hpp\rxml\rapidxml_iterators.hpp">
+      <Filter>Header Files\rxml</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\rxml\rapidxml_print.hpp">
-      <Filter>Impl%27n Files\rxml</Filter>
+    <ClInclude Include="..\src\hpp\rxml\rapidxml_print.hpp">
+      <Filter>Header Files\rxml</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\tom\tom.hpp">
-      <Filter>Impl%27n Files\tom</Filter>
+    <ClInclude Include="..\src\hpp\tom\tom.hpp">
+      <Filter>Header Files\tom</Filter>
     </ClInclude>
     <ClInclude Include="..\src\impl\ax\event.hpp">
       <Filter>Impl%27n Files\ax</Filter>

@@ -1,6 +1,6 @@
 #include <istream>
 
-#include "../../impl/rxml/rapidxml.hpp"
+#include "../../hpp/rxml/rapidxml.hpp"
 
 #include "../../impl/ax/parser.hpp"
 
