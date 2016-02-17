@@ -11,7 +11,7 @@
 namespace ax
 {
     // Stored any type of information in a normalized, symbolic format.
-    sum_type(symbol, std::string, symbol_leaf, std::vector<symbol>, symbol_tree);
+    SUM_TYPE(symbol, std::string, symbol_leaf, std::vector<symbol>, symbol_tree);
 }
 
 #endif

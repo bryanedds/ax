@@ -26,15 +26,15 @@ namespace ax
 
     void bool_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
     {
-        Var* bool_ptr = static_cast<bool*>(target_ptr);
+        VAR* bool_ptr = static_cast<bool*>(target_ptr);
         match2(source_symbol,
-        [](Val&) { throw std::invalid_argument("Expected symbol leaf."); },
-        [&](Val& symbol_leaf) { *bool_ptr = symbol_leaf != "false" && symbol_leaf != "0"; });
+        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [&](VAL& symbol_leaf) { *bool_ptr = symbol_leaf != "false" && symbol_leaf != "0"; });
     }
 
     void bool_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
     {
-        Val* bool_ptr = static_cast<const bool*>(source_ptr);
+        VAL* bool_ptr = static_cast<const bool*>(source_ptr);
         target_symbol = symbol_leaf(*bool_ptr ? "true" : "false");
     }
 
@@ -52,15 +52,15 @@ namespace ax
 
     void int_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
     {
-        Var* int_ptr = static_cast<int*>(target_ptr);
+        VAR* int_ptr = static_cast<int*>(target_ptr);
         match2(source_symbol,
-        [](Val&) { throw std::invalid_argument("Expected symbol leaf."); },
-        [&](Val& symbol_leaf) { *int_ptr = static_cast<int>(strtoll(symbol_leaf.c_str(), nullptr, 10)); });
+        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [&](VAL& symbol_leaf) { *int_ptr = static_cast<int>(strtoll(symbol_leaf.c_str(), nullptr, 10)); });
     }
 
     void int_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
     {
-        Val* int_ptr = static_cast<const int*>(source_ptr);
+        VAL* int_ptr = static_cast<const int*>(source_ptr);
         target_symbol = symbol_leaf(to_string(*int_ptr));
     }
 
@@ -78,15 +78,15 @@ namespace ax
 
     void int32_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
     {
-        Var* int32_ptr = static_cast<int32_t*>(target_ptr);
+        VAR* int32_ptr = static_cast<int32_t*>(target_ptr);
         match2(source_symbol,
-        [](Val&) { throw std::invalid_argument("Expected symbol leaf."); },
-        [&](Val& symbol_leaf) { *int32_ptr = static_cast<int32_t>(strtoll(symbol_leaf.c_str(), nullptr, 10)); });
+        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [&](VAL& symbol_leaf) { *int32_ptr = static_cast<int32_t>(strtoll(symbol_leaf.c_str(), nullptr, 10)); });
     }
 
     void int32_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
     {
-        Val* int32_ptr = static_cast<const int32_t*>(source_ptr);
+        VAL* int32_ptr = static_cast<const int32_t*>(source_ptr);
         target_symbol = symbol_leaf(to_string(*int32_ptr));
     }
 
@@ -104,15 +104,15 @@ namespace ax
 
     void int64_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
     {
-        Var* int64_ptr = static_cast<int64_t*>(target_ptr);
+        VAR* int64_ptr = static_cast<int64_t*>(target_ptr);
         match2(source_symbol,
-        [](Val&) { throw std::invalid_argument("Expected symbol leaf."); },
-        [&](Val& symbol_leaf) { *int64_ptr = static_cast<int64_t>(strtoll(symbol_leaf.c_str(), nullptr, 10)); });
+        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [&](VAL& symbol_leaf) { *int64_ptr = static_cast<int64_t>(strtoll(symbol_leaf.c_str(), nullptr, 10)); });
     }
 
     void int64_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
     {
-        Val* int64_ptr = static_cast<const int64_t*>(source_ptr);
+        VAL* int64_ptr = static_cast<const int64_t*>(source_ptr);
         target_symbol = symbol_leaf(to_string(*int64_ptr));
     }
 
@@ -130,15 +130,15 @@ namespace ax
 
     void float_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
     {
-        Var* float_ptr = static_cast<float*>(target_ptr);
+        VAR* float_ptr = static_cast<float*>(target_ptr);
         match2(source_symbol,
-        [](Val&) { throw std::invalid_argument("Expected symbol leaf."); },
-        [&](Val& symbol_leaf) { *float_ptr = static_cast<float>(strtod(symbol_leaf.c_str(), nullptr)); });
+        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [&](VAL& symbol_leaf) { *float_ptr = static_cast<float>(strtod(symbol_leaf.c_str(), nullptr)); });
     }
 
     void float_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
     {
-        Val* float_ptr = static_cast<const float*>(source_ptr);
+        VAL* float_ptr = static_cast<const float*>(source_ptr);
         target_symbol = symbol_leaf(to_string(*float_ptr));
     }
 
@@ -156,15 +156,15 @@ namespace ax
 
     void double_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
     {
-        Var* double_ptr = static_cast<double*>(target_ptr);
+        VAR* double_ptr = static_cast<double*>(target_ptr);
         match2(source_symbol,
-        [](Val&) { throw std::invalid_argument("Expected symbol leaf."); },
-        [&](Val& symbol_leaf) { *double_ptr = strtod(symbol_leaf.c_str(), nullptr); });
+        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [&](VAL& symbol_leaf) { *double_ptr = strtod(symbol_leaf.c_str(), nullptr); });
     }
 
     void double_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
     {
-        Val* double_ptr = static_cast<const double*>(source_ptr);
+        VAL* double_ptr = static_cast<const double*>(source_ptr);
         target_symbol = symbol_leaf(to_string(*double_ptr));
     }
 
@@ -182,15 +182,15 @@ namespace ax
 
     void size_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
     {
-        Var* size_ptr = static_cast<size_t*>(target_ptr);
+        VAR* size_ptr = static_cast<size_t*>(target_ptr);
         match2(source_symbol,
-        [](Val&) { throw std::invalid_argument("Expected symbol leaf."); },
-        [&](Val& symbol_leaf) { *size_ptr = static_cast<size_t>(strtoll(symbol_leaf.c_str(), nullptr, 10)); });
+        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [&](VAL& symbol_leaf) { *size_ptr = static_cast<size_t>(strtoll(symbol_leaf.c_str(), nullptr, 10)); });
     }
 
     void size_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
     {
-        Val* size_ptr = static_cast<const size_t*>(source_ptr);
+        VAL* size_ptr = static_cast<const size_t*>(source_ptr);
         target_symbol = symbol_leaf(to_string(*size_ptr));
     }
 
@@ -208,15 +208,15 @@ namespace ax
 
     void string_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
     {
-        Var* string_ptr = static_cast<std::string*>(target_ptr);
+        VAR* string_ptr = static_cast<std::string*>(target_ptr);
         match2(source_symbol,
-        [](Val&) { throw std::invalid_argument("Expected symbol leaf."); },
-        [&](Val& symbol_leaf) { *string_ptr = symbol_leaf; });
+        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [&](VAL& symbol_leaf) { *string_ptr = symbol_leaf; });
     }
 
     void string_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
     {
-        Val* string_ptr = static_cast<const std::string*>(source_ptr);
+        VAL* string_ptr = static_cast<const std::string*>(source_ptr);
         target_symbol = symbol_leaf(*string_ptr);
     }
 
@@ -234,15 +234,15 @@ namespace ax
 
     void name_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
     {
-        Var* name_ptr = static_cast<name_t*>(target_ptr);
+        VAR* name_ptr = static_cast<name_t*>(target_ptr);
         match2(source_symbol,
-        [](Val&) { throw std::invalid_argument("Expected symbol leaf."); },
-        [&](Val& symbol_leaf) { *name_ptr = symbol_leaf; });
+        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [&](VAL& symbol_leaf) { *name_ptr = symbol_leaf; });
     }
 
     void name_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
     {
-        Val* name_ptr = static_cast<const name_t*>(source_ptr);
+        VAL* name_ptr = static_cast<const name_t*>(source_ptr);
         target_symbol = symbol_leaf(get_name_str(*name_ptr));
     }
 
@@ -260,17 +260,17 @@ namespace ax
 
     void address_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
     {
-        Var* address_ptr = static_cast<address*>(target_ptr);
+        VAR* address_ptr = static_cast<address*>(target_ptr);
         match2(source_symbol,
-        [](Val&) { throw std::invalid_argument("Expected symbol leaf."); },
-        [&](Val& symbol_leaf) { *address_ptr = address(symbol_leaf); });
+        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [&](VAL& symbol_leaf) { *address_ptr = address(symbol_leaf); });
     }
 
     void address_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
     {
-        Val* address_ptr = static_cast<const address*>(source_ptr);
-        Val& address_names = get_names(*address_ptr);
-        Val& address_strs = map<std::string>(address_names, get_name_str);
+        VAL* address_ptr = static_cast<const address*>(source_ptr);
+        VAL& address_names = get_names(*address_ptr);
+        VAL& address_strs = map<std::string>(address_names, get_name_str);
         target_symbol = symbol_leaf(join_strings(address_strs, '/'));
     }
 

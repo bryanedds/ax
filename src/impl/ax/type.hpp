@@ -68,11 +68,11 @@ namespace ax
     std::shared_ptr<type_t> register_any_type(std::shared_ptr<std::type_index> base_type_index_opt, std::initializer_list<std::pair<name_t, field>> field_init_list)
     {
         field_vector field_vector{};
-        for (Val& field_kvp : field_init_list) field_vector.emplace_back(std::make_pair(field_kvp.first, std::make_shared<field>(field_kvp.second)));
+        for (VAL& field_kvp : field_init_list) field_vector.emplace_back(std::make_pair(field_kvp.first, std::make_shared<field>(field_kvp.second)));
         field_map field_map{};
-        for (Val& field_kvp : field_vector) field_map.insert(field_kvp);
-        Val& type_index = std::type_index(typeid(T));
-        Val& type = std::make_shared<type_t>(base_type_index_opt, type_index, field_map, field_vector);
+        for (VAL& field_kvp : field_vector) field_map.insert(field_kvp);
+        VAL& type_index = std::type_index(typeid(T));
+        VAL& type = std::make_shared<type_t>(base_type_index_opt, type_index, field_map, field_vector);
         type_t::type_map.insert(std::make_pair(type_index, type));
         return type;
     }
@@ -81,7 +81,7 @@ namespace ax
     template<typename T>
     std::shared_ptr<type_t> register_sub_type(const std::type_info& base_type_info, std::initializer_list<std::pair<name_t, field>> field_init_list)
     {
-        Val& base_type_index_ptr = std::make_shared<std::type_index>(base_type_info);
+        VAL& base_type_index_ptr = std::make_shared<std::type_index>(base_type_info);
         return register_any_type<T>(base_type_index_ptr, field_init_list);
     }
 

@@ -18,7 +18,7 @@ namespace ax
 
     protected:
 
-        enable_cast(propertied, reflectable);
+        ENABLE_CAST(propertied, reflectable);
 
         template<typename T>
         friend const T& get(const propertied& propertied, const name_t& name);

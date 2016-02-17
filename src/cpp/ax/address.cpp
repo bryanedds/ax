@@ -11,7 +11,7 @@ namespace ax
 
     address::address(std::vector<name_t>&& names_mvb) : hash_code(get_hash_range<name_t>(names_mvb.cbegin(), names_mvb.cend())), names(names_mvb) { }
 
-    address::address(const std::vector<std::string>& names) : address(std::transform<std::vector<name_t>>(names.cbegin(), names.cend(), [](Val& name) { return name_t(name); })) { }
+    address::address(const std::vector<std::string>& names) : address(std::transform<std::vector<name_t>>(names.cbegin(), names.cend(), [](VAL& name) { return name_t(name); })) { }
 
     address::address(const char* names_str) : address(std::string(names_str)) { }
 
@@ -27,7 +27,7 @@ namespace ax
     address address::operator+(const address& right) const
     {
         std::vector<name_t> names_summed(names.cbegin(), names.cend());
-        for (Val& name : right.names) names_summed.push_back(name);
+        for (VAL& name : right.names) names_summed.push_back(name);
         return address(names_summed);
     }
 

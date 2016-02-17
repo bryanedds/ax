@@ -22,45 +22,45 @@
 #endif
 
 // Short-hand for immutable auto.
-#define Val auto const
+#define VAL auto const
 
 // Short-hand for mutable auto.
-#define Var auto
+#define VAR auto
 
 // Declare a type to be constraint.
-#define Constraint(constraint_name) \
+#define CONSTRAINT(constraint_name) \
     using constraint_name##_constraint = void
 
 // Assert a type constraint.
-#define Constrain(type, constraint_name) \
+#define CONSTRAIN(type, constraint_name) \
     do { \
         struct unique_type; \
         static_assert(!std::is_same<typename type::constraint_name##_constraint, unique_type>::value, #type " needs to satisfy " #constraint_name "."); \
     } while (false)
 
 // Assert a type is an iterator.
-#define ConstrainAsIterator(type) \
+#define CONSTRAIN_AS_ITERATOR(type) \
     do { \
         struct unique_type; \
         static_assert(!std::is_same<typename type::iterator_category, unique_type>::value, #type " needs to be an iterator."); \
     } while (false)
 
 // Assert a type is a container.
-#define ConstrainAsContainer(type) \
+#define CONSTRAIN_AS_CONTAINER(type) \
     do { \
         struct unique_type; \
         static_assert(!std::is_same<typename type::size_type, unique_type>::value, #type " needs to be a container."); \
     } while (false)
 
 // Assert a type is a shared ptr.
-#define ConstrainAsSharedPtr(type) \
+#define CONSTRAIN_AS_SHARED_PTR(type) \
     do { \
         struct unique_type; \
         static_assert(!std::is_same<typename type::element_type, unique_type>::value, #type " needs to be a shared_ptr."); \
     } while (false)
 
 // Assert a type is a unique ptr.
-#define ConstrainAsUniquePtr(type) \
+#define CONSTRAIN_AS_UNIQUE_PTR(type) \
     do { \
         struct unique_type; \
         static_assert(!std::is_same<typename type::element_type, unique_type>::value, #type " needs to be a unique_ptr."); \
@@ -98,7 +98,7 @@ namespace ax
     T succ(T t) { return t + one<T>(); }
 
     // The unit type.
-    class unit { public: Constraint(unit); };
+    class unit { public: CONSTRAINT(unit); };
 }
 
 namespace std
@@ -109,12 +109,12 @@ namespace std
     template<typename Cr, typename It, typename Fn>
     Cr transform(const It& begin, const It& end, const Fn& fn)
     {
-        ConstrainAsContainer(Cr);
-        ConstrainAsIterator(It);
+        CONSTRAIN_AS_CONTAINER(Cr);
+        CONSTRAIN_AS_ITERATOR(It);
         Cr transformed{};
-        for (Var it = begin; it != end; ++it)
+        for (VAR it = begin; it != end; ++it)
         {
-            Val& temp = fn(*it);
+            VAL& temp = fn(*it);
             transformed.insert(std::end(transformed), temp);
         }
         return transformed;

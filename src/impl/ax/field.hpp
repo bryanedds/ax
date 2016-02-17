@@ -38,7 +38,7 @@ namespace ax
     template<typename T>
     field register_field(std::size_t value_offset)
     {
-        Val& type_index = std::type_index(typeid(T));
+        VAL& type_index = std::type_index(typeid(T));
         return field(type_index, value_offset);
     }
 

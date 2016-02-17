@@ -29,14 +29,14 @@ namespace ax
     protected:
 
         using subscription_detail_T_P = subscription_detail<T, P>;
-        enable_cast(subscription_detail_T_P, castable);
+        ENABLE_CAST(subscription_detail_T_P, castable);
 
         template<typename A, typename B>
         friend bool publish_subscription_detail(const subscription_detail<A, B>& subscription_detail, const event<A>& event, B& program);
 
     public:
 
-        Constraint(subscription_detail);
+        CONSTRAINT(subscription_detail);
 
         subscription_detail() = delete;
         subscription_detail(const ax::handler<T, P>& handler) : handler(handler) { }
@@ -84,9 +84,9 @@ namespace ax
     {
         if (!subscription.subscriber_opt.expired())
         {
-            Val& subscriber = subscription.subscriber_opt.lock();
-            Val& event = ax::event<T>(event_data, event_address, subscriber, publisher);
-            Val& subscription_detail_opt = try_cast<subscription_detail<T, P>>(*subscription.subscription_detail);
+            VAL& subscriber = subscription.subscriber_opt.lock();
+            VAL& event = ax::event<T>(event_data, event_address, subscriber, publisher);
+            VAL& subscription_detail_opt = try_cast<subscription_detail<T, P>>(*subscription.subscription_detail);
             if (subscription_detail_opt) return publish_subscription_detail(**subscription_detail_opt, event, program);
             return true;
         }

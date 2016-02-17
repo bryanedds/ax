@@ -21,11 +21,11 @@ namespace ax
 
     protected:
 
-        enable_cast(property<T>, castable);
+        ENABLE_CAST(property<T>, castable);
 
     public:
 
-        Constraint(property);
+        CONSTRAINT(property);
 
         template<typename A>
         using reify = property<A>;
@@ -72,14 +72,14 @@ namespace ax
     class property_map : public std::unordered_map<name_t, std::unique_ptr<castable>>
     {
     public:
-        Constraint(property_map);
+        CONSTRAINT(property_map);
         using std::unordered_map<name_t, std::unique_ptr<castable>>::unordered_map;
     };
 
     template<typename T>
     const property<T>& get_property(const property_map& properties, const name_t& name)
     {
-        Val& property_opt = properties.find(name);
+        VAL& property_opt = properties.find(name);
         if (property_opt != properties.end()) return cast<property<T>>(*property_opt->second);
         throw std::logic_error("No such property '"_s + get_name_str(name) + "'.");
     }
@@ -87,7 +87,7 @@ namespace ax
     template<typename T>
     property<T>& get_property(property_map& properties, const name_t& name)
     {
-        Val& property_opt = properties.find(name);
+        VAL& property_opt = properties.find(name);
         if (property_opt != properties.end()) return cast<property<T>>(*property_opt->second);
         throw std::logic_error("No such property '"_s + get_name_str(name) + "'.");
     }
@@ -112,7 +112,7 @@ namespace ax
 
     protected:
 
-        enable_cast(propertied, reflectable);
+        ENABLE_CAST(propertied, reflectable);
 
         template<typename T>
         friend const T& get(const propertied& propertied, const name_t& name);

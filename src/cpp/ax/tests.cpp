@@ -10,7 +10,7 @@ namespace ax
     class castable_a : public castable
     {
     protected:
-        enable_cast(castable_a, castable);
+        ENABLE_CAST(castable_a, castable);
     public:
         int i = 0;
     };
@@ -19,7 +19,7 @@ namespace ax
     class castable_b : public castable_a
     {
     protected:
-        enable_cast(castable_b, castable_a);
+        ENABLE_CAST(castable_b, castable_a);
     public:
         int j = 0;
     };
@@ -28,14 +28,14 @@ namespace ax
     class eventable_test : public eventable<eventable_test>
     {
     protected:
-        enable_cast(eventable_test, eventable<eventable_test>);
+        ENABLE_CAST(eventable_test, eventable<eventable_test>);
     };
 
     class reflectable_test : public reflectable
     {
     protected:
 
-        enable_cast(reflectable_test, reflectable);
+        ENABLE_CAST(reflectable_test, reflectable);
 
         const std::shared_ptr<type_t> type = register_sub_type<reflectable_test>(typeid(reflectable),
         {
@@ -188,12 +188,12 @@ namespace ax
 
     TEST("events work")
     {
-        Var i = 0;
+        VAR i = 0;
         ax::eventable_test program{};
-        Val& event_address = address("event");
-        Val& participant = std::make_shared<ax::addressable>("participant");
-        Var handler = [&](Val&, Val&) { return ++i, true; };
-        Var unsubscriber = ax::subscribe_event<std::string>(program, event_address, participant, handler);
+        VAL& event_address = address("event");
+        VAL& participant = std::make_shared<ax::addressable>("participant");
+        VAR handler = [&](VAL&, VAL&) { return ++i, true; };
+        VAR unsubscriber = ax::subscribe_event<std::string>(program, event_address, participant, handler);
         ax::publish_event(program, "Event handled!"_s, event_address, participant);
         unsubscriber(program);
         ax::publish_event(program, "Event unhandled."_s, event_address, participant);
@@ -234,7 +234,7 @@ namespace ax
 
     TEST("parser works")
     {
-        Val& str =
+        VAL& str =
             "[true 5 10.0 \
               \"jim bob\" \
               \"s/compton/la\" \
@@ -252,8 +252,8 @@ namespace ax
         std::stringstream sstr(str);
         sstr << std::noskipws; // apparently avoids skipping whitespace
         std::istream_iterator<char> iter(sstr);
-        Val& parse = parse_symbol_from_stream(iter, std::istream_iterator<char>());
-        Val& symbol = get_parse_success(parse);
+        VAL& parse = parse_symbol_from_stream(iter, std::istream_iterator<char>());
+        VAL& symbol = get_parse_success(parse);
         reflectable_test target{};
         read_value(symbol, target);
         CHECK(target.bool_value);

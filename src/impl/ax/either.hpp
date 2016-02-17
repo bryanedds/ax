@@ -43,7 +43,7 @@ namespace ax
 
     public:
 
-        Constraint(either);
+        CONSTRAINT(either);
         using right_type = R;
         using left_type = L;
         template<typename A, typename B>
@@ -167,7 +167,7 @@ namespace ax
     template<typename E, typename Lf, typename Rf>
     auto match2(const E& eir, Rf right_fn, Lf left_fn)
     {
-        Constrain(E, either);
+        CONSTRAIN(E, either);
         if (is_right(eir)) return right_fn(get_right(eir));
         return left_fn(get_left(eir));
     }
@@ -175,13 +175,13 @@ namespace ax
     template<typename E, typename Lf, typename Rf>
     auto match2(E& eir, Rf right_fn, Lf left_fn)
     {
-        Constrain(E, either);
+        CONSTRAIN(E, either);
         if (is_right(eir)) return right_fn(get_right(eir));
         return left_fn(get_left(eir));
     }
 }
 
-#define sum_type(T, Lt, Ln, Rt, Rn) \
+#define SUM_TYPE(T, Lt, Ln, Rt, Rn) \
     class T : public either<Lt, Rt> \
     { \
     protected: \
@@ -191,7 +191,7 @@ namespace ax
     \
     public: \
     \
-        Constraint(T); \
+        CONSTRAINT(T); \
         using either<Lt, Rt>::either; \
     }; \
     \
@@ -245,6 +245,6 @@ namespace ax
         return get_left(eir); \
     } \
     \
-    using T##_sum_type = void
+    using T##_SumType = void
 
 #endif

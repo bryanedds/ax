@@ -26,12 +26,12 @@ namespace ax
 
     protected:
 
-        enable_cast(addressable, castable);
+        ENABLE_CAST(addressable, castable);
         friend name_t get_name(const addressable& addressable);
 
     public:
 
-        Constraint(addressable);
+        CONSTRAINT(addressable);
         explicit addressable(const name_t& name) : name(name) { }
     };
 

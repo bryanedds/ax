@@ -17,7 +17,7 @@ namespace ax
 
     public:
 
-        Constraint(option);
+        CONSTRAINT(option);
         using value_type = T;
         template<typename A>
         using reify = option<A>;
@@ -90,17 +90,17 @@ namespace ax
     }
 
     template<typename O, typename Sf, typename Nf>
-    Var match(const O& opt, Sf some_fn, Nf none_fn)
+    VAR match(const O& opt, Sf some_fn, Nf none_fn)
     {
-        Constrain(O, option);
+        CONSTRAIN(O, option);
         if (is_none(opt)) return none_fn();
         return some_fn(get_content(opt));
     }
 
     template<typename O, typename Sf, typename Nf>
-    Var match(O& opt, Sf some_fn, Nf none_fn)
+    VAR match(O& opt, Sf some_fn, Nf none_fn)
     {
-        Constrain(O, option);
+        CONSTRAIN(O, option);
         if (is_none(opt)) return none_fn();
         return some_fn(get_content(opt));
     }

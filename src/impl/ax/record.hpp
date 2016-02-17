@@ -53,7 +53,7 @@ namespace ax
 
     public:
 
-        Constraint(record);
+        CONSTRAINT(record);
         using first_type = First;
         using second_type = Second;
         using third_type = Third;
@@ -138,7 +138,7 @@ namespace ax
     }
 }
 
-#define product_type3(T, Ft, Fn, St, Sn, Tt, Tn) \
+#define PRODUCT_TYPE3(T, Ft, Fn, St, Sn, Tt, Tn) \
     class T : public record<Ft, St, Tt> \
     { \
     protected: \
@@ -149,7 +149,7 @@ namespace ax
     \
     public: \
     \
-        Constraint(T); \
+        CONSTRAINT(T); \
         using record<Ft, St, Tt>::record; \
     }; \
     \
@@ -193,6 +193,6 @@ namespace ax
         return T(first, second, third); \
     } \
     \
-    using T##_product_type3 = void
+    using T##_ProductType3 = void
 
 #endif

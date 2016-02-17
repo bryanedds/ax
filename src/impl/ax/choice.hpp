@@ -57,7 +57,7 @@ namespace ax
 
     public:
 
-        Constraint(choice);
+        CONSTRAINT(choice);
 
         using first_type = First;
         using second_type = Second;
@@ -169,9 +169,9 @@ namespace ax
     }
 
     template<typename C, typename FirstFn, typename SecondFn, typename ThirdFn>
-    Var match3(const C& chc, FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn)
+    VAR match3(const C& chc, FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn)
     {
-        Constrain(C, choice);
+        CONSTRAIN(C, choice);
         switch (get_index(chc))
         {
         case 0_z: return first_fn(get_first(chc));
@@ -181,9 +181,9 @@ namespace ax
     }
 
     template<typename C, typename FirstFn, typename SecondFn, typename ThirdFn>
-    Var match3(C& chc, FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn)
+    VAR match3(C& chc, FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn)
     {
-        Constrain(C, choice);
+        CONSTRAIN(C, choice);
         switch (get_index(chc))
         {
         case 0_z: return first_fn(get_first(chc));
@@ -193,7 +193,7 @@ namespace ax
     }
 }
 
-#define sum_type3(T, FirstType, FirstName, SecondType, SecondName, ThirdType, ThirdName) \
+#define SUM_TYPE3(T, FirstType, FirstName, SecondType, SecondName, ThirdType, ThirdName) \
     class T : public choice<FirstType, SecondType, ThirdType> \
     { \
     protected: \
@@ -204,7 +204,7 @@ namespace ax
     \
     public: \
     \
-        Constraint(T); \
+        CONSTRAINT(T); \
         using choice<FirstType, SecondType, ThirdType>::choice; \
     }; \
     \
@@ -268,6 +268,6 @@ namespace ax
         return get_third(chc); \
     } \
     \
-    using T##_sum_type3 = void
+    using T##_SumType3 = void
 
 #endif

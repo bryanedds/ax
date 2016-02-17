@@ -20,7 +20,7 @@ namespace ax
     template<typename T, typename It>
     std::size_t get_hash_range(const It& begin, const It& end)
     {
-        return std::accumulate(begin, end, 0_z, [](Var acc, Val& t) { return get_hash<T>(t) ^ acc; });
+        return std::accumulate(begin, end, 0_z, [](VAR acc, VAL& t) { return get_hash<T>(t) ^ acc; });
     }
 }
 

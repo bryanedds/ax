@@ -41,7 +41,7 @@ namespace ax
 
     public:
 
-        Constraint(pair);
+        CONSTRAINT(pair);
         using first_type = First;
         using second_type = Second;
         template<typename A, typename B>
@@ -107,7 +107,7 @@ namespace ax
     }
 }
 
-#define product_type(T, Ft, Fn, St, Sn) \
+#define PRODUCT_TYPE(T, Ft, Fn, St, Sn) \
     class T : public pair<Ft, St> \
     { \
     protected: \
@@ -117,7 +117,7 @@ namespace ax
     \
     public: \
     \
-        Constraint(T); \
+        CONSTRAINT(T); \
         using pair<Ft, St>::pair; \
     }; \
     \
@@ -151,6 +151,6 @@ namespace ax
         return T(first, second); \
     } \
     \
-    using T##_product_type = void
+    using T##_ProductType = void
 
 #endif
