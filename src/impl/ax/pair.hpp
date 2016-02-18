@@ -108,7 +108,7 @@ namespace ax
 }
 
 #define PRODUCT_TYPE(T, Ft, Fn, St, Sn) \
-    class T : public pair<Ft, St> \
+    class T : public ::ax::pair<Ft, St> \
     { \
     protected: \
     \
@@ -118,7 +118,7 @@ namespace ax
     public: \
     \
         CONSTRAINT(T); \
-        using pair<Ft, St>::pair; \
+        using ::ax::pair<Ft, St>::pair; \
     }; \
     \
     inline const T::first_type& get_##Fn(const T& pr) \
@@ -151,6 +151,6 @@ namespace ax
         return T(first, second); \
     } \
     \
-    using T##_ProductType = void
+    using T##_product_type = void
 
 #endif

@@ -182,7 +182,7 @@ namespace ax
 }
 
 #define SUM_TYPE(T, Lt, Ln, Rt, Rn) \
-    class T : public either<Lt, Rt> \
+    class T : public ::ax::either<Lt, Rt> \
     { \
     protected: \
     \
@@ -192,7 +192,7 @@ namespace ax
     public: \
     \
         CONSTRAINT(T); \
-        using either<Lt, Rt>::either; \
+        using ::ax::either<Lt, Rt>::either; \
     }; \
     \
     inline T Rn(const Rt& right_value) \
@@ -245,6 +245,6 @@ namespace ax
         return get_left(eir); \
     } \
     \
-    using T##_SumType = void
+    using T##_sum_type = void
 
 #endif

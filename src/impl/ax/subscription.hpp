@@ -37,7 +37,6 @@ namespace ax
     public:
 
         CONSTRAINT(subscription_detail);
-
         subscription_detail() = delete;
         subscription_detail(const ax::handler<T, P>& handler) : handler(handler) { }
         subscription_detail(const subscription_detail& that) = delete;

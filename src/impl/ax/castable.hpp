@@ -119,6 +119,7 @@ namespace ax
         if (type_index == std::type_index(typeid(t))) return static_cast<void*>(this); \
         return s::try_cast(type_index); \
     } \
+    \
     struct enable_cast_macro_end
 
 #endif

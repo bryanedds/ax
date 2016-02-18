@@ -194,7 +194,7 @@ namespace ax
 }
 
 #define SUM_TYPE3(T, FirstType, FirstName, SecondType, SecondName, ThirdType, ThirdName) \
-    class T : public choice<FirstType, SecondType, ThirdType> \
+    class T : public ::ax::choice<FirstType, SecondType, ThirdType> \
     { \
     protected: \
     \
@@ -205,7 +205,7 @@ namespace ax
     public: \
     \
         CONSTRAINT(T); \
-        using choice<FirstType, SecondType, ThirdType>::choice; \
+        using ::ax::choice<FirstType, SecondType, ThirdType>::choice; \
     }; \
     \
     inline T FirstName(const FirstType& first_value) \
@@ -268,6 +268,6 @@ namespace ax
         return get_third(chc); \
     } \
     \
-    using T##_SumType3 = void
+    using T##_sum_type3 = void
 
 #endif

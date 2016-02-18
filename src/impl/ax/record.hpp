@@ -139,7 +139,7 @@ namespace ax
 }
 
 #define PRODUCT_TYPE3(T, Ft, Fn, St, Sn, Tt, Tn) \
-    class T : public record<Ft, St, Tt> \
+    class T : public ::ax::record<Ft, St, Tt> \
     { \
     protected: \
     \
@@ -150,7 +150,7 @@ namespace ax
     public: \
     \
         CONSTRAINT(T); \
-        using record<Ft, St, Tt>::record; \
+        using ::ax::record<Ft, St, Tt>::record; \
     }; \
     \
     inline const T::first_type& get_##Fn(const T& rcd) \
@@ -193,6 +193,6 @@ namespace ax
         return T(first, second, third); \
     } \
     \
-    using T##_ProductType3 = void
+    using T##_product_type3 = void
 
 #endif

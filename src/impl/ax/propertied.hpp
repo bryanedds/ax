@@ -40,6 +40,7 @@ namespace ax
 
     public:
 
+        CONSTRAINT(propertied);
         propertied() = default;
     };
 

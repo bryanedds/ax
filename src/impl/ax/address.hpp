@@ -53,7 +53,7 @@ namespace ax
     template<typename T>
     class address_t : public address
     {
-    private:
+    public:
         CONSTRAINT(address);
         using phantom_type = T;
         using address::address;

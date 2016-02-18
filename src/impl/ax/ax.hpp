@@ -20,6 +20,7 @@
 #include "type_descriptor.hpp"
 #include "type_descriptors.hpp"
 #include "property.hpp"
+#include "propertied.hpp"
 #include "symbol.hpp"
 #include "parser.hpp"
 #include "mailbox.hpp"
