@@ -33,7 +33,7 @@ namespace ax
         
         name_t(const char* name_str);
         name_t(const std::string& name_str);
-        explicit name_t(std::string&& name_str_mvb);
+        explicit name_t(std::string&& name_str);
         explicit operator std::size_t() const;
         bool operator==(const name_t& that) const;
     };

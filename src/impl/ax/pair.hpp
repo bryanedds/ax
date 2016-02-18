@@ -55,7 +55,7 @@ namespace ax
         ~pair() = default;
 
         pair(const First& first, const Second& second) : first(first), second(second) { }
-        pair(First&& first_mvb, Second&& second_mvb) : first(first_mvb), second(second_mvb) { }
+        pair(First&& first, Second&& second) : first(first), second(second) { }
     };
 
     template<typename First, typename Second>

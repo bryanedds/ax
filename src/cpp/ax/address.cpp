@@ -9,7 +9,7 @@ namespace ax
 
     address::address(const std::vector<name_t>& names) : hash_code(get_hash_range<name_t>(names.cbegin(), names.cend())), names(names) { }
 
-    address::address(std::vector<name_t>&& names_mvb) : hash_code(get_hash_range<name_t>(names_mvb.cbegin(), names_mvb.cend())), names(names_mvb) { }
+    address::address(std::vector<name_t>&& names) : hash_code(get_hash_range<name_t>(names.cbegin(), names.cend())), names(names) { }
 
     address::address(const std::vector<std::string>& names) : address(std::transform<std::vector<name_t>>(names.cbegin(), names.cend(), [](VAL& name) { return name_t(name); })) { }
 

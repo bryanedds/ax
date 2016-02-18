@@ -37,27 +37,28 @@ namespace ax
 
         ENABLE_REFLECTION_CUSTOM(reflectable_test, reflectable);
 
-        std::shared_ptr<type_t> get_type_impl() const override
+        const std::shared_ptr<type_t> type = register_sub_type<reflectable_test>(typeid(reflectable),
         {
-            static const std::shared_ptr<type_t> type = register_sub_type<reflectable_test>(typeid(reflectable),
-            {
-                { "bool_value",             register_field<bool>(offsetof(reflectable_test, bool_value)) },
-                { "int_value",              register_field<int>(offsetof(reflectable_test, int_value)) },
-                { "float_value",            register_field<float>(offsetof(reflectable_test, float_value)) },
-                { "name_value",             register_field<name_t>(offsetof(reflectable_test, name_value)) },
-                { "address_value",          register_field<address>(offsetof(reflectable_test, address_value)) },
-                { "vector_int_value",       register_field<std::vector<int>>(offsetof(reflectable_test, vector_int_value)) },
-                { "vector_string_value",    register_field<std::vector<std::string>>(offsetof(reflectable_test, vector_string_value)) },
-                { "unique_int_value",       register_field<std::unique_ptr<int>>(offsetof(reflectable_test, unique_int_value)) },
-                { "shared_int_value",       register_field<std::shared_ptr<int>>(offsetof(reflectable_test, shared_int_value)) },
-                { "pair_value",             register_field<pair<int, int>>(offsetof(reflectable_test, pair_value)) },
-                { "record_value",           register_field<record<int, int, int>>(offsetof(reflectable_test, record_value)) },
-                { "option_some_value",      register_field<option<int>>(offsetof(reflectable_test, option_some_value)) },
-                { "option_none_value",      register_field<option<int>>(offsetof(reflectable_test, option_none_value)) },
-                { "either_right_value",     register_field<either<std::string, int>>(offsetof(reflectable_test, either_right_value)) },
-                { "either_left_value",      register_field<either<std::string, int>>(offsetof(reflectable_test, either_left_value)) },
-                { "choice_value",           register_field<choice<int, int, int>>(offsetof(reflectable_test, choice_value)) }
-            });
+            { "bool_value",             register_field<bool>                        (offsetof(reflectable_test, bool_value)) },
+            { "int_value",              register_field<int>                         (offsetof(reflectable_test, int_value)) },
+            { "float_value",            register_field<float>                       (offsetof(reflectable_test, float_value)) },
+            { "name_value",             register_field<name_t>                      (offsetof(reflectable_test, name_value)) },
+            { "address_value",          register_field<address>                     (offsetof(reflectable_test, address_value)) },
+            { "vector_int_value",       register_field<std::vector<int>>            (offsetof(reflectable_test, vector_int_value)) },
+            { "vector_string_value",    register_field<std::vector<std::string>>    (offsetof(reflectable_test, vector_string_value)) },
+            { "unique_int_value",       register_field<std::unique_ptr<int>>        (offsetof(reflectable_test, unique_int_value)) },
+            { "shared_int_value",       register_field<std::shared_ptr<int>>        (offsetof(reflectable_test, shared_int_value)) },
+            { "pair_value",             register_field<pair<int, int>>              (offsetof(reflectable_test, pair_value)) },
+            { "record_value",           register_field<record<int, int, int>>       (offsetof(reflectable_test, record_value)) },
+            { "option_some_value",      register_field<option<int>>                 (offsetof(reflectable_test, option_some_value)) },
+            { "option_none_value",      register_field<option<int>>                 (offsetof(reflectable_test, option_none_value)) },
+            { "either_right_value",     register_field<either<std::string, int>>    (offsetof(reflectable_test, either_right_value)) },
+            { "either_left_value",      register_field<either<std::string, int>>    (offsetof(reflectable_test, either_left_value)) },
+            { "choice_value",           register_field<choice<int, int, int>>       (offsetof(reflectable_test, choice_value)) }
+        });
+
+        std::shared_ptr<type_t> get_type() const override
+        {
             return type;
         };
 

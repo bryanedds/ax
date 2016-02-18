@@ -44,9 +44,9 @@ namespace ax
 
     // Make a successful parse result.
     template<typename T>
-    parse<T> parse_success(T&& mvb)
+    parse<T> parse_success(T&& value)
     {
-        return parse<T>(mvb);
+        return parse<T>(value);
     }
 
     // Make a failed parse result.

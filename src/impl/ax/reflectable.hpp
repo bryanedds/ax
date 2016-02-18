@@ -24,7 +24,8 @@ namespace ax
     protected:
 
         ENABLE_CAST(reflectable, castable);
-        virtual std::shared_ptr<type_t> get_type_impl() const;
+        const std::shared_ptr<type_t> type = register_type<reflectable>({});
+        virtual std::shared_ptr<type_t> get_type() const;
         friend std::shared_ptr<type_t> get_type(const reflectable& source);
 
     public:
@@ -47,10 +48,11 @@ namespace ax
     \
     ENABLE_CAST(t, s); \
     \
-    std::shared_ptr<ax::type_t> get_type_impl() const override \
+    const std::shared_ptr<ax::type_t> t##_type = ax::register_sub_type<s>(typeid(t), {}); \
+    \
+    std::shared_ptr<ax::type_t> get_type() const override \
     { \
-        static const std::shared_ptr<ax::type_t> type = ax::register_sub_type<s>(typeid(t), {}); \
-        return type; \
+        return t##_type; \
     }; \
     \
     struct enable_reflection_macro_end
@@ -61,7 +63,7 @@ namespace ax
     class unitr : public reflectable
     {
     protected: ENABLE_REFLECTION(unitr, ax::reflectable);
-    public: CONSTRAINT(unit_refl);
+    public: CONSTRAINT(unitr);
     };
 }
 

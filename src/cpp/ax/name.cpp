@@ -9,7 +9,7 @@ namespace ax
 
     name_t::name_t(const std::string& name_str) : hash_code(get_hash(name_str)), name_str(name_str) { }
 
-    name_t::name_t(std::string&& name_str_mvb) : hash_code(get_hash(name_str_mvb)), name_str(std::move(name_str_mvb)) { }
+    name_t::name_t(std::string&& name_str) : hash_code(get_hash(name_str)), name_str(name_str) { }
 
     name_t::operator std::size_t() const
     {

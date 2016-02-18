@@ -28,13 +28,13 @@ namespace ax
 
         address() = default;
         address(const address& that) = default;
-        address(address&& that_mvb) = default;
+        address(address&& that) = default;
         address& operator=(const address&) = default;
         address& operator=(address&&) = default;
 
         explicit address(const name_t& name);
         explicit address(const std::vector<name_t>& names);
-        explicit address(std::vector<name_t>&& names_mvb);
+        explicit address(std::vector<name_t>&& names);
         explicit address(const std::vector<std::string>& names);
         explicit address(const char* names_str);
         explicit address(const std::string& names_str);

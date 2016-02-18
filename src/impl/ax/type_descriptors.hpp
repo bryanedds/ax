@@ -28,10 +28,10 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override;
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override;
+        void inspect_value(const void* source_ptr, void* target_ptr) const override;
+        void inject_value(const void* source_ptr, void* target_ptr) const override;
+        void read_value(const symbol& source_symbol, void* target_ptr) const override;
+        void write_value(const void* source_ptr, symbol& target_symbol) const override;
     };
 
     // A type descriptor for integer values.
@@ -39,10 +39,10 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override;
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override;
+        void inspect_value(const void* source_ptr, void* target_ptr) const override;
+        void inject_value(const void* source_ptr, void* target_ptr) const override;
+        void read_value(const symbol& source_symbol, void* target_ptr) const override;
+        void write_value(const void* source_ptr, symbol& target_symbol) const override;
     };
 
     // A type descriptor for 32-bit integer values.
@@ -50,10 +50,10 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override;
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override;
+        void inspect_value(const void* source_ptr, void* target_ptr) const override;
+        void inject_value(const void* source_ptr, void* target_ptr) const override;
+        void read_value(const symbol& source_symbol, void* target_ptr) const override;
+        void write_value(const void* source_ptr, symbol& target_symbol) const override;
     };
 
     // A type descriptor for 64-bit integer values.
@@ -61,10 +61,10 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override;
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override;
+        void inspect_value(const void* source_ptr, void* target_ptr) const override;
+        void inject_value(const void* source_ptr, void* target_ptr) const override;
+        void read_value(const symbol& source_symbol, void* target_ptr) const override;
+        void write_value(const void* source_ptr, symbol& target_symbol) const override;
     };
 
     // A type descriptor for float values.
@@ -72,10 +72,10 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override;
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override;
+        void inspect_value(const void* source_ptr, void* target_ptr) const override;
+        void inject_value(const void* source_ptr, void* target_ptr) const override;
+        void read_value(const symbol& source_symbol, void* target_ptr) const override;
+        void write_value(const void* source_ptr, symbol& target_symbol) const override;
     };
 
     // A type descriptor for double values.
@@ -83,10 +83,10 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override;
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override;
+        void inspect_value(const void* source_ptr, void* target_ptr) const override;
+        void inject_value(const void* source_ptr, void* target_ptr) const override;
+        void read_value(const symbol& source_symbol, void* target_ptr) const override;
+        void write_value(const void* source_ptr, symbol& target_symbol) const override;
     };
 
     // A type descriptor for std::size_t values.
@@ -94,10 +94,10 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override;
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override;
+        void inspect_value(const void* source_ptr, void* target_ptr) const override;
+        void inject_value(const void* source_ptr, void* target_ptr) const override;
+        void read_value(const symbol& source_symbol, void* target_ptr) const override;
+        void write_value(const void* source_ptr, symbol& target_symbol) const override;
     };
 
     // A type descriptor for std::string values.
@@ -105,10 +105,10 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override;
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override;
+        void inspect_value(const void* source_ptr, void* target_ptr) const override;
+        void inject_value(const void* source_ptr, void* target_ptr) const override;
+        void read_value(const symbol& source_symbol, void* target_ptr) const override;
+        void write_value(const void* source_ptr, symbol& target_symbol) const override;
     };
 
     // A type descriptor for ax::name_t values.
@@ -116,10 +116,10 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override;
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override;
+        void inspect_value(const void* source_ptr, void* target_ptr) const override;
+        void inject_value(const void* source_ptr, void* target_ptr) const override;
+        void read_value(const symbol& source_symbol, void* target_ptr) const override;
+        void write_value(const void* source_ptr, symbol& target_symbol) const override;
     };
 
     // A type descriptor for ax::address values.
@@ -127,10 +127,10 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override;
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override;
+        void inspect_value(const void* source_ptr, void* target_ptr) const override;
+        void inject_value(const void* source_ptr, void* target_ptr) const override;
+        void read_value(const symbol& source_symbol, void* target_ptr) const override;
+        void write_value(const void* source_ptr, symbol& target_symbol) const override;
     };
 
     // A type descriptor for std::vector<T> values.
@@ -139,17 +139,17 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
             assign_value_vptr<std::vector<T>>(source_ptr, target_ptr);
         }
 
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inject_value(const void* source_ptr, void* target_ptr) const override
         {
             assign_value_vptr<std::vector<T>>(source_ptr, target_ptr);
         }
 
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override
+        void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             VAR* vector_ptr = static_cast<std::vector<T>*>(target_ptr);
             match2(source_symbol,
@@ -167,7 +167,7 @@ namespace ax
             [](VAL&) { throw std::invalid_argument("Expected symbol tree."); });
         }
 
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override
+        void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             VAL* vector_ptr = static_cast<const std::vector<T>*>(source_ptr);
             std::vector<symbol> symbol_tree{};
@@ -187,17 +187,17 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
             assign_value_vptr<std::unordered_set<T>>(source_ptr, target_ptr);
         }
 
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inject_value(const void* source_ptr, void* target_ptr) const override
         {
             assign_value_vptr<std::unordered_set<T>>(source_ptr, target_ptr);
         }
 
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override
+        void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             VAR* set_ptr = static_cast<std::unordered_set<T>*>(target_ptr);
             match2(source_symbol,
@@ -215,7 +215,7 @@ namespace ax
             [](VAL&) { throw std::invalid_argument("Expected symbol tree."); });
         }
 
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override
+        void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             VAL* set_ptr = static_cast<const std::unordered_set<T>*>(source_ptr);
             std::vector<symbol> symbol_tree{};
@@ -235,17 +235,17 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
             assign_value_vptr<std::unordered_map<K, V>>(source_ptr, target_ptr);
         }
 
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inject_value(const void* source_ptr, void* target_ptr) const override
         {
             assign_value_vptr<std::unordered_map<K, V>>(source_ptr, target_ptr);
         }
 
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override
+        void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             VAR* map_ptr = static_cast<std::unordered_map<K, V>*>(target_ptr);
             match2(source_symbol,
@@ -279,7 +279,7 @@ namespace ax
             [](VAL&) { throw std::invalid_argument("Expected symbol tree."); });
         }
 
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override
+        void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             VAL* map_ptr = static_cast<const std::unordered_map<K, V>*>(source_ptr);
             VAL& key_type_descriptor = get_type_descriptor<K>();
@@ -301,17 +301,17 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
             assign_unique_ptr_vptr<std::unique_ptr<T>>(source_ptr, target_ptr);
         }
 
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inject_value(const void* source_ptr, void* target_ptr) const override
         {
             assign_unique_ptr_vptr<std::unique_ptr<T>>(source_ptr, target_ptr);
         }
 
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override
+        void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             T value_mvb{};
             VAR* unique_ptr_ptr = static_cast<std::unique_ptr<T>*>(target_ptr);
@@ -320,7 +320,7 @@ namespace ax
             unique_ptr_ptr->reset(new T(std::move(value_mvb)));
         }
 
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override
+        void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             VAL* unique_ptr_ptr = static_cast<const std::unique_ptr<const T>*>(source_ptr);
             VAL& type_descriptor = get_type_descriptor<T>();
@@ -333,17 +333,17 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
             assign_shared_ptr_vptr<std::shared_ptr<T>>(source_ptr, target_ptr);
         }
 
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inject_value(const void* source_ptr, void* target_ptr) const override
         {
             assign_shared_ptr_vptr<std::shared_ptr<T>>(source_ptr, target_ptr);
         }
 
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override
+        void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             T value_mvb{};
             VAR* shared_ptr_ptr = static_cast<std::shared_ptr<T>*>(target_ptr);
@@ -352,7 +352,7 @@ namespace ax
             shared_ptr_ptr->reset(new T(std::move(value_mvb)));
         }
 
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override
+        void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             VAL* shared_ptr_ptr = static_cast<const std::shared_ptr<const T>*>(source_ptr);
             VAL& type_descriptor = get_type_descriptor<T>();
@@ -365,19 +365,19 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(P, pair);
             assign_value_vptr<P>(source_ptr, target_ptr);
         }
 
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inject_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(P, pair);
             assign_value_vptr<P>(source_ptr, target_ptr);
         }
 
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override
+        void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             // read target value from source symbol
             CONSTRAIN(P, pair);
@@ -401,7 +401,7 @@ namespace ax
             [&](VAL&) { throw std::invalid_argument("Expected source symbol tree."); });
         }
 
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override
+        void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             CONSTRAIN(P, pair);
             VAL* pair_ptr = static_cast<const P*>(source_ptr);
@@ -420,19 +420,19 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(R, record);
             assign_value_vptr<R>(source_ptr, target_ptr);
         }
 
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inject_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(R, record);
             assign_value_vptr<R>(source_ptr, target_ptr);
         }
 
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override
+        void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             // read target value from source symbol
             CONSTRAIN(R, record);
@@ -459,7 +459,7 @@ namespace ax
             [&](VAL&) { throw std::invalid_argument("Expected source symbol tree."); });
         }
 
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override
+        void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             CONSTRAIN(R, record);
             VAL* record_ptr = static_cast<const R*>(source_ptr);
@@ -480,17 +480,17 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
             assign_value_vptr<option<T>>(source_ptr, target_ptr);
         }
 
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inject_value(const void* source_ptr, void* target_ptr) const override
         {
             assign_value_vptr<option<T>>(source_ptr, target_ptr);
         }
 
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override
+        void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             VAR* option_ptr = static_cast<option<T>*>(target_ptr);
             VAL& type_descriptor = get_type_descriptor<T>();
@@ -512,7 +512,7 @@ namespace ax
             });
         }
 
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override
+        void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             VAL* option_ptr = static_cast<const option<T>*>(source_ptr);
             match(*option_ptr,
@@ -532,19 +532,19 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(E, either);
             assign_value_vptr<E>(source_ptr, target_ptr);
         }
 
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inject_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(E, either);
             assign_value_vptr<E>(source_ptr, target_ptr);
         }
 
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override
+        void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             // read target value from source symbol
             CONSTRAIN(E, either);
@@ -591,7 +591,7 @@ namespace ax
             [&](VAL&) { throw std::invalid_argument("Expected source symbol tree."); });
         }
 
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override
+        void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             CONSTRAIN(E, either);
             VAL* either_ptr = static_cast<const E*>(source_ptr);
@@ -618,19 +618,19 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(C, choice);
             assign_value_vptr<C>(source_ptr, target_ptr);
         }
 
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override
+        void inject_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(C, choice);
             assign_value_vptr<C>(source_ptr, target_ptr);
         }
 
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override
+        void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             // read target value from source symbol
             CONSTRAIN(C, choice);
@@ -686,7 +686,7 @@ namespace ax
             [&](VAL&) { throw std::invalid_argument("Expected source symbol tree."); });
         }
 
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override
+        void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             CONSTRAIN(C, choice);
             VAL* choice_ptr = static_cast<const C*>(source_ptr);

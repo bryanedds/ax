@@ -205,14 +205,14 @@ namespace ax
         return T(left_value, false); \
     } \
     \
-    inline T Rn(Rt&& right_mvb) \
+    inline T Rn(Rt&& right_value) \
     { \
-        return T(right_mvb); \
+        return T(right_value); \
     } \
     \
-    inline T Ln(Lt&& left_mvb) \
+    inline T Ln(Lt&& left_value) \
     { \
-        return T(left_mvb, false); \
+        return T(left_value, false); \
     } \
     \
     inline bool is_##Rn(const T& eir) \

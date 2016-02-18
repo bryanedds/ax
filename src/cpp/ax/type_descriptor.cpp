@@ -32,7 +32,7 @@ namespace ax
         VAR* source_ptr = &source;
         VAR* head_ptr = static_cast<const char*>(static_cast<const void*>(source_ptr));
         VAR* field_ptr = static_cast<const void*>(head_ptr + get_value_offset(field));
-        type_descriptor.inspect_value_impl(field_ptr, target_ptr);
+        type_descriptor.inspect_value(field_ptr, target_ptr);
     }
 
     void inject_value_vptr(const type_descriptor& type_descriptor, const field& field, const void* source_ptr, reflectable& target)
@@ -40,17 +40,17 @@ namespace ax
         VAR* target_ptr = &target;
         VAR* head_ptr = static_cast<char*>(static_cast<void*>(target_ptr));
         VAR* field_ptr = static_cast<void*>(head_ptr + get_value_offset(field));
-        type_descriptor.inject_value_impl(source_ptr, field_ptr);
+        type_descriptor.inject_value(source_ptr, field_ptr);
     }
 
     void read_value_vptr(const type_descriptor& type_descriptor, const symbol& source_symbol, void* target_ptr)
     {
-        type_descriptor.read_value_impl(source_symbol, target_ptr);
+        type_descriptor.read_value(source_symbol, target_ptr);
     }
 
     void write_value_vptr(const type_descriptor& type_descriptor, const void* source_ptr, symbol& target_symbol)
     {
-        type_descriptor.write_value_impl(source_ptr, target_symbol);
+        type_descriptor.write_value(source_ptr, target_symbol);
     }
 
     void read_value(const symbol& source_symbol, reflectable& target_reflectable)
@@ -69,14 +69,14 @@ namespace ax
 
     /* reflectable_descriptor */
 
-    void reflectable_descriptor::inspect_value_impl(const void*, void*) const
+    void reflectable_descriptor::inspect_value(const void*, void*) const
     {
-        throw std::runtime_error("reflectable_descriptor::inspect_value_impl not implemented.");
+        throw std::runtime_error("reflectable_descriptor::inspect_value not implemented.");
     }
 
-    void reflectable_descriptor::inject_value_impl(const void*, void*) const
+    void reflectable_descriptor::inject_value(const void*, void*) const
     {
-        throw std::runtime_error("reflectable_descriptor::inject_value_impl not implemented.");
+        throw std::runtime_error("reflectable_descriptor::inject_value not implemented.");
     }
 
     static void read_value_internal(const std::shared_ptr<type_t>& type, const symbol::right_type& symbol_tree, reflectable& reflectable)
@@ -130,7 +130,7 @@ namespace ax
         }
     }
 
-    void reflectable_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
+    void reflectable_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         // ensure target is symbol tree
         if (!is_symbol_tree(target_symbol)) target_symbol = symbol_tree({});
@@ -145,7 +145,7 @@ namespace ax
         write_value_internal(type, reflectable, symbol_tree);
     }
 
-    void reflectable_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
+    void reflectable_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* reflectable_ptr = static_cast<reflectable*>(target_ptr);
         match2(source_symbol,

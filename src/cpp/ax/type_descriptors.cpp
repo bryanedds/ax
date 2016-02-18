@@ -14,17 +14,17 @@ namespace ax
 {
     /* bool_descriptor */
 
-    void bool_descriptor::inspect_value_impl(const void* source_ptr, void* target_ptr) const
+    void bool_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<bool>(source_ptr, target_ptr);
     }
 
-    void bool_descriptor::inject_value_impl(const void* source_ptr, void* target_ptr) const
+    void bool_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<bool>(source_ptr, target_ptr);
     }
 
-    void bool_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
+    void bool_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* bool_ptr = static_cast<bool*>(target_ptr);
         match2(source_symbol,
@@ -32,7 +32,7 @@ namespace ax
         [&](VAL& symbol_leaf) { *bool_ptr = symbol_leaf != "false" && symbol_leaf != "0"; });
     }
 
-    void bool_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
+    void bool_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* bool_ptr = static_cast<const bool*>(source_ptr);
         target_symbol = symbol_leaf(*bool_ptr ? "true" : "false");
@@ -40,17 +40,17 @@ namespace ax
 
     /* int_descriptor */
 
-    void int_descriptor::inspect_value_impl(const void* source_ptr, void* target_ptr) const
+    void int_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<int>(source_ptr, target_ptr);
     }
 
-    void int_descriptor::inject_value_impl(const void* source_ptr, void* target_ptr) const
+    void int_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<int>(source_ptr, target_ptr);
     }
 
-    void int_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
+    void int_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* int_ptr = static_cast<int*>(target_ptr);
         match2(source_symbol,
@@ -58,7 +58,7 @@ namespace ax
         [&](VAL& symbol_leaf) { *int_ptr = static_cast<int>(strtoll(symbol_leaf.c_str(), nullptr, 10)); });
     }
 
-    void int_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
+    void int_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* int_ptr = static_cast<const int*>(source_ptr);
         target_symbol = symbol_leaf(to_string(*int_ptr));
@@ -66,17 +66,17 @@ namespace ax
 
     /* int32_descriptor */
 
-    void int32_descriptor::inspect_value_impl(const void* source_ptr, void* target_ptr) const
+    void int32_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<int32_t>(source_ptr, target_ptr);
     }
 
-    void int32_descriptor::inject_value_impl(const void* source_ptr, void* target_ptr) const
+    void int32_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<int32_t>(source_ptr, target_ptr);
     }
 
-    void int32_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
+    void int32_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* int32_ptr = static_cast<int32_t*>(target_ptr);
         match2(source_symbol,
@@ -84,7 +84,7 @@ namespace ax
         [&](VAL& symbol_leaf) { *int32_ptr = static_cast<int32_t>(strtoll(symbol_leaf.c_str(), nullptr, 10)); });
     }
 
-    void int32_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
+    void int32_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* int32_ptr = static_cast<const int32_t*>(source_ptr);
         target_symbol = symbol_leaf(to_string(*int32_ptr));
@@ -92,17 +92,17 @@ namespace ax
 
     /* int64_descriptor */
 
-    void int64_descriptor::inspect_value_impl(const void* source_ptr, void* target_ptr) const
+    void int64_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<int64_t>(source_ptr, target_ptr);
     }
 
-    void int64_descriptor::inject_value_impl(const void* source_ptr, void* target_ptr) const
+    void int64_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<int64_t>(source_ptr, target_ptr);
     }
 
-    void int64_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
+    void int64_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* int64_ptr = static_cast<int64_t*>(target_ptr);
         match2(source_symbol,
@@ -110,7 +110,7 @@ namespace ax
         [&](VAL& symbol_leaf) { *int64_ptr = static_cast<int64_t>(strtoll(symbol_leaf.c_str(), nullptr, 10)); });
     }
 
-    void int64_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
+    void int64_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* int64_ptr = static_cast<const int64_t*>(source_ptr);
         target_symbol = symbol_leaf(to_string(*int64_ptr));
@@ -118,17 +118,17 @@ namespace ax
 
     /* float_descriptor */
 
-    void float_descriptor::inspect_value_impl(const void* source_ptr, void* target_ptr) const
+    void float_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<float>(source_ptr, target_ptr);
     }
 
-    void float_descriptor::inject_value_impl(const void* source_ptr, void* target_ptr) const
+    void float_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<float>(source_ptr, target_ptr);
     }
 
-    void float_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
+    void float_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* float_ptr = static_cast<float*>(target_ptr);
         match2(source_symbol,
@@ -136,7 +136,7 @@ namespace ax
         [&](VAL& symbol_leaf) { *float_ptr = static_cast<float>(strtod(symbol_leaf.c_str(), nullptr)); });
     }
 
-    void float_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
+    void float_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* float_ptr = static_cast<const float*>(source_ptr);
         target_symbol = symbol_leaf(to_string(*float_ptr));
@@ -144,17 +144,17 @@ namespace ax
 
     /* double_descriptor */
 
-    void double_descriptor::inspect_value_impl(const void* source_ptr, void* target_ptr) const
+    void double_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<double>(source_ptr, target_ptr);
     }
 
-    void double_descriptor::inject_value_impl(const void* source_ptr, void* target_ptr) const
+    void double_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<double>(source_ptr, target_ptr);
     }
 
-    void double_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
+    void double_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* double_ptr = static_cast<double*>(target_ptr);
         match2(source_symbol,
@@ -162,7 +162,7 @@ namespace ax
         [&](VAL& symbol_leaf) { *double_ptr = strtod(symbol_leaf.c_str(), nullptr); });
     }
 
-    void double_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
+    void double_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* double_ptr = static_cast<const double*>(source_ptr);
         target_symbol = symbol_leaf(to_string(*double_ptr));
@@ -170,17 +170,17 @@ namespace ax
 
     /* size_descriptor */
 
-    void size_descriptor::inspect_value_impl(const void* source_ptr, void* target_ptr) const
+    void size_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<std::size_t>(source_ptr, target_ptr);
     }
 
-    void size_descriptor::inject_value_impl(const void* source_ptr, void* target_ptr) const
+    void size_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<std::size_t>(source_ptr, target_ptr);
     }
 
-    void size_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
+    void size_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* size_ptr = static_cast<size_t*>(target_ptr);
         match2(source_symbol,
@@ -188,7 +188,7 @@ namespace ax
         [&](VAL& symbol_leaf) { *size_ptr = static_cast<size_t>(strtoll(symbol_leaf.c_str(), nullptr, 10)); });
     }
 
-    void size_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
+    void size_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* size_ptr = static_cast<const size_t*>(source_ptr);
         target_symbol = symbol_leaf(to_string(*size_ptr));
@@ -196,17 +196,17 @@ namespace ax
 
     /* string_descriptor */
 
-    void string_descriptor::inspect_value_impl(const void* source_ptr, void* target_ptr) const
+    void string_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<std::string>(source_ptr, target_ptr);
     }
 
-    void string_descriptor::inject_value_impl(const void* source_ptr, void* target_ptr) const
+    void string_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<std::string>(source_ptr, target_ptr);
     }
 
-    void string_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
+    void string_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* string_ptr = static_cast<std::string*>(target_ptr);
         match2(source_symbol,
@@ -214,7 +214,7 @@ namespace ax
         [&](VAL& symbol_leaf) { *string_ptr = symbol_leaf; });
     }
 
-    void string_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
+    void string_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* string_ptr = static_cast<const std::string*>(source_ptr);
         target_symbol = symbol_leaf(*string_ptr);
@@ -222,17 +222,17 @@ namespace ax
 
     /* name_descriptor */
 
-    void name_descriptor::inspect_value_impl(const void* source_ptr, void* target_ptr) const
+    void name_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<name_t>(source_ptr, target_ptr);
     }
 
-    void name_descriptor::inject_value_impl(const void* source_ptr, void* target_ptr) const
+    void name_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<name_t>(source_ptr, target_ptr);
     }
 
-    void name_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
+    void name_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* name_ptr = static_cast<name_t*>(target_ptr);
         match2(source_symbol,
@@ -240,7 +240,7 @@ namespace ax
         [&](VAL& symbol_leaf) { *name_ptr = symbol_leaf; });
     }
 
-    void name_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
+    void name_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* name_ptr = static_cast<const name_t*>(source_ptr);
         target_symbol = symbol_leaf(get_name_str(*name_ptr));
@@ -248,17 +248,17 @@ namespace ax
 
     /* address_descriptor */
 
-    void address_descriptor::inspect_value_impl(const void* source_ptr, void* target_ptr) const
+    void address_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<address>(source_ptr, target_ptr);
     }
 
-    void address_descriptor::inject_value_impl(const void* source_ptr, void* target_ptr) const
+    void address_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
         assign_value_vptr<address>(source_ptr, target_ptr);
     }
 
-    void address_descriptor::read_value_impl(const symbol& source_symbol, void* target_ptr) const
+    void address_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* address_ptr = static_cast<address*>(target_ptr);
         match2(source_symbol,
@@ -266,7 +266,7 @@ namespace ax
         [&](VAL& symbol_leaf) { *address_ptr = address(symbol_leaf); });
     }
 
-    void address_descriptor::write_value_impl(const void* source_ptr, symbol& target_symbol) const
+    void address_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* address_ptr = static_cast<const address*>(source_ptr);
         VAL& address_names = get_names(*address_ptr);

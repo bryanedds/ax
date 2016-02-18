@@ -32,10 +32,10 @@ namespace ax
         friend void read_value_vptr(const type_descriptor& type_descriptor, const symbol& source_symbol, void* target_ptr);
         friend void write_value_vptr(const type_descriptor& type_descriptor, const void* source_ptr, symbol& target_symbol);
 
-        virtual void inspect_value_impl(const void* source_ptr, void* target_ptr) const = 0;
-        virtual void inject_value_impl(const void* source_ptr, void* target_ptr) const = 0;
-        virtual void read_value_impl(const symbol& source_symbol, void* target_ptr) const = 0;
-        virtual void write_value_impl(const void* source_ptr, symbol& target_symbol) const = 0;
+        virtual void inspect_value(const void* source_ptr, void* target_ptr) const = 0;
+        virtual void inject_value(const void* source_ptr, void* target_ptr) const = 0;
+        virtual void read_value(const symbol& source_symbol, void* target_ptr) const = 0;
+        virtual void write_value(const void* source_ptr, symbol& target_symbol) const = 0;
 
     public:
 
@@ -144,10 +144,10 @@ namespace ax
     {
     protected:
 
-        void inspect_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void inject_value_impl(const void* source_ptr, void* target_ptr) const override;
-        void read_value_impl(const symbol& source_symbol, void* target_ptr) const override;
-        void write_value_impl(const void* source_ptr, symbol& target_symbol) const override;
+        void inspect_value(const void* source_ptr, void* target_ptr) const override;
+        void inject_value(const void* source_ptr, void* target_ptr) const override;
+        void read_value(const symbol& source_symbol, void* target_ptr) const override;
+        void write_value(const void* source_ptr, symbol& target_symbol) const override;
     };
 
     // Register the common type descriptors.

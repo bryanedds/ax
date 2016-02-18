@@ -223,19 +223,19 @@ namespace ax
         return T(third_value, false, false); \
     } \
     \
-    inline T FirstName(FirstType&& first_mvb) \
+    inline T FirstName(FirstType&& first_value) \
     { \
-        return T(first_mvb); \
+        return T(first_value); \
     } \
     \
-    inline T SecondName(SecondType&& second_mvb) \
+    inline T SecondName(SecondType&& second_value) \
     { \
-        return T(second_mvb, false); \
+        return T(second_value, false); \
     } \
     \
-    inline T ThirdName(ThirdType&& third_mvb) \
+    inline T ThirdName(ThirdType&& third_value) \
     { \
-        return T(third_mvb, false, false); \
+        return T(third_value, false, false); \
     } \
     \
     inline const T::first_type& get_##FirstName(const T& chc) \

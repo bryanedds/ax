@@ -68,7 +68,7 @@ namespace ax
         ~record() = default;
 
         record(const First& first, const Second& second, const Third& third) : first(first), second(second), third(third) { }
-        record(First&& first_mvb, Second&& second_mvb, Third&& third_mvb) : first(first_mvb), second(second_mvb), third(third_mvb) { }
+        record(First&& first, Second&& second, Third&& third) : first(first), second(second), third(third) { }
     };
 
     template<typename First, typename Second, typename Third>
