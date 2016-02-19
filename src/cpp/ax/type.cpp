@@ -1,6 +1,6 @@
-#include "../../impl/ax/type.hpp"
+#include "../../hpp/ax/impl/type.hpp"
 
-#include "../../impl/ax/string.hpp"
+#include "../../hpp/ax/impl/string.hpp"
 
 namespace ax
 {

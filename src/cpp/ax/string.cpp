@@ -1,6 +1,6 @@
 #include <sstream>
 
-#include "../../impl/ax/string.hpp"
+#include "../../hpp/ax/impl/string.hpp"
 
 namespace ax
 {

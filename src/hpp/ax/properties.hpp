@@ -1,6 +1,6 @@
 #ifndef AX_PROPERTIES_HPP
 #define AX_PROPERTIES_HPP
 
-#include "../../impl/ax/propertied.hpp"
+#include "../../hpp/ax/impl/propertied.hpp"
 
 #endif

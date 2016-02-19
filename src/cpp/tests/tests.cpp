@@ -2,7 +2,7 @@
 
 #include "../../hpp/tom/tom.hpp"
 
-#include "../../impl/ax/ax.hpp"
+#include "../../hpp/ax/impl/ax.hpp"
 
 namespace ax
 {
