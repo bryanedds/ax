@@ -33,5 +33,5 @@ matrix:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.6']
 
 script:
-  - sh/build_all.sh
-  - sh/bin/ax.exe
+  - bash ./sh/build_all.sh
+  - bash ./sh/bin/ax.exe
