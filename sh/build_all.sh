@@ -1,2 +1,2 @@
 . ./build_lib.sh
-. ./build_exe.sh
+. ./build_tests.sh
