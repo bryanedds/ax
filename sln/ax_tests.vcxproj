@@ -18,101 +18,37 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\src\impl\ax\address.hpp" />
-    <ClInclude Include="..\src\impl\ax\addressable.hpp" />
-    <ClInclude Include="..\src\impl\ax\ax.hpp" />
-    <ClInclude Include="..\src\impl\ax\castable.hpp" />
-    <ClInclude Include="..\src\impl\ax\choice.hpp" />
-    <ClInclude Include="..\src\impl\ax\either.hpp" />
-    <ClInclude Include="..\src\impl\ax\event.hpp" />
-    <ClInclude Include="..\src\impl\ax\eventable.hpp" />
-    <ClInclude Include="..\src\impl\ax\field.hpp" />
-    <ClInclude Include="..\src\impl\ax\hash.hpp" />
-    <ClInclude Include="..\src\impl\ax\id.hpp" />
-    <ClInclude Include="..\src\impl\ax\reflectable.hpp" />
-    <ClInclude Include="..\src\impl\ax\logging.hpp" />
-    <ClInclude Include="..\src\impl\ax\mailbox.hpp" />
-    <ClInclude Include="..\src\impl\ax\name.hpp" />
-    <ClInclude Include="..\src\impl\ax\option.hpp" />
-    <ClInclude Include="..\src\impl\ax\pair.hpp" />
-    <ClInclude Include="..\src\impl\ax\parser.hpp" />
-    <ClInclude Include="..\src\impl\ax\prelude.hpp" />
-    <ClInclude Include="..\src\impl\ax\propertied.hpp" />
-    <ClInclude Include="..\src\impl\ax\property.hpp" />
-    <ClInclude Include="..\src\impl\ax\string.hpp" />
-    <ClInclude Include="..\src\impl\ax\subscription.hpp" />
-    <ClInclude Include="..\src\impl\ax\symbol.hpp" />
-    <ClInclude Include="..\src\impl\ax\record.hpp" />
-    <ClInclude Include="..\src\impl\ax\type.hpp" />
-    <ClInclude Include="..\src\impl\ax\type_descriptor.hpp" />
-    <ClInclude Include="..\src\impl\ax\type_descriptors.hpp" />
-    <ClInclude Include="..\src\impl\ax\unparser.hpp" />
-    <ClInclude Include="..\src\impl\ax\functional.hpp" />
-    <ClInclude Include="..\src\hpp\blah\blah.hpp" />
-    <ClInclude Include="..\src\hpp\rxml\rapidxml.hpp" />
-    <ClInclude Include="..\src\hpp\rxml\rapidxml_iterators.hpp" />
-    <ClInclude Include="..\src\hpp\rxml\rapidxml_print.hpp" />
-    <ClInclude Include="..\src\hpp\rxml\rapidxml_utils.hpp" />
-    <ClInclude Include="..\src\hpp\tom\tom.hpp" />
-    <ClInclude Include="..\src\hpp\ax\algebraic.hpp" />
-    <ClInclude Include="..\src\hpp\ax\casting.hpp" />
-    <ClInclude Include="..\src\hpp\ax\logging.hpp" />
-    <ClInclude Include="..\src\hpp\ax\mailbox.hpp" />
-    <ClInclude Include="..\src\hpp\ax\utility.hpp" />
-    <ClInclude Include="..\src\hpp\ax\events.hpp" />
-    <ClInclude Include="..\src\hpp\ax\reflection.hpp" />
-    <ClInclude Include="..\src\hpp\ax\properties.hpp" />
-    <ClInclude Include="..\src\hpp\ax\serialization.hpp" />
-    <ClInclude Include="..\src\hpp\ax\metalang.hpp" />
-    <ClInclude Include="..\src\hpp\ax\functional.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\cpp\ax\address.cpp" />
-    <ClCompile Include="..\src\cpp\ax\field.cpp" />
-    <ClCompile Include="..\src\cpp\ax\reflectable.cpp" />
-    <ClCompile Include="..\src\cpp\ax\name.cpp" />
-    <ClCompile Include="..\src\cpp\ax\parser.cpp" />
-    <ClCompile Include="..\src\cpp\ax\string.cpp" />
-    <ClCompile Include="..\src\cpp\ax\type.cpp" />
-    <ClCompile Include="..\src\cpp\ax\type_descriptor.cpp" />
-    <ClCompile Include="..\src\cpp\ax\type_descriptors.cpp" />
-    <ClCompile Include="..\src\cpp\blah\blah.cpp" />
-    <ClCompile Include="..\src\cpp\tom\tom.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{A5E39BFC-C35A-4154-9430-2EDE56D464AD}</ProjectGuid>
-    <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ax</RootNamespace>
+    <ProjectGuid>{E2525FAA-8149-410F-AF28-1F7C172DBC94}</ProjectGuid>
+    <RootNamespace>ax_tests</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>ax</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -132,59 +68,36 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
+  <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
@@ -192,22 +105,27 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\cpp\ax\tests.cpp" />
+    <ClCompile Include="..\src\cpp\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="ax.vcxproj">
+      <Project>{a5e39bfc-c35a-4154-9430-2ede56d464ad}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

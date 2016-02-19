@@ -181,9 +181,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\cpp\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\cpp\blah\blah.cpp">
       <Filter>Source Files\blah</Filter>
     </ClCompile>
@@ -197,9 +194,6 @@
       <Filter>Source Files\ax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\cpp\ax\string.cpp">
-      <Filter>Source Files\ax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\cpp\ax\tests.cpp">
       <Filter>Source Files\ax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\cpp\ax\type.cpp">
