@@ -5,5 +5,6 @@
 #include "../../hpp/ax/impl/hash.hpp"
 #include "../../hpp/ax/impl/id.hpp"
 #include "../../hpp/ax/impl/string.hpp"
+#include "../../hpp/ax/impl/name.hpp"
 
 #endif
