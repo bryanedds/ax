@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -38,180 +38,180 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\hpp\blah\blah.hpp">
+    <ClInclude Include="..\..\src\hpp\blah\blah.hpp">
       <Filter>Header Files\blah</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\rxml\rapidxml_utils.hpp">
+    <ClInclude Include="..\..\src\hpp\rxml\rapidxml_utils.hpp">
       <Filter>Header Files\rxml</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\rxml\rapidxml.hpp">
+    <ClInclude Include="..\..\src\hpp\rxml\rapidxml.hpp">
       <Filter>Header Files\rxml</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\rxml\rapidxml_iterators.hpp">
+    <ClInclude Include="..\..\src\hpp\rxml\rapidxml_iterators.hpp">
       <Filter>Header Files\rxml</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\rxml\rapidxml_print.hpp">
+    <ClInclude Include="..\..\src\hpp\rxml\rapidxml_print.hpp">
       <Filter>Header Files\rxml</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\tom\tom.hpp">
+    <ClInclude Include="..\..\src\hpp\tom\tom.hpp">
       <Filter>Header Files\tom</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\event.hpp">
+    <ClInclude Include="..\..\src\impl\ax\event.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\eventable.hpp">
+    <ClInclude Include="..\..\src\impl\ax\eventable.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\field.hpp">
+    <ClInclude Include="..\..\src\impl\ax\field.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\hash.hpp">
+    <ClInclude Include="..\..\src\impl\ax\hash.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\id.hpp">
+    <ClInclude Include="..\..\src\impl\ax\id.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\mailbox.hpp">
+    <ClInclude Include="..\..\src\impl\ax\mailbox.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\name.hpp">
+    <ClInclude Include="..\..\src\impl\ax\name.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\option.hpp">
+    <ClInclude Include="..\..\src\impl\ax\option.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\parser.hpp">
+    <ClInclude Include="..\..\src\impl\ax\parser.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\prelude.hpp">
+    <ClInclude Include="..\..\src\impl\ax\prelude.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\property.hpp">
+    <ClInclude Include="..\..\src\impl\ax\property.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\string.hpp">
+    <ClInclude Include="..\..\src\impl\ax\string.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\subscription.hpp">
+    <ClInclude Include="..\..\src\impl\ax\subscription.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\symbol.hpp">
+    <ClInclude Include="..\..\src\impl\ax\symbol.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\type.hpp">
+    <ClInclude Include="..\..\src\impl\ax\type.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\type_descriptor.hpp">
+    <ClInclude Include="..\..\src\impl\ax\type_descriptor.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\type_descriptors.hpp">
+    <ClInclude Include="..\..\src\impl\ax\type_descriptors.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\address.hpp">
+    <ClInclude Include="..\..\src\impl\ax\address.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\addressable.hpp">
+    <ClInclude Include="..\..\src\impl\ax\addressable.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\castable.hpp">
+    <ClInclude Include="..\..\src\impl\ax\castable.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\either.hpp">
+    <ClInclude Include="..\..\src\impl\ax\either.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\pair.hpp">
+    <ClInclude Include="..\..\src\impl\ax\pair.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\choice.hpp">
+    <ClInclude Include="..\..\src\impl\ax\choice.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\record.hpp">
+    <ClInclude Include="..\..\src\impl\ax\record.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\propertied.hpp">
+    <ClInclude Include="..\..\src\impl\ax\propertied.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\logging.hpp">
+    <ClInclude Include="..\..\src\impl\ax\logging.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\events.hpp">
+    <ClInclude Include="..\..\src\hpp\ax\events.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\properties.hpp">
+    <ClInclude Include="..\..\src\hpp\ax\properties.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\serialization.hpp">
+    <ClInclude Include="..\..\src\hpp\ax\serialization.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\algebraic.hpp">
+    <ClInclude Include="..\..\src\hpp\ax\algebraic.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\unparser.hpp">
+    <ClInclude Include="..\..\src\impl\ax\unparser.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\reflectable.hpp">
+    <ClInclude Include="..\..\src\impl\ax\reflectable.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\reflection.hpp">
+    <ClInclude Include="..\..\src\hpp\ax\reflection.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\ax.hpp">
+    <ClInclude Include="..\..\src\impl\ax\ax.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\casting.hpp">
+    <ClInclude Include="..\..\src\hpp\ax\casting.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\functional.hpp">
+    <ClInclude Include="..\..\src\hpp\ax\functional.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\utility.hpp">
+    <ClInclude Include="..\..\src\hpp\ax\utility.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\metalang.hpp">
+    <ClInclude Include="..\..\src\hpp\ax\metalang.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\impl\ax\functional.hpp">
+    <ClInclude Include="..\..\src\impl\ax\functional.hpp">
       <Filter>Impl Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\logging.hpp">
+    <ClInclude Include="..\..\src\hpp\ax\logging.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\hpp\ax\mailbox.hpp">
+    <ClInclude Include="..\..\src\hpp\ax\mailbox.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\cpp\blah\blah.cpp">
+    <ClCompile Include="..\..\src\cpp\blah\blah.cpp">
       <Filter>Source Files\blah</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\cpp\tom\tom.cpp">
+    <ClCompile Include="..\..\src\cpp\tom\tom.cpp">
       <Filter>Source Files\tom</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\cpp\ax\name.cpp">
+    <ClCompile Include="..\..\src\cpp\ax\name.cpp">
       <Filter>Source Files\ax</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\cpp\ax\parser.cpp">
+    <ClCompile Include="..\..\src\cpp\ax\parser.cpp">
       <Filter>Source Files\ax</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\cpp\ax\string.cpp">
+    <ClCompile Include="..\..\src\cpp\ax\string.cpp">
       <Filter>Source Files\ax</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\cpp\ax\type.cpp">
+    <ClCompile Include="..\..\src\cpp\ax\type.cpp">
       <Filter>Source Files\ax</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\cpp\ax\type_descriptor.cpp">
+    <ClCompile Include="..\..\src\cpp\ax\type_descriptor.cpp">
       <Filter>Source Files\ax</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\cpp\ax\type_descriptors.cpp">
+    <ClCompile Include="..\..\src\cpp\ax\type_descriptors.cpp">
       <Filter>Source Files\ax</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\cpp\ax\address.cpp">
+    <ClCompile Include="..\..\src\cpp\ax\address.cpp">
       <Filter>Source Files\ax</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\cpp\ax\field.cpp">
+    <ClCompile Include="..\..\src\cpp\ax\field.cpp">
       <Filter>Source Files\ax</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\cpp\ax\reflectable.cpp">
+    <ClCompile Include="..\..\src\cpp\ax\reflectable.cpp">
       <Filter>Source Files\ax</Filter>
     </ClCompile>
   </ItemGroup>

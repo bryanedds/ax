@@ -2,9 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ax", "ax.vcxproj", "{A5E39BFC-C35A-4154-9430-2EDE56D464AD}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ax", "ax\ax.vcxproj", "{A5E39BFC-C35A-4154-9430-2EDE56D464AD}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ax_tests", "ax_tests.vcxproj", "{E2525FAA-8149-410F-AF28-1F7C172DBC94}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ax_tests", "ax_tests\ax_tests.vcxproj", "{E2525FAA-8149-410F-AF28-1F7C172DBC94}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A5E39BFC-C35A-4154-9430-2EDE56D464AD} = {A5E39BFC-C35A-4154-9430-2EDE56D464AD}
 	EndProjectSection
