@@ -118,12 +118,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\cpp\ax\tests.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ax\ax.vcxproj">
       <Project>{a5e39bfc-c35a-4154-9430-2ede56d464ad}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\cpp\tests\tests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
