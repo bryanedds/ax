@@ -119,7 +119,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\cpp\ax\tests.cpp" />
-    <ClCompile Include="..\src\cpp\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="ax.vcxproj">
