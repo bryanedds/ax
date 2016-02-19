@@ -35,4 +35,4 @@ matrix:
 script:
   - cd ./sh
   - bash ./build_all.sh
-  - bash ./bin/ax.exe
+  - ./bin/ax.exe
