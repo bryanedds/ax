@@ -1,5 +1,5 @@
 sudo: false
-language: generic
+language: bash
 
 cache:
   apt: true
@@ -33,5 +33,5 @@ matrix:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.6']
 
 script:
-  - bash ./sh/build_all.sh
-  - bash ./sh/bin/ax.exe
+  - ./sh/build_all.sh
+  - ./sh/bin/ax.exe
