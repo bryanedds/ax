@@ -194,6 +194,3 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
-
-#My expiremental code. TODO: remove this!
-/src/cpp/ax/expiremental.cpp
