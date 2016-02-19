@@ -14,6 +14,8 @@
 // Variable shadowing is a good thing when doing functional-style programming.
 #if defined(_MSC_VER)
     #pragma warning(disable: 4456)
+#elif defined(__CLANG__)
+    #pragma clang diagnostic ignored "-Wno-vexing-parse"
 #endif
 
 // Use of unconditional branches is a common technique in C++ metaprogramming.
