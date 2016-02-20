@@ -132,7 +132,7 @@ namespace ax
 
     void reflectable_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
-        // ensure target is symbol tree
+        // ensure target is a symbols value
         if (!is_symbols(target_symbol)) target_symbol = symbols({});
 
         // get type to write
@@ -155,6 +155,6 @@ namespace ax
             VAL& type = get_type(reflectable);
             read_value_internal(type, symbols, reflectable);
         },
-        [](VAL&) { throw std::invalid_argument("Expected symbol tree."); });
+        [](VAL&) { throw std::invalid_argument("Expected symbols value."); });
     }
 }

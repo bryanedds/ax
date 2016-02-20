@@ -28,7 +28,7 @@ namespace ax
     {
         VAR* bool_ptr = static_cast<bool*>(target_ptr);
         match2(source_symbol,
-        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [](VAL&) { throw std::invalid_argument("Expected atom."); },
         [&](VAL& atom) { *bool_ptr = atom != "false" && atom != "0"; });
     }
 
@@ -54,7 +54,7 @@ namespace ax
     {
         VAR* int_ptr = static_cast<int*>(target_ptr);
         match2(source_symbol,
-        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [](VAL&) { throw std::invalid_argument("Expected atom."); },
         [&](VAL& atom) { *int_ptr = static_cast<int>(strtoll(atom.c_str(), nullptr, 10)); });
     }
 
@@ -80,7 +80,7 @@ namespace ax
     {
         VAR* int32_ptr = static_cast<int32_t*>(target_ptr);
         match2(source_symbol,
-        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [](VAL&) { throw std::invalid_argument("Expected atom."); },
         [&](VAL& atom) { *int32_ptr = static_cast<int32_t>(strtoll(atom.c_str(), nullptr, 10)); });
     }
 
@@ -106,7 +106,7 @@ namespace ax
     {
         VAR* int64_ptr = static_cast<int64_t*>(target_ptr);
         match2(source_symbol,
-        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [](VAL&) { throw std::invalid_argument("Expected atom."); },
         [&](VAL& atom) { *int64_ptr = static_cast<int64_t>(strtoll(atom.c_str(), nullptr, 10)); });
     }
 
@@ -132,7 +132,7 @@ namespace ax
     {
         VAR* float_ptr = static_cast<float*>(target_ptr);
         match2(source_symbol,
-        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [](VAL&) { throw std::invalid_argument("Expected atom."); },
         [&](VAL& atom) { *float_ptr = static_cast<float>(strtod(atom.c_str(), nullptr)); });
     }
 
@@ -158,7 +158,7 @@ namespace ax
     {
         VAR* double_ptr = static_cast<double*>(target_ptr);
         match2(source_symbol,
-        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [](VAL&) { throw std::invalid_argument("Expected atom."); },
         [&](VAL& atom) { *double_ptr = strtod(atom.c_str(), nullptr); });
     }
 
@@ -184,7 +184,7 @@ namespace ax
     {
         VAR* size_ptr = static_cast<size_t*>(target_ptr);
         match2(source_symbol,
-        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [](VAL&) { throw std::invalid_argument("Expected atom."); },
         [&](VAL& atom) { *size_ptr = static_cast<size_t>(strtoll(atom.c_str(), nullptr, 10)); });
     }
 
@@ -210,7 +210,7 @@ namespace ax
     {
         VAR* string_ptr = static_cast<std::string*>(target_ptr);
         match2(source_symbol,
-        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [](VAL&) { throw std::invalid_argument("Expected atom."); },
         [&](VAL& atom) { *string_ptr = atom; });
     }
 
@@ -236,7 +236,7 @@ namespace ax
     {
         VAR* name_ptr = static_cast<name_t*>(target_ptr);
         match2(source_symbol,
-        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [](VAL&) { throw std::invalid_argument("Expected atom."); },
         [&](VAL& atom) { *name_ptr = atom; });
     }
 
@@ -262,7 +262,7 @@ namespace ax
     {
         VAR* address_ptr = static_cast<address*>(target_ptr);
         match2(source_symbol,
-        [](VAL&) { throw std::invalid_argument("Expected symbol leaf."); },
+        [](VAL&) { throw std::invalid_argument("Expected atom."); },
         [&](VAL& atom) { *address_ptr = address(atom); });
     }
 

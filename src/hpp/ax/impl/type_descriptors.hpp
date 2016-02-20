@@ -164,7 +164,7 @@ namespace ax
                     vector_ptr->emplace_back(std::move(elem_mvb));
                 }
             },
-            [](VAL&) { throw std::invalid_argument("Expected symbol tree."); });
+            [](VAL&) { throw std::invalid_argument("Expected symbols value."); });
         }
 
         void write_value(const void* source_ptr, symbol& target_symbol) const override
@@ -212,7 +212,7 @@ namespace ax
                     set_ptr->insert(std::move(elem_mvb));
                 }
             },
-            [](VAL&) { throw std::invalid_argument("Expected symbol tree."); });
+            [](VAL&) { throw std::invalid_argument("Expected symbols value."); });
         }
 
         void write_value(const void* source_ptr, symbol& target_symbol) const override
@@ -273,10 +273,10 @@ namespace ax
                         VAR insertion = map_ptr->emplace(key, value);
                         if (!insertion.second) insertion.first->second = value;
                     },
-                    [](VAL&) { throw std::invalid_argument("Expected symbol tree."); });
+                    [](VAL&) { throw std::invalid_argument("Expected symbols value."); });
                 }
             },
-            [](VAL&) { throw std::invalid_argument("Expected symbol tree."); });
+            [](VAL&) { throw std::invalid_argument("Expected symbols value."); });
         }
 
         void write_value(const void* source_ptr, symbol& target_symbol) const override
@@ -383,22 +383,22 @@ namespace ax
             CONSTRAIN(P, pair);
             VAR* pair_ptr = static_cast<P*>(target_ptr);
             match2(source_symbol,
-            [&](VAL& source_tree)
+            [&](VAL& source_symbols)
             {
-                // validate source tree size
-                if (source_tree.size() != 2)
-                    throw std::invalid_argument("Expected value tree with two children");
+                // validate symbols count
+                if (source_symbols.size() != 2)
+                    throw std::invalid_argument("Expected two symbols.");
 
                 // populate target pair
                 typename P::first_type first_value_mvb{};
                 typename P::second_type second_value_mvb{};
                 VAL& first_type_descriptor = get_type_descriptor<typename P::first_type>();
                 VAL& second_type_descriptor = get_type_descriptor<typename P::second_type>();
-                read_value_vptr(*first_type_descriptor, source_tree[0], &first_value_mvb);
-                read_value_vptr(*second_type_descriptor, source_tree[1], &second_value_mvb);
+                read_value_vptr(*first_type_descriptor, source_symbols[0], &first_value_mvb);
+                read_value_vptr(*second_type_descriptor, source_symbols[1], &second_value_mvb);
                 *pair_ptr = P(std::move(first_value_mvb), std::move(second_value_mvb));
             },
-            [&](VAL&) { throw std::invalid_argument("Expected source symbol tree."); });
+            [&](VAL&) { throw std::invalid_argument("Expected symbols value."); });
         }
 
         void write_value(const void* source_ptr, symbol& target_symbol) const override
@@ -438,11 +438,11 @@ namespace ax
             CONSTRAIN(R, record);
             VAR* record_ptr = static_cast<R*>(target_ptr);
             match2(source_symbol,
-            [&](VAL& source_tree)
+            [&](VAL& source_symbols)
             {
-                // validate source tree size
-                if (source_tree.size() != 3)
-                    throw std::invalid_argument("Expected value tree with three children");
+                // validate symbols count
+                if (source_symbols.size() != 3)
+                    throw std::invalid_argument("Expected three symbols.");
 
                 // populate target record
                 typename R::first_type first_value_mvb{};
@@ -451,12 +451,12 @@ namespace ax
                 VAL& first_type_descriptor = get_type_descriptor<typename R::first_type>();
                 VAL& second_type_descriptor = get_type_descriptor<typename R::second_type>();
                 VAL& third_type_descriptor = get_type_descriptor<typename R::third_type>();
-                read_value_vptr(*first_type_descriptor, source_tree[0], &first_value_mvb);
-                read_value_vptr(*second_type_descriptor, source_tree[1], &second_value_mvb);
-                read_value_vptr(*third_type_descriptor, source_tree[2], &third_value_mvb);
+                read_value_vptr(*first_type_descriptor, source_symbols[0], &first_value_mvb);
+                read_value_vptr(*second_type_descriptor, source_symbols[1], &second_value_mvb);
+                read_value_vptr(*third_type_descriptor, source_symbols[2], &third_value_mvb);
                 *record_ptr = R(std::move(first_value_mvb), std::move(second_value_mvb), std::move(third_value_mvb));
             },
-            [&](VAL&) { throw std::invalid_argument("Expected source symbol tree."); });
+            [&](VAL&) { throw std::invalid_argument("Expected symbols value."); });
         }
 
         void write_value(const void* source_ptr, symbol& target_symbol) const override
@@ -500,14 +500,14 @@ namespace ax
                 if (symbols.size() != 2 ||
                     !is_atom(symbols[0]) ||
                     get_atom(symbols[0]) != "some")
-                    throw std::invalid_argument("Expected symbol tree with two children, with the first being a symbol leaf of 'some'");
+                    throw std::invalid_argument("Expected two symbols, with the first being the atom 'some'.");
                 T some_value_mvb{};
                 read_value_vptr(*type_descriptor, symbols[1], &some_value_mvb);
                 *option_ptr = some(std::move(some_value_mvb));
             },
             [&](VAL& atom)
             {
-                if (atom != "none") throw std::invalid_argument("Expected symbol 'none'.");
+                if (atom != "none") throw std::invalid_argument("Expected the atom 'none'.");
                 *option_ptr = none<T>();
             });
         }
@@ -550,19 +550,19 @@ namespace ax
             CONSTRAIN(E, either);
             VAR* either_ptr = static_cast<E*>(target_ptr);
             match2(source_symbol,
-            [&](VAL& source_tree)
+            [&](VAL& source_symbols)
             {
-                // validate source tree size
-                if (source_tree.size() != 2)
-                    throw std::invalid_argument("Expected source symbol tree with two children");
+                // validate symbol count
+                if (source_symbols.size() != 2)
+                    throw std::invalid_argument("Expected two symbols.");
 
                 // validate correct symbol name usage
-                VAL& symbol_name = source_tree[0];
-                VAL& symbol_value = source_tree[1];
+                VAL& symbol_name = source_symbols[0];
+                VAL& symbol_value = source_symbols[1];
                 VAL& right_name = get_right_name(*either_ptr);
                 VAL& left_name = get_left_name(*either_ptr);
                 if (!is_atom(symbol_name))
-                    throw std::invalid_argument("Expected source symbol tree with valid leaf names");
+                    throw std::invalid_argument("Expected two symbols with valid atom names.");
 
                 // populate target either
                 VAL& either_name = get_atom(symbol_name);
@@ -588,7 +588,7 @@ namespace ax
                         right_name + "'.");
                 }
             },
-            [&](VAL&) { throw std::invalid_argument("Expected source symbol tree."); });
+            [&](VAL&) { throw std::invalid_argument("Expected symbols value."); });
         }
 
         void write_value(const void* source_ptr, symbol& target_symbol) const override
@@ -636,20 +636,20 @@ namespace ax
             CONSTRAIN(C, choice);
             VAR* choice_ptr = static_cast<C*>(target_ptr);
             match2(source_symbol,
-            [&](VAL& source_tree)
+            [&](VAL& source_symbols)
             {
-                // validate source tree size
-                if (source_tree.size() != 2)
-                    throw std::invalid_argument("Expected source symbol tree with two children");
+                // validate symbols count
+                if (source_symbols.size() != 2)
+                    throw std::invalid_argument("Expected two symbols.");
 
                 // validate correct symbol name usage
-                VAL& symbol_name = source_tree[0];
-                VAL& symbol_value = source_tree[1];
+                VAL& symbol_name = source_symbols[0];
+                VAL& symbol_value = source_symbols[1];
                 VAL& first_name = get_first_name(*choice_ptr);
                 VAL& second_name = get_second_name(*choice_ptr);
                 VAL& third_name = get_third_name(*choice_ptr);
                 if (!is_atom(symbol_name))
-                    throw std::invalid_argument("Expected source symbol tree with valid leaf names");
+                    throw std::invalid_argument("Expected two symbols with valid atom names.");
 
                 // populate target choice
                 VAL& choice_name = get_atom(symbol_name);
@@ -683,7 +683,7 @@ namespace ax
                         third_name + "'.");
                 }
             },
-            [&](VAL&) { throw std::invalid_argument("Expected source symbol tree."); });
+            [&](VAL&) { throw std::invalid_argument("Expected symbols value."); });
         }
 
         void write_value(const void* source_ptr, symbol& target_symbol) const override
