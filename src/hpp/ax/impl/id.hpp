@@ -29,7 +29,7 @@ namespace ax
         constexpr id_t(int64_t x, int64_t y) : x(x), y(y) { }
         constexpr bool operator==(const id_t& that) const { return x == that.x && y == that.y; }
         static constexpr id_t invalid() { return id_t(); }
-        explicit operator std::size_t() const { return x ^ y; }
+        explicit operator std::size_t() const { return static_cast<std::size_t>(x ^ y); }
     };
 
     template<>
