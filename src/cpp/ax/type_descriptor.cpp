@@ -79,41 +79,41 @@ namespace ax
         throw std::runtime_error("reflectable_descriptor::inject_value not implemented.");
     }
 
-    static void read_value_internal(const std::shared_ptr<type_t>& type, const symbol::right_type& symbol_tree, reflectable& reflectable)
+    static void read_value_internal(const std::shared_ptr<type_t>& type, const symbol::right_type& symbols, reflectable& reflectable)
     {
         // read sub-type values
         if (VAL* base_type_index = get_base_type_index_opt(*type).get())
         {
             VAL& base_type = get_type(*base_type_index);
-            read_value_internal(base_type, symbol_tree, reflectable);
+            read_value_internal(base_type, symbols, reflectable);
         }
 
         // read current type values
         VAL& field_vector = get_field_vector(*type);
-        VAR symbol_tree_iter = std::begin(symbol_tree);
-        VAL symbol_tree_end = std::end(symbol_tree);
+        VAR symbols_iter = std::begin(symbols);
+        VAL symbols_end = std::end(symbols);
         for (VAL& field_kvp : field_vector)
         {
-            if (symbol_tree_iter != symbol_tree_end)
+            if (symbols_iter != symbols_end)
             {
                 VAL& field = field_kvp.second;
-                VAL& field_symbol = *symbol_tree_iter;
+                VAL& field_symbol = *symbols_iter;
                 VAL& field_type_index = get_type_index(*field);
                 VAL& field_type_descriptor = get_type_descriptor(field_type_index);
                 VAL& field_ptr = static_cast<char*>(static_cast<void*>(&reflectable)) + get_value_offset(*field);
                 read_value_vptr(*field_type_descriptor, field_symbol, field_ptr);
-                ++symbol_tree_iter;
+                ++symbols_iter;
             }
         }
     }
 
-    void write_value_internal(const std::shared_ptr<type_t>& type, const reflectable& reflectable, symbol::right_type& symbol_tree)
+    void write_value_internal(const std::shared_ptr<type_t>& type, const reflectable& reflectable, symbol::right_type& symbols)
     {
         // write sub-type values
         if (VAL* base_type_index = get_base_type_index_opt(*type).get())
         {
             VAL& base_type = get_type(*base_type_index);
-            write_value_internal(base_type, reflectable, symbol_tree);
+            write_value_internal(base_type, reflectable, symbols);
         }
 
         // write current type values
@@ -126,34 +126,34 @@ namespace ax
             VAL& field_type_descriptor = get_type_descriptor(field_type_index);
             VAL& field_ptr = static_cast<const char*>(static_cast<const void*>(&reflectable)) + get_value_offset(*field);
             write_value_vptr(*field_type_descriptor, field_ptr, field_symbol_mvb);
-            symbol_tree.emplace_back(std::move(field_symbol_mvb));
+            symbols.emplace_back(std::move(field_symbol_mvb));
         }
     }
 
     void reflectable_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         // ensure target is symbol tree
-        if (!is_symbol_tree(target_symbol)) target_symbol = symbol_tree({});
+        if (!is_symbols(target_symbol)) target_symbol = symbols({});
 
         // get type to write
-        VAR& symbol_tree = get_symbol_tree(target_symbol);
+        VAR& symbols = get_symbols(target_symbol);
         VAL* reflectable_ptr = static_cast<const reflectable*>(source_ptr);
         VAL& reflectable = *reflectable_ptr;
         VAL& type = get_type(reflectable);
 
         // write values
-        write_value_internal(type, reflectable, symbol_tree);
+        write_value_internal(type, reflectable, symbols);
     }
 
     void reflectable_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* reflectable_ptr = static_cast<reflectable*>(target_ptr);
         match2(source_symbol,
-        [&](VAL& symbol_tree)
+        [&](VAL& symbols)
         {
             VAR& reflectable = *reflectable_ptr;
             VAL& type = get_type(reflectable);
-            read_value_internal(type, symbol_tree, reflectable);
+            read_value_internal(type, symbols, reflectable);
         },
         [](VAL&) { throw std::invalid_argument("Expected symbol tree."); });
     }

@@ -153,11 +153,11 @@ namespace ax
         {
             VAR* vector_ptr = static_cast<std::vector<T>*>(target_ptr);
             match2(source_symbol,
-            [&](VAL& symbol_tree)
+            [&](VAL& symbols)
             {
                 vector_ptr->clear();
                 VAL& type_descriptor = get_type_descriptor<T>();
-                for (VAL& symbol : symbol_tree)
+                for (VAL& symbol : symbols)
                 {
                     T elem_mvb{};
                     read_value_vptr(*type_descriptor, symbol, static_cast<void*>(&elem_mvb));
@@ -170,15 +170,15 @@ namespace ax
         void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             VAL* vector_ptr = static_cast<const std::vector<T>*>(source_ptr);
-            std::vector<symbol> symbol_tree{};
+            std::vector<symbol> symbols{};
             for (VAL& elem : *vector_ptr)
             {
                 symbol symbol_mvb{};
                 VAL& type_descriptor = get_type_descriptor<T>();
                 write_value_vptr(*type_descriptor, static_cast<const void*>(&elem), symbol_mvb);
-                symbol_tree.emplace_back(std::move(symbol_mvb));
+                symbols.emplace_back(std::move(symbol_mvb));
             }
-            target_symbol = ax::symbol_tree(symbol_tree);
+            target_symbol = ax::symbols(symbols);
         }
     };
 
@@ -201,11 +201,11 @@ namespace ax
         {
             VAR* set_ptr = static_cast<std::unordered_set<T>*>(target_ptr);
             match2(source_symbol,
-            [&](VAL& symbol_tree)
+            [&](VAL& symbols)
             {
                 set_ptr->clear();
                 VAL& type_descriptor = get_type_descriptor<T>();
-                for (VAL& symbol : symbol_tree)
+                for (VAL& symbol : symbols)
                 {
                     T elem_mvb{};
                     read_value_vptr(*type_descriptor, symbol, static_cast<void*>(&elem_mvb));
@@ -218,15 +218,15 @@ namespace ax
         void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             VAL* set_ptr = static_cast<const std::unordered_set<T>*>(source_ptr);
-            std::vector<symbol> symbol_tree{};
+            std::vector<symbol> symbols{};
             for (VAL& elem : *set_ptr)
             {
                 symbol symbol_mvb{};
                 VAL& type_descriptor = get_type_descriptor<T>();
                 write_value_vptr(*type_descriptor, static_cast<const void*>(&elem), symbol_mvb);
-                symbol_tree.emplace_back(std::move(symbol_mvb));
+                symbols.emplace_back(std::move(symbol_mvb));
             }
-            target_symbol = ax::symbol_tree(symbol_tree);
+            target_symbol = ax::symbols(symbols);
         }
     };
 
@@ -249,27 +249,27 @@ namespace ax
         {
             VAR* map_ptr = static_cast<std::unordered_map<K, V>*>(target_ptr);
             match2(source_symbol,
-            [&](VAL& symbol_tree)
+            [&](VAL& symbols)
             {
                 map_ptr->clear();
                 VAL& key_type_descriptor = get_type_descriptor<K>();
                 VAL& value_type_descriptor = get_type_descriptor<V>();
-                for (VAL& symbol : symbol_tree)
+                for (VAL& symbol : symbols)
                 {
                     match2(symbol,
-                    [&](VAL& symbol_tree)
+                    [&](VAL& symbols)
                     {
                         // ensure correct symbol structure
-                        if (symbol_tree.size() != 2 ||
-                            !is_symbol_leaf(symbol_tree[0]) ||
-                            !is_symbol_leaf(symbol_tree[1]))
+                        if (symbols.size() != 2 ||
+                            !is_atom(symbols[0]) ||
+                            !is_atom(symbols[1]))
                             throw std::invalid_argument("Expected two symbol leaves.");
 
                         // read value
                         K key{};
                         V value{};
-                        read_value_vptr(*key_type_descriptor, symbol_tree[0], static_cast<void*>(&key));
-                        read_value_vptr(*value_type_descriptor, symbol_tree[1], static_cast<void*>(&value));
+                        read_value_vptr(*key_type_descriptor, symbols[0], static_cast<void*>(&key));
+                        read_value_vptr(*value_type_descriptor, symbols[1], static_cast<void*>(&value));
                         VAR insertion = map_ptr->emplace(key, value);
                         if (!insertion.second) insertion.first->second = value;
                     },
@@ -284,15 +284,15 @@ namespace ax
             VAL* map_ptr = static_cast<const std::unordered_map<K, V>*>(source_ptr);
             VAL& key_type_descriptor = get_type_descriptor<K>();
             VAL& value_type_descriptor = get_type_descriptor<V>();
-            std::vector<symbol> symbol_tree{};
+            std::vector<symbol> symbols{};
             for (VAL& kvp : *map_ptr)
             {
                 symbol::right_type symbol_kvp_mvb({ symbol{}, symbol{} });
                 write_value_vptr(*key_type_descriptor, static_cast<const void*>(&kvp.first), symbol_kvp_mvb[0]);
                 write_value_vptr(*value_type_descriptor, static_cast<const void*>(&kvp.second), symbol_kvp_mvb[1]);
-                symbol_tree.emplace_back(ax::symbol_tree(std::move(symbol_kvp_mvb)));
+                symbols.emplace_back(ax::symbols(std::move(symbol_kvp_mvb)));
             }
-            target_symbol = ax::symbol_tree(symbol_tree);
+            target_symbol = ax::symbols(symbols);
         }
     };
 
@@ -405,13 +405,13 @@ namespace ax
         {
             CONSTRAIN(P, pair);
             VAL* pair_ptr = static_cast<const P*>(source_ptr);
-            symbol::right_type symbol_tree_mvb{};
-            symbol_tree_mvb.resize(2_z);
+            symbol::right_type symbols_mvb{};
+            symbols_mvb.resize(2_z);
             VAL& first_type_descriptor = get_type_descriptor<typename P::first_type>();
             VAL& second_type_descriptor = get_type_descriptor<typename P::second_type>();
-            write_value_vptr(*first_type_descriptor, static_cast<const void*>(&fst(*pair_ptr)), symbol_tree_mvb[0]);
-            write_value_vptr(*second_type_descriptor, static_cast<const void*>(&snd(*pair_ptr)), symbol_tree_mvb[1]);
-            target_symbol = symbol_tree(std::move(symbol_tree_mvb));
+            write_value_vptr(*first_type_descriptor, static_cast<const void*>(&fst(*pair_ptr)), symbols_mvb[0]);
+            write_value_vptr(*second_type_descriptor, static_cast<const void*>(&snd(*pair_ptr)), symbols_mvb[1]);
+            target_symbol = symbols(std::move(symbols_mvb));
         }
     };
 
@@ -463,15 +463,15 @@ namespace ax
         {
             CONSTRAIN(R, record);
             VAL* record_ptr = static_cast<const R*>(source_ptr);
-            symbol::right_type symbol_tree_mvb{};
-            symbol_tree_mvb.resize(3_z);
+            symbol::right_type symbols_mvb{};
+            symbols_mvb.resize(3_z);
             VAL& first_type_descriptor = get_type_descriptor<typename R::first_type>();
             VAL& second_type_descriptor = get_type_descriptor<typename R::second_type>();
             VAL& third_type_descriptor = get_type_descriptor<typename R::third_type>();
-            write_value_vptr(*first_type_descriptor, static_cast<const void*>(&fst(*record_ptr)), symbol_tree_mvb[0]);
-            write_value_vptr(*second_type_descriptor, static_cast<const void*>(&snd(*record_ptr)), symbol_tree_mvb[1]);
-            write_value_vptr(*third_type_descriptor, static_cast<const void*>(&thd(*record_ptr)), symbol_tree_mvb[2]);
-            target_symbol = symbol_tree(std::move(symbol_tree_mvb));
+            write_value_vptr(*first_type_descriptor, static_cast<const void*>(&fst(*record_ptr)), symbols_mvb[0]);
+            write_value_vptr(*second_type_descriptor, static_cast<const void*>(&snd(*record_ptr)), symbols_mvb[1]);
+            write_value_vptr(*third_type_descriptor, static_cast<const void*>(&thd(*record_ptr)), symbols_mvb[2]);
+            target_symbol = symbols(std::move(symbols_mvb));
         }
     };
 
@@ -495,19 +495,19 @@ namespace ax
             VAR* option_ptr = static_cast<option<T>*>(target_ptr);
             VAL& type_descriptor = get_type_descriptor<T>();
             match2(source_symbol,
-            [&](VAL& symbol_tree)
+            [&](VAL& symbols)
             {
-                if (symbol_tree.size() != 2 ||
-                    !is_symbol_leaf(symbol_tree[0]) ||
-                    get_symbol_leaf(symbol_tree[0]) != "some")
+                if (symbols.size() != 2 ||
+                    !is_atom(symbols[0]) ||
+                    get_atom(symbols[0]) != "some")
                     throw std::invalid_argument("Expected symbol tree with two children, with the first being a symbol leaf of 'some'");
                 T some_value_mvb{};
-                read_value_vptr(*type_descriptor, symbol_tree[1], &some_value_mvb);
+                read_value_vptr(*type_descriptor, symbols[1], &some_value_mvb);
                 *option_ptr = some(std::move(some_value_mvb));
             },
-            [&](VAL& symbol_leaf)
+            [&](VAL& atom)
             {
-                if (symbol_leaf != "none") throw std::invalid_argument("Expected symbol 'none'.");
+                if (atom != "none") throw std::invalid_argument("Expected symbol 'none'.");
                 *option_ptr = none<T>();
             });
         }
@@ -521,9 +521,9 @@ namespace ax
                 symbol symbol_value_mvb{};
                 VAL& type_descriptor = get_type_descriptor<T>();
                 write_value_vptr(*type_descriptor, static_cast<const void*>(&some_value), symbol_value_mvb);
-                target_symbol = symbol_tree({ symbol_leaf("some"), std::move(symbol_value_mvb) });
+                target_symbol = symbols({ atom("some"), std::move(symbol_value_mvb) });
             },
-            [&]() { target_symbol = symbol_leaf("none"); });
+            [&]() { target_symbol = atom("none"); });
         }
     };
 
@@ -561,11 +561,11 @@ namespace ax
                 VAL& symbol_value = source_tree[1];
                 VAL& right_name = get_right_name(*either_ptr);
                 VAL& left_name = get_left_name(*either_ptr);
-                if (!is_symbol_leaf(symbol_name))
+                if (!is_atom(symbol_name))
                     throw std::invalid_argument("Expected source symbol tree with valid leaf names");
 
                 // populate target either
-                VAL& either_name = get_symbol_leaf(symbol_name);
+                VAL& either_name = get_atom(symbol_name);
                 if (either_name == right_name)
                 {
                     typename E::right_type right_value_mvb{};
@@ -601,14 +601,14 @@ namespace ax
                 symbol symbol_mvb{};
                 VAL& right_type_descriptor = get_type_descriptor<typename E::right_type>();
                 write_value_vptr(*right_type_descriptor, static_cast<const void*>(&right_value), symbol_mvb);
-                target_symbol = symbol_tree({ symbol_leaf(get_right_name(*either_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(get_right_name(*either_ptr)), std::move(symbol_mvb) });
             },
             [&](VAL& left_value)
             {
                 symbol symbol_mvb{};
                 VAL& left_type_descriptor = get_type_descriptor<typename E::left_type>();
                 write_value_vptr(*left_type_descriptor, static_cast<const void*>(&left_value), symbol_mvb);
-                target_symbol = symbol_tree({ symbol_leaf(get_left_name(*either_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(get_left_name(*either_ptr)), std::move(symbol_mvb) });
             });
         }
     };
@@ -648,11 +648,11 @@ namespace ax
                 VAL& first_name = get_first_name(*choice_ptr);
                 VAL& second_name = get_second_name(*choice_ptr);
                 VAL& third_name = get_third_name(*choice_ptr);
-                if (!is_symbol_leaf(symbol_name))
+                if (!is_atom(symbol_name))
                     throw std::invalid_argument("Expected source symbol tree with valid leaf names");
 
                 // populate target choice
-                VAL& choice_name = get_symbol_leaf(symbol_name);
+                VAL& choice_name = get_atom(symbol_name);
                 if (choice_name == first_name)
                 {
                     typename C::first_type first_value_mvb{};
@@ -696,21 +696,21 @@ namespace ax
                 symbol symbol_mvb{};
                 VAL& first_type_descriptor = get_type_descriptor<typename C::first_type>();
                 write_value_vptr(*first_type_descriptor, static_cast<const void*>(&first_value), symbol_mvb);
-                target_symbol = symbol_tree({ symbol_leaf(get_first_name(*choice_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(get_first_name(*choice_ptr)), std::move(symbol_mvb) });
             },
             [&](VAL& second_value)
             {
                 symbol symbol_mvb{};
                 VAL& second_type_descriptor = get_type_descriptor<typename C::second_type>();
                 write_value_vptr(*second_type_descriptor, static_cast<const void*>(&second_value), symbol_mvb);
-                target_symbol = symbol_tree({ symbol_leaf(get_second_name(*choice_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(get_second_name(*choice_ptr)), std::move(symbol_mvb) });
             },
             [&](VAL& third_value)
             {
                 symbol symbol_mvb{};
                 VAL& third_type_descriptor = get_type_descriptor<typename C::third_type>();
                 write_value_vptr(*third_type_descriptor, static_cast<const void*>(&third_value), symbol_mvb);
-                target_symbol = symbol_tree({ symbol_leaf(get_third_name(*choice_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(get_third_name(*choice_ptr)), std::move(symbol_mvb) });
             });
         }
     };
