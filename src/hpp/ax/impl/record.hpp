@@ -65,7 +65,6 @@ namespace ax
         record(record&&) = default;
         record& operator=(const record&) = default;
         record& operator=(record&&) = default;
-        ~record() = default;
 
         record(const First& first, const Second& second, const Third& third) : first(first), second(second), third(third) { }
         record(First&& first, Second&& second, Third&& third) : first(first), second(second), third(third) { }

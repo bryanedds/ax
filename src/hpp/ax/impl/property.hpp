@@ -36,7 +36,6 @@ namespace ax
         property& operator=(property&&) = default;
 
         explicit property(const T& value) : data(value) { }
-
         T& operator=(const T& value) { return data = value; }
         T& operator=(T&& value) { return data = value; }
         const T& operator*() const { return data; }

@@ -27,7 +27,6 @@ namespace ax
         option(option&&) = default;
         option& operator=(const option&) = default;
         option& operator=(option&&) = default;
-        ~option() = default;
 
         explicit option(const T& content, bool) : is_some(true), content(content) { }
         explicit option(T&& content, bool) : is_some(true), content(content) { }

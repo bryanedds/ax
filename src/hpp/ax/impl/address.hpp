@@ -38,9 +38,8 @@ namespace ax
         explicit address(const std::vector<std::string>& names);
         explicit address(const char* names_str);
         explicit address(const std::string& names_str);
-
         bool operator==(const address& that) const;
-        address operator+(const address& right) const;
+        address operator+(const address& that) const;
         explicit operator std::size_t() const;
     };
 

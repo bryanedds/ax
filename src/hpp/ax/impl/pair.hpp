@@ -52,7 +52,6 @@ namespace ax
         pair(pair&&) = default;
         pair& operator=(const pair&) = default;
         pair& operator=(pair&&) = default;
-        ~pair() = default;
 
         pair(const First& first, const Second& second) : first(first), second(second) { }
         pair(First&& first, Second&& second) : first(first), second(second) { }

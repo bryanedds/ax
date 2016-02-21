@@ -80,7 +80,6 @@ namespace ax
         explicit choice(First&& first) : index(0_z), first(first) { }
         explicit choice(Second&& second, bool) : index(1_z), second(second) { }
         explicit choice(Third&& third, bool, bool) : index(2_z), third(third) { }
-        
         explicit operator bool() const { return index == 0_z; }
         explicit operator bool() { return index == 0_z; }
     };

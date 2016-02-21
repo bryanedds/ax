@@ -54,7 +54,6 @@ namespace ax
         either(either&&) = default;
         either& operator=(const either&) = default;
         either& operator=(either&&) = default;
-        ~either() = default;
 
         either(const R& right) : is_right(true), right(right) { }
         either(const L& left, bool) : is_right(false), left(left) { }
