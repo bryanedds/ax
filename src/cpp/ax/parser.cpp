@@ -137,7 +137,7 @@ namespace ax
                 }
             }
         }
-        return parse_failure<symbol>("Unknown parser error.");
+        else return parse_failure<symbol>("Unknown parser error due to: "_s + ~parse);
     }
 
     static symbol parse_symbol_from_xml_node(rapidxml::xml_node<char>* parent_node)
