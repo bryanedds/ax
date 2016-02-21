@@ -120,9 +120,19 @@ namespace ax
                     }
                     else return parse_failure<symbol>(~parse);
                 }
+                case '`':
+                {
+                    // TODO: implement recursive quotes
+                    if (VAL& parse = parse_until_given_char(iter, end, '\''))
+                    {
+                        if (VAL& parse2 = skip_given_char(iter, end, '\'')) return parse_success(quote(*parse));
+                        else return parse_failure<symbol>(~parse2);
+                    }
+                    else return parse_failure<symbol>(~parse);
+                }
                 default:
                 {
-                    if (VAL& parse = parse_until_any_given_char(iter, end, "[]\" \n\r\t")) return parse_success(atom(std::string(1, chr) + *parse));
+                    if (VAL& parse = parse_until_any_given_char(iter, end, "[]`\'\" \n\r\t")) return parse_success(atom(std::string(1, chr) + *parse));
                     else return parse_failure<symbol>(~parse);
                 }
             }
