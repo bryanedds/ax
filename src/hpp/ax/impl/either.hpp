@@ -9,7 +9,6 @@
 
 namespace ax
 {
-    // TODO: reverse order of type parameters - it's just too confusing, I think...
     template<typename R, typename L>
     class either
     {
