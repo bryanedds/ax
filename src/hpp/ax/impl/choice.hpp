@@ -112,6 +112,24 @@ namespace ax
     }
 
     template<typename First, typename Second, typename Third>
+    bool is_first(const choice<First, Second, Third>& chc)
+    {
+        return get_index(chc) == 0_z;
+    }
+
+    template<typename First, typename Second, typename Third>
+    bool is_second(const choice<First, Second, Third>& chc)
+    {
+        return get_index(chc) == 1_z;
+    }
+
+    template<typename First, typename Second, typename Third>
+    bool is_third(const choice<First, Second, Third>& chc)
+    {
+        return get_index(chc) == 2_z;
+    }
+
+    template<typename First, typename Second, typename Third>
     First& get_first(choice<First, Second, Third>& chc)
     {
         if (chc.index == 0_z) return chc.first;
@@ -193,77 +211,96 @@ namespace ax
     }
 }
 
-#define SUM_TYPE3(T, FirstType, FirstName, SecondType, SecondName, ThirdType, ThirdName) \
-    class T : public ::ax::choice<FirstType, SecondType, ThirdType> \
+#define SUM_TYPE3(T, Ft, Fn, St, Sn, Tt, Tn) \
+    class T : public ::ax::choice<Ft, St, Tt> \
     { \
     protected: \
     \
-        const char* get_first_name() const override { return #SecondName; } \
-        const char* get_second_name() const override { return #FirstName; } \
-        const char* get_third_name() const override { return #ThirdName; } \
+        const char* get_first_name() const override { return #Sn; } \
+        const char* get_second_name() const override { return #Fn; } \
+        const char* get_third_name() const override { return #Tn; } \
     \
     public: \
     \
         CONSTRAINT(T); \
-        using ::ax::choice<FirstType, SecondType, ThirdType>::choice; \
+        using ::ax::choice<Ft, St, Tt>::choice; \
     }; \
     \
-    inline T FirstName(const FirstType& first_value) \
+    using Fn##_t = Ft; \
+    using Sn##_t = St; \
+    using Tn##_t = Tt; \
+    \
+    inline T Fn(const Ft& first_value) \
     { \
         return T(first_value); \
     } \
     \
-    inline T SecondName(const SecondType& second_value) \
+    inline T Sn(const St& second_value) \
     { \
         return T(second_value, false); \
     } \
     \
-    inline T ThirdName(const ThirdType& third_value) \
+    inline T Tn(const Tt& third_value) \
     { \
         return T(third_value, false, false); \
     } \
     \
-    inline T FirstName(FirstType&& first_value) \
+    inline T Fn(Ft&& first_value) \
     { \
         return T(first_value); \
     } \
     \
-    inline T SecondName(SecondType&& second_value) \
+    inline T Sn(St&& second_value) \
     { \
         return T(second_value, false); \
     } \
     \
-    inline T ThirdName(ThirdType&& third_value) \
+    inline T Tn(Tt&& third_value) \
     { \
         return T(third_value, false, false); \
     } \
     \
-    inline const T::first_type& get_##FirstName(const T& chc) \
+    inline bool is_##Fn(const T& chc) \
+    { \
+        return is_first(chc); \
+    } \
+    \
+    inline bool is_##Sn(const T& chc) \
+    { \
+        return is_second(chc); \
+    } \
+    \
+    inline bool is_##Tn(const T& chc) \
+    { \
+        return is_third(chc); \
+    } \
+    \
+    inline const T::first_type& get_##Fn(const T& chc) \
     { \
         return get_first(chc); \
     } \
     \
-    inline const T::second_type& get_##SecondName(const T& chc) \
+    inline const T::second_type& get_##Sn(const T& chc) \
     { \
         return get_second(chc); \
     } \
     \
-    inline const T::third_type& get_##ThirdName(const T& chc) \
+    inline const T::third_type& get_##Tn(const T& chc) \
     { \
         return get_third(chc); \
     } \
     \
-    inline T::first_type& get_##FirstName(T& chc) \
+    inline T::first_type& get_##Fn(T& chc) \
     { \
         return get_first(chc); \
     } \
     \
-    inline T::second_type& get_##SecondName(T& chc) \
+    inline T::second_type& get_##Sn(T& chc) \
     { \
         return get_second(chc); \
     } \
     \
-    inline T::third_type& get_##ThirdName(T& chc) \
+    inline T::third_type& get_##Tn(T& chc) \
     { \
         return get_third(chc); \
     } \

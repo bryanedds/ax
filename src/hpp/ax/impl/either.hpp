@@ -9,7 +9,8 @@
 
 namespace ax
 {
-    template<typename L, typename R>
+    // TODO: reverse order of type parameters - it's just too confusing, I think...
+    template<typename R, typename L>
     class either
     {
     private:
@@ -24,16 +25,16 @@ namespace ax
         virtual const char* get_left_name() const { return "left"; }
 
         template<typename A, typename B>
-        friend const B& get_right(const either<A, B>& eir);
+        friend const A& get_right(const either<A, B>& eir);
 
         template<typename A, typename B>
-        friend const A& get_left(const either<A, B>& eir);
+        friend const B& get_left(const either<A, B>& eir);
 
         template<typename A, typename B>
-        friend B& get_right(either<A, B>& eir);
+        friend A& get_right(either<A, B>& eir);
 
         template<typename A, typename B>
-        friend A& get_left(either<A, B>& eir);
+        friend B& get_left(either<A, B>& eir);
 
         template<typename A, typename B>
         friend const char* get_right_name(const either<A, B>& eir);
@@ -88,92 +89,92 @@ namespace ax
         }
     };
 
-    template<typename L, typename R>
-    bool is_right(const either<L, R>& eir)
+    template<typename R, typename L>
+    bool is_right(const either<R, L>& eir)
     {
         return static_cast<bool>(eir);
     }
 
-    template<typename L, typename R>
-    bool is_left(const either<L, R>& eir)
+    template<typename R, typename L>
+    bool is_left(const either<R, L>& eir)
     {
         return !static_cast<bool>(eir);
     }
 
-    template<typename L, typename R>
-    const R& get_right(const either<L, R>& eir)
+    template<typename R, typename L>
+    const R& get_right(const either<R, L>& eir)
     {
         if (eir.is_right) return eir.right;
         throw std::runtime_error("Cannot get '"_s + get_right_name(eir) + "' value.");
     }
 
-    template<typename L, typename R>
-    const L& get_left(const either<L, R>& eir)
+    template<typename R, typename L>
+    const L& get_left(const either<R, L>& eir)
     {
         if (!eir.is_right) return eir.left;
         throw std::runtime_error("Cannot get '"_s + get_left_name(eir) + "' value.");
     }
 
-    template<typename L, typename R>
-    R& get_right(either<L, R>& eir)
+    template<typename R, typename L>
+    R& get_right(either<R, L>& eir)
     {
         if (eir.is_right) return eir.right;
         throw std::runtime_error("Cannot get '"_s + get_right_name(eir) + "' value.");
     }
 
-    template<typename L, typename R>
-    L& get_left(either<L, R>& eir)
+    template<typename R, typename L>
+    L& get_left(either<R, L>& eir)
     {
         if (!eir.is_right) return eir.left;
         throw std::runtime_error("Cannot get '"_s + get_left_name(eir) + "' value.");
     }
 
-    template<typename L, typename R>
-    const char* get_right_name(const either<L, R>& eir)
+    template<typename R, typename L>
+    const char* get_right_name(const either<R, L>& eir)
     {
         return eir.get_right_name();
     }
 
-    template<typename L, typename R>
-    const char* get_left_name(const either<L, R>& eir)
+    template<typename R, typename L>
+    const char* get_left_name(const either<R, L>& eir)
     {
         return eir.get_left_name();
     }
 
-    template<typename L, typename R>
-    either<L, R> right(const R& right)
+    template<typename R, typename L>
+    either<R, L> right(const R& right)
     {
-        return either<L, R>(right);
+        return either<R, L>(right);
     }
 
-    template<typename L, typename R>
-    either<L, R> left(const L& left)
+    template<typename R, typename L>
+    either<R, L> left(const L& left)
     {
-        return either<L, R>(left, false);
+        return either<R, L>(left, false);
     }
 
-    template<typename L, typename R>
-    either<L, R> right(R&& right)
+    template<typename R, typename L>
+    either<R, L> right(R&& right)
     {
-        return either<L, R>(right);
+        return either<R, L>(right);
     }
 
-    template<typename L, typename R>
-    either<L, R> left(L&& left)
+    template<typename R, typename L>
+    either<R, L> left(L&& left)
     {
-        return either<L, R>(left, false);
+        return either<R, L>(left, false);
     }
 
-    template<typename E, typename Lf, typename Rf>
-    auto match2(const E& eir, Rf right_fn, Lf left_fn)
+    template<typename E, typename Rf, typename Lf>
+    auto match(const E& eir, Rf right_fn, Lf left_fn)
     {
         CONSTRAIN(E, either);
         if (is_right(eir)) return right_fn(get_right(eir));
         return left_fn(get_left(eir));
     }
 
-    template<typename E, typename Lf, typename Rf>
-    auto match2(E& eir, Rf right_fn, Lf left_fn)
+    template<typename E, typename Rf, typename Lf>
+    auto match(E& eir, Rf right_fn, Lf left_fn)
     {
         CONSTRAIN(E, either);
         if (is_right(eir)) return right_fn(get_right(eir));
@@ -181,19 +182,22 @@ namespace ax
     }
 }
 
-#define SUM_TYPE(T, Lt, Ln, Rt, Rn) \
-    class T : public ::ax::either<Lt, Rt> \
+#define SUM_TYPE(T, Rt, Rn, Lt, Ln) \
+    class T : public ::ax::either<Rt, Lt> \
     { \
     protected: \
     \
-        const char* get_right_name() const override { return #Ln; } \
-        const char* get_left_name() const override { return #Rn; } \
+        const char* get_right_name() const override { return #Rn; } \
+        const char* get_left_name() const override { return #Ln; } \
     \
     public: \
     \
         CONSTRAINT(T); \
-        using ::ax::either<Lt, Rt>::either; \
+        using ::ax::either<Rt, Lt>::either; \
     }; \
+    \
+    using Rt##_t = Rn; \
+    using Lt##_t = Ln; \
     \
     inline T Rn(const Rt& right_value) \
     { \

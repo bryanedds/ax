@@ -27,9 +27,10 @@ namespace ax
     void bool_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* bool_ptr = static_cast<bool*>(target_ptr);
-        match2(source_symbol,
+        match3(source_symbol,
+        [&](VAL& atom) { *bool_ptr = atom != "false" && atom != "0"; },
         [](VAL&) { throw std::invalid_argument("Expected atom."); },
-        [&](VAL& atom) { *bool_ptr = atom != "false" && atom != "0"; });
+        [](VAL&) { throw std::invalid_argument("Expected atom."); });
     }
 
     void bool_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
@@ -53,9 +54,10 @@ namespace ax
     void int_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* int_ptr = static_cast<int*>(target_ptr);
-        match2(source_symbol,
+        match3(source_symbol,
+        [&](VAL& atom) { *int_ptr = static_cast<int>(strtoll(atom.c_str(), nullptr, 10)); },
         [](VAL&) { throw std::invalid_argument("Expected atom."); },
-        [&](VAL& atom) { *int_ptr = static_cast<int>(strtoll(atom.c_str(), nullptr, 10)); });
+        [](VAL&) { throw std::invalid_argument("Expected atom."); });
     }
 
     void int_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
@@ -79,9 +81,10 @@ namespace ax
     void int32_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* int32_ptr = static_cast<int32_t*>(target_ptr);
-        match2(source_symbol,
+        match3(source_symbol,
+        [&](VAL& atom) { *int32_ptr = static_cast<int32_t>(strtoll(atom.c_str(), nullptr, 10)); },
         [](VAL&) { throw std::invalid_argument("Expected atom."); },
-        [&](VAL& atom) { *int32_ptr = static_cast<int32_t>(strtoll(atom.c_str(), nullptr, 10)); });
+        [](VAL&) { throw std::invalid_argument("Expected atom."); });
     }
 
     void int32_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
@@ -105,9 +108,10 @@ namespace ax
     void int64_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* int64_ptr = static_cast<int64_t*>(target_ptr);
-        match2(source_symbol,
+        match3(source_symbol,
+        [&](VAL& atom) { *int64_ptr = static_cast<int64_t>(strtoll(atom.c_str(), nullptr, 10)); },
         [](VAL&) { throw std::invalid_argument("Expected atom."); },
-        [&](VAL& atom) { *int64_ptr = static_cast<int64_t>(strtoll(atom.c_str(), nullptr, 10)); });
+        [](VAL&) { throw std::invalid_argument("Expected atom."); });
     }
 
     void int64_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
@@ -131,9 +135,10 @@ namespace ax
     void float_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* float_ptr = static_cast<float*>(target_ptr);
-        match2(source_symbol,
+        match3(source_symbol,
+        [&](VAL& atom) { *float_ptr = static_cast<float>(strtod(atom.c_str(), nullptr)); },
         [](VAL&) { throw std::invalid_argument("Expected atom."); },
-        [&](VAL& atom) { *float_ptr = static_cast<float>(strtod(atom.c_str(), nullptr)); });
+        [](VAL&) { throw std::invalid_argument("Expected atom."); });
     }
 
     void float_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
@@ -157,9 +162,10 @@ namespace ax
     void double_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* double_ptr = static_cast<double*>(target_ptr);
-        match2(source_symbol,
+        match3(source_symbol,
+        [&](VAL& atom) { *double_ptr = strtod(atom.c_str(), nullptr); },
         [](VAL&) { throw std::invalid_argument("Expected atom."); },
-        [&](VAL& atom) { *double_ptr = strtod(atom.c_str(), nullptr); });
+        [](VAL&) { throw std::invalid_argument("Expected atom."); });
     }
 
     void double_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
@@ -183,9 +189,10 @@ namespace ax
     void size_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* size_ptr = static_cast<size_t*>(target_ptr);
-        match2(source_symbol,
+        match3(source_symbol,
+        [&](VAL& atom) { *size_ptr = static_cast<size_t>(strtoll(atom.c_str(), nullptr, 10)); },
         [](VAL&) { throw std::invalid_argument("Expected atom."); },
-        [&](VAL& atom) { *size_ptr = static_cast<size_t>(strtoll(atom.c_str(), nullptr, 10)); });
+        [](VAL&) { throw std::invalid_argument("Expected atom."); });
     }
 
     void size_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
@@ -209,9 +216,10 @@ namespace ax
     void string_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* string_ptr = static_cast<std::string*>(target_ptr);
-        match2(source_symbol,
+        match3(source_symbol,
+        [&](VAL& atom) { *string_ptr = atom; },
         [](VAL&) { throw std::invalid_argument("Expected atom."); },
-        [&](VAL& atom) { *string_ptr = atom; });
+        [](VAL&) { throw std::invalid_argument("Expected atom."); });
     }
 
     void string_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
@@ -235,9 +243,10 @@ namespace ax
     void name_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* name_ptr = static_cast<name_t*>(target_ptr);
-        match2(source_symbol,
+        match3(source_symbol,
+        [&](VAL& atom) { *name_ptr = atom; },
         [](VAL&) { throw std::invalid_argument("Expected atom."); },
-        [&](VAL& atom) { *name_ptr = atom; });
+        [](VAL&) { throw std::invalid_argument("Expected atom."); });
     }
 
     void name_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
@@ -261,9 +270,10 @@ namespace ax
     void address_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* address_ptr = static_cast<address*>(target_ptr);
-        match2(source_symbol,
+        match3(source_symbol,
+        [&](VAL& atom) { *address_ptr = address(atom); },
         [](VAL&) { throw std::invalid_argument("Expected atom."); },
-        [&](VAL& atom) { *address_ptr = address(atom); });
+        [](VAL&) { throw std::invalid_argument("Expected atom."); });
     }
 
     void address_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
@@ -392,14 +402,14 @@ namespace ax
         register_type_descriptor<either<std::string, std::string>>(std::make_shared<either_descriptor<either<std::string, std::string>>>());
 
         // either type descriptors (with left as error string)
-        register_type_descriptor<either<std::string, bool>>(std::make_shared<either_descriptor<either<std::string, bool>>>());
-        register_type_descriptor<either<std::string, char>>(std::make_shared<either_descriptor<either<std::string, char>>>());
-        register_type_descriptor<either<std::string, int>>(std::make_shared<either_descriptor<either<std::string, int>>>());
-        register_type_descriptor<either<std::string, int32_t>>(std::make_shared<either_descriptor<either<std::string, int32_t>>>());
-        register_type_descriptor<either<std::string, int64_t>>(std::make_shared<either_descriptor<either<std::string, int64_t>>>());
-        register_type_descriptor<either<std::string, float>>(std::make_shared<either_descriptor<either<std::string, float>>>());
-        register_type_descriptor<either<std::string, double>>(std::make_shared<either_descriptor<either<std::string, double>>>());
-        register_type_descriptor<either<std::string, std::size_t>>(std::make_shared<either_descriptor<either<std::string, std::size_t>>>());
+        register_type_descriptor<either<bool, std::string>>(std::make_shared<either_descriptor<either<bool, std::string>>>());
+        register_type_descriptor<either<char, std::string>>(std::make_shared<either_descriptor<either<char, std::string>>>());
+        register_type_descriptor<either<int, std::string>>(std::make_shared<either_descriptor<either<int, std::string>>>());
+        register_type_descriptor<either<int32_t, std::string>>(std::make_shared<either_descriptor<either<int32_t, std::string>>>());
+        register_type_descriptor<either<int64_t, std::string>>(std::make_shared<either_descriptor<either<int64_t, std::string>>>());
+        register_type_descriptor<either<float, std::string>>(std::make_shared<either_descriptor<either<float, std::string>>>());
+        register_type_descriptor<either<double, std::string>>(std::make_shared<either_descriptor<either<double, std::string>>>());
+        register_type_descriptor<either<std::size_t, std::string>>(std::make_shared<either_descriptor<either<std::size_t, std::string>>>());
         register_type_descriptor<either<std::string, std::string>>(std::make_shared<either_descriptor<either<std::string, std::string>>>());
 
         // choice type descriptors

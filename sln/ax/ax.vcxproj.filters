@@ -163,9 +163,6 @@
     <ClInclude Include="..\..\src\hpp\ax\utility.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\hpp\ax\metalang.hpp">
-      <Filter>Header Files\ax</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\impl\functional.hpp">
       <Filter>Header Files\ax\impl</Filter>
     </ClInclude>
@@ -176,6 +173,9 @@
       <Filter>Header Files\ax</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\symbol.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\hpp\ax\symbolics.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
   </ItemGroup>

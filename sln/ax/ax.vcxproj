@@ -65,7 +65,7 @@
     <ClInclude Include="..\..\src\hpp\ax\reflection.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\properties.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\serialization.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\metalang.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\symbolics.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\functional.hpp" />
   </ItemGroup>
   <ItemGroup>

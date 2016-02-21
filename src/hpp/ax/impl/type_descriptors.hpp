@@ -152,7 +152,9 @@ namespace ax
         void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             VAR* vector_ptr = static_cast<std::vector<T>*>(target_ptr);
-            match2(source_symbol,
+            match3(source_symbol,
+            [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+            [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& symbols)
             {
                 vector_ptr->clear();
@@ -163,8 +165,7 @@ namespace ax
                     read_value_vptr(*type_descriptor, symbol, static_cast<void*>(&elem_mvb));
                     vector_ptr->emplace_back(std::move(elem_mvb));
                 }
-            },
-            [](VAL&) { throw std::invalid_argument("Expected symbols value."); });
+            });
         }
 
         void write_value(const void* source_ptr, symbol& target_symbol) const override
@@ -200,7 +201,9 @@ namespace ax
         void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             VAR* set_ptr = static_cast<std::unordered_set<T>*>(target_ptr);
-            match2(source_symbol,
+            match3(source_symbol,
+            [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+            [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& symbols)
             {
                 set_ptr->clear();
@@ -211,8 +214,7 @@ namespace ax
                     read_value_vptr(*type_descriptor, symbol, static_cast<void*>(&elem_mvb));
                     set_ptr->insert(std::move(elem_mvb));
                 }
-            },
-            [](VAL&) { throw std::invalid_argument("Expected symbols value."); });
+            });
         }
 
         void write_value(const void* source_ptr, symbol& target_symbol) const override
@@ -248,7 +250,9 @@ namespace ax
         void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             VAR* map_ptr = static_cast<std::unordered_map<K, V>*>(target_ptr);
-            match2(source_symbol,
+            match3(source_symbol,
+            [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+            [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& symbols)
             {
                 map_ptr->clear();
@@ -256,7 +260,9 @@ namespace ax
                 VAL& value_type_descriptor = get_type_descriptor<V>();
                 for (VAL& symbol : symbols)
                 {
-                    match2(symbol,
+                    match3(symbol,
+                    [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+                    [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                     [&](VAL& symbols)
                     {
                         // ensure correct symbol structure
@@ -272,11 +278,9 @@ namespace ax
                         read_value_vptr(*value_type_descriptor, symbols[1], static_cast<void*>(&value));
                         VAR insertion = map_ptr->emplace(key, value);
                         if (!insertion.second) insertion.first->second = value;
-                    },
-                    [](VAL&) { throw std::invalid_argument("Expected symbols value."); });
+                    });
                 }
-            },
-            [](VAL&) { throw std::invalid_argument("Expected symbols value."); });
+            });
         }
 
         void write_value(const void* source_ptr, symbol& target_symbol) const override
@@ -287,7 +291,7 @@ namespace ax
             std::vector<symbol> symbols{};
             for (VAL& kvp : *map_ptr)
             {
-                symbol::right_type symbol_kvp_mvb({ symbol{}, symbol{} });
+                symbols_t symbol_kvp_mvb({ symbol{}, symbol{} });
                 write_value_vptr(*key_type_descriptor, static_cast<const void*>(&kvp.first), symbol_kvp_mvb[0]);
                 write_value_vptr(*value_type_descriptor, static_cast<const void*>(&kvp.second), symbol_kvp_mvb[1]);
                 symbols.emplace_back(ax::symbols(std::move(symbol_kvp_mvb)));
@@ -382,7 +386,9 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(P, pair);
             VAR* pair_ptr = static_cast<P*>(target_ptr);
-            match2(source_symbol,
+            match3(source_symbol,
+            [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+            [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& source_symbols)
             {
                 // validate symbols count
@@ -397,15 +403,14 @@ namespace ax
                 read_value_vptr(*first_type_descriptor, source_symbols[0], &first_value_mvb);
                 read_value_vptr(*second_type_descriptor, source_symbols[1], &second_value_mvb);
                 *pair_ptr = P(std::move(first_value_mvb), std::move(second_value_mvb));
-            },
-            [&](VAL&) { throw std::invalid_argument("Expected symbols value."); });
+            });
         }
 
         void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             CONSTRAIN(P, pair);
             VAL* pair_ptr = static_cast<const P*>(source_ptr);
-            symbol::right_type symbols_mvb{};
+            symbols_t symbols_mvb{};
             symbols_mvb.resize(2_z);
             VAL& first_type_descriptor = get_type_descriptor<typename P::first_type>();
             VAL& second_type_descriptor = get_type_descriptor<typename P::second_type>();
@@ -437,7 +442,9 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(R, record);
             VAR* record_ptr = static_cast<R*>(target_ptr);
-            match2(source_symbol,
+            match3(source_symbol,
+            [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+            [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& source_symbols)
             {
                 // validate symbols count
@@ -455,15 +462,14 @@ namespace ax
                 read_value_vptr(*second_type_descriptor, source_symbols[1], &second_value_mvb);
                 read_value_vptr(*third_type_descriptor, source_symbols[2], &third_value_mvb);
                 *record_ptr = R(std::move(first_value_mvb), std::move(second_value_mvb), std::move(third_value_mvb));
-            },
-            [&](VAL&) { throw std::invalid_argument("Expected symbols value."); });
+            });
         }
 
         void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             CONSTRAIN(R, record);
             VAL* record_ptr = static_cast<const R*>(source_ptr);
-            symbol::right_type symbols_mvb{};
+            symbols_t symbols_mvb{};
             symbols_mvb.resize(3_z);
             VAL& first_type_descriptor = get_type_descriptor<typename R::first_type>();
             VAL& second_type_descriptor = get_type_descriptor<typename R::second_type>();
@@ -494,7 +500,16 @@ namespace ax
         {
             VAR* option_ptr = static_cast<option<T>*>(target_ptr);
             VAL& type_descriptor = get_type_descriptor<T>();
-            match2(source_symbol,
+            match3(source_symbol,
+            [&](VAL& atom)
+            {
+                if (atom != "none") throw std::invalid_argument("Expected the atom 'none'.");
+                *option_ptr = none<T>();
+            },
+            [&](VAL&)
+            {
+                throw std::invalid_argument("Expected atom or symbols value.");
+            },
             [&](VAL& symbols)
             {
                 if (symbols.size() != 2 ||
@@ -504,18 +519,13 @@ namespace ax
                 T some_value_mvb{};
                 read_value_vptr(*type_descriptor, symbols[1], &some_value_mvb);
                 *option_ptr = some(std::move(some_value_mvb));
-            },
-            [&](VAL& atom)
-            {
-                if (atom != "none") throw std::invalid_argument("Expected the atom 'none'.");
-                *option_ptr = none<T>();
             });
         }
 
         void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             VAL* option_ptr = static_cast<const option<T>*>(source_ptr);
-            match(*option_ptr,
+            match_opt(*option_ptr,
             [&](VAL& some_value)
             {
                 symbol symbol_value_mvb{};
@@ -549,7 +559,9 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(E, either);
             VAR* either_ptr = static_cast<E*>(target_ptr);
-            match2(source_symbol,
+            match3(source_symbol,
+            [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+            [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& source_symbols)
             {
                 // validate symbol count
@@ -584,18 +596,17 @@ namespace ax
                 {
                     throw std::invalid_argument(
                         "Expected appropriate either constructor name of either '"_s +
-                        left_name + "' or '" +
-                        right_name + "'.");
+                        right_name + "' or '" +
+                        left_name + "'.");
                 }
-            },
-            [&](VAL&) { throw std::invalid_argument("Expected symbols value."); });
+            });
         }
 
         void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             CONSTRAIN(E, either);
             VAL* either_ptr = static_cast<const E*>(source_ptr);
-            match2(*either_ptr,
+            match(*either_ptr,
             [&](VAL& right_value)
             {
                 symbol symbol_mvb{};
@@ -635,7 +646,9 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(C, choice);
             VAR* choice_ptr = static_cast<C*>(target_ptr);
-            match2(source_symbol,
+            match3(source_symbol,
+            [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+            [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& source_symbols)
             {
                 // validate symbols count
@@ -682,8 +695,7 @@ namespace ax
                         second_name + "' or '" +
                         third_name + "'.");
                 }
-            },
-            [&](VAL&) { throw std::invalid_argument("Expected symbols value."); });
+            });
         }
 
         void write_value(const void* source_ptr, symbol& target_symbol) const override

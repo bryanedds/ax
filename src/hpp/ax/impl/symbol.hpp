@@ -6,12 +6,15 @@
 #include <vector>
 
 #include "prelude.hpp"
-#include "either.hpp"
+#include "choice.hpp"
 
 namespace ax
 {
     // Stores any type of information in a normalized, symbolic format.
-    SUM_TYPE(symbol, std::string, atom, std::vector<symbol>, symbols);
+    SUM_TYPE3(symbol,
+        std::string, atom,
+        std::string, quote,
+        std::vector<symbol>, symbols);
 }
 
 #endif

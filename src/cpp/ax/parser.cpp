@@ -132,7 +132,7 @@ namespace ax
 
     static symbol parse_symbol_from_xml_node(rapidxml::xml_node<char>* parent_node)
     {
-        symbol::right_type symbols{};
+        symbols_t symbols{};
         for (VAR* node = parent_node->first_node(); node != nullptr; node = node->next_sibling())
         {
             symbols.emplace_back(atom(node->name()));

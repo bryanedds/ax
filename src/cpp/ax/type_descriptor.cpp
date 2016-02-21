@@ -2,6 +2,8 @@
 
 #include "../../hpp/ax/impl/type_descriptor.hpp"
 
+#include "../../hpp/ax/impl/string.hpp"
+
 namespace ax
 {
     /* type_descriptor */
@@ -79,7 +81,7 @@ namespace ax
         throw std::runtime_error("reflectable_descriptor::inject_value not implemented.");
     }
 
-    static void read_value_internal(const std::shared_ptr<type_t>& type, const symbol::right_type& symbols, reflectable& reflectable)
+    static void read_value_internal(const std::shared_ptr<type_t>& type, const symbols_t& symbols, reflectable& reflectable)
     {
         // read sub-type values
         if (VAL* base_type_index = get_base_type_index_opt(*type).get())
@@ -107,7 +109,7 @@ namespace ax
         }
     }
 
-    void write_value_internal(const std::shared_ptr<type_t>& type, const reflectable& reflectable, symbol::right_type& symbols)
+    void write_value_internal(const std::shared_ptr<type_t>& type, const reflectable& reflectable, symbols_t& symbols)
     {
         // write sub-type values
         if (VAL* base_type_index = get_base_type_index_opt(*type).get())
@@ -148,13 +150,14 @@ namespace ax
     void reflectable_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* reflectable_ptr = static_cast<reflectable*>(target_ptr);
-        match2(source_symbol,
+        match3(source_symbol,
+        [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+        [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
         [&](VAL& symbols)
         {
             VAR& reflectable = *reflectable_ptr;
             VAL& type = get_type(reflectable);
             read_value_internal(type, symbols, reflectable);
-        },
-        [](VAL&) { throw std::invalid_argument("Expected symbols value."); });
+        });
     }
 }

@@ -13,7 +13,7 @@ namespace ax
 {
     // The result of a parser.
     template<typename T>
-    class parse : public either<std::string, T>
+    class parse : public either<T, std::string>
     {
     protected:
 
@@ -25,7 +25,7 @@ namespace ax
         CONSTRAINT(parse);
         template<typename A>
         using reify = parse<A>;
-        using either<std::string, T>::either;
+        using either<T, std::string>::either;
     };
 
     // Make a successful parse result.

@@ -52,8 +52,8 @@ namespace ax
             { "record_value",           register_field<record<int, int, int>>       (offsetof(reflectable_test, record_value)) },
             { "option_some_value",      register_field<option<int>>                 (offsetof(reflectable_test, option_some_value)) },
             { "option_none_value",      register_field<option<int>>                 (offsetof(reflectable_test, option_none_value)) },
-            { "either_right_value",     register_field<either<std::string, int>>    (offsetof(reflectable_test, either_right_value)) },
-            { "either_left_value",      register_field<either<std::string, int>>    (offsetof(reflectable_test, either_left_value)) },
+            { "either_right_value",     register_field<either<int, std::string>>    (offsetof(reflectable_test, either_right_value)) },
+            { "either_left_value",      register_field<either<int, std::string>>    (offsetof(reflectable_test, either_left_value)) },
             { "choice_value",           register_field<choice<int, int, int>>       (offsetof(reflectable_test, choice_value)) }
         });
 
@@ -77,8 +77,8 @@ namespace ax
         record<int, int, int> record_value;
         option<int> option_some_value;
         option<int> option_none_value;
-        either<std::string, int> either_right_value;
-        either<std::string, int> either_left_value;
+        either<int, std::string> either_right_value;
+        either<int, std::string> either_left_value;
         choice<int, int, int> choice_value;
 
         reflectable_test() :
@@ -114,8 +114,8 @@ namespace ax
             record<int, int, int> record_value,
             option<int> option_some_value,
             option<int> option_none_value,
-            either<std::string, int> either_right_value,
-            either<std::string, int> either_left_value,
+            either<int, std::string> either_right_value,
+            either<int, std::string> either_left_value,
             choice<int, int, int> choice_value) :
             bool_value(bool_value),
             int_value(int_value),
@@ -207,7 +207,7 @@ namespace ax
             true, 5, 10.0f, "jim bob", address("s/compton/la"),
             { 1, 3, 5 }, { "a", "bb", "ccc" }, 666, 777,
             make_pair(50, 100), make_record(150, 200, 250),
-            some(2), none<int>(), right<std::string>(4), left<std::string, int>("msg"), third<int, int>(3));
+            some(2), none<int>(), right<int, std::string>(4), left<int>("msg"_s), third<int, int, int>(3));
         reflectable_test target{};
         write_value(source, symbol);
         read_value(symbol, target);
@@ -248,7 +248,7 @@ namespace ax
               none \
               [right 4] \
               [left \"msg\"] \
-              [  third  3  ]  ]"; // a little extra whitespace to try to throw off parser
+              [  third  3  ]  ]"; // a little extra whitespace to try to throw off the parser
         std::stringstream sstr(str);
         sstr << std::noskipws; // apparently avoids skipping whitespace
         std::istream_iterator<char> iter(sstr);
