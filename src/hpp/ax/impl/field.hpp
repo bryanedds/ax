@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <typeindex>
 #include <memory>
+#include <vector>
 #include <unordered_map>
 
 #include "prelude.hpp"
