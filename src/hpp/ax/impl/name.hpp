@@ -4,7 +4,6 @@
 #include <cstddef>
 #include <string>
 #include <numeric>
-#include <vector>
 
 #include "prelude.hpp"
 
