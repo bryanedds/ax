@@ -14,9 +14,8 @@ namespace ax
     {
     private:
 
+        union union_t { R right; L left; union_t() { } ~union_t() { } } u;
         bool is_right;
-        R right;
-        L left;
 
     protected:
 
@@ -49,41 +48,97 @@ namespace ax
         template<typename A, typename B>
         using reify = either<A, B>;
         
-        either() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
-        either(const either&) = default;
-        either(either&&) = default;
-        either& operator=(const either&) = default;
-        either& operator=(either&&) = default;
+        either() : is_right(false)
+        {
+            new (&u.left) L();
+        }
 
-        either(const R& right) : is_right(true), right(right) { }
-        either(const L& left, bool) : is_right(false), left(left) { }
-        either(R&& right) : is_right(true), right(right) { }
-        either(L&& left, bool) : is_right(false), left(left) { }
-        explicit operator bool() const { return is_right; }
-        explicit operator bool() { return is_right; }
+        either(const either& that) : is_right(that.is_right)
+        {
+            if (is_right) new (&u.right) R(that.u.right);
+            else new (&u.left) L(that.u.left);
+        }
+
+        either(either&& that) : is_right(that.is_right)
+        {
+            if (is_right) new (&u.right) R(that.u.right);
+            else new (&u.left) L(that.u.left);
+        }
+
+        either& operator=(const either& that)
+        {
+            is_right = that.is_right;
+            if (is_right) u.right = that.u.right;
+            else u.left = that.u.left;
+            return *this;
+        }
+
+        either& operator=(either&& that)
+        {
+            is_right = that.is_right;
+            if (is_right) u.right = that.u.right;
+            else u.left = that.u.left;
+            return *this;
+        }
+
+        explicit either(const R& right) : is_right(true)
+        {
+            new (&u.right) R(right);
+        }
+
+        explicit either(R&& right) : is_right(true)
+        {
+            new (&u.right) R(right);
+        }
+
+        explicit either(const L& left, bool) : is_right(false)
+        {
+            new (&u.left) L(left);
+        }
+
+        explicit either(L&& left, bool) : is_right(false)
+        {
+            new (&u.left) L(left);
+        }
+
+        ~either()
+        {
+            if (is_right) u.right.R::~R();
+            else u.left.L::~L();
+        }
 
         const R& operator*() const
         {
-            if (is_right) return right;
+            if (is_right) return u.right;
             throw std::runtime_error("Cannot get non-existent right value.");
         }
 
         R& operator*()
         {
-            if (is_right) return right;
+            if (is_right) return u.right;
             throw std::runtime_error("Cannot get non-existent right value.");
         }
 
         const L& operator~() const
         {
-            if (!is_right) return left;
+            if (!is_right) return u.left;
             throw std::runtime_error("Cannot get non-existent left value.");
         }
 
         L& operator~()
         {
-            if (!is_right) return left;
+            if (!is_right) return u.left;
             throw std::runtime_error("Cannot get non-existent left value.");
+        }
+
+        explicit operator bool() const
+        {
+            return is_right;
+        }
+
+        explicit operator bool()
+        {
+            return is_right;
         }
     };
 
@@ -102,28 +157,28 @@ namespace ax
     template<typename R, typename L>
     const R& get_right(const either<R, L>& eir)
     {
-        if (eir.is_right) return eir.right;
+        if (eir.is_right) return eir.u.right;
         throw std::runtime_error("Cannot get '"_s + get_right_name(eir) + "' value.");
     }
 
     template<typename R, typename L>
     const L& get_left(const either<R, L>& eir)
     {
-        if (!eir.is_right) return eir.left;
+        if (!eir.is_right) return eir.u.left;
         throw std::runtime_error("Cannot get '"_s + get_left_name(eir) + "' value.");
     }
 
     template<typename R, typename L>
     R& get_right(either<R, L>& eir)
     {
-        if (eir.is_right) return eir.right;
+        if (eir.is_right) return eir.u.right;
         throw std::runtime_error("Cannot get '"_s + get_right_name(eir) + "' value.");
     }
 
     template<typename R, typename L>
     L& get_left(either<R, L>& eir)
     {
-        if (!eir.is_right) return eir.left;
+        if (!eir.is_right) return eir.u.left;
         throw std::runtime_error("Cannot get '"_s + get_left_name(eir) + "' value.");
     }
 
