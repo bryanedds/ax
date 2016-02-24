@@ -15,10 +15,8 @@ namespace ax
     {
     private:
 
+        union union_t { First first; Second second; Third third; union_t() { } ~union_t() { } } u;
         std::size_t index;
-        First first;
-        Second second;
-        Third third;
 
     protected:
 
@@ -67,21 +65,94 @@ namespace ax
         template<typename A, typename B, typename C>
         using reify = choice<A, B, C>;
 
-        choice() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
-        choice(const choice&) = default;
-        choice(choice&&) = default;
-        choice& operator=(const choice&) = default;
-        choice& operator=(choice&&) = default;
-        ~choice() = default;
+        choice() : index(0_z)
+        {
+            new (&u.first) First();
+        }
 
-        explicit choice(const First& first) : index(0_z), first(first) { }
-        explicit choice(const Second& second, bool) : index(1_z), second(second) { }
-        explicit choice(const Third& third, bool, bool) : index(2_z), third(third) { }
-        explicit choice(First&& first) : index(0_z), first(first) { }
-        explicit choice(Second&& second, bool) : index(1_z), second(second) { }
-        explicit choice(Third&& third, bool, bool) : index(2_z), third(third) { }
-        explicit operator bool() const { return index == 0_z; }
-        explicit operator bool() { return index == 0_z; }
+        choice(const choice& that) : index(that.index)
+        {
+            switch (index)
+            {
+                case 0_z: new (&u.first) First(that.u.first); break;
+                case 1_z: new (&u.second) Second(that.u.second); break;
+                case 2_z: new (&u.third) Third(that.u.third); break;
+            }
+        }
+
+        choice(choice&& that) : index(that.index)
+        {
+            switch (index)
+            {
+                case 0_z: new (&u.first) First(std::move(that.u.first)); break;
+                case 1_z: new (&u.second) Second(std::move(that.u.second)); break;
+                case 2_z: new (&u.third) Third(std::move(that.u.third)); break;
+            }
+        }
+
+        explicit choice(const First& first) : index(0_z)
+        {
+            new (&u.first) First(first);
+        }
+
+        explicit choice(First&& first) : index(0_z)
+        {
+            new (&u.first) First(first);
+        }
+
+        explicit choice(const Second& second, bool) : index(1_z)
+        {
+            new (&u.second) Second(second);
+        }
+
+        explicit choice(Second&& second, bool) : index(1_z)
+        {
+            new (&u.second) Second(second);
+        }
+
+        explicit choice(const Third& third, bool, bool) : index(2_z)
+        {
+            new (&u.third) Third(third);
+        }
+
+        explicit choice(Third&& third, bool, bool) : index(2_z)
+        {
+            new (&u.third) Third(third);
+        }
+
+        ~choice()
+        {
+            switch (index)
+            {
+                case 0_z: u.first.First::~First(); break;
+                case 1_z: u.second.Second::~Second(); break;
+                case 2_z: u.third.Third::~Third(); break;
+            }
+        }
+
+        choice& operator=(const choice& that)
+        {
+            index = that.index;
+            switch (index)
+            {
+                case 0_z: u.first = that.u.first; break;
+                case 1_z: u.second = that.u.second; break;
+                case 2_z: u.third = that.u.third; break;
+            }
+            return *this;
+        }
+
+        choice& operator=(choice&& that)
+        {
+            index = that.index;
+            switch (index)
+            {
+                case 0_z: u.first = std::move(that.u.first); break;
+                case 1_z: u.second = std::move(that.u.second); break;
+                case 2_z: u.third = std::move(that.u.third); break;
+            }
+            return *this;
+        }
     };
 
     template<typename First, typename Second, typename Third>
@@ -93,21 +164,21 @@ namespace ax
     template<typename First, typename Second, typename Third>
     const First& get_first(const choice<First, Second, Third>& chc)
     {
-        if (chc.index == 0_z) return chc.first;
+        if (chc.index == 0_z) return chc.u.first;
         throw std::runtime_error("Cannot get '"_s + get_first_name(chc) + "' value.");
     }
 
     template<typename First, typename Second, typename Third>
     const Second& get_second(const choice<First, Second, Third>& chc)
     {
-        if (chc.index == 1_z) return chc.second;
+        if (chc.index == 1_z) return chc.u.second;
         throw std::runtime_error("Cannot get '"_s + get_second_name(chc) + "' value.");
     }
 
     template<typename First, typename Second, typename Third>
     const Third& get_third(const choice<First, Second, Third>& chc)
     {
-        if (chc.index == 2_z) return chc.third;
+        if (chc.index == 2_z) return chc.u.third;
         throw std::runtime_error("Cannot get '"_s + get_third_name(chc) + "' value.");
     }
 
@@ -132,21 +203,21 @@ namespace ax
     template<typename First, typename Second, typename Third>
     First& get_first(choice<First, Second, Third>& chc)
     {
-        if (chc.index == 0_z) return chc.first;
+        if (chc.index == 0_z) return chc.u.first;
         throw std::runtime_error("Cannot get '"_s + get_first_name(chc) + "' value.");
     }
 
     template<typename First, typename Second, typename Third>
     Second& get_second(choice<First, Second, Third>& chc)
     {
-        if (chc.index == 1_z) return chc.second;
+        if (chc.index == 1_z) return chc.u.second;
         throw std::runtime_error("Cannot get '"_s + get_second_name(chc) + "' value.");
     }
 
     template<typename First, typename Second, typename Third>
     Third& get_third(choice<First, Second, Third>& chc)
     {
-        if (chc.index == 2_z) return chc.third;
+        if (chc.index == 2_z) return chc.u.third;
         throw std::runtime_error("Cannot get '"_s + get_third_name(chc) + "' value.");
     }
 

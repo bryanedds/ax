@@ -48,9 +48,9 @@ namespace ax
         template<typename A, typename B>
         using reify = either<A, B>;
         
-        either() : is_right(false)
+        either() : is_right(true)
         {
-            new (&u.left) L();
+            new (&u.right) R();
         }
 
         either(const either& that) : is_right(that.is_right)
@@ -61,24 +61,8 @@ namespace ax
 
         either(either&& that) : is_right(that.is_right)
         {
-            if (is_right) new (&u.right) R(that.u.right);
-            else new (&u.left) L(that.u.left);
-        }
-
-        either& operator=(const either& that)
-        {
-            is_right = that.is_right;
-            if (is_right) u.right = that.u.right;
-            else u.left = that.u.left;
-            return *this;
-        }
-
-        either& operator=(either&& that)
-        {
-            is_right = that.is_right;
-            if (is_right) u.right = that.u.right;
-            else u.left = that.u.left;
-            return *this;
+            if (is_right) new (&u.right) R(std::move(that.u.right));
+            else new (&u.left) L(std::move(that.u.left));
         }
 
         explicit either(const R& right) : is_right(true)
@@ -105,6 +89,22 @@ namespace ax
         {
             if (is_right) u.right.R::~R();
             else u.left.L::~L();
+        }
+
+        either& operator=(const either& that)
+        {
+            is_right = that.is_right;
+            if (is_right) u.right = that.u.right;
+            else u.left = that.u.left;
+            return *this;
+        }
+
+        either& operator=(either&& that)
+        {
+            is_right = that.is_right;
+            if (is_right) u.right = std::move(that.u.right);
+            else u.left = std::move(that.u.left);
+            return *this;
         }
 
         const R& operator*() const
