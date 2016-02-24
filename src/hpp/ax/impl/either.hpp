@@ -65,6 +65,22 @@ namespace ax
             else new (&u.left) L(std::move(that.u.left));
         }
 
+        either& operator=(const either& that)
+        {
+            is_right = that.is_right;
+            if (is_right) u.right = that.u.right;
+            else u.left = that.u.left;
+            return *this;
+        }
+
+        either& operator=(either&& that)
+        {
+            is_right = that.is_right;
+            if (is_right) u.right = std::move(that.u.right);
+            else u.left = std::move(that.u.left);
+            return *this;
+        }
+
         explicit either(const R& right) : is_right(true)
         {
             new (&u.right) R(right);
@@ -89,22 +105,6 @@ namespace ax
         {
             if (is_right) u.right.R::~R();
             else u.left.L::~L();
-        }
-
-        either& operator=(const either& that)
-        {
-            is_right = that.is_right;
-            if (is_right) u.right = that.u.right;
-            else u.left = that.u.left;
-            return *this;
-        }
-
-        either& operator=(either&& that)
-        {
-            is_right = that.is_right;
-            if (is_right) u.right = std::move(that.u.right);
-            else u.left = std::move(that.u.left);
-            return *this;
         }
 
         const R& operator*() const

@@ -57,11 +57,9 @@ namespace ax
     public:
 
         CONSTRAINT(choice);
-
         using first_type = First;
         using second_type = Second;
         using third_type = Third;
-        
         template<typename A, typename B, typename C>
         using reify = choice<A, B, C>;
 
@@ -88,6 +86,30 @@ namespace ax
                 case 1_z: new (&u.second) Second(std::move(that.u.second)); break;
                 case 2_z: new (&u.third) Third(std::move(that.u.third)); break;
             }
+        }
+
+        choice& operator=(const choice& that)
+        {
+            index = that.index;
+            switch (index)
+            {
+                case 0_z: u.first = that.u.first; break;
+                case 1_z: u.second = that.u.second; break;
+                case 2_z: u.third = that.u.third; break;
+            }
+            return *this;
+        }
+
+        choice& operator=(choice&& that)
+        {
+            index = that.index;
+            switch (index)
+            {
+                case 0_z: u.first = std::move(that.u.first); break;
+                case 1_z: u.second = std::move(that.u.second); break;
+                case 2_z: u.third = std::move(that.u.third); break;
+            }
+            return *this;
         }
 
         explicit choice(const First& first) : index(0_z)
@@ -128,30 +150,6 @@ namespace ax
                 case 1_z: u.second.Second::~Second(); break;
                 case 2_z: u.third.Third::~Third(); break;
             }
-        }
-
-        choice& operator=(const choice& that)
-        {
-            index = that.index;
-            switch (index)
-            {
-                case 0_z: u.first = that.u.first; break;
-                case 1_z: u.second = that.u.second; break;
-                case 2_z: u.third = that.u.third; break;
-            }
-            return *this;
-        }
-
-        choice& operator=(choice&& that)
-        {
-            index = that.index;
-            switch (index)
-            {
-                case 0_z: u.first = std::move(that.u.first); break;
-                case 1_z: u.second = std::move(that.u.second); break;
-                case 2_z: u.third = std::move(that.u.third); break;
-            }
-            return *this;
         }
     };
 
