@@ -48,9 +48,9 @@ namespace ax
         template<typename A, typename B>
         using reify = either<A, B>;
         
-        either() : is_right(true)
+        either() : is_right(false)
         {
-            new (&u.right) R();
+            new (&u.left) L();
         }
 
         either(const either& that) : is_right(that.is_right)
