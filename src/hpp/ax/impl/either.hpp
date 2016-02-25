@@ -103,8 +103,8 @@ namespace ax
 
         ~either()
         {
-            if (is_right) u.right.R::~R();
-            else u.left.L::~L();
+            /*if (is_right) u.right.R::~R();
+            else u.left.L::~L();*/
         }
 
         const R& operator*() const

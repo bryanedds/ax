@@ -144,12 +144,12 @@ namespace ax
 
         ~choice()
         {
-            switch (index)
+            /*switch (index)
             {
                 case 0_z: u.first.First::~First(); break;
                 case 1_z: u.second.Second::~Second(); break;
                 case 2_z: u.third.Third::~Third(); break;
-            }
+            }*/
         }
     };
 
