@@ -112,32 +112,32 @@ namespace ax
             return *this;
         }
 
-        explicit choice(const First& first) : index(0_z)
+        explicit choice(const First& first, bool) : index(0_z)
         {
             new (&u.first) First(first);
         }
 
-        explicit choice(First&& first) : index(0_z)
+        explicit choice(First&& first, bool) : index(0_z)
         {
             new (&u.first) First(first);
         }
 
-        explicit choice(const Second& second, bool) : index(1_z)
+        explicit choice(const Second& second, bool, bool) : index(1_z)
         {
             new (&u.second) Second(second);
         }
 
-        explicit choice(Second&& second, bool) : index(1_z)
+        explicit choice(Second&& second, bool, bool) : index(1_z)
         {
             new (&u.second) Second(second);
         }
 
-        explicit choice(const Third& third, bool, bool) : index(2_z)
+        explicit choice(const Third& third, bool, bool, bool) : index(2_z)
         {
             new (&u.third) Third(third);
         }
 
-        explicit choice(Third&& third, bool, bool) : index(2_z)
+        explicit choice(Third&& third, bool, bool, bool) : index(2_z)
         {
             new (&u.third) Third(third);
         }
@@ -240,19 +240,19 @@ namespace ax
     template<typename First, typename Second, typename Third>
     choice<First, Second, Third> first(const First& first)
     {
-        return choice<First, Second, Third>(first);
+        return choice<First, Second, Third>(first, false);
     }
 
     template<typename First, typename Second, typename Third>
     choice<First, Second, Third> second(const Second& second)
     {
-        return choice<First, Second, Third>(second, false);
+        return choice<First, Second, Third>(second, false, false);
     }
 
     template<typename First, typename Second, typename Third>
     choice<First, Second, Third> third(const Third& third)
     {
-        return choice<First, Second, Third>(third, false, false);
+        return choice<First, Second, Third>(third, false, false, false);
     }
 
     template<typename C, typename FirstFn, typename SecondFn, typename ThirdFn>
@@ -301,32 +301,32 @@ namespace ax
     \
     inline T Fn(const Ft& first_value) \
     { \
-        return T(first_value); \
+        return T(first_value, false); \
     } \
     \
     inline T Sn(const St& second_value) \
     { \
-        return T(second_value, false); \
+        return T(second_value, false, false); \
     } \
     \
     inline T Tn(const Tt& third_value) \
     { \
-        return T(third_value, false, false); \
+        return T(third_value, false, false, false); \
     } \
     \
     inline T Fn(Ft&& first_value) \
     { \
-        return T(first_value); \
+        return T(first_value, false); \
     } \
     \
     inline T Sn(St&& second_value) \
     { \
-        return T(second_value, false); \
+        return T(second_value, false, false); \
     } \
     \
     inline T Tn(Tt&& third_value) \
     { \
-        return T(third_value, false, false); \
+        return T(third_value, false, false, false); \
     } \
     \
     inline bool is_##Fn(const T& chc) \

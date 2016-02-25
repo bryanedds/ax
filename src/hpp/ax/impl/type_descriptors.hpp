@@ -583,14 +583,14 @@ namespace ax
                     typename E::right_type right_value_mvb{};
                     VAL& type_descriptor = get_type_descriptor<typename E::right_type>();
                     read_value_vptr(*type_descriptor, symbol_value, &right_value_mvb);
-                    *either_ptr = E(std::move(right_value_mvb));
+                    *either_ptr = E(std::move(right_value_mvb), false);
                 }
                 else if (either_name == left_name)
                 {
                     typename E::left_type left_value_mvb{};
                     VAL& type_descriptor = get_type_descriptor<typename E::left_type>();
                     read_value_vptr(*type_descriptor, symbol_value, &left_value_mvb);
-                    *either_ptr = E(std::move(left_value_mvb), false);
+                    *either_ptr = E(std::move(left_value_mvb), false, false);
                 }
                 else
                 {
@@ -671,21 +671,21 @@ namespace ax
                     typename C::first_type first_value_mvb{};
                     VAL& type_descriptor = get_type_descriptor<typename C::first_type>();
                     read_value_vptr(*type_descriptor, symbol_value, &first_value_mvb);
-                    *choice_ptr = C(std::move(first_value_mvb));
+                    *choice_ptr = C(std::move(first_value_mvb), false);
                 }
                 else if (choice_name == second_name)
                 {
                     typename C::second_type second_value_mvb{};
                     VAL& type_descriptor = get_type_descriptor<typename C::second_type>();
                     read_value_vptr(*type_descriptor, symbol_value, &second_value_mvb);
-                    *choice_ptr = C(std::move(second_value_mvb), false);
+                    *choice_ptr = C(std::move(second_value_mvb), false, false);
                 }
                 else if (choice_name == third_name)
                 {
                     typename C::third_type third_value_mvb{};
                     VAL& type_descriptor = get_type_descriptor<typename C::third_type>();
                     read_value_vptr(*type_descriptor, symbol_value, &third_value_mvb);
-                    *choice_ptr = C(std::move(third_value_mvb), false, false);
+                    *choice_ptr = C(std::move(third_value_mvb), false, false, false);
                 }
                 else
                 {

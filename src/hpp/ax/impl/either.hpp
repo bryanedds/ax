@@ -48,9 +48,9 @@ namespace ax
         template<typename A, typename B>
         using reify = either<A, B>;
         
-        either() : is_right(false)
+        either() : is_right(true)
         {
-            new (&u.left) L();
+            new (&u.right) R();
         }
 
         either(const either& that) : is_right(that.is_right)
@@ -81,22 +81,22 @@ namespace ax
             return *this;
         }
 
-        explicit either(const R& right) : is_right(true)
+        explicit either(const R& right, bool) : is_right(true)
         {
             new (&u.right) R(right);
         }
 
-        explicit either(R&& right) : is_right(true)
+        explicit either(R&& right, bool) : is_right(true)
         {
             new (&u.right) R(right);
         }
 
-        explicit either(const L& left, bool) : is_right(false)
+        explicit either(const L& left, bool, bool) : is_right(false)
         {
             new (&u.left) L(left);
         }
 
-        explicit either(L&& left, bool) : is_right(false)
+        explicit either(L&& left, bool, bool) : is_right(false)
         {
             new (&u.left) L(left);
         }
@@ -197,25 +197,25 @@ namespace ax
     template<typename R, typename L>
     either<R, L> right(const R& right)
     {
-        return either<R, L>(right);
+        return either<R, L>(right, false);
     }
 
     template<typename R, typename L>
     either<R, L> left(const L& left)
     {
-        return either<R, L>(left, false);
+        return either<R, L>(left, false, false);
     }
 
     template<typename R, typename L>
     either<R, L> right(R&& right)
     {
-        return either<R, L>(right);
+        return either<R, L>(right, false);
     }
 
     template<typename R, typename L>
     either<R, L> left(L&& left)
     {
-        return either<R, L>(left, false);
+        return either<R, L>(left, false, false);
     }
 
     template<typename E, typename Rf, typename Lf>
@@ -254,22 +254,22 @@ namespace ax
     \
     inline T Rn(const Rt& right_value) \
     { \
-        return T(right_value); \
+        return T(right_value, false); \
     } \
     \
     inline T Ln(const Lt& left_value) \
     { \
-        return T(left_value, false); \
+        return T(left_value, false, false); \
     } \
     \
     inline T Rn(Rt&& right_value) \
     { \
-        return T(right_value); \
+        return T(right_value, false); \
     } \
     \
     inline T Ln(Lt&& left_value) \
     { \
-        return T(left_value, false); \
+        return T(left_value, false, false); \
     } \
     \
     inline bool is_##Rn(const T& eir) \
