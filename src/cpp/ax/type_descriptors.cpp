@@ -379,9 +379,6 @@ namespace ax
         register_type_descriptor<option<std::size_t>>(std::make_shared<option_descriptor<std::size_t>>());
         register_type_descriptor<option<std::string>>(std::make_shared<option_descriptor<std::string>>());
 
-        // either type descriptor (ints only)
-        register_type_descriptor<either<int, int>>(std::make_shared<either_descriptor<either<int, int>>>());
-
         // either type descriptors (with left as 'error' string)
         register_type_descriptor<either<bool, std::string>>(std::make_shared<either_descriptor<either<bool, std::string>>>());
         register_type_descriptor<either<char, std::string>>(std::make_shared<either_descriptor<either<char, std::string>>>());
@@ -392,6 +389,9 @@ namespace ax
         register_type_descriptor<either<double, std::string>>(std::make_shared<either_descriptor<either<double, std::string>>>());
         register_type_descriptor<either<std::size_t, std::string>>(std::make_shared<either_descriptor<either<std::size_t, std::string>>>());
         register_type_descriptor<either<std::string, std::string>>(std::make_shared<either_descriptor<either<std::string, std::string>>>());
+
+        // either type descriptor (ints only)
+        register_type_descriptor<either<int, int>>(std::make_shared<either_descriptor<either<int, int>>>());
 
         // choice type descriptor (ints only)
         register_type_descriptor<choice<int, int, int>>(std::make_shared<choice_descriptor<choice<int, int, int>>>());
