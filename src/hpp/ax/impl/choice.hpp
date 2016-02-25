@@ -18,6 +18,36 @@ namespace ax
         union union_t { First first; Second second; Third third; union_t() { } ~union_t() { } } u;
         std::size_t index;
 
+        void construct_u(const choice& that)
+        {
+            switch (index)
+            {
+                case 0_z: new (&u) First(that.u.first); break;
+                case 1_z: new (&u) Second(that.u.second); break;
+                case 2_z: new (&u) Third(that.u.third); break;
+            }
+        }
+
+        void construct_u(choice&& that)
+        {
+            switch (index)
+            {
+                case 0_z: new (&u) First(std::move(that.u.first)); break;
+                case 1_z: new (&u) Second(std::move(that.u.second)); break;
+                case 2_z: new (&u) Third(std::move(that.u.third)); break;
+            }
+        }
+
+        void destruct_u()
+        {
+            switch (index)
+            {
+                case 0_z: u.first.First::~First(); break;
+                case 1_z: u.second.Second::~Second(); break;
+                case 2_z: u.third.Third::~Third(); break;
+            }
+        }
+
     protected:
 
         virtual const char* get_first_name() const { return "first"; }
@@ -63,106 +93,33 @@ namespace ax
         template<typename A, typename B, typename C>
         using reify = choice<A, B, C>;
 
-        choice() : index(0_z)
-        {
-            new (&u) First();
-        }
-
-        choice(const choice& that) : index(that.index)
-        {
-            switch (index)
-            {
-                case 0_z: new (&u) First(that.u.first); break;
-                case 1_z: new (&u) Second(that.u.second); break;
-                case 2_z: new (&u) Third(that.u.third); break;
-            }
-        }
-
-        choice(choice&& that) : index(that.index)
-        {
-            switch (index)
-            {
-                case 0_z: new (&u) First(std::move(that.u.first)); break;
-                case 1_z: new (&u) Second(std::move(that.u.second)); break;
-                case 2_z: new (&u) Third(std::move(that.u.third)); break;
-            }
-        }
-
+        choice() : index(0_z) { new (&u) First(); }
+        choice(const choice& that) : index(that.index) { construct_u(that); }
+        choice(choice&& that) : index(that.index) { construct_u(that); }
+        
         choice& operator=(const choice& that)
         {
-            switch (index)
-            {
-                case 0_z: u.first.First::~First(); break;
-                case 1_z: u.second.Second::~Second(); break;
-                case 2_z: u.third.Third::~Third(); break;
-            }
+            destruct_u();
             index = that.index;
-            switch (index)
-            {
-                case 0_z: new (&u) First(that.u.first); break;
-                case 1_z: new (&u) Second(that.u.second); break;
-                case 2_z: new (&u) Third(that.u.third); break;
-            }
+            construct_u(that);
             return *this;
         }
 
         choice& operator=(choice&& that)
         {
-            switch (index)
-            {
-                case 0_z: u.first.First::~First(); break;
-                case 1_z: u.second.Second::~Second(); break;
-                case 2_z: u.third.Third::~Third(); break;
-            }
+            destruct_u();
             index = that.index;
-            switch (index)
-            {
-                case 0_z: new (&u) First(std::move(that.u.first)); break;
-                case 1_z: new (&u) Second(std::move(that.u.second)); break;
-                case 2_z: new (&u) Third(std::move(that.u.third)); break;
-            }
+            construct_u(that);
             return *this;
         }
 
-        explicit choice(const First& first, bool) : index(0_z)
-        {
-            new (&u) First(first);
-        }
-
-        explicit choice(First&& first, bool) : index(0_z)
-        {
-            new (&u) First(first);
-        }
-
-        explicit choice(const Second& second, bool, bool) : index(1_z)
-        {
-            new (&u) Second(second);
-        }
-
-        explicit choice(Second&& second, bool, bool) : index(1_z)
-        {
-            new (&u) Second(second);
-        }
-
-        explicit choice(const Third& third, bool, bool, bool) : index(2_z)
-        {
-            new (&u) Third(third);
-        }
-
-        explicit choice(Third&& third, bool, bool, bool) : index(2_z)
-        {
-            new (&u) Third(third);
-        }
-
-        ~choice()
-        {
-            switch (index)
-            {
-                case 0_z: u.first.First::~First(); break;
-                case 1_z: u.second.Second::~Second(); break;
-                case 2_z: u.third.Third::~Third(); break;
-            }
-        }
+        explicit choice(const First& first, bool) : index(0_z) { new (&u) First(first); }
+        explicit choice(First&& first, bool) : index(0_z) { new (&u) First(first); }
+        explicit choice(const Second& second, bool, bool) : index(1_z) { new (&u) Second(second); }
+        explicit choice(Second&& second, bool, bool) : index(1_z) { new (&u) Second(second); }
+        explicit choice(const Third& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
+        explicit choice(Third&& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
+        ~choice() { destruct_u(); }
     };
 
     template<typename First, typename Second, typename Third>
@@ -275,8 +232,9 @@ namespace ax
         {
         case 0_z: return first_fn(get_first(chc));
         case 1_z: return second_fn(get_second(chc));
-        default: return third_fn(get_third(chc));
+        case 2_z: return third_fn(get_third(chc));
         }
+        throw std::logic_error("Unexpected missing case.");
     }
 
     template<typename C, typename FirstFn, typename SecondFn, typename ThirdFn>
@@ -287,8 +245,9 @@ namespace ax
         {
         case 0_z: return first_fn(get_first(chc));
         case 1_z: return second_fn(get_second(chc));
-        default: return third_fn(get_third(chc));
+        case 2_z: return third_fn(get_third(chc));
         }
+        throw std::logic_error("Unexpected missing case.");
     }
 }
 
