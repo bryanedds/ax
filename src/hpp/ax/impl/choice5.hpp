@@ -420,7 +420,7 @@ namespace ax
     \
     inline T FifthName(FifthType&& fifth_value) \
     { \
-        return T(fifth_value, false, false, false, false); \
+        return T(fifth_value, false, false, false, false, false); \
     } \
     \
     inline bool is_##FirstName(const T& chc) \
