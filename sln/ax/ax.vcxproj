@@ -33,6 +33,8 @@
     <ClInclude Include="..\..\src\hpp\ax\impl\field.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\hash.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\id.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\impl\record4.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\impl\record5.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\reflectable.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\logging.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\mailbox.hpp" />

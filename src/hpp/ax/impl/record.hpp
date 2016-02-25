@@ -8,7 +8,6 @@
 
 namespace ax
 {
-    // TODO: build record types up to record5.
     template<typename F, typename S, typename T>
     class record
     {
@@ -142,8 +141,8 @@ namespace ax
     { \
     protected: \
     \
-        const char* get_first_name() const override { return #Sn; } \
-        const char* get_second_name() const override { return #Fn; } \
+        const char* get_first_name() const override { return #Fn; } \
+        const char* get_second_name() const override { return #Sn; } \
         const char* get_third_name() const override { return #Tn; } \
     \
     public: \
