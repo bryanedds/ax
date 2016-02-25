@@ -5,6 +5,9 @@
 #include "../../hpp/ax/impl/type_descriptors.hpp"
 
 #include "../../hpp/ax/impl/string.hpp"
+#include "../../hpp/ax/impl/record.hpp"
+#include "../../hpp/ax/impl/record4.hpp"
+#include "../../hpp/ax/impl/record5.hpp"
 #include "../../hpp/ax/impl/choice.hpp"
 #include "../../hpp/ax/impl/choice4.hpp"
 #include "../../hpp/ax/impl/choice5.hpp"
@@ -358,6 +361,12 @@ namespace ax
 
         // record type descriptor (ints only)
         register_type_descriptor<record<int, int, int>>(std::make_shared<record_descriptor<record<int, int, int>>>());
+
+        // record4 type descriptor (ints only)
+        register_type_descriptor<record4<int, int, int, int>>(std::make_shared<record4_descriptor<record4<int, int, int, int>>>());
+
+        // record5 type descriptor (ints only)
+        register_type_descriptor<record5<int, int, int, int, int>>(std::make_shared<record5_descriptor<record5<int, int, int, int, int>>>());
 
         // option type descriptor
         register_type_descriptor<option<bool>>(std::make_shared<option_descriptor<bool>>());

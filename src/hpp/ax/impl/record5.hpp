@@ -201,7 +201,7 @@ namespace ax
     }
 }
 
-#define PRODUCT_TYPE3(T, FirstType, FirstName, SecondType, SecondName, ThirdType, ThirdName, FourthType, FourthName, FifthType, FifthName) \
+#define PRODUCT_TYPE5(T, FirstType, FirstName, SecondType, SecondName, ThirdType, ThirdName, FourthType, FourthName, FifthType, FifthName) \
     class T : public ::ax::record5<FirstType, SecondType, ThirdType, FourthType, FifthType> \
     { \
     protected: \

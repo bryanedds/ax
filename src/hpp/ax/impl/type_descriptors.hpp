@@ -481,6 +481,148 @@ namespace ax
         }
     };
 
+    template<typename R>
+    class record4_descriptor : public type_descriptor
+    {
+    protected:
+
+        void inspect_value(const void* source_ptr, void* target_ptr) const override
+        {
+            CONSTRAIN(R, record4);
+            assign_value_vptr<R>(source_ptr, target_ptr);
+        }
+
+        void inject_value(const void* source_ptr, void* target_ptr) const override
+        {
+            CONSTRAIN(R, record4);
+            assign_value_vptr<R>(source_ptr, target_ptr);
+        }
+
+        void read_value(const symbol& source_symbol, void* target_ptr) const override
+        {
+            // read target value from source symbol
+            CONSTRAIN(R, record4);
+            VAR* record_ptr = static_cast<R*>(target_ptr);
+            match3(source_symbol,
+                [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+                [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+                [&](VAL& source_symbols)
+            {
+                // validate symbols count
+                if (source_symbols.size() != 4)
+                    throw std::invalid_argument("Expected four symbols.");
+
+                // populate target record
+                typename R::first_type first_value_mvb{};
+                typename R::second_type second_value_mvb{};
+                typename R::third_type third_value_mvb{};
+                typename R::fourth_type fourth_value_mvb{};
+                VAL& first_type_descriptor = get_type_descriptor<typename R::first_type>();
+                VAL& second_type_descriptor = get_type_descriptor<typename R::second_type>();
+                VAL& third_type_descriptor = get_type_descriptor<typename R::third_type>();
+                VAL& fourth_type_descriptor = get_type_descriptor<typename R::fourth_type>();
+                read_value_vptr(*first_type_descriptor, source_symbols[0], &first_value_mvb);
+                read_value_vptr(*second_type_descriptor, source_symbols[1], &second_value_mvb);
+                read_value_vptr(*third_type_descriptor, source_symbols[2], &third_value_mvb);
+                read_value_vptr(*fourth_type_descriptor, source_symbols[3], &fourth_value_mvb);
+                *record_ptr = R(std::move(first_value_mvb), std::move(second_value_mvb), std::move(third_value_mvb), std::move(fourth_value_mvb));
+            });
+        }
+
+        void write_value(const void* source_ptr, symbol& target_symbol) const override
+        {
+            CONSTRAIN(R, record4);
+            VAL* record_ptr = static_cast<const R*>(source_ptr);
+            symbols_t symbols_mvb{};
+            symbols_mvb.resize(4_z);
+            VAL& first_type_descriptor = get_type_descriptor<typename R::first_type>();
+            VAL& second_type_descriptor = get_type_descriptor<typename R::second_type>();
+            VAL& third_type_descriptor = get_type_descriptor<typename R::third_type>();
+            VAL& fourth_type_descriptor = get_type_descriptor<typename R::fourth_type>();
+            write_value_vptr(*first_type_descriptor, static_cast<const void*>(&fst(*record_ptr)), symbols_mvb[0]);
+            write_value_vptr(*second_type_descriptor, static_cast<const void*>(&snd(*record_ptr)), symbols_mvb[1]);
+            write_value_vptr(*third_type_descriptor, static_cast<const void*>(&thd(*record_ptr)), symbols_mvb[2]);
+            write_value_vptr(*fourth_type_descriptor, static_cast<const void*>(&fourth(*record_ptr)), symbols_mvb[3]);
+            target_symbol = symbols(std::move(symbols_mvb));
+        }
+    };
+
+    template<typename R>
+    class record5_descriptor : public type_descriptor
+    {
+    protected:
+
+        void inspect_value(const void* source_ptr, void* target_ptr) const override
+        {
+            CONSTRAIN(R, record5);
+            assign_value_vptr<R>(source_ptr, target_ptr);
+        }
+
+        void inject_value(const void* source_ptr, void* target_ptr) const override
+        {
+            CONSTRAIN(R, record5);
+            assign_value_vptr<R>(source_ptr, target_ptr);
+        }
+
+        void read_value(const symbol& source_symbol, void* target_ptr) const override
+        {
+            // read target value from source symbol
+            CONSTRAIN(R, record5);
+            VAR* record_ptr = static_cast<R*>(target_ptr);
+            match3(source_symbol,
+                [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+                [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+                [&](VAL& source_symbols)
+            {
+                // validate symbols count
+                if (source_symbols.size() != 5)
+                    throw std::invalid_argument("Expected four symbols.");
+
+                // populate target record
+                typename R::first_type first_value_mvb{};
+                typename R::second_type second_value_mvb{};
+                typename R::third_type third_value_mvb{};
+                typename R::fourth_type fourth_value_mvb{};
+                typename R::fifth_type fifth_value_mvb{};
+                VAL& first_type_descriptor = get_type_descriptor<typename R::first_type>();
+                VAL& second_type_descriptor = get_type_descriptor<typename R::second_type>();
+                VAL& third_type_descriptor = get_type_descriptor<typename R::third_type>();
+                VAL& fourth_type_descriptor = get_type_descriptor<typename R::fourth_type>();
+                VAL& fifth_type_descriptor = get_type_descriptor<typename R::fifth_type>();
+                read_value_vptr(*first_type_descriptor, source_symbols[0], &first_value_mvb);
+                read_value_vptr(*second_type_descriptor, source_symbols[1], &second_value_mvb);
+                read_value_vptr(*third_type_descriptor, source_symbols[2], &third_value_mvb);
+                read_value_vptr(*fourth_type_descriptor, source_symbols[3], &fourth_value_mvb);
+                read_value_vptr(*fifth_type_descriptor, source_symbols[4], &fifth_value_mvb);
+                *record_ptr = R(
+                    std::move(first_value_mvb),
+                    std::move(second_value_mvb),
+                    std::move(third_value_mvb),
+                    std::move(fourth_value_mvb),
+                    std::move(fifth_value_mvb));
+            });
+        }
+
+        void write_value(const void* source_ptr, symbol& target_symbol) const override
+        {
+            CONSTRAIN(R, record5);
+            VAL* record_ptr = static_cast<const R*>(source_ptr);
+            symbols_t symbols_mvb{};
+            symbols_mvb.resize(5_z);
+            VAL& first_type_descriptor = get_type_descriptor<typename R::first_type>();
+            VAL& second_type_descriptor = get_type_descriptor<typename R::second_type>();
+            VAL& third_type_descriptor = get_type_descriptor<typename R::third_type>();
+            VAL& fourth_type_descriptor = get_type_descriptor<typename R::fourth_type>();
+            VAL& fifth_type_descriptor = get_type_descriptor<typename R::fifth_type>();
+            write_value_vptr(*first_type_descriptor, static_cast<const void*>(&fst(*record_ptr)), symbols_mvb[0]);
+            write_value_vptr(*second_type_descriptor, static_cast<const void*>(&snd(*record_ptr)), symbols_mvb[1]);
+            write_value_vptr(*third_type_descriptor, static_cast<const void*>(&thd(*record_ptr)), symbols_mvb[2]);
+            write_value_vptr(*fourth_type_descriptor, static_cast<const void*>(&fourth(*record_ptr)), symbols_mvb[3]);
+            write_value_vptr(*fifth_type_descriptor, static_cast<const void*>(&fifth(*record_ptr)), symbols_mvb[4]);
+            target_symbol = symbols(std::move(symbols_mvb));
+        }
+    };
+
     template<typename T>
     class option_descriptor : public type_descriptor
     {
