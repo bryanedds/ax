@@ -26,19 +26,19 @@ namespace ax
         
         option() : is_some(false)
         {
-            new (&u.unit) unit();
+            new (&u) unit();
         }
         
         option(const option& that) : is_some(that.is_some)
         {
-            if (is_some) new (&u.content) T(that.u.content);
-            else new (&u.unit) unit();
+            if (is_some) new (&u) T(that.u.content);
+            else new (&u) unit();
         }
         
         option(option&& that) : is_some(that.is_some)
         {
-            if (is_some) new (&u.content) T(std::move(that.u.content));
-            else new (&u.unit) unit();
+            if (is_some) new (&u) T(std::move(that.u.content));
+            else new (&u) unit();
         }
 
         option& operator=(const option& that)
@@ -59,12 +59,12 @@ namespace ax
 
         explicit option(const T& content, bool) : is_some(true)
         {
-            new (&u.content) T(content);
+            new (&u) T(content);
         }
 
         explicit option(T&& content, bool) : is_some(true)
         {
-            new (&u.content) T(content);
+            new (&u) T(content);
         }
 
         ~option()

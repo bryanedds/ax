@@ -65,16 +65,16 @@ namespace ax
 
         choice() : index(0_z)
         {
-            new (&u.first) First();
+            new (&u) First();
         }
 
         choice(const choice& that) : index(that.index)
         {
             switch (index)
             {
-                case 0_z: new (&u.first) First(that.u.first); break;
-                case 1_z: new (&u.second) Second(that.u.second); break;
-                case 2_z: new (&u.third) Third(that.u.third); break;
+                case 0_z: new (&u) First(that.u.first); break;
+                case 1_z: new (&u) Second(that.u.second); break;
+                case 2_z: new (&u) Third(that.u.third); break;
             }
         }
 
@@ -82,9 +82,9 @@ namespace ax
         {
             switch (index)
             {
-                case 0_z: new (&u.first) First(std::move(that.u.first)); break;
-                case 1_z: new (&u.second) Second(std::move(that.u.second)); break;
-                case 2_z: new (&u.third) Third(std::move(that.u.third)); break;
+                case 0_z: new (&u) First(std::move(that.u.first)); break;
+                case 1_z: new (&u) Second(std::move(that.u.second)); break;
+                case 2_z: new (&u) Third(std::move(that.u.third)); break;
             }
         }
 
@@ -114,42 +114,42 @@ namespace ax
 
         explicit choice(const First& first, bool) : index(0_z)
         {
-            new (&u.first) First(first);
+            new (&u) First(first);
         }
 
         explicit choice(First&& first, bool) : index(0_z)
         {
-            new (&u.first) First(first);
+            new (&u) First(first);
         }
 
         explicit choice(const Second& second, bool, bool) : index(1_z)
         {
-            new (&u.second) Second(second);
+            new (&u) Second(second);
         }
 
         explicit choice(Second&& second, bool, bool) : index(1_z)
         {
-            new (&u.second) Second(second);
+            new (&u) Second(second);
         }
 
         explicit choice(const Third& third, bool, bool, bool) : index(2_z)
         {
-            new (&u.third) Third(third);
+            new (&u) Third(third);
         }
 
         explicit choice(Third&& third, bool, bool, bool) : index(2_z)
         {
-            new (&u.third) Third(third);
+            new (&u) Third(third);
         }
 
         ~choice()
         {
-            /*switch (index)
+            switch (index)
             {
                 case 0_z: u.first.First::~First(); break;
                 case 1_z: u.second.Second::~Second(); break;
                 case 2_z: u.third.Third::~Third(); break;
-            }*/
+            }
         }
     };
 
