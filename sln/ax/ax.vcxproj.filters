@@ -181,6 +181,12 @@
     <ClInclude Include="..\..\src\hpp\ax\address.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\hpp\ax\impl\choice4.hpp">
+      <Filter>Header Files\ax\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\hpp\ax\impl\choice5.hpp">
+      <Filter>Header Files\ax\impl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\cpp\blah\blah.cpp">

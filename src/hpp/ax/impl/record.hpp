@@ -8,15 +8,15 @@
 
 namespace ax
 {
-    // TODO: build record types up to record7.
-    template<typename First, typename Second, typename Third>
+    // TODO: build record types up to record5.
+    template<typename F, typename S, typename T>
     class record
     {
     private:
 
-        First first;
-        Second second;
-        Third third;
+        F first;
+        S second;
+        T third;
 
     protected:
 
@@ -54,9 +54,9 @@ namespace ax
     public:
 
         CONSTRAINT(record);
-        using first_type = First;
-        using second_type = Second;
-        using third_type = Third;
+        using first_type = F;
+        using second_type = S;
+        using third_type = T;
         template<typename A, typename B, typename C>
         using reify = record<A, B, C>;
         
@@ -66,74 +66,74 @@ namespace ax
         record& operator=(const record&) = default;
         record& operator=(record&&) = default;
 
-        record(const First& first, const Second& second, const Third& third) : first(first), second(second), third(third) { }
-        record(First&& first, Second&& second, Third&& third) : first(first), second(second), third(third) { }
+        record(const F& first, const S& second, const T& third) : first(first), second(second), third(third) { }
+        record(F&& first, S&& second, T&& third) : first(first), second(second), third(third) { }
     };
 
-    template<typename First, typename Second, typename Third>
-    const First& fst(const record<First, Second, Third>& rcd)
+    template<typename F, typename S, typename T>
+    const F& fst(const record<F, S, T>& rcd)
     {
         return rcd.first;
     }
 
-    template<typename First, typename Second, typename Third>
-    const Second& snd(const record<First, Second, Third>& rcd)
+    template<typename F, typename S, typename T>
+    const S& snd(const record<F, S, T>& rcd)
     {
         return rcd.second;
     }
 
-    template<typename First, typename Second, typename Third>
-    const Third& thd(const record<First, Second, Third>& rcd)
+    template<typename F, typename S, typename T>
+    const T& thd(const record<F, S, T>& rcd)
     {
         return rcd.third;
     }
 
-    template<typename First, typename Second, typename Third>
-    First& fst(record<First, Second, Third>& rcd)
+    template<typename F, typename S, typename T>
+    F& fst(record<F, S, T>& rcd)
     {
         return rcd.first;
     }
 
-    template<typename First, typename Second, typename Third>
-    Second& snd(record<First, Second, Third>& rcd)
+    template<typename F, typename S, typename T>
+    S& snd(record<F, S, T>& rcd)
     {
         return rcd.second;
     }
 
-    template<typename First, typename Second, typename Third>
-    Third& thd(record<First, Second, Third>& rcd)
+    template<typename F, typename S, typename T>
+    T& thd(record<F, S, T>& rcd)
     {
         return rcd.third;
     }
 
-    template<typename First, typename Second, typename Third>
-    const char* get_first_name(const record<First, Second, Third>& rcd)
+    template<typename F, typename S, typename T>
+    const char* get_first_name(const record<F, S, T>& rcd)
     {
         return rcd.get_first_name();
     }
 
-    template<typename First, typename Second, typename Third>
-    const char* get_second_name(const record<First, Second, Third>& rcd)
+    template<typename F, typename S, typename T>
+    const char* get_second_name(const record<F, S, T>& rcd)
     {
         return rcd.get_second_name();
     }
 
-    template<typename First, typename Second, typename Third>
-    const char* get_third_name(const record<First, Second, Third>& rcd)
+    template<typename F, typename S, typename T>
+    const char* get_third_name(const record<F, S, T>& rcd)
     {
         return rcd.get_third_name();
     }
 
-    template<typename First, typename Second, typename Third>
-    record<First, Second, Third> make_record(const First& first, const Second& second, const Third& third)
+    template<typename F, typename S, typename T>
+    record<F, S, T> make_record(const F& first, const S& second, const T& third)
     {
-        return record<First, Second, Third>(first, second, third);
+        return record<F, S, T>(first, second, third);
     }
 
-    template<typename First, typename Second, typename Third>
-    record<First, Second, Third> make_record(First&& first, Second&& second, Third&& third)
+    template<typename F, typename S, typename T>
+    record<F, S, T> make_record(F&& first, S&& second, T&& third)
     {
-        return record<First, Second, Third>(first, second, third);
+        return record<F, S, T>(first, second, third);
     }
 }
 

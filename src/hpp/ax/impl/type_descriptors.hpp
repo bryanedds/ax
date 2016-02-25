@@ -726,6 +726,260 @@ namespace ax
             });
         }
     };
+
+    template<typename C>
+    class choice4_descriptor : public type_descriptor
+    {
+    protected:
+
+        void inspect_value(const void* source_ptr, void* target_ptr) const override
+        {
+            CONSTRAIN(C, choice4);
+            assign_value_vptr<C>(source_ptr, target_ptr);
+        }
+
+        void inject_value(const void* source_ptr, void* target_ptr) const override
+        {
+            CONSTRAIN(C, choice4);
+            assign_value_vptr<C>(source_ptr, target_ptr);
+        }
+
+        void read_value(const symbol& source_symbol, void* target_ptr) const override
+        {
+            // read target value from source symbol
+            CONSTRAIN(C, choice4);
+            VAR* choice_ptr = static_cast<C*>(target_ptr);
+            match3(source_symbol,
+                [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+                [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+                [&](VAL& source_symbols)
+            {
+                // validate symbols count
+                if (source_symbols.size() != 2)
+                    throw std::invalid_argument("Expected two symbols.");
+
+                // validate correct symbol name usage
+                VAL& symbol_name = source_symbols[0];
+                VAL& symbol_value = source_symbols[1];
+                VAL& first_name = get_first_name(*choice_ptr);
+                VAL& second_name = get_second_name(*choice_ptr);
+                VAL& third_name = get_third_name(*choice_ptr);
+                VAL& fourth_name = get_fourth_name(*choice_ptr);
+                if (!is_atom(symbol_name))
+                    throw std::invalid_argument("Expected two symbols with valid atom names.");
+
+                // populate target choice
+                VAL& choice_name = get_atom(symbol_name);
+                if (choice_name == first_name)
+                {
+                    typename C::first_type first_value_mvb{};
+                    VAL& type_descriptor = get_type_descriptor<typename C::first_type>();
+                    read_value_vptr(*type_descriptor, symbol_value, &first_value_mvb);
+                    *choice_ptr = C(std::move(first_value_mvb), false);
+                }
+                else if (choice_name == second_name)
+                {
+                    typename C::second_type second_value_mvb{};
+                    VAL& type_descriptor = get_type_descriptor<typename C::second_type>();
+                    read_value_vptr(*type_descriptor, symbol_value, &second_value_mvb);
+                    *choice_ptr = C(std::move(second_value_mvb), false, false);
+                }
+                else if (choice_name == third_name)
+                {
+                    typename C::third_type third_value_mvb{};
+                    VAL& type_descriptor = get_type_descriptor<typename C::third_type>();
+                    read_value_vptr(*type_descriptor, symbol_value, &third_value_mvb);
+                    *choice_ptr = C(std::move(third_value_mvb), false, false, false);
+                }
+                else if (choice_name == fourth_name)
+                {
+                    typename C::fourth_type fourth_value_mvb{};
+                    VAL& type_descriptor = get_type_descriptor<typename C::fourth_type>();
+                    read_value_vptr(*type_descriptor, symbol_value, &fourth_value_mvb);
+                    *choice_ptr = C(std::move(fourth_value_mvb), false, false, false, false);
+                }
+                else
+                {
+                    throw std::invalid_argument(
+                        "Expected appropriate choice constructor name of either '"_s +
+                        first_name + "' or '" +
+                        second_name + "' or '" +
+                        third_name + "' or '" +
+                        fourth_name + "'.");
+                }
+            });
+        }
+
+        void write_value(const void* source_ptr, symbol& target_symbol) const override
+        {
+            CONSTRAIN(C, choice4);
+            VAL* choice_ptr = static_cast<const C*>(source_ptr);
+            match4(*choice_ptr,
+            [&](VAL& first_value)
+            {
+                symbol symbol_mvb{};
+                VAL& first_type_descriptor = get_type_descriptor<typename C::first_type>();
+                write_value_vptr(*first_type_descriptor, static_cast<const void*>(&first_value), symbol_mvb);
+                target_symbol = symbols({ atom(get_first_name(*choice_ptr)), std::move(symbol_mvb) });
+            },
+            [&](VAL& second_value)
+            {
+                symbol symbol_mvb{};
+                VAL& second_type_descriptor = get_type_descriptor<typename C::second_type>();
+                write_value_vptr(*second_type_descriptor, static_cast<const void*>(&second_value), symbol_mvb);
+                target_symbol = symbols({ atom(get_second_name(*choice_ptr)), std::move(symbol_mvb) });
+            },
+            [&](VAL& third_value)
+            {
+                symbol symbol_mvb{};
+                VAL& third_type_descriptor = get_type_descriptor<typename C::third_type>();
+                write_value_vptr(*third_type_descriptor, static_cast<const void*>(&third_value), symbol_mvb);
+                target_symbol = symbols({ atom(get_third_name(*choice_ptr)), std::move(symbol_mvb) });
+            },
+            [&](VAL& fourth_value)
+            {
+                symbol symbol_mvb{};
+                VAL& fourth_type_descriptor = get_type_descriptor<typename C::fourth_type>();
+                write_value_vptr(*fourth_type_descriptor, static_cast<const void*>(&fourth_value), symbol_mvb);
+                target_symbol = symbols({ atom(get_fourth_name(*choice_ptr)), std::move(symbol_mvb) });
+            });
+        }
+    };
+
+    template<typename C>
+    class choice5_descriptor : public type_descriptor
+    {
+    protected:
+
+        void inspect_value(const void* source_ptr, void* target_ptr) const override
+        {
+            CONSTRAIN(C, choice5);
+            assign_value_vptr<C>(source_ptr, target_ptr);
+        }
+
+        void inject_value(const void* source_ptr, void* target_ptr) const override
+        {
+            CONSTRAIN(C, choice5);
+            assign_value_vptr<C>(source_ptr, target_ptr);
+        }
+
+        void read_value(const symbol& source_symbol, void* target_ptr) const override
+        {
+            // read target value from source symbol
+            CONSTRAIN(C, choice5);
+            VAR* choice_ptr = static_cast<C*>(target_ptr);
+            match3(source_symbol,
+                [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+                [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+                [&](VAL& source_symbols)
+            {
+                // validate symbols count
+                if (source_symbols.size() != 2)
+                    throw std::invalid_argument("Expected two symbols.");
+
+                // validate correct symbol name usage
+                VAL& symbol_name = source_symbols[0];
+                VAL& symbol_value = source_symbols[1];
+                VAL& first_name = get_first_name(*choice_ptr);
+                VAL& second_name = get_second_name(*choice_ptr);
+                VAL& third_name = get_third_name(*choice_ptr);
+                VAL& fourth_name = get_fourth_name(*choice_ptr);
+                VAL& fifth_name = get_fifth_name(*choice_ptr);
+                if (!is_atom(symbol_name))
+                    throw std::invalid_argument("Expected two symbols with valid atom names.");
+
+                // populate target choice
+                VAL& choice_name = get_atom(symbol_name);
+                if (choice_name == first_name)
+                {
+                    typename C::first_type first_value_mvb{};
+                    VAL& type_descriptor = get_type_descriptor<typename C::first_type>();
+                    read_value_vptr(*type_descriptor, symbol_value, &first_value_mvb);
+                    *choice_ptr = C(std::move(first_value_mvb), false);
+                }
+                else if (choice_name == second_name)
+                {
+                    typename C::second_type second_value_mvb{};
+                    VAL& type_descriptor = get_type_descriptor<typename C::second_type>();
+                    read_value_vptr(*type_descriptor, symbol_value, &second_value_mvb);
+                    *choice_ptr = C(std::move(second_value_mvb), false, false);
+                }
+                else if (choice_name == third_name)
+                {
+                    typename C::third_type third_value_mvb{};
+                    VAL& type_descriptor = get_type_descriptor<typename C::third_type>();
+                    read_value_vptr(*type_descriptor, symbol_value, &third_value_mvb);
+                    *choice_ptr = C(std::move(third_value_mvb), false, false, false);
+                }
+                else if (choice_name == fourth_name)
+                {
+                    typename C::fourth_type fourth_value_mvb{};
+                    VAL& type_descriptor = get_type_descriptor<typename C::fourth_type>();
+                    read_value_vptr(*type_descriptor, symbol_value, &fourth_value_mvb);
+                    *choice_ptr = C(std::move(fourth_value_mvb), false, false, false, false);
+                }
+                else if (choice_name == fifth_name)
+                {
+                    typename C::fifth_type fifth_value_mvb{};
+                    VAL& type_descriptor = get_type_descriptor<typename C::fifth_type>();
+                    read_value_vptr(*type_descriptor, symbol_value, &fifth_value_mvb);
+                    *choice_ptr = C(std::move(fifth_value_mvb), false, false, false, false);
+                }
+                else
+                {
+                    throw std::invalid_argument(
+                        "Expected appropriate choice constructor name of either '"_s +
+                        first_name + "' or '" +
+                        second_name + "' or '" +
+                        third_name + "' or '" +
+                        fourth_name + "' or '" +
+                        fifth_name + "'.");
+                }
+            });
+        }
+
+        void write_value(const void* source_ptr, symbol& target_symbol) const override
+        {
+            CONSTRAIN(C, choice5);
+            VAL* choice_ptr = static_cast<const C*>(source_ptr);
+            match5(*choice_ptr,
+            [&](VAL& first_value)
+            {
+                symbol symbol_mvb{};
+                VAL& first_type_descriptor = get_type_descriptor<typename C::first_type>();
+                write_value_vptr(*first_type_descriptor, static_cast<const void*>(&first_value), symbol_mvb);
+                target_symbol = symbols({ atom(get_first_name(*choice_ptr)), std::move(symbol_mvb) });
+            },
+            [&](VAL& second_value)
+            {
+                symbol symbol_mvb{};
+                VAL& second_type_descriptor = get_type_descriptor<typename C::second_type>();
+                write_value_vptr(*second_type_descriptor, static_cast<const void*>(&second_value), symbol_mvb);
+                target_symbol = symbols({ atom(get_second_name(*choice_ptr)), std::move(symbol_mvb) });
+            },
+            [&](VAL& third_value)
+            {
+                symbol symbol_mvb{};
+                VAL& third_type_descriptor = get_type_descriptor<typename C::third_type>();
+                write_value_vptr(*third_type_descriptor, static_cast<const void*>(&third_value), symbol_mvb);
+                target_symbol = symbols({ atom(get_third_name(*choice_ptr)), std::move(symbol_mvb) });
+            },
+            [&](VAL& fourth_value)
+            {
+                symbol symbol_mvb{};
+                VAL& fourth_type_descriptor = get_type_descriptor<typename C::fourth_type>();
+                write_value_vptr(*fourth_type_descriptor, static_cast<const void*>(&fourth_value), symbol_mvb);
+                target_symbol = symbols({ atom(get_fourth_name(*choice_ptr)), std::move(symbol_mvb) });
+            },
+            [&](VAL& fifth_value)
+            {
+                symbol symbol_mvb{};
+                VAL& fifth_type_descriptor = get_type_descriptor<typename C::fifth_type>();
+                write_value_vptr(*fifth_type_descriptor, static_cast<const void*>(&fifth_value), symbol_mvb);
+                target_symbol = symbols({ atom(get_fifth_name(*choice_ptr)), std::move(symbol_mvb) });
+            });
+        }
+    };
 }
 
 #endif

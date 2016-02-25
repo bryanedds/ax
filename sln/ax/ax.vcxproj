@@ -25,6 +25,8 @@
     <ClInclude Include="..\..\src\hpp\ax\impl\ax.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\castable.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\choice.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\impl\choice4.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\impl\choice5.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\either.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\event.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\eventable.hpp" />

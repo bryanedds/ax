@@ -9,22 +9,21 @@
 
 namespace ax
 {
-    // TODO: build choices up to choice7.
-    template<typename First, typename Second, typename Third>
+    template<typename F, typename S, typename T>
     class choice
     {
     private:
 
-        union union_t { First first; Second second; Third third; union_t() { } ~union_t() { } } u;
+        union union_t { F first; S second; T third; union_t() { } ~union_t() { } } u;
         std::size_t index;
 
         void construct_u(const choice& that)
         {
             switch (index)
             {
-                case 0_z: new (&u) First(that.u.first); break;
-                case 1_z: new (&u) Second(that.u.second); break;
-                case 2_z: new (&u) Third(that.u.third); break;
+                case 0_z: new (&u) F(that.u.first); break;
+                case 1_z: new (&u) S(that.u.second); break;
+                case 2_z: new (&u) T(that.u.third); break;
             }
         }
 
@@ -32,9 +31,9 @@ namespace ax
         {
             switch (index)
             {
-                case 0_z: new (&u) First(std::move(that.u.first)); break;
-                case 1_z: new (&u) Second(std::move(that.u.second)); break;
-                case 2_z: new (&u) Third(std::move(that.u.third)); break;
+                case 0_z: new (&u) F(std::move(that.u.first)); break;
+                case 1_z: new (&u) S(std::move(that.u.second)); break;
+                case 2_z: new (&u) T(std::move(that.u.third)); break;
             }
         }
 
@@ -42,9 +41,9 @@ namespace ax
         {
             switch (index)
             {
-                case 0_z: u.first.First::~First(); break;
-                case 1_z: u.second.Second::~Second(); break;
-                case 2_z: u.third.Third::~Third(); break;
+                case 0_z: u.first.F::~F(); break;
+                case 1_z: u.second.S::~S(); break;
+                case 2_z: u.third.T::~T(); break;
             }
         }
 
@@ -87,13 +86,13 @@ namespace ax
     public:
 
         CONSTRAINT(choice);
-        using first_type = First;
-        using second_type = Second;
-        using third_type = Third;
+        using first_type = F;
+        using second_type = S;
+        using third_type = T;
         template<typename A, typename B, typename C>
         using reify = choice<A, B, C>;
 
-        choice() : index(0_z) { new (&u) First(); }
+        choice() : index(0_z) { new (&u) F(); }
         choice(const choice& that) : index(that.index) { construct_u(that); }
         choice(choice&& that) : index(that.index) { construct_u(that); }
         
@@ -113,115 +112,115 @@ namespace ax
             return *this;
         }
 
-        explicit choice(const First& first, bool) : index(0_z) { new (&u) First(first); }
-        explicit choice(First&& first, bool) : index(0_z) { new (&u) First(first); }
-        explicit choice(const Second& second, bool, bool) : index(1_z) { new (&u) Second(second); }
-        explicit choice(Second&& second, bool, bool) : index(1_z) { new (&u) Second(second); }
-        explicit choice(const Third& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
-        explicit choice(Third&& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
+        explicit choice(const F& first, bool) : index(0_z) { new (&u) F(first); }
+        explicit choice(F&& first, bool) : index(0_z) { new (&u) F(first); }
+        explicit choice(const S& second, bool, bool) : index(1_z) { new (&u) S(second); }
+        explicit choice(S&& second, bool, bool) : index(1_z) { new (&u) S(second); }
+        explicit choice(const T& third, bool, bool, bool) : index(2_z) { new (&u) T(third); }
+        explicit choice(T&& third, bool, bool, bool) : index(2_z) { new (&u) T(third); }
         ~choice() { destruct_u(); }
     };
 
-    template<typename First, typename Second, typename Third>
-    std::size_t get_index(const choice<First, Second, Third>& chc)
+    template<typename F, typename S, typename T>
+    std::size_t get_index(const choice<F, S, T>& chc)
     {
         return chc.index;
     }
 
-    template<typename First, typename Second, typename Third>
-    const First& get_first(const choice<First, Second, Third>& chc)
+    template<typename F, typename S, typename T>
+    const F& get_first(const choice<F, S, T>& chc)
     {
         if (chc.index == 0_z) return chc.u.first;
         throw std::runtime_error("Cannot get '"_s + get_first_name(chc) + "' value.");
     }
 
-    template<typename First, typename Second, typename Third>
-    const Second& get_second(const choice<First, Second, Third>& chc)
+    template<typename F, typename S, typename T>
+    const S& get_second(const choice<F, S, T>& chc)
     {
         if (chc.index == 1_z) return chc.u.second;
         throw std::runtime_error("Cannot get '"_s + get_second_name(chc) + "' value.");
     }
 
-    template<typename First, typename Second, typename Third>
-    const Third& get_third(const choice<First, Second, Third>& chc)
+    template<typename F, typename S, typename T>
+    const T& get_third(const choice<F, S, T>& chc)
     {
         if (chc.index == 2_z) return chc.u.third;
         throw std::runtime_error("Cannot get '"_s + get_third_name(chc) + "' value.");
     }
 
-    template<typename First, typename Second, typename Third>
-    bool is_first(const choice<First, Second, Third>& chc)
+    template<typename F, typename S, typename T>
+    bool is_first(const choice<F, S, T>& chc)
     {
         return get_index(chc) == 0_z;
     }
 
-    template<typename First, typename Second, typename Third>
-    bool is_second(const choice<First, Second, Third>& chc)
+    template<typename F, typename S, typename T>
+    bool is_second(const choice<F, S, T>& chc)
     {
         return get_index(chc) == 1_z;
     }
 
-    template<typename First, typename Second, typename Third>
-    bool is_third(const choice<First, Second, Third>& chc)
+    template<typename F, typename S, typename T>
+    bool is_third(const choice<F, S, T>& chc)
     {
         return get_index(chc) == 2_z;
     }
 
-    template<typename First, typename Second, typename Third>
-    First& get_first(choice<First, Second, Third>& chc)
+    template<typename F, typename S, typename T>
+    F& get_first(choice<F, S, T>& chc)
     {
         if (chc.index == 0_z) return chc.u.first;
         throw std::runtime_error("Cannot get '"_s + get_first_name(chc) + "' value.");
     }
 
-    template<typename First, typename Second, typename Third>
-    Second& get_second(choice<First, Second, Third>& chc)
+    template<typename F, typename S, typename T>
+    S& get_second(choice<F, S, T>& chc)
     {
         if (chc.index == 1_z) return chc.u.second;
         throw std::runtime_error("Cannot get '"_s + get_second_name(chc) + "' value.");
     }
 
-    template<typename First, typename Second, typename Third>
-    Third& get_third(choice<First, Second, Third>& chc)
+    template<typename F, typename S, typename T>
+    T& get_third(choice<F, S, T>& chc)
     {
         if (chc.index == 2_z) return chc.u.third;
         throw std::runtime_error("Cannot get '"_s + get_third_name(chc) + "' value.");
     }
 
-    template<typename First, typename Second, typename Third>
-    const char* get_first_name(const choice<First, Second, Third>& chc)
+    template<typename F, typename S, typename T>
+    const char* get_first_name(const choice<F, S, T>& chc)
     {
         return chc.get_first_name();
     }
 
-    template<typename First, typename Second, typename Third>
-    const char* get_second_name(const choice<First, Second, Third>& chc)
+    template<typename F, typename S, typename T>
+    const char* get_second_name(const choice<F, S, T>& chc)
     {
         return chc.get_second_name();
     }
 
-    template<typename First, typename Second, typename Third>
-    const char* get_third_name(const choice<First, Second, Third>& chc)
+    template<typename F, typename S, typename T>
+    const char* get_third_name(const choice<F, S, T>& chc)
     {
         return chc.get_third_name();
     }
 
-    template<typename First, typename Second, typename Third>
-    choice<First, Second, Third> first(const First& first)
+    template<typename F, typename S, typename T>
+    choice<F, S, T> first(const F& first)
     {
-        return choice<First, Second, Third>(first, false);
+        return choice<F, S, T>(first, false);
     }
 
-    template<typename First, typename Second, typename Third>
-    choice<First, Second, Third> second(const Second& second)
+    template<typename F, typename S, typename T>
+    choice<F, S, T> second(const S& second)
     {
-        return choice<First, Second, Third>(second, false, false);
+        return choice<F, S, T>(second, false, false);
     }
 
-    template<typename First, typename Second, typename Third>
-    choice<First, Second, Third> third(const Third& third)
+    template<typename F, typename S, typename T>
+    choice<F, S, T> third(const T& third)
     {
-        return choice<First, Second, Third>(third, false, false, false);
+        return choice<F, S, T>(third, false, false, false);
     }
 
     template<typename C, typename FirstFn, typename SecondFn, typename ThirdFn>
