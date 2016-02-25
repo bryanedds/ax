@@ -90,24 +90,36 @@ namespace ax
 
         choice& operator=(const choice& that)
         {
+            switch (index)
+            {
+                case 0_z: u.first.First::~First(); break;
+                case 1_z: u.second.Second::~Second(); break;
+                case 2_z: u.third.Third::~Third(); break;
+            }
             index = that.index;
             switch (index)
             {
-                case 0_z: u.first = that.u.first; break;
-                case 1_z: u.second = that.u.second; break;
-                case 2_z: u.third = that.u.third; break;
+                case 0_z: new (&u) First(that.u.first); break;
+                case 1_z: new (&u) Second(that.u.second); break;
+                case 2_z: new (&u) Third(that.u.third); break;
             }
             return *this;
         }
 
         choice& operator=(choice&& that)
         {
+            switch (index)
+            {
+                case 0_z: u.first.First::~First(); break;
+                case 1_z: u.second.Second::~Second(); break;
+                case 2_z: u.third.Third::~Third(); break;
+            }
             index = that.index;
             switch (index)
             {
-                case 0_z: u.first = std::move(that.u.first); break;
-                case 1_z: u.second = std::move(that.u.second); break;
-                case 2_z: u.third = std::move(that.u.third); break;
+                case 0_z: new (&u) First(std::move(that.u.first)); break;
+                case 1_z: new (&u) Second(std::move(that.u.second)); break;
+                case 2_z: new (&u) Third(std::move(that.u.third)); break;
             }
             return *this;
         }

@@ -67,17 +67,21 @@ namespace ax
 
         either& operator=(const either& that)
         {
+            if (is_right) u.right.R::~R();
+            else u.left.L::~L();
             is_right = that.is_right;
-            if (is_right) u.right = that.u.right;
-            else u.left = that.u.left;
+            if (is_right) new (&u) R(that.u.right);
+            else new (&u) L(that.u.left);
             return *this;
         }
 
         either& operator=(either&& that)
         {
+            if (is_right) u.right.R::~R();
+            else u.left.L::~L();
             is_right = that.is_right;
-            if (is_right) u.right = std::move(that.u.right);
-            else u.left = std::move(that.u.left);
+            if (is_right) new (&u) R(std::move(that.u.right));
+            else new (&u) L(std::move(that.u.left));
             return *this;
         }
 

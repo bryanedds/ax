@@ -43,17 +43,21 @@ namespace ax
 
         option& operator=(const option& that)
         {
+            if (is_some) u.content.T::~T();
+            else u.unit.unit::~unit();
             is_some = that.is_some;
-            if (is_some) u.content = that.u.content;
-            else u.unit = that.u.unit;
+            if (is_some) new (&u) T(that.u.content);
+            else new (&u) unit();
             return *this;
         }
 
         option& operator=(option&& that)
         {
+            if (is_some) u.content.T::~T();
+            else u.unit.unit::~unit();
             is_some = that.is_some;
-            if (is_some) u.content = std::move(that.u.content);
-            else u.unit = that.u.unit;
+            if (is_some) new (&u) T(std::move(that.u.content));
+            else new (&u) unit();
             return *this;
         }
 
