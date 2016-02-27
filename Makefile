@@ -1,4 +1,4 @@
-all: lib tests
+all: tests
 
 lib:
 	set -v; \
@@ -6,7 +6,7 @@ lib:
 	cd ./sh; \
 	. ./build_lib.sh
 
-tests:
+tests: lib
 	set -v; \
 	set -e; \
 	cd ./sh; \
