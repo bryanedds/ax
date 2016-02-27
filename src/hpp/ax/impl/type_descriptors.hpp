@@ -716,7 +716,7 @@ namespace ax
         {
             CONSTRAIN(E, either);
             VAL* either_ptr = static_cast<const E*>(source_ptr);
-            match(*either_ptr,
+            match2(*either_ptr,
             [&](VAL& right_value)
             {
                 symbol symbol_mvb{};

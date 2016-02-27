@@ -223,7 +223,7 @@ namespace ax
     }
 
     template<typename E, typename Rf, typename Lf>
-    auto match(const E& eir, Rf right_fn, Lf left_fn)
+    auto match2(const E& eir, Rf right_fn, Lf left_fn)
     {
         CONSTRAIN(E, either);
         if (is_right(eir)) return right_fn(get_right(eir));
@@ -231,7 +231,7 @@ namespace ax
     }
 
     template<typename E, typename Rf, typename Lf>
-    auto match(E& eir, Rf right_fn, Lf left_fn)
+    auto match2(E& eir, Rf right_fn, Lf left_fn)
     {
         CONSTRAIN(E, either);
         if (is_right(eir)) return right_fn(get_right(eir));

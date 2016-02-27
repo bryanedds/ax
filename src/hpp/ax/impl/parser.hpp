@@ -126,19 +126,20 @@ namespace ax
     template<typename T>
     void read_value(const std::string& str, T& value)
     {
-        if (VAL& parse = parse_symbol(str))
+        match2(parse_symbol(str),
+        [&](VAL& symbol)
         {
             VAL& type_descriptor = get_type_descriptor<T>();
-            read_value(type_descriptor, *parse, &value);
-        }
-        else
+            read_value(type_descriptor, symbol, &value);
+        },
+        [&](VAL& error)
         {
             throw std::runtime_error(
                 "Could not parse value of type '"_s + typeid(T).name() +
                 "' from string '" + str +
-                "' due to '" + ~parse +
+                "' due to '" + error +
                 "'.");
-        }
+        });
     }
 
     // Convert a std::string to a value of type T (where T is a smart ptr where applicable).
