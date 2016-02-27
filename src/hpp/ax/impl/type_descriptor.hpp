@@ -27,10 +27,10 @@ namespace ax
         template<typename T, typename D>
         friend std::shared_ptr<D> register_type_descriptor(const std::shared_ptr<D>& type_descriptor);
 
-        friend void inspect_value_vptr(const type_descriptor& type_descriptor, const reflectable& source, const field& field, void* target_ptr);
-        friend void inject_value_vptr(const type_descriptor& type_descriptor, const field& field, const void* source_ptr, reflectable& target);
-        friend void read_value_vptr(const type_descriptor& type_descriptor, const symbol& source_symbol, void* target_ptr);
-        friend void write_value_vptr(const type_descriptor& type_descriptor, const void* source_ptr, symbol& target_symbol);
+        friend void inspect_value(const type_descriptor& type_descriptor, const reflectable& source, const field& field, void* target_ptr);
+        friend void inject_value(const type_descriptor& type_descriptor, const field& field, const void* source_ptr, reflectable& target);
+        friend void read_value(const type_descriptor& type_descriptor, const symbol& source_symbol, void* target_ptr);
+        friend void write_value(const type_descriptor& type_descriptor, const void* source_ptr, symbol& target_symbol);
 
         virtual void inspect_value(const void* source_ptr, void* target_ptr) const = 0;
         virtual void inject_value(const void* source_ptr, void* target_ptr) const = 0;
@@ -51,6 +51,14 @@ namespace ax
     // Get the type descriptor for the given type index.
     std::shared_ptr<type_descriptor> get_type_descriptor(std::type_index type_index);
 
+    // Get a type descriptor for the given template argument.
+    template<typename T>
+    std::shared_ptr<type_descriptor> get_type_descriptor()
+    {
+        VAL& type_index = std::type_index(typeid(T));
+        return get_type_descriptor(type_index);
+    }
+
     // Register a type descriptor.
     template<typename T, typename D>
     std::shared_ptr<D> register_type_descriptor(const std::shared_ptr<D>& type_descriptor)
@@ -62,50 +70,42 @@ namespace ax
         return type_descriptor;
     }
 
-    // Get a type descriptor for the given template argument.
-    template<typename T>
-    std::shared_ptr<type_descriptor> get_type_descriptor()
-    {
-        VAL& type_index = std::type_index(typeid(T));
-        return get_type_descriptor(type_index);
-    }
-
     // Assign a value via void ptrs.
     template<typename T>
-    void assign_value_vptr(const void* source_ptr, void* target_ptr)
+    void assign_value(const void* source_ptr, void* target_ptr)
     {
         VAL* source_ptr_t = static_cast<const T*>(source_ptr);
         VAR* target_ptr_t = static_cast<T*>(target_ptr);
         *target_ptr_t = *source_ptr_t;
     }
 
-    // Assign a unique_ptr via void ptrs.
-    template<typename T>
-    void assign_unique_ptr_vptr(const void* source_ptr, void* target_ptr)
-    {
-        //CONSTRAIN_AS_UNIQUE_PTR(T);
-        VAL* source_ptr_t = static_cast<const T*>(source_ptr);
-        VAR* target_ptr_t = static_cast<T*>(target_ptr);
-        target_ptr_t->reset(new typename T::element_type(**source_ptr_t));
-    }
-
     // Assign a shared_ptr via void ptrs.
     template<typename T>
-    void assign_shared_ptr_vptr(const void* source_ptr, void* target_ptr)
+    void assign_shared_ptr(const void* source_ptr, void* target_ptr)
     {
-        //CONSTRAIN_AS_SHARED_PTR(T);
-        VAL* source_ptr_t = static_cast<const T*>(source_ptr);
-        VAR* target_ptr_t = static_cast<T*>(target_ptr);
-        target_ptr_t->reset(new typename T::element_type(**source_ptr_t));
+        CONSTRAIN_AS_SHARED_PTR(T);
+        VAL* source_ptr_ptr = static_cast<const std::shared_ptr<T>*>(source_ptr);
+        VAR* target_ptr_ptr = static_cast<std::shared_ptr<T>*>(target_ptr);
+        *target_ptr_ptr = *source_ptr_ptr;
     }
 
-    // Inspect a value of an reflectable value, placing it into a void ptr.
-    void inspect_value_vptr(const type_descriptor& type_descriptor, const reflectable& source, const field& field, void* target_ptr);
+    // Assign a unique_ptr via void ptrs.
+    template<typename T>
+    void assign_unique_ptr(void* source_ptr, void* target_ptr)
+    {
+        CONSTRAIN_AS_UNIQUE_PTR(T);
+        VAR* source_ptr_ptr = static_cast<std::unique_ptr<T>*>(source_ptr);
+        VAR* target_ptr_ptr = static_cast<std::unique_ptr<T>*>(target_ptr);
+        target_ptr_ptr->reset(source_ptr_ptr->get());
+    }
 
-    // Inject a value into an reflectable value, via a void ptr.
-    void inject_value_vptr(const type_descriptor& type_descriptor, const field& field, const void* source_ptr, reflectable& target);
+    // Inspect a value of a reflectable value, placing it into a void ptr.
+    void inspect_value(const type_descriptor& type_descriptor, const reflectable& source, const field& field, void* target_ptr);
 
-    // Inspect a value of an reflectable value.
+    // Inject a value into a reflectable value, via a void ptr.
+    void inject_value(const type_descriptor& type_descriptor, const field& field, const void* source_ptr, reflectable& target);
+
+    // Inspect a value of a reflectable value.
     template<typename T>
     void inspect_value(const reflectable& source, const field& field, T& target)
     {
@@ -113,10 +113,10 @@ namespace ax
         if (type_index != std::type_index(typeid(T))) throw std::invalid_argument("Field is not of required type.");
         VAL& type_descriptor = get_type_descriptor(type_index);
         VAR* target_ptr = static_cast<void*>(&target);
-        inspect_value_vptr(*type_descriptor, source, field, target_ptr);
+        inspect_value(*type_descriptor, source, field, target_ptr);
     }
 
-    // Inject a value into an reflectable value.
+    // Inject a value into a reflectable value.
     template<typename T>
     void inject_value(const field& field, const T& source, reflectable& target)
     {
@@ -124,19 +124,19 @@ namespace ax
         if (type_index != std::type_index(typeid(T))) throw std::invalid_argument("Field is not of required type.");
         VAL& type_descriptor = get_type_descriptor(type_index);
         VAL* source_ptr = static_cast<const void*>(&source);
-        inject_value_vptr(*type_descriptor, field, source_ptr, target);
+        inject_value(*type_descriptor, field, source_ptr, target);
     }
 
     // Read a value from a symbol, placing it into a void ptr.
-    void read_value_vptr(const type_descriptor& type_descriptor, const symbol& source_symbol, void* target_ptr);
+    void read_value(const type_descriptor& type_descriptor, const symbol& source_symbol, void* target_ptr);
 
-    // Write a value to a symbol, via a void ptr.
-    void write_value_vptr(const type_descriptor& type_descriptor, const void* source_ptr, symbol& target_symbol);
-
-    // Read an reflectable value from a symbol.
+    // Read a reflectable value from a symbol.
     void read_value(const symbol& source_symbol, reflectable& target_reflectable);
 
-    // Write an reflectable value to a symbol.
+    // Write a value to a symbol, via a void ptr.
+    void write_value(const type_descriptor& type_descriptor, const void* source_ptr, symbol& target_symbol);
+
+    // Write a reflectable value to a symbol.
     void write_value(const reflectable& source_reflectable, symbol& target_symbol);
 
     // A generalized type descriptor for reflectable types.

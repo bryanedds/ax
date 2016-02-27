@@ -8,6 +8,7 @@
 #include "prelude.hpp"
 #include "either.hpp"
 #include "symbol.hpp"
+#include "type_descriptor.hpp"
 
 namespace ax
 {
@@ -112,11 +113,42 @@ namespace ax
     // Parse a string until any of the given chars are reached.
     parse<std::string> parse_until_any_given_char(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end, std::string chars);
 
-    // Parse a symbol value from a std istream.
-    parse<symbol> parse_symbol_from_stream(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end);
-
     // Parse a symbol value from an xml buffer.
     parse<symbol> parse_symbol_from_xml_buffer(char* buffer);
+
+    // Parse a symbol value from a std::istream.
+    parse<symbol> parse_symbol_from_stream(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end);
+
+    // Parse a symbol value from a std::string.
+    parse<symbol> parse_symbol(const std::string& str);
+
+    // Read a value of type T from a std::string (where T is a smart ptr where applicable).
+    template<typename T>
+    void read_value(const std::string& str, T& value)
+    {
+        if (VAL& parse = parse_symbol(str))
+        {
+            VAL& type_descriptor = get_type_descriptor<T>();
+            read_value(type_descriptor, *parse, &value);
+        }
+        else
+        {
+            throw std::runtime_error(
+                "Could not parse value of type '"_s + typeid(T).name() +
+                "' from string '" + str +
+                "' due to '" + ~parse +
+                "'.");
+        }
+    }
+
+    // Convert a std::string to a value of type T (where T is a smart ptr where applicable).
+    template<typename T>
+    T valueize(const std::string& str)
+    {
+        T value;
+        read_value(str, value);
+        return value;
+    }
 }
 
 #endif

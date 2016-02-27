@@ -29,7 +29,7 @@ namespace ax
         return type_descriptor_iter->second;
     }
 
-    void inspect_value_vptr(const type_descriptor& type_descriptor, const reflectable& source, const field& field, void* target_ptr)
+    void inspect_value(const type_descriptor& type_descriptor, const reflectable& source, const field& field, void* target_ptr)
     {
         VAR* source_ptr = &source;
         VAR* head_ptr = static_cast<const char*>(static_cast<const void*>(source_ptr));
@@ -37,7 +37,7 @@ namespace ax
         type_descriptor.inspect_value(field_ptr, target_ptr);
     }
 
-    void inject_value_vptr(const type_descriptor& type_descriptor, const field& field, const void* source_ptr, reflectable& target)
+    void inject_value(const type_descriptor& type_descriptor, const field& field, const void* source_ptr, reflectable& target)
     {
         VAR* target_ptr = &target;
         VAR* head_ptr = static_cast<char*>(static_cast<void*>(target_ptr));
@@ -45,20 +45,20 @@ namespace ax
         type_descriptor.inject_value(source_ptr, field_ptr);
     }
 
-    void read_value_vptr(const type_descriptor& type_descriptor, const symbol& source_symbol, void* target_ptr)
+    void read_value(const type_descriptor& type_descriptor, const symbol& source_symbol, void* target_ptr)
     {
         type_descriptor.read_value(source_symbol, target_ptr);
-    }
-
-    void write_value_vptr(const type_descriptor& type_descriptor, const void* source_ptr, symbol& target_symbol)
-    {
-        type_descriptor.write_value(source_ptr, target_symbol);
     }
 
     void read_value(const symbol& source_symbol, reflectable& target_reflectable)
     {
         VAL& type_descriptor = get_type_descriptor<reflectable>();
-        read_value_vptr(*type_descriptor, source_symbol, static_cast<void*>(&target_reflectable));
+        read_value(*type_descriptor, source_symbol, static_cast<void*>(&target_reflectable));
+    }
+
+    void write_value(const type_descriptor& type_descriptor, const void* source_ptr, symbol& target_symbol)
+    {
+        type_descriptor.write_value(source_ptr, target_symbol);
     }
 
     void write_value(const reflectable& source_reflectable, symbol& target_symbol)
@@ -66,7 +66,7 @@ namespace ax
         VAL& type = get_type(source_reflectable);
         VAL& type_index = get_type_index(*type);
         VAL& type_descriptor = get_type_descriptor(type_index);
-        write_value_vptr(*type_descriptor, static_cast<const void*>(&source_reflectable), target_symbol);
+        write_value(*type_descriptor, static_cast<const void*>(&source_reflectable), target_symbol);
     }
 
     /* reflectable_descriptor */
@@ -103,7 +103,7 @@ namespace ax
                 VAL& field_type_index = get_type_index(*field);
                 VAL& field_type_descriptor = get_type_descriptor(field_type_index);
                 VAL& field_ptr = static_cast<char*>(static_cast<void*>(&reflectable)) + get_value_offset(*field);
-                read_value_vptr(*field_type_descriptor, field_symbol, field_ptr);
+                read_value(*field_type_descriptor, field_symbol, field_ptr);
                 ++symbols_iter;
             }
         }
@@ -127,7 +127,7 @@ namespace ax
             VAL& field_type_index = get_type_index(*field);
             VAL& field_type_descriptor = get_type_descriptor(field_type_index);
             VAL& field_ptr = static_cast<const char*>(static_cast<const void*>(&reflectable)) + get_value_offset(*field);
-            write_value_vptr(*field_type_descriptor, field_ptr, field_symbol_mvb);
+            write_value(*field_type_descriptor, field_ptr, field_symbol_mvb);
             symbols.emplace_back(std::move(field_symbol_mvb));
         }
     }

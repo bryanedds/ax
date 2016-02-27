@@ -21,12 +21,12 @@ namespace ax
 
     void bool_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<bool>(source_ptr, target_ptr);
+        assign_value<bool>(source_ptr, target_ptr);
     }
 
     void bool_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<bool>(source_ptr, target_ptr);
+        assign_value<bool>(source_ptr, target_ptr);
     }
 
     void bool_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
@@ -48,12 +48,12 @@ namespace ax
 
     void int_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<int>(source_ptr, target_ptr);
+        assign_value<int>(source_ptr, target_ptr);
     }
 
     void int_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<int>(source_ptr, target_ptr);
+        assign_value<int>(source_ptr, target_ptr);
     }
 
     void int_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
@@ -75,12 +75,12 @@ namespace ax
 
     void int32_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<int32_t>(source_ptr, target_ptr);
+        assign_value<int32_t>(source_ptr, target_ptr);
     }
 
     void int32_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<int32_t>(source_ptr, target_ptr);
+        assign_value<int32_t>(source_ptr, target_ptr);
     }
 
     void int32_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
@@ -102,12 +102,12 @@ namespace ax
 
     void int64_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<int64_t>(source_ptr, target_ptr);
+        assign_value<int64_t>(source_ptr, target_ptr);
     }
 
     void int64_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<int64_t>(source_ptr, target_ptr);
+        assign_value<int64_t>(source_ptr, target_ptr);
     }
 
     void int64_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
@@ -129,12 +129,12 @@ namespace ax
 
     void float_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<float>(source_ptr, target_ptr);
+        assign_value<float>(source_ptr, target_ptr);
     }
 
     void float_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<float>(source_ptr, target_ptr);
+        assign_value<float>(source_ptr, target_ptr);
     }
 
     void float_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
@@ -156,12 +156,12 @@ namespace ax
 
     void double_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<double>(source_ptr, target_ptr);
+        assign_value<double>(source_ptr, target_ptr);
     }
 
     void double_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<double>(source_ptr, target_ptr);
+        assign_value<double>(source_ptr, target_ptr);
     }
 
     void double_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
@@ -183,12 +183,12 @@ namespace ax
 
     void size_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<std::size_t>(source_ptr, target_ptr);
+        assign_value<std::size_t>(source_ptr, target_ptr);
     }
 
     void size_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<std::size_t>(source_ptr, target_ptr);
+        assign_value<std::size_t>(source_ptr, target_ptr);
     }
 
     void size_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
@@ -210,12 +210,12 @@ namespace ax
 
     void string_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<std::string>(source_ptr, target_ptr);
+        assign_value<std::string>(source_ptr, target_ptr);
     }
 
     void string_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<std::string>(source_ptr, target_ptr);
+        assign_value<std::string>(source_ptr, target_ptr);
     }
 
     void string_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
@@ -237,12 +237,12 @@ namespace ax
 
     void name_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<name_t>(source_ptr, target_ptr);
+        assign_value<name_t>(source_ptr, target_ptr);
     }
 
     void name_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<name_t>(source_ptr, target_ptr);
+        assign_value<name_t>(source_ptr, target_ptr);
     }
 
     void name_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
@@ -264,12 +264,12 @@ namespace ax
 
     void address_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<address>(source_ptr, target_ptr);
+        assign_value<address>(source_ptr, target_ptr);
     }
 
     void address_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value_vptr<address>(source_ptr, target_ptr);
+        assign_value<address>(source_ptr, target_ptr);
     }
 
     void address_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
@@ -307,13 +307,10 @@ namespace ax
         register_type_descriptor<name_t>(std::make_shared<name_descriptor>());
         register_type_descriptor<address>(std::make_shared<address_descriptor>());
 
-        // std::unique_ptr type descriptors
-        register_type_descriptor<std::unique_ptr<int>>(std::make_shared<unique_ptr_descriptor<int>>());
-        register_type_descriptor<std::unique_ptr<std::string>>(std::make_shared<unique_ptr_descriptor<std::string>>());
-
         // std::shared_ptr type descriptors
         register_type_descriptor<std::shared_ptr<int>>(std::make_shared<shared_ptr_descriptor<int>>());
         register_type_descriptor<std::shared_ptr<std::string>>(std::make_shared<shared_ptr_descriptor<std::string>>());
+        register_type_descriptor<std::shared_ptr<reflectable>>(std::make_shared<shared_ptr_descriptor<reflectable>>());
 
         // std::vector type descriptors
         register_type_descriptor<std::vector<bool>>(std::make_shared<vector_descriptor<bool>>());

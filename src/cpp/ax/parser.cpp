@@ -1,4 +1,5 @@
 #include <istream>
+#include <sstream>
 
 #include "../../hpp/rxml/rapidxml.hpp"
 
@@ -90,6 +91,27 @@ namespace ax
         return parse_failure<std::string>("Parser error: expected any char.");
     }
 
+    static symbol parse_symbol_from_xml_node(rapidxml::xml_node<char>* parent_node)
+    {
+        symbols_t symbols{};
+        for (VAR* node = parent_node->first_node(); node != nullptr; node = node->next_sibling())
+        {
+            symbols.emplace_back(atom(node->name()));
+            for (VAR* attribute = node->first_attribute(); attribute != nullptr; attribute = attribute->next_attribute())
+                symbols.emplace_back(atom(attribute->value()));
+            symbols.emplace_back(parse_symbol_from_xml_node(node));
+        }
+        return ax::symbols(std::move(symbols));
+    }
+
+    parse<symbol> parse_symbol_from_xml_buffer(char* buffer)
+    {
+        rapidxml::xml_document<char> document{};
+        document.parse<rapidxml::parse_default>(buffer);
+        VAR* root = document.first_node();
+        return parse_success(parse_symbol_from_xml_node(root));
+    }
+
     parse<symbol> parse_symbol_from_stream(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end)
     {
         skip_whitespace_many(iter, end);
@@ -140,24 +162,11 @@ namespace ax
         else return parse_failure<symbol>("Unknown parser error due to: "_s + ~parse);
     }
 
-    static symbol parse_symbol_from_xml_node(rapidxml::xml_node<char>* parent_node)
+    parse<symbol> parse_symbol(const std::string& str)
     {
-        symbols_t symbols{};
-        for (VAR* node = parent_node->first_node(); node != nullptr; node = node->next_sibling())
-        {
-            symbols.emplace_back(atom(node->name()));
-            for (VAR* attribute = node->first_attribute(); attribute != nullptr; attribute = attribute->next_attribute())
-                symbols.emplace_back(atom(attribute->value()));
-            symbols.emplace_back(parse_symbol_from_xml_node(node));
-        }
-        return ax::symbols(std::move(symbols));
-    }
-
-    parse<symbol> parse_symbol_from_xml_buffer(char* buffer)
-    {
-        rapidxml::xml_document<char> document{};
-        document.parse<rapidxml::parse_default>(buffer);
-        VAR* root = document.first_node();
-        return parse_success(parse_symbol_from_xml_node(root));
+        std::stringstream sstr(str);
+        sstr << std::noskipws; // apparently avoids skipping whitespace
+        std::istream_iterator<char> iter(sstr);
+        return parse_symbol_from_stream(iter, std::istream_iterator<char>());
     }
 }

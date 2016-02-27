@@ -59,7 +59,7 @@ namespace ax
 
 namespace ax
 {
-    // A unit type enable with reflection, allowing for more weakly-type systems where needed.
+    // A unit type enabled with reflection, allowing for more weakly-typed systems where needed.
     class unitr : public reflectable
     {
     protected: ENABLE_REFLECTION(unitr, ax::reflectable);

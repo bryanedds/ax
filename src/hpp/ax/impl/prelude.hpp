@@ -7,7 +7,6 @@
 // Uniform Call Syntax, and Filesystem. Modules would also be beneficiary, but to a limited extent
 // due to the small size of this library and its dependencies.
 
-// TODO: enable -wall in VS, and selectively disable noise warnings.
 #include <cstddef>
 #include <type_traits>
 

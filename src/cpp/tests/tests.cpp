@@ -46,7 +46,6 @@ namespace ax
             { "address_value",          register_field<address>                     (offsetof(reflectable_test, address_value)) },
             { "vector_int_value",       register_field<std::vector<int>>            (offsetof(reflectable_test, vector_int_value)) },
             { "vector_string_value",    register_field<std::vector<std::string>>    (offsetof(reflectable_test, vector_string_value)) },
-            { "unique_int_value",       register_field<std::unique_ptr<int>>        (offsetof(reflectable_test, unique_int_value)) },
             { "shared_int_value",       register_field<std::shared_ptr<int>>        (offsetof(reflectable_test, shared_int_value)) },
             { "pair_value",             register_field<pair<int, int>>              (offsetof(reflectable_test, pair_value)) },
             { "record_value",           register_field<record<int, int, int>>       (offsetof(reflectable_test, record_value)) },
@@ -71,7 +70,6 @@ namespace ax
         address address_value;
         std::vector<int> vector_int_value;
         std::vector<std::string> vector_string_value;
-        std::unique_ptr<int> unique_int_value;
         std::shared_ptr<int> shared_int_value;
         pair<int, int> pair_value;
         record<int, int, int> record_value;
@@ -89,7 +87,6 @@ namespace ax
             address_value(),
             vector_int_value(),
             vector_string_value(),
-            unique_int_value(std::make_unique<int>()),
             shared_int_value(std::make_shared<int>()),
             pair_value(),
             record_value(),
@@ -108,7 +105,6 @@ namespace ax
             address address_value,
             const std::vector<int>& vector_int_value,
             const std::vector<std::string>& vector_string_value,
-            int unique_int_value,
             int shared_int_value,
             pair<int, int> pair_value,
             record<int, int, int> record_value,
@@ -124,7 +120,6 @@ namespace ax
             address_value(address_value),
             vector_int_value(vector_int_value),
             vector_string_value(vector_string_value),
-            unique_int_value(std::make_unique<int>(unique_int_value)),
             shared_int_value(std::make_shared<int>(shared_int_value)),
             pair_value(pair_value),
             record_value(record_value),
@@ -205,7 +200,7 @@ namespace ax
         symbol symbol{};
         reflectable_test source(
             true, 5, 10.0f, "jim bob", address("s/compton/la"),
-            { 1, 3, 5 }, { "a", "bb", "ccc" }, 666, 777,
+            { 1, 3, 5 }, { "a", "bb", "ccc" }, 777,
             make_pair(50, 100), make_record(150, 200, 250),
             some(2), none<int>(), right<int, std::string>(4), left<int>("msg"_s), third<int, int, int>(3));
         reflectable_test target{};
@@ -218,7 +213,6 @@ namespace ax
         CHECK(target.address_value == address("s/compton/la"));
         CHECK(target.vector_int_value == std::vector<int>({ 1, 3, 5 }));
         CHECK(target.vector_string_value == std::vector<std::string>({ "a", "bb", "ccc" }));
-        CHECK(*target.unique_int_value == 666);
         CHECK(*target.shared_int_value == 777);
         CHECK(fst(target.pair_value) == 50);
         CHECK(snd(target.pair_value) == 100);
@@ -240,7 +234,6 @@ namespace ax
               \"s/compton/la\" \
               [1 3 5] \
               [\"a\" \"bb\" \"ccc\"] \
-              666 \
               777 \
               [50 100] \
               [150 200 250] \
@@ -249,10 +242,7 @@ namespace ax
               [right 4] \
               [left \"msg\"] \
               [  third  3  ]  ]"; // a little extra whitespace to try to throw off the parser
-        std::stringstream sstr(str);
-        sstr << std::noskipws; // apparently avoids skipping whitespace
-        std::istream_iterator<char> iter(sstr);
-        VAL& parse = parse_symbol_from_stream(iter, std::istream_iterator<char>());
+        VAL& parse = parse_symbol(str);
         VAL& symbol = get_parse_success(parse);
         reflectable_test target{};
         read_value(symbol, target);
@@ -263,7 +253,6 @@ namespace ax
         CHECK(target.address_value == address("s/compton/la"));
         CHECK(target.vector_int_value == std::vector<int>({ 1, 3, 5 }));
         CHECK(target.vector_string_value == std::vector<std::string>({ "a", "bb", "ccc" }));
-        CHECK(*target.unique_int_value == 666);
         CHECK(*target.shared_int_value == 777);
         CHECK(fst(target.pair_value) == 50);
         CHECK(snd(target.pair_value) == 100);

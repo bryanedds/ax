@@ -83,6 +83,7 @@
     <ClCompile Include="..\..\src\cpp\ax\type.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\type_descriptor.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\type_descriptors.cpp" />
+    <ClCompile Include="..\..\src\cpp\ax\unparser.cpp" />
     <ClCompile Include="..\..\src\cpp\blah\blah.cpp" />
     <ClCompile Include="..\..\src\cpp\tom\tom.cpp" />
   </ItemGroup>

@@ -228,5 +228,8 @@
     <ClCompile Include="..\..\src\cpp\ax\reflectable.cpp">
       <Filter>Source Files\ax</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\cpp\ax\unparser.cpp">
+      <Filter>Source Files\ax</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
