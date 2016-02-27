@@ -5,8 +5,7 @@
 
 namespace ax
 {
-    // TODO: better abstraction
-    using namespace blah;
+    // TODO: implement
 }
 
 #endif
