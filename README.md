@@ -15,7 +15,7 @@ and a type-safe pattern matching system in **"algebraic.hpp"**
 
 Ax was built in the clean and modular Data Abstration Style - https://github.com/bryanedds/das
 
-This library makes a good base for non-trivial projects like renderers, game engines, and other real-ass shit that absolutely *needs* to be built with good programming semantics.
+This library makes a good base for non-trivial projects like renderers, game engines, and other projects that absolutely *need* to be built with good programming semantics.
 
 ## WIP
 Note this project has not reached alpha-status, so not recommended for use in production without serious care. There's even some undefined behavior lingering in the reflection system I'm trying to remove. Tests and fixes are coming along over time, however :)
