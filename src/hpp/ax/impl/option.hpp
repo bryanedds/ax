@@ -134,6 +134,18 @@ namespace ax
 		bool is_some_flag;
     };
 
+	template<typename T>
+	bool is_some(const option<T>& opt)
+	{
+		opt.is_some();
+	}
+
+	template<typename T>
+	bool is_none(const option<T>& opt)
+	{
+		opt.is_none();
+	}
+
     template<typename T>
     option<T> some(const T& content)
     {
