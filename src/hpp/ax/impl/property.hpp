@@ -33,6 +33,30 @@ namespace ax
 		const T& operator*() const { return data; }
 		T& operator*() { return data; }
 
+		template<typename T>
+		const T& get_value() const
+		{
+			return **this;
+		}
+
+		template<typename T>
+		T& get_value()
+		{
+			return **this;
+		}
+
+		template<typename T>
+		T& set_value(const T& value)
+		{
+			return *this = value;
+		}
+
+		template<typename T>
+		T& set_value(T&& value)
+		{
+			return *this = value;
+		}
+
     protected:
 
         ENABLE_CAST(property<T>, castable);
@@ -42,65 +66,42 @@ namespace ax
 		T data;
     };
 
-    template<typename T>
-    const T& get_value(const property<T>& property)
-    {
-        return *property;
-    }
-
-    template<typename T>
-    T& get_value(property<T>& property)
-    {
-        return *property;
-    }
-
-    template<typename T>
-    T& set_value(property<T>& property, const T& value)
-    {
-        return property = value;
-    }
-
-    template<typename T>
-    T& set_value(property<T>& property, T&& value)
-    {
-        return property = value;
-    }
-
     // TODO: type descriptor
     class property_map : public std::unordered_map<name_t, std::unique_ptr<castable>>
     {
     public:
+
         CONSTRAINT(property_map);
         using std::unordered_map<name_t, std::unique_ptr<castable>>::unordered_map;
+
+		template<typename T>
+		const property<T>& get_property(const name_t& name) const
+		{
+			VAL& property_opt = find(name);
+			if (property_opt != end()) return cast<property<T>>(*property_opt->second);
+			throw std::logic_error("No such property '"_s + get_name_str(name) + "'.");
+		}
+
+		template<typename T>
+		property<T>& get_property(const name_t& name)
+		{
+			VAL& property_opt = find(name);
+			if (property_opt != end()) return cast<property<T>>(*property_opt->second);
+			throw std::logic_error("No such property '"_s + name.get_name_str() + "'.");
+		}
+
+		template<typename T>
+		void attach_property(const name_t& name, const T& value)
+		{
+			insert(std::make_pair(name, std::make_unique<property<T>>(value)));
+		}
+
+		template<typename T>
+		void attach_property(const name_t& name, T&& value)
+		{
+			insert(name, std::make_unique<property<T>>(value));
+		}
     };
-
-    template<typename T>
-    const property<T>& get_property(const property_map& properties, const name_t& name)
-    {
-        VAL& property_opt = properties.find(name);
-        if (property_opt != properties.end()) return cast<property<T>>(*property_opt->second);
-        throw std::logic_error("No such property '"_s + get_name_str(name) + "'.");
-    }
-
-    template<typename T>
-    property<T>& get_property(property_map& properties, const name_t& name)
-    {
-        VAL& property_opt = properties.find(name);
-        if (property_opt != properties.end()) return cast<property<T>>(*property_opt->second);
-        throw std::logic_error("No such property '"_s + name.get_name_str() + "'.");
-    }
-
-    template<typename T>
-    void attach_property(property_map& properties, const name_t& name, const T& value)
-    {
-        properties.insert(std::make_pair(name, std::make_unique<property<T>>(value)));
-    }
-
-    template<typename T>
-    void attach_property(property_map& properties, const name_t& name, T&& value)
-    {
-        properties.insert(name, std::make_unique<property<T>>(value));
-    }
 }
 
 #endif

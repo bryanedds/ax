@@ -97,12 +97,12 @@ namespace ax
 			}
 		}
 
-		T& add_component(const ax::address& address)
+		T& add_component(const ax::address& address) override
 		{
 			return ax::system_t<T>::add_component(address, T());
 		}
 
-		bool remove_component(const ax::address& address)
+		bool remove_component(const ax::address& address) override
 		{
 			VAL index_iter = component_map.find(address);
 			if (index_iter != component_map.end())
@@ -122,7 +122,7 @@ namespace ax
 			}
 		}
 
-		T* try_get_component(const ax::address& address)
+		T* try_get_component(const ax::address& address) override
 		{
 			VAL index_iter = component_map.find(address);
 			if (index_iter != component_map.end())

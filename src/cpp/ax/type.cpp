@@ -17,6 +17,26 @@ namespace ax
         field_vector(field_vector)
     { }
 
+	const std::shared_ptr<std::type_index>& type_t::get_base_type_index_opt() const
+	{
+		return base_type_index_opt;
+	}
+
+	std::type_index type_t::get_type_index() const
+	{
+		return type_index;
+	}
+
+	const field_map& type_t::get_field_map() const
+	{
+		return field_map;
+	}
+
+	const field_vector& type_t::get_field_vector() const
+	{
+		return field_vector;
+	}
+
     const type_map& get_type_map()
     {
         return type_t::type_map;
@@ -28,25 +48,5 @@ namespace ax
         VAL& type_iter = type_map.find(type_index);
         if (type_iter == std::end(type_map)) throw std::runtime_error("Could not find type '"_s + type_index.name() + "'.");
         return type_iter->second;
-    }
-
-    const std::shared_ptr<std::type_index>& get_base_type_index_opt(const type_t& type)
-    {
-        return type.base_type_index_opt;
-    }
-
-    std::type_index get_type_index(const type_t& type)
-    {
-        return type.type_index;
-    }
-
-    const field_map& get_field_map(const type_t& type)
-    {
-        return type.field_map;
-    }
-
-    const field_vector& get_field_vector(const type_t& type)
-    {
-        return type.field_vector;
     }
 }

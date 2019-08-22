@@ -23,15 +23,23 @@ namespace ax
 			const ax::field_map& field_map,
 			const ax::field_vector& field_vector);
 
+		// Get the type index of the base type, if any.
+		const std::shared_ptr<std::type_index>& get_base_type_index_opt() const;
+
+		// Get the type index of a type.
+		std::type_index get_type_index() const;
+
+		// Get the field map of a type.
+		const field_map& get_field_map() const;
+
+		// Get the field vector of a type.
+		const field_vector& get_field_vector() const;
+
     protected:
         
         template<typename T>
         friend std::shared_ptr<type_t> register_any_type(std::shared_ptr<std::type_index>, std::initializer_list<std::pair<name_t, field>> field_init_list);
         friend const std::unordered_map<std::type_index, std::shared_ptr<type_t>>& get_type_map();
-        friend const std::shared_ptr<std::type_index>& get_base_type_index_opt(const type_t& type);
-        friend std::type_index get_type_index(const type_t& type);
-        friend const ax::field_map& get_field_map(const type_t& type);
-        friend const ax::field_vector& get_field_vector(const type_t& type);
 
 	private:
 
@@ -50,18 +58,6 @@ namespace ax
 
     // Get the type with the given type index.
     std::shared_ptr<type_t> get_type(std::type_index type_index);
-
-    // Get the type index of the base type, if any.
-    const std::shared_ptr<std::type_index>& get_base_type_index_opt(const type_t& type);
-
-    // Get the type index of a type.
-    std::type_index get_type_index(const type_t& type);
-
-    // Get the field map of a type.
-    const field_map& get_field_map(const type_t& type);
-
-    // Get the field vector of a type.
-    const field_vector& get_field_vector(const type_t& type);
 
     // Register a type for reflection that has a base type.
     template<typename T>

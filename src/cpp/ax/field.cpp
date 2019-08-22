@@ -9,13 +9,13 @@ namespace ax
         value_offset(value_offset)
     { }
 
-    std::size_t get_value_offset(const field& field)
+    std::size_t field::get_value_offset() const
     {
-        return field.value_offset;
+        return value_offset;
     }
 
-    std::type_index get_type_index(const field& field)
+    std::type_index field::get_type_index() const
     {
-        return field.type_index;
+        return type_index;
     }
 }

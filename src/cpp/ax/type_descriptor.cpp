@@ -33,7 +33,7 @@ namespace ax
     {
         VAR* source_ptr = &source;
         VAR* head_ptr = static_cast<const char*>(static_cast<const void*>(source_ptr));
-        VAR* field_ptr = static_cast<const void*>(head_ptr + get_value_offset(field));
+        VAR* field_ptr = static_cast<const void*>(head_ptr + field.get_value_offset());
         type_descriptor.inspect_value(field_ptr, target_ptr);
     }
 
@@ -41,7 +41,7 @@ namespace ax
     {
         VAR* target_ptr = &target;
         VAR* head_ptr = static_cast<char*>(static_cast<void*>(target_ptr));
-        VAR* field_ptr = static_cast<void*>(head_ptr + get_value_offset(field));
+        VAR* field_ptr = static_cast<void*>(head_ptr + field.get_value_offset());
         type_descriptor.inject_value(source_ptr, field_ptr);
     }
 
@@ -64,7 +64,7 @@ namespace ax
     void write_value(const reflectable& source_reflectable, symbol& target_symbol)
     {
         VAL& type = get_type(source_reflectable);
-        VAL& type_index = get_type_index(*type);
+        VAL& type_index = type->get_type_index();
         VAL& type_descriptor = get_type_descriptor(type_index);
         write_value(*type_descriptor, static_cast<const void*>(&source_reflectable), target_symbol);
     }
@@ -84,14 +84,14 @@ namespace ax
     static void read_value_internal(const std::shared_ptr<type_t>& type, const symbols_t& symbols, reflectable& reflectable)
     {
         // read sub-type values
-        if (VAL* base_type_index = get_base_type_index_opt(*type).get())
+        if (VAL* base_type_index = type->get_base_type_index_opt().get())
         {
             VAL& base_type = get_type(*base_type_index);
             read_value_internal(base_type, symbols, reflectable);
         }
 
         // read current type values
-        VAL& field_vector = get_field_vector(*type);
+        VAL& field_vector = type->get_field_vector();
         VAR symbols_iter = std::begin(symbols);
         VAL symbols_end = std::end(symbols);
         for (VAL& field_kvp : field_vector)
@@ -100,9 +100,9 @@ namespace ax
             {
                 VAL& field = field_kvp.second;
                 VAL& field_symbol = *symbols_iter;
-                VAL& field_type_index = get_type_index(*field);
+                VAL& field_type_index = field->get_type_index();
                 VAL& field_type_descriptor = get_type_descriptor(field_type_index);
-                VAL& field_ptr = static_cast<char*>(static_cast<void*>(&reflectable)) + get_value_offset(*field);
+                VAL& field_ptr = static_cast<char*>(static_cast<void*>(&reflectable)) + field->get_value_offset();
                 read_value(*field_type_descriptor, field_symbol, field_ptr);
                 ++symbols_iter;
             }
@@ -112,21 +112,21 @@ namespace ax
     void write_value_internal(const std::shared_ptr<type_t>& type, const reflectable& reflectable, symbols_t& symbols)
     {
         // write sub-type values
-        if (VAL* base_type_index = get_base_type_index_opt(*type).get())
+        if (VAL* base_type_index = type->get_base_type_index_opt().get())
         {
             VAL& base_type = get_type(*base_type_index);
             write_value_internal(base_type, reflectable, symbols);
         }
 
         // write current type values
-        VAL& field_vector = get_field_vector(*type);
+        VAL& field_vector = type->get_field_vector();
         for (VAL& field_kvp : field_vector)
         {
             symbol field_symbol_mvb{};
             VAL& field = field_kvp.second;
-            VAL& field_type_index = get_type_index(*field);
+            VAL& field_type_index = field->get_type_index();
             VAL& field_type_descriptor = get_type_descriptor(field_type_index);
-            VAL& field_ptr = static_cast<const char*>(static_cast<const void*>(&reflectable)) + get_value_offset(*field);
+            VAL& field_ptr = static_cast<const char*>(static_cast<const void*>(&reflectable)) + field->get_value_offset();
             write_value(*field_type_descriptor, field_ptr, field_symbol_mvb);
             symbols.emplace_back(std::move(field_symbol_mvb));
         }

@@ -28,6 +28,16 @@ namespace ax
         static constexpr id_t invalid() { return id_t(); }
         explicit operator std::size_t() const { return static_cast<std::size_t>(x ^ y); }
 
+		inline id_t succ<id_t>()
+		{
+			if (x == std::numeric_limits<int64_t>::max())
+			{
+				if (y == std::numeric_limits<int64_t>::max()) throw std::out_of_range("ax::id_t overflowed.");
+				return id_t(zero<int64_t>(), ax::succ(y));
+			}
+			return id_t(ax::succ(x), y);
+		}
+
 		const int64_t x;
 		const int64_t y;
     };
@@ -41,12 +51,7 @@ namespace ax
     template<>
     inline id_t succ<id_t>(id_t id)
     {
-        if (id.x == std::numeric_limits<int64_t>::max())
-        {
-            if (id.y == std::numeric_limits<int64_t>::max()) throw std::out_of_range("ax::id_t overflowed.");
-            return id_t(zero<int64_t>(), succ(id.y));
-        }
-        return id_t(succ(id.x), id.y);
+		return id.succ();
     }
 }
 

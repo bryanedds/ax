@@ -17,68 +17,50 @@ namespace ax
 		CONSTRAINT(propertied);
 		propertied() = default;
 
+		template<typename T>
+		const T& get(const name_t& name) const
+		{
+			return properties.get_property<T>(name).get_value<T>();
+		}
+
+		template<typename T>
+		T& get(const name_t& name)
+		{
+			return properties.get_property<T>(name).get_value<T>();
+		}
+
+		template<typename T>
+		T& set(const name_t& name, const T& value)
+		{
+			return properties.get_property<T>(name).set_value<T>(value);
+		}
+
+		template<typename T>
+		T& set(const name_t& name, T&& value)
+		{
+			return properties.get_property<T>(name).set_value<T>(value);
+		}
+
+		template<typename T>
+		void attach(const name_t& name, const T& value)
+		{
+			properties.attach_property<T>(name, value);
+		}
+
+		template<typename T>
+		void attach(const name_t& name, T&& value)
+		{
+			properties.attach_property<T>(name, value);
+		}
+
     protected:
 
         ENABLE_CAST(propertied, reflectable);
-
-        template<typename T>
-        friend const T& get(const propertied& propertied, const name_t& name);
-
-        template<typename T>
-        friend T& get(propertied& propertied, const name_t& name);
-
-        template<typename T>
-        friend T& set(propertied& propertied, const name_t& name, const T& value);
-
-        template<typename T>
-        friend T& set(propertied& propertied, const name_t& name, T&& value);
-
-        template<typename T>
-        friend void attach(propertied& propertied, const name_t& name, const T& value);
-
-        template<typename T>
-        friend void attach(propertied& propertied, const name_t& name, T&& value);
 
 	private:
 
 		property_map properties;
     };
-
-    template<typename T>
-    const T& get(const propertied& propertied, const name_t& name)
-    {
-        return get_value<T>(get_property<T>(propertied.properties, name));
-    }
-
-    template<typename T>
-    T& get(propertied& propertied, const name_t& name)
-    {
-        return get_value<T>(get_property<T>(propertied.properties, name));
-    }
-
-    template<typename T>
-    T& set(propertied& propertied, const name_t& name, const T& value)
-    {
-        return set_value<T>(get_property<T>(propertied.properties, name), value);
-    }
-
-    template<typename T>
-    T& set(propertied& propertied, const name_t& name, T&& value)
-    {
-        return set_value<T>(get_property<T>(propertied.properties, name), value);
-    }
-
-    template<typename T>
-    void attach(propertied& propertied, const name_t& name, const T& value)
-    {
-        attach_property<T>(propertied.properties, name, value);
-    }
-
-    template<typename T>
-    void attach(propertied& propertied, const name_t& name, T&& value)
-    {
-        attach_property<T>(propertied.properties, name, value);
-    }
 }
 
 #endif

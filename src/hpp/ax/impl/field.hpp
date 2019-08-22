@@ -17,11 +17,8 @@ namespace ax
 	public:
 
 		field(std::type_index type_index, std::size_t value_offset);
-
-    protected:
-
-        friend std::size_t get_value_offset(const field& field);
-        friend std::type_index get_type_index(const field& field);
+		std::size_t get_value_offset() const;
+		std::type_index get_type_index() const;
 
 	private:
 
@@ -42,12 +39,6 @@ namespace ax
         VAL& type_index = std::type_index(typeid(T));
         return field(type_index, value_offset);
     }
-
-    // Get the value offset of a field.
-    std::size_t get_value_offset(const field& field);
-
-    // Get the type index of a field.
-    std::type_index get_type_index(const field& field);
 }
 
 #endif
