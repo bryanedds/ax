@@ -40,8 +40,6 @@ namespace ax
         // NOTE: of course, we'd instead use math library types here.
         float x_pos;
         float y_pos;
-        float x_size;
-        float y_size;
         float rotation;
     };
 
