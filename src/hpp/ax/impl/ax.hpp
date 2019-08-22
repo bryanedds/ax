@@ -29,5 +29,6 @@
 #include "event.hpp"
 #include "subscription.hpp"
 #include "eventable.hpp"
+#include "system.hpp"
 
 #endif

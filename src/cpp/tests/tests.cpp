@@ -188,12 +188,12 @@ namespace ax
         VAR i = 0;
         ax::eventable_test program{};
         VAL& event_address = address("event");
-        VAL& participant = std::make_shared<ax::addressable>("participant");
+		VAL participant = std::make_shared<ax::addressable>(address("participant"));
         VAR handler = [&](VAL&, VAL&) { return ++i, true; };
-        VAR unsubscriber = ax::subscribe_event<std::string>(program, event_address, participant, handler);
-        ax::publish_event(program, "Event handled!"_s, event_address, participant);
+        VAR unsubscriber = program.subscribe_event<std::string>(event_address, participant, handler);
+        program.publish_event("Event handled!"_s, event_address, participant);
         unsubscriber(program);
-        ax::publish_event(program, "Event unhandled."_s, event_address, participant);
+        program.publish_event("Event unhandled."_s, event_address, participant);
         CHECK(i == 1);
     }
 

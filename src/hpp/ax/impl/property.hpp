@@ -87,7 +87,7 @@ namespace ax
     {
         VAL& property_opt = properties.find(name);
         if (property_opt != properties.end()) return cast<property<T>>(*property_opt->second);
-        throw std::logic_error("No such property '"_s + get_name_str(name) + "'.");
+        throw std::logic_error("No such property '"_s + name.get_name_str() + "'.");
     }
 
     template<typename T>

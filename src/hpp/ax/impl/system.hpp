@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <stdexcept>
+#include <memory>
 #include <vector>
 #include <unordered_set>
 #include <unordered_map>
@@ -15,9 +16,15 @@
 #include "addressable.hpp"
 #include "castable.hpp"
 
+// NOTE: included in this file is an optimized entity-component-system prototype, an interesting seed for a fast C++
+// game engine.
+
+// NOTE: I've stepped away from the pure DAS-style here - it's simply too unpragmatic in C++ to make all member
+// functions non-class. Also, I now use the more typical public-to-private declaration ordering.
+
 namespace ax
 {
-	class world;
+	class entity;
 
 	struct component
 	{
@@ -27,43 +34,43 @@ namespace ax
 
 	struct entity_t : public ax::component
 	{
-		std::unordered_map<std::string, ax::component*> components;
+		std::unordered_map<ax::name_t, ax::component*> components;
 	};
 
 	struct transform : public ax::component
 	{
-		float position;
-		float orientation;
+		// NOTE: of course, we'd instead use math library types here.
+		float x_pos;
+		float y_pos;
+		float x_size;
+		float y_size;
+		float rotation;
 	};
 
 	class system : public castable
 	{
-	protected:
-
-		ENABLE_CAST(ax::system, ax::castable);
-
 	public:
 
 		CONSTRAINT(system);
 		virtual ax::component& add_component(const ax::address& address) = 0;
 		virtual bool remove_component(const ax::address& address) = 0;
 		virtual ax::component* try_get_component(const ax::address& address) = 0;
+
+	protected:
+
+		ENABLE_CAST(ax::system, ax::castable);
 	};
 
 	template<typename T>
 	class system_t : public ax::system
 	{
-	protected:
-
-		ENABLE_CAST(ax::system_t<T>, ax::system);
-
 	public:
 
 		CONSTRAINT(system_t);
 
 		system_t(std::size_t capacity = 128)
 		{
-			CONSTRAIN(T, ax::component); // can we verify the contraint at class scope instead?
+			CONSTRAIN(T, ax::component);
 			components.reserve(capacity);
 			component_map.reserve(capacity);
 		}
@@ -125,6 +132,10 @@ namespace ax
 			return nullptr;
 		}
 
+	protected:
+
+		ENABLE_CAST(ax::system_t<T>, ax::system);
+
 	private:
 
 		std::vector<T> components;
@@ -132,76 +143,38 @@ namespace ax
 		std::queue<std::size_t> free_list;
 	};
 
-	class entity : public addressable
-	{
-	private:
-
-		ax::world& world;
-
-	public:
-
-		entity(const ax::address& address, ax::world& world) :
-			ax::addressable(address),
-			world(world)
-		{ }
-
-		ax::transform& get_transform() const { return *world.try_get_transform(get_address()); }
-		ax::transform& set_transform(const ax::transform& transform) { return get_transform() = transform; }
-
-		float get_position() const { return get_transform().position; }
-		float set_position(float value) { return get_transform().position = value; }
-
-		float get_orientation() const { return get_transform().orientation; }
-		float set_orientation(float value) { return get_transform().orientation = value; }
-
-		bool exists() const { return world.entity_exists(get_address()); }
-	};
-
 	class world
 	{
 	public:
 
-		ax::transform* try_get_transform(const ax::address& address)
-		{
-			VAR& transforms_iter = systems.find("transforms");
-			if (transforms_iter != systems.end())
-			{
-				VAR& transforms = ax::cast<ax::system_t<ax::transform>>(transforms_iter->second);
-				return transforms->try_get_component(address);
-			}
-			return nullptr;
-		}
+		ax::transform* try_get_transform(const ax::address& address);
 
-		ax::entity_t* try_get_entity(const ax::address& address)
-		{
-			VAR& entities_iter = systems.find("entities");
-			if (entities_iter != systems.end())
-			{
-				VAR& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
-			  	return entities->try_get_component(address);
-			}
-			return nullptr;
-		}
+		ax::entity_t* try_get_entity(const ax::address& address);
 
-		bool entity_exists(const ax::address& address)
-		{
-			return try_get_entity(address);
-		}
+		bool entity_exists(const ax::address& address);
+
+		ax::component* try_add_component(const ax::name_t& system_name, const ax::address& address);
+
+		bool try_remove_component(const ax::name_t& system_name, const ax::address& address);
+
+		std::shared_ptr<ax::entity> create_entity(const ax::address& address);
+
+		bool destroy_entity(const ax::address& address);
 
 		template<typename T>
-		T* try_add_component(const std::string& system_name, const ax::address& address, const T& component = T())
+		T* try_add_component(const ax::name_t& system_name, const ax::address& address, const T& component = T())
 		{
-			VAR& entities_iter = systems.find("entities");
+			VAL& entities_iter = systems.find("entities");
 			if (entities_iter != systems.end())
 			{
-				VAR& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
+				VAL& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
 				VAR* entity_opt = entities->try_get_component(address);
 				if (entity_opt)
 				{
-					VAR& system_iter = systems.find(system_name);
+					VAL& system_iter = systems.find(system_name);
 					if (system_iter != systems.end())
 					{
-						VAR& system = ax::cast<ax::system_t<T>>(system_iter->second);
+						VAL& system = ax::cast<ax::system_t<T>>(system_iter->second);
 						VAR& result = system->add_component(address, component);
 						entity_opt->components.insert_or_assign(system_name, &result);
 						return &result;
@@ -211,109 +184,49 @@ namespace ax
 			return nullptr;
 		}
 
-		ax::component* try_add_component(const std::string& system_name, const ax::address& address)
-		{
-			VAR& entities_iter = systems.find("entities");
-			if (entities_iter != systems.end())
-			{
-				VAR& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
-				VAR* entity_opt = entities->try_get_component(address);
-				if (entity_opt)
-				{
-					VAR& system_iter = systems.find(system_name);
-					if (system_iter != systems.end())
-					{
-						VAR& system = system_iter->second;
-						VAR& result = system->add_component(address);
-						entity_opt->components.insert_or_assign(system_name, &result);
-						return &result;
-					}
-				}
-			}
-			return nullptr;
-		}
+	private:
 
-		bool try_remove_component(const std::string& system_name, const ax::address& address)
-		{
-			VAR& entities_iter = systems.find("entities");
-			if (entities_iter != systems.end())
-			{
-				VAR& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
-				VAR* entity_opt = entities->try_get_component(address);
-				if (entity_opt)
-				{
-					VAR& system_iter = systems.find(system_name);
-					if (system_iter != systems.end())
-					{
-						VAR& system = system_iter->second;
-						VAR result = system->remove_component(address);
-						entity_opt->components.erase(system_name);
-						return result;
-					}
-				}
-			}
-			return nullptr;
-		}
+		ax::entity_t* try_add_entity(const ax::address& address);
 
-		ax::entity create_entity(const ax::address& address)
-		{
-			VAR& entities_iter = systems.find("entities");
-			if (entities_iter != systems.end())
-			{
-				VAR& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
-				VAR* entity_opt = entities->try_get_component(address);
-				if (entity_opt)
-				{
-					try_add_entity(address);
-					try_add_component<ax::transform>("transform", address);
-				}
-			}
-			return ax::entity(address, *this);
-		}
+		bool try_remove_entity(const ax::address& address);
 
-		bool destroy_entity(const ax::address& address)
-		{
-			VAR& entities_iter = systems.find("entities");
-			if (entities_iter != systems.end())
-			{
-				VAR& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
-				VAR* entity_opt = entities->try_get_component(address);
-				if (entity_opt)
-				{
-					try_remove_component("transform", address);
-					return try_remove_entity(address);
-				}
-			}
-			return false;
-		}
+		std::unordered_map<ax::name_t, std::shared_ptr<ax::system>> systems;
+	};
+
+	class entity : public addressable
+	{
+	public:
+
+		entity(const ax::entity& entity) :
+			entity(entity.get_address(), entity.world)
+		{ };
+
+		entity(const ax::address& address, ax::world& world) :
+			ax::addressable(address),
+			world(world)
+		{ }
+
+		ax::transform& get_transform() const { return *world.try_get_transform(get_address()); }
+
+		ax::transform& set_transform(const ax::transform& transform) { return get_transform() = transform; }
+
+		float get_x_pos() const { return get_transform().x_pos; }
+
+		float set_x_pos(float value) { return get_transform().x_pos = value; }
+
+		float get_y_pos() const { return get_transform().y_pos; }
+
+		float set_y_pos(float value) { return get_transform().y_pos = value; }
+
+		float get_rotation() const { return get_transform().rotation; }
+
+		float set_rotation(float value) { return get_transform().rotation = value; }
+
+		bool exists() const { return world.entity_exists(get_address()); }
 
 	private:
 
-		ax::entity_t* try_add_entity(const ax::address& address)
-		{
-			VAR& entities_iter = systems.find("entities");
-			if (entities_iter != systems.end())
-			{
-				VAR& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
-				VAR* entity_opt = entities->try_get_component(address);
-				if (!entity_opt) return &entities->add_component(address);
-			}
-			return nullptr;
-		}
-
-		bool try_remove_entity(const ax::address& address)
-		{
-			VAR& entities_iter = systems.find("entities");
-			if (entities_iter != systems.end())
-			{
-				VAR& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
-				VAR* entity_opt = entities->try_get_component(address);
-				if (entity_opt) return entities->remove_component(address);
-			}
-			return false;
-		}
-
-		std::unordered_map<std::string, std::shared_ptr<ax::system>> systems;
+		ax::world& world;
 	};
 }
 

@@ -56,6 +56,7 @@
     <ClInclude Include="..\..\src\hpp\ax\impl\unparser.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\functional.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\symbol.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\system.hpp" />
     <ClInclude Include="..\..\src\hpp\blah\blah.hpp" />
     <ClInclude Include="..\..\src\hpp\rxml\rapidxml.hpp" />
     <ClInclude Include="..\..\src\hpp\rxml\rapidxml_iterators.hpp" />
@@ -81,6 +82,7 @@
     <ClCompile Include="..\..\src\cpp\ax\name.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\parser.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\string.cpp" />
+    <ClCompile Include="..\..\src\cpp\ax\system.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\type.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\type_descriptor.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\type_descriptors.cpp" />

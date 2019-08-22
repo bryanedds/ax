@@ -196,6 +196,9 @@
     <ClInclude Include="..\..\src\hpp\ax\impl\system.hpp">
       <Filter>Header Files\ax\impl</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\hpp\ax\system.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\cpp\blah\blah.cpp">
@@ -232,6 +235,9 @@
       <Filter>Source Files\ax</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\cpp\ax\unparser.cpp">
+      <Filter>Source Files\ax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cpp\ax\system.cpp">
       <Filter>Source Files\ax</Filter>
     </ClCompile>
   </ItemGroup>

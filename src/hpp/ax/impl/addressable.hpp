@@ -20,19 +20,19 @@ namespace ax
     // TODO: make this reflectable.
     class addressable : public castable
     {
-    private:
-
-        address address;
-
-    protected:
-
-        ENABLE_CAST(addressable, castable);
-
     public:
 
         CONSTRAINT(addressable);
         explicit addressable(const ax::address& address) : address(address) { }
 		inline const ax::address& get_address() const { return address; }
+
+	protected:
+
+		ENABLE_CAST(addressable, castable);
+
+	private:
+
+		address address;
     };
 }
 

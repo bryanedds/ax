@@ -15,11 +15,6 @@ namespace ax
     // The address of an event or a participant.
     class address
     {
-    private:
-
-        std::size_t hash_code;
-        std::vector<name_t> names;
-
     public:
 
         address() = default;
@@ -38,10 +33,15 @@ namespace ax
         address operator+(const address& that) const;
 
 		// Get the hash of the names.
-		inline operator std::size_t() const { return hash_code; }
+		inline explicit operator std::size_t() const { return hash_code; }
 
 		// Get the names of which an address consists.
 		inline const std::vector<name_t>& get_names() const { return names; }
+
+	private:
+
+		std::size_t hash_code;
+		std::vector<name_t> names;
     };
 
     // Adds a phantom type T to addresses.

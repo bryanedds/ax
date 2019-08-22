@@ -22,18 +22,6 @@ namespace ax
     template<typename T, typename P>
     class subscription_detail : public castable
     {
-    private:
-
-        const ax::handler<T, P> handler;
-
-    protected:
-
-        using subscription_detail_T_P = subscription_detail<T, P>;
-        ENABLE_CAST(subscription_detail_T_P, castable);
-
-        template<typename A, typename B>
-        friend bool publish_subscription_detail(const subscription_detail<A, B>& subscription_detail, const event<A>& event, B& program);
-
     public:
 
         CONSTRAINT(subscription_detail);
@@ -43,26 +31,25 @@ namespace ax
         subscription_detail(const subscription_detail& that) = delete;
         subscription_detail(subscription_detail&& that) = delete;
         subscription_detail& operator=(const subscription_detail& that) = delete;
-    };
 
-    template<typename T, typename P>
-    bool publish_subscription_detail(const subscription_detail<T, P>& subscription_detail, const event<T>& event, P& program)
-    {
-        return subscription_detail.handler(event, program);
-    }
+		bool publish_subscription_detail(const event<T>& event, P& program)
+		{
+			return handler(event, program);
+		}
+
+	protected:
+
+		using subscription_detail_T_P = subscription_detail<T, P>;
+		ENABLE_CAST(subscription_detail_T_P, castable);
+
+	private:
+
+		const ax::handler<T, P> handler;
+    };
 
     class subscription
     {
-    protected:
-
-        template<typename T, typename P>
-        friend bool publish_subscription(const subscription& subscription, const T& event_data, const address& event_address, const std::shared_ptr<addressable>& publisher, P& program);
-
     public:
-
-        const id_t id;
-        const std::weak_ptr<addressable> subscriber_opt;
-        const std::unique_ptr<castable> subscription_detail;
 
         subscription() = delete;
         subscription(const subscription&) = delete;
@@ -77,21 +64,25 @@ namespace ax
             id(id),
             subscriber_opt(subscriber),
             subscription_detail(subscription_detail.release()) { }
-    };
 
-    template<typename T, typename P>
-    bool publish_subscription(const subscription& subscription, const T& event_data, const address& event_address, const std::shared_ptr<addressable>& publisher, P& program)
-    {
-        if (!subscription.subscriber_opt.expired())
-        {
-            VAL& subscriber = subscription.subscriber_opt.lock();
-            VAL& event = ax::event<T>(event_data, event_address, subscriber, publisher);
-            VAL& subscription_detail_opt = try_cast<subscription_detail<T, P>>(*subscription.subscription_detail);
-            if (subscription_detail_opt) return publish_subscription_detail(**subscription_detail_opt, event, program);
-            return true;
-        }
-        return true;
-    }
+		template<typename T, typename P>
+		bool publish_subscription(const T& event_data, const address& event_address, const std::shared_ptr<addressable>& publisher, P& program)
+		{
+			if (!subscriber_opt.expired())
+			{
+				VAL& subscriber = subscriber_opt.lock();
+				VAL& event = ax::event<T>(event_data, event_address, subscriber, publisher);
+				VAL& subscription_detail_opt = try_cast<ax::subscription_detail<T, P>>(*subscription_detail);
+				if (subscription_detail_opt) return (*subscription_detail_opt)->publish_subscription_detail(event, program);
+				return true;
+			}
+			return true;
+		}
+
+		const id_t id;
+		const std::weak_ptr<addressable> subscriber_opt;
+		const std::unique_ptr<castable> subscription_detail;
+    };
 
     using subscription_list = std::vector<std::shared_ptr<subscription>>;
 
