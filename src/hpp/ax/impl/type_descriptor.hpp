@@ -16,9 +16,9 @@ namespace ax
 {
     class type_descriptor
     {
-	public:
+    public:
 
-		CONSTRAINT(type_descriptor);
+        CONSTRAINT(type_descriptor);
 
     protected:
 
@@ -37,9 +37,9 @@ namespace ax
         virtual void read_value(const symbol& source_symbol, void* target_ptr) const = 0;
         virtual void write_value(const void* source_ptr, symbol& target_symbol) const = 0;
 
-	private:
+    private:
 
-		static std::unordered_map<std::type_index, std::shared_ptr<type_descriptor>> type_descriptor_map;
+        static std::unordered_map<std::type_index, std::shared_ptr<type_descriptor>> type_descriptor_map;
     };
 
     // The alias for a type descriptor map.

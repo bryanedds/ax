@@ -11,41 +11,41 @@ namespace ax
     template<typename F, typename S, typename T>
     class record
     {
-	public:
+    public:
 
-		CONSTRAINT(record);
-		using first_type = F;
-		using second_type = S;
-		using third_type = T;
-		template<typename A, typename B, typename C>
-		using reify = record<A, B, C>;
+        CONSTRAINT(record);
+        using first_type = F;
+        using second_type = S;
+        using third_type = T;
+        template<typename A, typename B, typename C>
+        using reify = record<A, B, C>;
 
-		record() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
-		record(const record&) = default;
-		record(record&&) = default;
-		record& operator=(const record&) = default;
-		record& operator=(record&&) = default;
+        record() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
+        record(const record&) = default;
+        record(record&&) = default;
+        record& operator=(const record&) = default;
+        record& operator=(record&&) = default;
 
-		record(const F& first, const S& second, const T& third) : first(first), second(second), third(third) { }
-		record(F&& first, S&& second, T&& third) : first(first), second(second), third(third) { }
+        record(const F& first, const S& second, const T& third) : first(first), second(second), third(third) { }
+        record(F&& first, S&& second, T&& third) : first(first), second(second), third(third) { }
 
-		const F& fst() const { return first; }
-		const S& snd() const { return second; }
-		const T& thd() const { return third; }
+        const F& fst() const { return first; }
+        const S& snd() const { return second; }
+        const T& thd() const { return third; }
 
-		F& fst() { return first; }
-		S& snd() { return second; }
-		T& thd() { return third; }
+        F& fst() { return first; }
+        S& snd() { return second; }
+        T& thd() { return third; }
 
         virtual const char* get_first_name() const { return "first"; }
         virtual const char* get_second_name() const { return "second"; }
         virtual const char* get_third_name() const { return "third"; }
 
-	private:
+    private:
 
-		F first;
-		S second;
-		T third;
+        F first;
+        S second;
+        T third;
     };
 
     template<typename F, typename S, typename T>
@@ -86,15 +86,15 @@ namespace ax
     \
         CONSTRAINT(T); \
         using ::ax::record<Ft, St, Tt>::record; \
-		\
-		inline const T::first_type& get_##Fn(const T& rcd) { return fst(rcd); } \
-		inline const T::second_type& get_##Sn(const T& rcd) { return snd(rcd); } \
-		inline const T::third_type& get_##Tn(const T& rcd) { return thd(rcd); } \
-		\
-		inline T::first_type& get_##Fn(T& rcd) { return fst(rcd); } \
-		inline T::second_type& get_##Sn(T& rcd) { return snd(rcd); } \
-		inline T::third_type& get_##Tn(T& rcd) { return thd(rcd); } \
-		\
+        \
+        inline const T::first_type& get_##Fn(const T& rcd) { return fst(rcd); } \
+        inline const T::second_type& get_##Sn(const T& rcd) { return snd(rcd); } \
+        inline const T::third_type& get_##Tn(const T& rcd) { return thd(rcd); } \
+        \
+        inline T::first_type& get_##Fn(T& rcd) { return fst(rcd); } \
+        inline T::second_type& get_##Sn(T& rcd) { return snd(rcd); } \
+        inline T::third_type& get_##Tn(T& rcd) { return thd(rcd); } \
+        \
         const char* get_first_name() const override { return #Fn; } \
         const char* get_second_name() const override { return #Sn; } \
         const char* get_third_name() const override { return #Tn; } \

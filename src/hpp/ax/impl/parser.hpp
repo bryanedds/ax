@@ -23,13 +23,13 @@ namespace ax
         using reify = parse<A>;
         using either<T, std::string>::either;
 
-		bool is_success() const { return is_right(); }
-		bool is_failure() const { return is_left(); }
-		const T& get_success() const { return get_right(); }
-		const std::string& get_failure() const { return get_left(); }
+        bool is_success() const { return is_right(); }
+        bool is_failure() const { return is_left(); }
+        const T& get_success() const { return get_right(); }
+        const std::string& get_failure() const { return get_left(); }
 
-		const char* get_right_name() const override { return "parse_success"; }
-		const char* get_left_name() const override { return "parse_failure"; }
+        const char* get_right_name() const override { return "parse_success"; }
+        const char* get_left_name() const override { return "parse_failure"; }
     };
 
     // Make a successful parse result.

@@ -17,15 +17,15 @@ namespace ax
 
         CONSTRAINT(addressable);
         explicit addressable(const ax::address& address) : address(address) { }
-		inline const ax::address& get_address() const { return address; }
+        inline const ax::address& get_address() const { return address; }
 
-	protected:
+    protected:
 
-		ENABLE_CAST(addressable, castable);
+        ENABLE_CAST(addressable, castable);
 
-	private:
+    private:
 
-		address address;
+        address address;
     };
 }
 

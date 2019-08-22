@@ -16,17 +16,17 @@ namespace ax
     // implementation inheritance with any type that inherits from ax::castable.
     class castable
     {
-	public:
+    public:
 
-		CONSTRAINT(castable);
+        CONSTRAINT(castable);
 
-		castable() = default;
-		castable(const castable&) = delete;
-		castable(castable&&) = delete;
-		castable& operator=(const castable& castable) = delete;
-		castable& operator=(castable&& castable) = delete;
+        castable() = default;
+        castable(const castable&) = delete;
+        castable(castable&&) = delete;
+        castable& operator=(const castable& castable) = delete;
+        castable& operator=(castable&& castable) = delete;
 
-		virtual ~castable() = default;
+        virtual ~castable() = default;
 
     protected:
 

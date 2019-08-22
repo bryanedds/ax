@@ -94,57 +94,57 @@ namespace ax
             return is_some_flag;
         }
 
-		template<typename Sf, typename Nf>
-		VAR match(Sf some_fn, Nf none_fn) const
-		{
-			if (is_none()) return none_fn();
-			return some_fn(get_content());
-		}
+        template<typename Sf, typename Nf>
+        VAR match(Sf some_fn, Nf none_fn) const
+        {
+            if (is_none()) return none_fn();
+            return some_fn(get_content());
+        }
 
-		template<typename Sf, typename Nf>
-		VAR match(Sf some_fn, Nf none_fn)
-		{
-			if (is_none()) return none_fn();
-			return some_fn(get_content());
-		}
+        template<typename Sf, typename Nf>
+        VAR match(Sf some_fn, Nf none_fn)
+        {
+            if (is_none()) return none_fn();
+            return some_fn(get_content());
+        }
 
-		bool is_some() const
-		{
-			return static_cast<bool>(*this);
-		}
+        bool is_some() const
+        {
+            return static_cast<bool>(*this);
+        }
 
-		bool is_none() const
-		{
-			return !static_cast<bool>(*this);
-		}
+        bool is_none() const
+        {
+            return !static_cast<bool>(*this);
+        }
 
-		const T& get_content() const
-		{
-			return **this;
-		}
+        const T& get_content() const
+        {
+            return **this;
+        }
 
-		T& get_content()
-		{
-			return **this;
-		}
+        T& get_content()
+        {
+            return **this;
+        }
 
-	private:
+    private:
 
-		union union_t { T content; ax::unit unit; union_t() { } ~union_t() { } } u;
-		bool is_some_flag;
+        union union_t { T content; ax::unit unit; union_t() { } ~union_t() { } } u;
+        bool is_some_flag;
     };
 
-	template<typename T>
-	bool is_some(const option<T>& opt)
-	{
-		opt.is_some();
-	}
+    template<typename T>
+    bool is_some(const option<T>& opt)
+    {
+        opt.is_some();
+    }
 
-	template<typename T>
-	bool is_none(const option<T>& opt)
-	{
-		opt.is_none();
-	}
+    template<typename T>
+    bool is_none(const option<T>& opt)
+    {
+        opt.is_none();
+    }
 
     template<typename T>
     option<T> some(const T& content)

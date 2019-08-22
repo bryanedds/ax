@@ -21,10 +21,10 @@ namespace ax
     // library.
     class reflectable : public castable
     {
-	public:
+    public:
 
-		CONSTRAINT(reflectable);
-		reflectable() = default;
+        CONSTRAINT(reflectable);
+        reflectable() = default;
 
     protected:
 

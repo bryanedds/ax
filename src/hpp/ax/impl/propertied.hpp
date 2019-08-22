@@ -12,54 +12,54 @@ namespace ax
 {
     class propertied : public reflectable
     {
-	public:
+    public:
 
-		CONSTRAINT(propertied);
-		propertied() = default;
+        CONSTRAINT(propertied);
+        propertied() = default;
 
-		template<typename T>
-		const T& get(const name_t& name) const
-		{
-			return properties.get_property<T>(name).get_value<T>();
-		}
+        template<typename T>
+        const T& get(const name_t& name) const
+        {
+            return properties.get_property<T>(name).get_value<T>();
+        }
 
-		template<typename T>
-		T& get(const name_t& name)
-		{
-			return properties.get_property<T>(name).get_value<T>();
-		}
+        template<typename T>
+        T& get(const name_t& name)
+        {
+            return properties.get_property<T>(name).get_value<T>();
+        }
 
-		template<typename T>
-		T& set(const name_t& name, const T& value)
-		{
-			return properties.get_property<T>(name).set_value<T>(value);
-		}
+        template<typename T>
+        T& set(const name_t& name, const T& value)
+        {
+            return properties.get_property<T>(name).set_value<T>(value);
+        }
 
-		template<typename T>
-		T& set(const name_t& name, T&& value)
-		{
-			return properties.get_property<T>(name).set_value<T>(value);
-		}
+        template<typename T>
+        T& set(const name_t& name, T&& value)
+        {
+            return properties.get_property<T>(name).set_value<T>(value);
+        }
 
-		template<typename T>
-		void attach(const name_t& name, const T& value)
-		{
-			properties.attach_property<T>(name, value);
-		}
+        template<typename T>
+        void attach(const name_t& name, const T& value)
+        {
+            properties.attach_property<T>(name, value);
+        }
 
-		template<typename T>
-		void attach(const name_t& name, T&& value)
-		{
-			properties.attach_property<T>(name, value);
-		}
+        template<typename T>
+        void attach(const name_t& name, T&& value)
+        {
+            properties.attach_property<T>(name, value);
+        }
 
     protected:
 
         ENABLE_CAST(propertied, reflectable);
 
-	private:
+    private:
 
-		property_map properties;
+        property_map properties;
     };
 }
 

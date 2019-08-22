@@ -152,7 +152,7 @@ namespace ax
         void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             VAR* vector_ptr = static_cast<std::vector<T>*>(target_ptr);
-			source_symbol.match(
+            source_symbol.match(
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& symbols)
@@ -201,7 +201,7 @@ namespace ax
         void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             VAR* set_ptr = static_cast<std::unordered_set<T>*>(target_ptr);
-			source_symbol.match(
+            source_symbol.match(
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& symbols)
@@ -250,7 +250,7 @@ namespace ax
         void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             VAR* map_ptr = static_cast<std::unordered_map<K, V>*>(target_ptr);
-			source_symbol.match(
+            source_symbol.match(
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& symbols)
@@ -260,7 +260,7 @@ namespace ax
                 VAL& value_type_descriptor = get_type_descriptor<V>();
                 for (VAL& symbol : symbols)
                 {
-					symbol.match(
+                    symbol.match(
                     [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                     [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                     [&](VAL& symbols)
@@ -354,7 +354,7 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(P, pair);
             VAR* pair_ptr = static_cast<P*>(target_ptr);
-			source_symbol.match(
+            source_symbol.match(
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& source_symbols)
@@ -410,7 +410,7 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(R, record);
             VAR* record_ptr = static_cast<R*>(target_ptr);
-			source_symbol.match(
+            source_symbol.match(
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& source_symbols)
@@ -471,7 +471,7 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(R, record4);
             VAR* record_ptr = static_cast<R*>(target_ptr);
-			source_symbol.match(
+            source_symbol.match(
                 [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                 [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                 [&](VAL& source_symbols)
@@ -537,7 +537,7 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(R, record5);
             VAR* record_ptr = static_cast<R*>(target_ptr);
-			source_symbol.match(
+            source_symbol.match(
                 [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                 [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                 [&](VAL& source_symbols)
@@ -610,7 +610,7 @@ namespace ax
         {
             VAR* option_ptr = static_cast<option<T>*>(target_ptr);
             VAL& type_descriptor = get_type_descriptor<T>();
-			source_symbol.match(
+            source_symbol.match(
             [&](VAL& atom)
             {
                 if (atom != "none") throw std::invalid_argument("Expected the atom 'none'.");
@@ -635,7 +635,7 @@ namespace ax
         void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             VAL* option_ptr = static_cast<const option<T>*>(source_ptr);
-			option_ptr->match(
+            option_ptr->match(
             [&](VAL& some_value)
             {
                 symbol symbol_value_mvb{};
@@ -669,7 +669,7 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(E, either);
             VAR* either_ptr = static_cast<E*>(target_ptr);
-			source_symbol.match(
+            source_symbol.match(
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& source_symbols)
@@ -716,7 +716,7 @@ namespace ax
         {
             CONSTRAIN(E, either);
             VAL* either_ptr = static_cast<const E*>(source_ptr);
-			either_ptr->match(
+            either_ptr->match(
             [&](VAL& right_value)
             {
                 symbol symbol_mvb{};
@@ -756,7 +756,7 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(C, choice);
             VAR* choice_ptr = static_cast<C*>(target_ptr);
-			source_symbol.match(
+            source_symbol.match(
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& source_symbols)
@@ -812,7 +812,7 @@ namespace ax
         {
             CONSTRAIN(C, choice);
             VAL* choice_ptr = static_cast<const C*>(source_ptr);
-			choice_ptr->match(
+            choice_ptr->match(
             [&](VAL& first_value)
             {
                 symbol symbol_mvb{};
@@ -859,7 +859,7 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(C, choice4);
             VAR* choice_ptr = static_cast<C*>(target_ptr);
-			source_symbol.match(
+            source_symbol.match(
                 [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                 [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                 [&](VAL& source_symbols)
@@ -924,7 +924,7 @@ namespace ax
         {
             CONSTRAIN(C, choice4);
             VAL* choice_ptr = static_cast<const C*>(source_ptr);
-			choice_ptr->match(
+            choice_ptr->match(
             [&](VAL& first_value)
             {
                 symbol symbol_mvb{};
@@ -978,7 +978,7 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(C, choice5);
             VAR* choice_ptr = static_cast<C*>(target_ptr);
-			source_symbol.match(
+            source_symbol.match(
                 [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                 [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                 [&](VAL& source_symbols)
@@ -1052,7 +1052,7 @@ namespace ax
         {
             CONSTRAIN(C, choice5);
             VAL* choice_ptr = static_cast<const C*>(source_ptr);
-			choice_ptr->match(
+            choice_ptr->match(
             [&](VAL& first_value)
             {
                 symbol symbol_mvb{};

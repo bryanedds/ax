@@ -188,7 +188,7 @@ namespace ax
         VAR i = 0;
         ax::eventable_test program{};
         VAL& event_address = address("event");
-		VAL participant = std::make_shared<ax::addressable>(address("participant"));
+        VAL participant = std::make_shared<ax::addressable>(address("participant"));
         VAR handler = [&](VAL&, VAL&) { return ++i, true; };
         VAR unsubscriber = program.subscribe_event<std::string>(event_address, participant, handler);
         program.publish_event("Event handled!"_s, event_address, participant);
@@ -207,7 +207,7 @@ namespace ax
             some(2), none<int>(), right<int, std::string>(4), left<int>("msg"_s), third<int, int, int>(3));
         reflectable_test target{};
         ax::write_value(source, symbol);
-		ax::read_value(symbol, target);
+        ax::read_value(symbol, target);
         CHECK(target.bool_value);
         CHECK(target.int_value == 5);
         CHECK(target.float_value == 10.0f);
@@ -247,7 +247,7 @@ namespace ax
         VAL& parse = parse_symbol(str);
         VAL& symbol = parse.get_success();
         reflectable_test target{};
-		ax::read_value(symbol, target);
+        ax::read_value(symbol, target);
         CHECK(target.bool_value);
         CHECK(target.int_value == 5);
         CHECK(target.float_value == 10.0f);

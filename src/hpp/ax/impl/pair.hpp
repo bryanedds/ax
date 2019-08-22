@@ -11,35 +11,35 @@ namespace ax
     template<typename First, typename Second>
     class pair
     {
-	public:
+    public:
 
-		CONSTRAINT(pair);
-		using first_type = First;
-		using second_type = Second;
-		template<typename A, typename B>
-		using reify = pair<A, B>;
+        CONSTRAINT(pair);
+        using first_type = First;
+        using second_type = Second;
+        template<typename A, typename B>
+        using reify = pair<A, B>;
 
-		pair() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
-		pair(const pair&) = default;
-		pair(pair&&) = default;
-		pair& operator=(const pair&) = default;
-		pair& operator=(pair&&) = default;
+        pair() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
+        pair(const pair&) = default;
+        pair(pair&&) = default;
+        pair& operator=(const pair&) = default;
+        pair& operator=(pair&&) = default;
 
-		pair(const First& first, const Second& second) : first(first), second(second) { }
-		pair(First&& first, Second&& second) : first(first), second(second) { }
+        pair(const First& first, const Second& second) : first(first), second(second) { }
+        pair(First&& first, Second&& second) : first(first), second(second) { }
 
-		const First& fst() const { return first; }
-		const Second& snd() const { return second; }
-		First& fst() { return first; }
-		Second& snd() { return second; }
+        const First& fst() const { return first; }
+        const Second& snd() const { return second; }
+        First& fst() { return first; }
+        Second& snd() { return second; }
 
         virtual const char* get_first_name() const { return "first"; }
         virtual const char* get_second_name() const { return "second"; }
 
-	private:
+    private:
 
-		First first;
-		Second second;
+        First first;
+        Second second;
     };
 
     template<typename First, typename Second>
@@ -74,12 +74,12 @@ namespace ax
     \
         CONSTRAINT(T); \
         using ::ax::pair<Ft, St>::pair; \
-		\
-		inline const T::first_type& get_##Fn() const { return fst(); } \
-		inline const T::second_type& get_##Sn() const { return snd(); } \
-		\
-		inline T::first_type& get_##Fn() { return fst(); } \
-		inline T::second_type& get_##Sn() { return snd(); } \
+        \
+        inline const T::first_type& get_##Fn() const { return fst(); } \
+        inline const T::second_type& get_##Sn() const { return snd(); } \
+        \
+        inline T::first_type& get_##Fn() { return fst(); } \
+        inline T::second_type& get_##Sn() { return snd(); } \
     \
     protected: \
     \

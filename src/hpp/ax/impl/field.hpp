@@ -14,16 +14,16 @@ namespace ax
 {
     class field
     {
-	public:
+    public:
 
-		field(std::type_index type_index, std::size_t value_offset);
-		std::size_t get_value_offset() const;
-		std::type_index get_type_index() const;
+        field(std::type_index type_index, std::size_t value_offset);
+        std::size_t get_value_offset() const;
+        std::type_index get_type_index() const;
 
-	private:
+    private:
 
-		const std::type_index type_index;
-		const std::size_t value_offset;
+        const std::type_index type_index;
+        const std::size_t value_offset;
     };
 
     // The alias for a field map.

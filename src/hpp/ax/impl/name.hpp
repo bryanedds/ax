@@ -25,14 +25,14 @@ namespace ax
         name_t(const std::string& name_str);
         explicit name_t(std::string&& name_str);
         bool operator==(const name_t& that) const;
-		inline explicit operator std::size_t() const { return hash_code; }
+        inline explicit operator std::size_t() const { return hash_code; }
 
-		inline const std::string& get_name_str() const { return name_str; }
+        inline const std::string& get_name_str() const { return name_str; }
 
-	private:
+    private:
 
-		std::size_t hash_code;
-		std::string name_str;
+        std::size_t hash_code;
+        std::string name_str;
     };
 }
 

@@ -31,14 +31,14 @@ namespace ax
         explicit address(const std::string& names_str);
         bool operator==(const address& that) const;
         address operator+(const address& that) const;
-		inline explicit operator std::size_t() const { return hash_code; }
+        inline explicit operator std::size_t() const { return hash_code; }
 
-		inline const std::vector<name_t>& get_names() const { return names; }
+        inline const std::vector<name_t>& get_names() const { return names; }
 
-	private:
+    private:
 
-		std::size_t hash_code;
-		std::vector<name_t> names;
+        std::size_t hash_code;
+        std::vector<name_t> names;
     };
 }
 
