@@ -135,10 +135,10 @@ namespace ax
     void reflectable_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         // ensure target is a symbols value
-        if (!is_symbols(target_symbol)) target_symbol = symbols({});
+        if (!target_symbol.is_symbols()) target_symbol = symbols({});
 
         // get type to write
-        VAR& symbols = get_symbols(target_symbol);
+        VAR& symbols = target_symbol.get_symbols();
         VAL* reflectable_ptr = static_cast<const reflectable*>(source_ptr);
         VAL& reflectable = *reflectable_ptr;
         VAL& type = get_type(reflectable);
@@ -150,7 +150,7 @@ namespace ax
     void reflectable_descriptor::read_value(const symbol& source_symbol, void* target_ptr) const
     {
         VAR* reflectable_ptr = static_cast<reflectable*>(target_ptr);
-        match3(source_symbol,
+		source_symbol.match(
         [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
         [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
         [&](VAL& symbols)

@@ -49,41 +49,90 @@ namespace ax
 		explicit choice(T&& third, bool, bool, bool) : index(2_z) { new (&u) T(third); }
 		~choice() { destruct_u(); }
 
-    protected:
+		template<typename FirstFn, typename SecondFn, typename ThirdFn>
+		VAR match(FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn) const
+		{
+			switch (get_index())
+			{
+				case 0_z: return first_fn(get_first());
+				case 1_z: return second_fn(get_second());
+				case 2_z: return third_fn(get_third());
+			}
+			throw std::logic_error("Unexpected missing case.");
+		}
+
+		template<typename FirstFn, typename SecondFn, typename ThirdFn>
+		VAR match(FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn)
+		{
+			switch (get_index())
+			{
+				case 0_z: return first_fn(get_first());
+				case 1_z: return second_fn(get_second());
+				case 2_z: return third_fn(get_third());
+			}
+			throw std::logic_error("Unexpected missing case.");
+		}
+
+		std::size_t get_index() const
+		{
+			return index;
+		}
+
+		const F& get_first() const
+		{
+			if (index == 0_z) return u.first;
+			throw std::runtime_error("Cannot get '"_s + get_first_name() + "' value.");
+		}
+
+		const S& get_second() const
+		{
+			if (index == 1_z) return u.second;
+			throw std::runtime_error("Cannot get '"_s + get_second_name() + "' value.");
+		}
+
+		const T& get_third() const
+		{
+			if (index == 2_z) return u.third;
+			throw std::runtime_error("Cannot get '"_s + get_third_name() + "' value.");
+		}
+
+		bool is_first() const
+		{
+			return get_index() == 0_z;
+		}
+
+		bool is_second() const
+		{
+			return get_index() == 1_z;
+		}
+
+		bool is_third() const
+		{
+			return get_index() == 2_z;
+		}
+
+		F& get_first()
+		{
+			if (index == 0_z) return u.first;
+			throw std::runtime_error("Cannot get '"_s + get_first_name() + "' value.");
+		}
+
+		S& get_second()
+		{
+			if (index == 1_z) return u.second;
+			throw std::runtime_error("Cannot get '"_s + get_second_name() + "' value.");
+		}
+
+		T& get_third()
+		{
+			if (index == 2_z) return u.third;
+			throw std::runtime_error("Cannot get '"_s + get_third_name() + "' value.");
+		}
 
         virtual const char* get_first_name() const { return "first"; }
         virtual const char* get_second_name() const { return "second"; }
         virtual const char* get_third_name() const { return "third"; }
 
-        template<typename A, typename B, typename C>
-        friend std::size_t get_index(const choice<A, B, C>& chc);
-
-        template<typename A, typename B, typename C>
-        friend const A& get_first(const choice<A, B, C>& chc);
-
-        template<typename A, typename B, typename C>
-        friend const B& get_second(const choice<A, B, C>& chc);
-
-        template<typename A, typename B, typename C>
-        friend const C& get_third(const choice<A, B, C>& chc);
-
-        template<typename A, typename B, typename C>
-        friend A& get_first(choice<A, B, C>& chc);
-
-        template<typename A, typename B, typename C>
-        friend B& get_second(choice<A, B, C>& chc);
-
-        template<typename A, typename B, typename C>
-        friend C& get_third(choice<A, B, C>& chc);
-
-        template<typename A, typename B, typename C>
-        friend const char* get_first_name(const choice<A, B, C>& chc);
-
-        template<typename A, typename B, typename C>
-        friend const char* get_second_name(const choice<A, B, C>& chc);
-
-        template<typename A, typename B, typename C>
-        friend const char* get_third_name(const choice<A, B, C>& chc);
 	private:
 
 		void construct_u(const choice& that)
@@ -121,90 +170,6 @@ namespace ax
     };
 
     template<typename F, typename S, typename T>
-    std::size_t get_index(const choice<F, S, T>& chc)
-    {
-        return chc.index;
-    }
-
-    template<typename F, typename S, typename T>
-    const F& get_first(const choice<F, S, T>& chc)
-    {
-        if (chc.index == 0_z) return chc.u.first;
-        throw std::runtime_error("Cannot get '"_s + get_first_name(chc) + "' value.");
-    }
-
-    template<typename F, typename S, typename T>
-    const S& get_second(const choice<F, S, T>& chc)
-    {
-        if (chc.index == 1_z) return chc.u.second;
-        throw std::runtime_error("Cannot get '"_s + get_second_name(chc) + "' value.");
-    }
-
-    template<typename F, typename S, typename T>
-    const T& get_third(const choice<F, S, T>& chc)
-    {
-        if (chc.index == 2_z) return chc.u.third;
-        throw std::runtime_error("Cannot get '"_s + get_third_name(chc) + "' value.");
-    }
-
-    template<typename F, typename S, typename T>
-    bool is_first(const choice<F, S, T>& chc)
-    {
-        return get_index(chc) == 0_z;
-    }
-
-    template<typename F, typename S, typename T>
-    bool is_second(const choice<F, S, T>& chc)
-    {
-        return get_index(chc) == 1_z;
-    }
-
-    template<typename F, typename S, typename T>
-    bool is_third(const choice<F, S, T>& chc)
-    {
-        return get_index(chc) == 2_z;
-    }
-
-    template<typename F, typename S, typename T>
-    F& get_first(choice<F, S, T>& chc)
-    {
-        if (chc.index == 0_z) return chc.u.first;
-        throw std::runtime_error("Cannot get '"_s + get_first_name(chc) + "' value.");
-    }
-
-    template<typename F, typename S, typename T>
-    S& get_second(choice<F, S, T>& chc)
-    {
-        if (chc.index == 1_z) return chc.u.second;
-        throw std::runtime_error("Cannot get '"_s + get_second_name(chc) + "' value.");
-    }
-
-    template<typename F, typename S, typename T>
-    T& get_third(choice<F, S, T>& chc)
-    {
-        if (chc.index == 2_z) return chc.u.third;
-        throw std::runtime_error("Cannot get '"_s + get_third_name(chc) + "' value.");
-    }
-
-    template<typename F, typename S, typename T>
-    const char* get_first_name(const choice<F, S, T>& chc)
-    {
-        return chc.get_first_name();
-    }
-
-    template<typename F, typename S, typename T>
-    const char* get_second_name(const choice<F, S, T>& chc)
-    {
-        return chc.get_second_name();
-    }
-
-    template<typename F, typename S, typename T>
-    const char* get_third_name(const choice<F, S, T>& chc)
-    {
-        return chc.get_third_name();
-    }
-
-    template<typename F, typename S, typename T>
     choice<F, S, T> first(const F& first)
     {
         return choice<F, S, T>(first, false);
@@ -221,47 +186,66 @@ namespace ax
     {
         return choice<F, S, T>(third, false, false, false);
     }
-
-    template<typename C, typename FirstFn, typename SecondFn, typename ThirdFn>
-    VAR match3(const C& chc, FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn)
-    {
-        CONSTRAIN(C, choice);
-        switch (get_index(chc))
-        {
-        case 0_z: return first_fn(get_first(chc));
-        case 1_z: return second_fn(get_second(chc));
-        case 2_z: return third_fn(get_third(chc));
-        }
-        throw std::logic_error("Unexpected missing case.");
-    }
-
-    template<typename C, typename FirstFn, typename SecondFn, typename ThirdFn>
-    VAR match3(C& chc, FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn)
-    {
-        CONSTRAIN(C, choice);
-        switch (get_index(chc))
-        {
-        case 0_z: return first_fn(get_first(chc));
-        case 1_z: return second_fn(get_second(chc));
-        case 2_z: return third_fn(get_third(chc));
-        }
-        throw std::logic_error("Unexpected missing case.");
-    }
 }
 
 #define SUM_TYPE3(T, Ft, Fn, St, Sn, Tt, Tn) \
     class T : public ::ax::choice<Ft, St, Tt> \
     { \
+    public: \
+    \
+        CONSTRAINT(T); \
+        using ::ax::choice<Ft, St, Tt>::choice; \
+    \
+		inline bool is_##Fn() const \
+		{ \
+			return is_first(); \
+		} \
+		\
+		inline bool is_##Sn() const \
+		{ \
+			return is_second(); \
+		} \
+		\
+		inline bool is_##Tn() const \
+		{ \
+			return is_third(); \
+		} \
+		\
+		inline const T::first_type& get_##Fn() const \
+		{ \
+			return get_first(); \
+		} \
+		\
+		inline const T::second_type& get_##Sn() const \
+		{ \
+			return get_second(); \
+		} \
+		\
+		inline const T::third_type& get_##Tn() const \
+		{ \
+			return get_third(); \
+		} \
+		\
+		inline T::first_type& get_##Fn() \
+		{ \
+			return get_first(); \
+		} \
+		\
+		inline T::second_type& get_##Sn() \
+		{ \
+			return get_second(); \
+		} \
+		\
+		inline T::third_type& get_##Tn() \
+		{ \
+			return get_third(); \
+		} \
+    \
     protected: \
     \
         const char* get_first_name() const override { return #Sn; } \
         const char* get_second_name() const override { return #Fn; } \
         const char* get_third_name() const override { return #Tn; } \
-    \
-    public: \
-    \
-        CONSTRAINT(T); \
-        using ::ax::choice<Ft, St, Tt>::choice; \
     }; \
     \
     using Fn##_t = Ft; \
@@ -296,51 +280,6 @@ namespace ax
     inline T Tn(Tt&& third_value) \
     { \
         return T(third_value, false, false, false); \
-    } \
-    \
-    inline bool is_##Fn(const T& chc) \
-    { \
-        return is_first(chc); \
-    } \
-    \
-    inline bool is_##Sn(const T& chc) \
-    { \
-        return is_second(chc); \
-    } \
-    \
-    inline bool is_##Tn(const T& chc) \
-    { \
-        return is_third(chc); \
-    } \
-    \
-    inline const T::first_type& get_##Fn(const T& chc) \
-    { \
-        return get_first(chc); \
-    } \
-    \
-    inline const T::second_type& get_##Sn(const T& chc) \
-    { \
-        return get_second(chc); \
-    } \
-    \
-    inline const T::third_type& get_##Tn(const T& chc) \
-    { \
-        return get_third(chc); \
-    } \
-    \
-    inline T::first_type& get_##Fn(T& chc) \
-    { \
-        return get_first(chc); \
-    } \
-    \
-    inline T::second_type& get_##Sn(T& chc) \
-    { \
-        return get_second(chc); \
-    } \
-    \
-    inline T::third_type& get_##Tn(T& chc) \
-    { \
-        return get_third(chc); \
     } \
     \
     using T##_sum_type3 = void

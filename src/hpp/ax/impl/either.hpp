@@ -20,237 +20,215 @@ namespace ax
 		template<typename A, typename B>
 		using reify = either<A, B>;
 
-		either() : is_right(true)
+		either() : is_right_flag(true)
 		{
 			new (&u) R();
 		}
 
-		either(const either& that) : is_right(that.is_right)
+		either(const either& that) : is_right_flag(that.is_right_flag)
 		{
-			if (is_right) new (&u) R(that.u.right);
+			if (is_right_flag) new (&u) R(that.u.right);
 			else new (&u) L(that.u.left);
 		}
 
-		either(either&& that) : is_right(that.is_right)
+		either(either&& that) : is_right_flag(that.is_right_flag)
 		{
-			if (is_right) new (&u) R(std::move(that.u.right));
+			if (is_right_flag) new (&u) R(std::move(that.u.right));
 			else new (&u) L(std::move(that.u.left));
 		}
 
 		either& operator=(const either& that)
 		{
-			if (is_right) u.right.R::~R();
+			if (is_right_flag) u.right.R::~R();
 			else u.left.L::~L();
-			is_right = that.is_right;
-			if (is_right) new (&u) R(that.u.right);
+			is_right_flag = that.is_right_flag;
+			if (is_right_flag) new (&u) R(that.u.right);
 			else new (&u) L(that.u.left);
 			return *this;
 		}
 
 		either& operator=(either&& that)
 		{
-			if (is_right) u.right.R::~R();
+			if (is_right_flag) u.right.R::~R();
 			else u.left.L::~L();
-			is_right = that.is_right;
-			if (is_right) new (&u) R(std::move(that.u.right));
+			is_right_flag = that.is_right_flag;
+			if (is_right_flag) new (&u) R(std::move(that.u.right));
 			else new (&u) L(std::move(that.u.left));
 			return *this;
 		}
 
-		explicit either(const R& right, bool) : is_right(true)
+		explicit either(const R& right, bool) : is_right_flag(true)
 		{
 			new (&u) R(right);
 		}
 
-		explicit either(R&& right, bool) : is_right(true)
+		explicit either(R&& right, bool) : is_right_flag(true)
 		{
 			new (&u) R(right);
 		}
 
-		explicit either(const L& left, bool, bool) : is_right(false)
+		explicit either(const L& left, bool, bool) : is_right_flag(false)
 		{
 			new (&u) L(left);
 		}
 
-		explicit either(L&& left, bool, bool) : is_right(false)
+		explicit either(L&& left, bool, bool) : is_right_flag(false)
 		{
 			new (&u) L(left);
 		}
 
 		~either()
 		{
-			if (is_right) u.right.R::~R();
+			if (is_right_flag) u.right.R::~R();
 			else u.left.L::~L();
 		}
 
 		const R& operator*() const
 		{
-			if (is_right) return u.right;
+			if (is_right_flag) return u.right;
 			throw std::runtime_error("Cannot get non-existent right value.");
 		}
 
 		R& operator*()
 		{
-			if (is_right) return u.right;
+			if (is_right_flag) return u.right;
 			throw std::runtime_error("Cannot get non-existent right value.");
 		}
 
 		const L& operator~() const
 		{
-			if (!is_right) return u.left;
+			if (!is_right_flag) return u.left;
 			throw std::runtime_error("Cannot get non-existent left value.");
 		}
 
 		L& operator~()
 		{
-			if (!is_right) return u.left;
+			if (!is_right_flag) return u.left;
 			throw std::runtime_error("Cannot get non-existent left value.");
 		}
 
 		explicit operator bool() const
 		{
-			return is_right;
+			return is_right_flag;
 		}
 
 		explicit operator bool()
 		{
-			return is_right;
+			return is_right_flag;
 		}
 
-    protected:
+		template<typename Rf, typename Lf>
+		auto match(Rf right_fn, Lf left_fn) const
+		{
+			if (is_right_flag) return right_fn(get_right());
+			return left_fn(get_left());
+		}
+
+		template<typename Rf, typename Lf>
+		auto match(Rf right_fn, Lf left_fn)
+		{
+			if (is_right_flag) return right_fn(get_right());
+			return left_fn(get_left());
+		}
+
+		bool is_right()
+		{
+			return static_cast<bool>(*this);
+		}
+
+		bool is_left()
+		{
+			return !static_cast<bool>(*this);
+		}
+
+		const R& get_right() const
+		{
+			if (is_right_flag) return u.right;
+			throw std::runtime_error("Cannot get '"_s + get_right_name() + "' value.");
+		}
+
+		const L& get_left() const
+		{
+			if (!is_right_flag) return u.left;
+			throw std::runtime_error("Cannot get '"_s + get_left_name() + "' value.");
+		}
+
+		R& get_right()
+		{
+			if (is_right_flag) return u.right;
+			throw std::runtime_error("Cannot get '"_s + get_right_name() + "' value.");
+		}
+
+		L& get_left()
+		{
+			if (!is_right_flag) return u.left;
+			throw std::runtime_error("Cannot get '"_s + get_left_name() + "' value.");
+		}
 
         virtual const char* get_right_name() const { return "right"; }
         virtual const char* get_left_name() const { return "left"; }
 
-        template<typename A, typename B>
-        friend const A& get_right(const either<A, B>& eir);
-
-        template<typename A, typename B>
-        friend const B& get_left(const either<A, B>& eir);
-
-        template<typename A, typename B>
-        friend A& get_right(either<A, B>& eir);
-
-        template<typename A, typename B>
-        friend B& get_left(either<A, B>& eir);
-
-        template<typename A, typename B>
-        friend const char* get_right_name(const either<A, B>& eir);
-
-        template<typename A, typename B>
-        friend const char* get_left_name(const either<A, B>& eir);
-
 	private:
 
 		union union_t { R right; L left; union_t() { } ~union_t() { } } u;
-		bool is_right;
+		bool is_right_flag;
     };
 
-    template<typename R, typename L>
-    bool is_right(const either<R, L>& eir)
-    {
-        return static_cast<bool>(eir);
-    }
+	template<typename R, typename L>
+	either<R, L> right(R&& right)
+	{
+		return either<R, L>(right, false);
+	}
 
-    template<typename R, typename L>
-    bool is_left(const either<R, L>& eir)
-    {
-        return !static_cast<bool>(eir);
-    }
-
-    template<typename R, typename L>
-    const R& get_right(const either<R, L>& eir)
-    {
-        if (eir.is_right) return eir.u.right;
-        throw std::runtime_error("Cannot get '"_s + get_right_name(eir) + "' value.");
-    }
-
-    template<typename R, typename L>
-    const L& get_left(const either<R, L>& eir)
-    {
-        if (!eir.is_right) return eir.u.left;
-        throw std::runtime_error("Cannot get '"_s + get_left_name(eir) + "' value.");
-    }
-
-    template<typename R, typename L>
-    R& get_right(either<R, L>& eir)
-    {
-        if (eir.is_right) return eir.u.right;
-        throw std::runtime_error("Cannot get '"_s + get_right_name(eir) + "' value.");
-    }
-
-    template<typename R, typename L>
-    L& get_left(either<R, L>& eir)
-    {
-        if (!eir.is_right) return eir.u.left;
-        throw std::runtime_error("Cannot get '"_s + get_left_name(eir) + "' value.");
-    }
-
-    template<typename R, typename L>
-    const char* get_right_name(const either<R, L>& eir)
-    {
-        return eir.get_right_name();
-    }
-
-    template<typename R, typename L>
-    const char* get_left_name(const either<R, L>& eir)
-    {
-        return eir.get_left_name();
-    }
-
-    template<typename R, typename L>
-    either<R, L> right(const R& right)
-    {
-        return either<R, L>(right, false);
-    }
-
-    template<typename R, typename L>
-    either<R, L> left(const L& left)
-    {
-        return either<R, L>(left, false, false);
-    }
-
-    template<typename R, typename L>
-    either<R, L> right(R&& right)
-    {
-        return either<R, L>(right, false);
-    }
-
-    template<typename R, typename L>
-    either<R, L> left(L&& left)
-    {
-        return either<R, L>(left, false, false);
-    }
-
-    template<typename E, typename Rf, typename Lf>
-    auto match2(const E& eir, Rf right_fn, Lf left_fn)
-    {
-        CONSTRAIN(E, either);
-        if (is_right(eir)) return right_fn(get_right(eir));
-        return left_fn(get_left(eir));
-    }
-
-    template<typename E, typename Rf, typename Lf>
-    auto match2(E& eir, Rf right_fn, Lf left_fn)
-    {
-        CONSTRAIN(E, either);
-        if (is_right(eir)) return right_fn(get_right(eir));
-        return left_fn(get_left(eir));
-    }
+	template<typename R, typename L>
+	either<R, L> left(L&& left)
+	{
+		return either<R, L>(left, false, false);
+	}
 }
 
 #define SUM_TYPE(T, Rt, Rn, Lt, Ln) \
     class T : public ::ax::either<Rt, Lt> \
     { \
-    protected: \
-    \
-        const char* get_right_name() const override { return #Rn; } \
-        const char* get_left_name() const override { return #Ln; } \
-    \
     public: \
     \
         CONSTRAINT(T); \
         using ::ax::either<Rt, Lt>::either; \
+		\
+		inline bool is_##Rn() \
+		{ \
+			return is_right(); \
+		} \
+		\
+		inline bool is_##Ln() \
+		{ \
+			return is_left(); \
+		} \
+		\
+		inline const T::right_type& get_##Rn() \
+		{ \
+			return get_right(); \
+		} \
+		\
+		inline const T::left_type& get_##Ln() \
+		{ \
+			return get_left(); \
+		} \
+		\
+		inline T::right_type& get_##Rn() \
+		{ \
+			return get_right(); \
+		} \
+		\
+		inline T::left_type& get_##Ln() \
+		{ \
+			return get_left(); \
+		} \
+    \
+    protected: \
+    \
+        const char* get_right_name() const override { return #Rn; } \
+        const char* get_left_name() const override { return #Ln; } \
     }; \
     \
     using Rt##_t = Rn; \
@@ -274,36 +252,6 @@ namespace ax
     inline T Ln(Lt&& left_value) \
     { \
         return T(left_value, false, false); \
-    } \
-    \
-    inline bool is_##Rn(const T& eir) \
-    { \
-        return is_right(eir); \
-    } \
-    \
-    inline bool is_##Ln(const T& eir) \
-    { \
-        return is_left(eir); \
-    } \
-    \
-    inline const T::right_type& get_##Rn(const T& eir) \
-    { \
-        return get_right(eir); \
-    } \
-    \
-    inline const T::left_type& get_##Ln(const T& eir) \
-    { \
-        return get_left(eir); \
-    } \
-    \
-    inline T::right_type& get_##Rn(T& eir) \
-    { \
-        return get_right(eir); \
-    } \
-    \
-    inline T::left_type& get_##Ln(T& eir) \
-    { \
-        return get_left(eir); \
     } \
     \
     using T##_sum_type = void

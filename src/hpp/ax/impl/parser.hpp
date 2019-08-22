@@ -75,14 +75,14 @@ namespace ax
     template<typename T>
     const T& get_parse_success(const parse<T>& parse)
     {
-        return get_right(parse);
+        return parse.get_right();
     }
 
     // Get the parse failure value.
     template<typename T>
     const std::string& get_parse_failure(const parse<T>& parse)
     {
-        return get_left(parse);
+        return parse.get_left();
     }
 
     // Try to run a parse, rewinding the parsing iterator upon failure.

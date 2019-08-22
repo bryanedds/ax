@@ -55,61 +55,129 @@ namespace ax
 		explicit choice5(Fifth&& fifth, bool, bool, bool, bool, bool) : index(4_z) { new (&u) Fifth(fifth); }
 		~choice5() { destruct_u(); }
 
-    protected:
+		template<typename FirstFn, typename SecondFn, typename ThirdFn, typename FourthFn, typename FifthFn>
+		VAR match(FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn, FourthFn fourth_fn, FifthFn fifth_fn) const
+		{
+			switch (get_index())
+			{
+				case 0_z: return first_fn(get_first());
+				case 1_z: return second_fn(get_second());
+				case 2_z: return third_fn(get_third());
+				case 3_z: return fourth_fn(get_fourth());
+				case 4_z: return fifth_fn(get_fifth());
+			}
+			throw std::logic_error("Unexpected missing case.");
+		}
+
+		template<typename FirstFn, typename SecondFn, typename ThirdFn, typename FourthFn, typename FifthFn>
+		VAR match(FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn, FourthFn fourth_fn, FifthFn fifth_fn)
+		{
+			switch (get_index())
+			{
+				case 0_z: return first_fn(get_first());
+				case 1_z: return second_fn(get_second());
+				case 2_z: return third_fn(get_third());
+				case 3_z: return fourth_fn(get_fourth());
+				case 4_z: return fifth_fn(get_fifth());
+			}
+			throw std::logic_error("Unexpected missing case.");
+		}
+
+		std::size_t get_index() const
+		{
+			return index;
+		}
+
+		const First& get_first() const
+		{
+			if (index == 0_z) return u.first;
+			throw std::runtime_error("Cannot get '"_s + get_first_name() + "' value.");
+		}
+
+		const Second& get_second() const
+		{
+			if (index == 1_z) return u.second;
+			throw std::runtime_error("Cannot get '"_s + get_second_name() + "' value.");
+		}
+
+		const Third& get_third() const
+		{
+			if (index == 2_z) return u.third;
+			throw std::runtime_error("Cannot get '"_s + get_third_name() + "' value.");
+		}
+
+		const Fourth& get_fourth() const
+		{
+			if (index == 3_z) return u.fourth;
+			throw std::runtime_error("Cannot get '"_s + get_fourth_name() + "' value.");
+		}
+
+		const Fifth& get_fifth() const
+		{
+			if (index == 4_z) return u.fifth;
+			throw std::runtime_error("Cannot get '"_s + get_fifth_name() + "' value.");
+		}
+
+		bool is_first() const
+		{
+			return get_index() == 0_z;
+		}
+
+		bool is_second() const
+		{
+			return get_index() == 1_z;
+		}
+
+		bool is_third() const
+		{
+			return get_index() == 2_z;
+		}
+
+		bool is_fourth() const
+		{
+			return get_index() == 3_z;
+		}
+
+		bool is_fifth() const
+		{
+			return get_index() == 4_z;
+		}
+
+		First& get_first()
+		{
+			if (index == 0_z) return u.first;
+			throw std::runtime_error("Cannot get '"_s + get_first_name() + "' value.");
+		}
+
+		Second& get_second()
+		{
+			if (index == 1_z) return u.second;
+			throw std::runtime_error("Cannot get '"_s + get_second_name() + "' value.");
+		}
+
+		Third& get_third()
+		{
+			if (index == 2_z) return u.third;
+			throw std::runtime_error("Cannot get '"_s + get_third_name() + "' value.");
+		}
+
+		Fourth& get_fourth()
+		{
+			if (index == 3_z) return u.fourth;
+			throw std::runtime_error("Cannot get '"_s + get_fourth_name() + "' value.");
+		}
+
+		Fifth& get_fifth()
+		{
+			if (index == 4_z) return u.fifth;
+			throw std::runtime_error("Cannot get '"_s + get_fifth_name() + "' value.");
+		}
 
         virtual const char* get_first_name() const { return "first"; }
         virtual const char* get_second_name() const { return "second"; }
         virtual const char* get_third_name() const { return "third"; }
         virtual const char* get_fourth_name() const { return "fourth"; }
         virtual const char* get_fifth_name() const { return "fifth"; }
-
-        template<typename A, typename B, typename C, typename D, typename E>
-        friend std::size_t get_index(const choice5<A, B, C, D, E>& chc);
-
-        template<typename A, typename B, typename C, typename D, typename E>
-        friend const A& get_first(const choice5<A, B, C, D, E>& chc);
-
-        template<typename A, typename B, typename C, typename D, typename E>
-        friend const B& get_second(const choice5<A, B, C, D, E>& chc);
-
-        template<typename A, typename B, typename C, typename D, typename E>
-        friend const C& get_third(const choice5<A, B, C, D, E>& chc);
-
-        template<typename A, typename B, typename C, typename D, typename E>
-        friend const D& get_fourth(const choice5<A, B, C, D, E>& chc);
-
-        template<typename A, typename B, typename C, typename D, typename E>
-        friend const E& get_fifth(const choice5<A, B, C, D, E>& chc);
-
-        template<typename A, typename B, typename C, typename D, typename E>
-        friend A& get_first(choice5<A, B, C, D, E>& chc);
-
-        template<typename A, typename B, typename C, typename D, typename E>
-        friend B& get_second(choice5<A, B, C, D, E>& chc);
-
-        template<typename A, typename B, typename C, typename D, typename E>
-        friend C& get_third(choice5<A, B, C, D, E>& chc);
-
-        template<typename A, typename B, typename C, typename D, typename E>
-        friend D& get_fourth(choice5<A, B, C, D, E>& chc);
-
-        template<typename A, typename B, typename C, typename D, typename E>
-        friend E& get_fifth(choice5<A, B, C, D, E>& chc);
-
-        template<typename A, typename B, typename C, typename D, typename E>
-        friend const char* get_first_name(const choice5<A, B, C, D, E>& chc);
-
-        template<typename A, typename B, typename C, typename D, typename E>
-        friend const char* get_second_name(const choice5<A, B, C, D, E>& chc);
-
-        template<typename A, typename B, typename C, typename D, typename E>
-        friend const char* get_third_name(const choice5<A, B, C, D, E>& chc);
-
-        template<typename A, typename B, typename C, typename D, typename E>
-        friend const char* get_fourth_name(const choice5<A, B, C, D, E>& chc);
-
-        template<typename A, typename B, typename C, typename D, typename E>
-        friend const char* get_fifth_name(const choice5<A, B, C, D, E>& chc);
 
 	private:
 
@@ -154,142 +222,6 @@ namespace ax
     };
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    std::size_t get_index(const choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        return chc.index;
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    const First& get_first(const choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        if (chc.index == 0_z) return chc.u.first;
-        throw std::runtime_error("Cannot get '"_s + get_first_name(chc) + "' value.");
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    const Second& get_second(const choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        if (chc.index == 1_z) return chc.u.second;
-        throw std::runtime_error("Cannot get '"_s + get_second_name(chc) + "' value.");
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    const Third& get_third(const choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        if (chc.index == 2_z) return chc.u.third;
-        throw std::runtime_error("Cannot get '"_s + get_third_name(chc) + "' value.");
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    const Fourth& get_fourth(const choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        if (chc.index == 3_z) return chc.u.fourth;
-        throw std::runtime_error("Cannot get '"_s + get_fourth_name(chc) + "' value.");
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    const Fifth& get_fifth(const choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        if (chc.index == 4_z) return chc.u.fifth;
-        throw std::runtime_error("Cannot get '"_s + get_fifth_name(chc) + "' value.");
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    bool is_first(const choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        return get_index(chc) == 0_z;
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    bool is_second(const choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        return get_index(chc) == 1_z;
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    bool is_third(const choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        return get_index(chc) == 2_z;
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    bool is_fourth(const choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        return get_index(chc) == 3_z;
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    bool is_fifth(const choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        return get_index(chc) == 4_z;
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    First& get_first(choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        if (chc.index == 0_z) return chc.u.first;
-        throw std::runtime_error("Cannot get '"_s + get_first_name(chc) + "' value.");
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    Second& get_second(choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        if (chc.index == 1_z) return chc.u.second;
-        throw std::runtime_error("Cannot get '"_s + get_second_name(chc) + "' value.");
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    Third& get_third(choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        if (chc.index == 2_z) return chc.u.third;
-        throw std::runtime_error("Cannot get '"_s + get_third_name(chc) + "' value.");
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    Fourth& get_fourth(choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        if (chc.index == 3_z) return chc.u.fourth;
-        throw std::runtime_error("Cannot get '"_s + get_fourth_name(chc) + "' value.");
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    Fifth& get_fifth(choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        if (chc.index == 4_z) return chc.u.fifth;
-        throw std::runtime_error("Cannot get '"_s + get_fifth_name(chc) + "' value.");
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    const char* get_first_name(const choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        return chc.get_first_name();
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    const char* get_second_name(const choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        return chc.get_second_name();
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    const char* get_third_name(const choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        return chc.get_third_name();
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    const char* get_fourth_name(const choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        return chc.get_fourth_name();
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    const char* get_fifth_name(const choice5<First, Second, Third, Fourth, Fifth>& chc)
-    {
-        return chc.get_fifth_name();
-    }
-
-    template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
     choice5<First, Second, Third, Fourth, Fifth> first(const First& first)
     {
         return choice5<First, Second, Third, Fourth, Fifth>(first, false);
@@ -318,41 +250,91 @@ namespace ax
     {
         return choice5<First, Second, Third, Fourth, Fifth>(fifth, false, false, false, false, false);
     }
-
-    template<typename C, typename FirstFn, typename SecondFn, typename ThirdFn, typename FourthFn, typename FifthFn>
-    VAR match5(const C& chc, FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn, FourthFn fourth_fn, FifthFn fifth_fn)
-    {
-        CONSTRAIN(C, choice5);
-        switch (get_index(chc))
-        {
-            case 0_z: return first_fn(get_first(chc));
-            case 1_z: return second_fn(get_second(chc));
-            case 2_z: return third_fn(get_third(chc));
-            case 3_z: return fourth_fn(get_fourth(chc));
-            case 4_z: return fifth_fn(get_fifth(chc));
-        }
-        throw std::logic_error("Unexpected missing case.");
-    }
-
-    template<typename C, typename FirstFn, typename SecondFn, typename ThirdFn, typename FourthFn, typename FifthFn>
-    VAR match5(C& chc, FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn, FourthFn fourth_fn, FifthFn fifth_fn)
-    {
-        CONSTRAIN(C, choice5);
-        switch (get_index(chc))
-        {
-            case 0_z: return first_fn(get_first(chc));
-            case 1_z: return second_fn(get_second(chc));
-            case 2_z: return third_fn(get_third(chc));
-            case 3_z: return fourth_fn(get_fourth(chc));
-            case 4_z: return fifth_fn(get_fifth(chc));
-        }
-        throw std::logic_error("Unexpected missing case.");
-    }
 }
 
 #define SUM_TYPE5(T, FirstType, FirstName, SecondType, SecondName, ThirdType, ThirdName, FourthType, FourthName, FifthType, FifthName) \
     class T : public ::ax::choice5<FirstType, SecondType, ThirdType, FourthType, FifthType> \
     { \
+    public: \
+    \
+        CONSTRAINT(T); \
+        using ::ax::choice5<FirstType, SecondType, ThirdType, FourthType, FifthType>::choice5; \
+		\
+		inline bool is_##FirstName() const \
+		{ \
+			return is_first(); \
+		} \
+		\
+		inline bool is_##SecondName() const \
+		{ \
+			return is_second(); \
+		} \
+		\
+		inline bool is_##ThirdName() const \
+		{ \
+			return is_third(); \
+		} \
+		\
+		inline bool is_##FourthName() const \
+		{ \
+			return is_fourth(); \
+		} \
+		\
+		inline bool is_##FifthName() const \
+		{ \
+			return is_fifth(); \
+		} \
+		\
+		inline const T::first_type& get_##FirstName() const \
+		{ \
+			return get_first(); \
+		} \
+		\
+		inline const T::second_type& get_##SecondName() const \
+		{ \
+			return get_second(); \
+		} \
+		\
+		inline const T::third_type& get_##ThirdName() const \
+		{ \
+			return get_third(); \
+		} \
+		\
+		inline const T::fourth_type& get_##FourthName() const \
+		{ \
+			return get_fourth(); \
+		} \
+		\
+		inline const T::fifth_type& get_##FifthName() const \
+		{ \
+			return get_fifth(); \
+		} \
+		\
+		inline T::first_type& get_##FirstName() \
+		{ \
+			return get_first(); \
+		} \
+		\
+		inline T::second_type& get_##SecondName() \
+		{ \
+			return get_second(); \
+		} \
+		\
+		inline T::third_type& get_##ThirdName() \
+		{ \
+			return get_third(); \
+		} \
+		\
+		inline const T::fourth_type& get_##FourthName() \
+		{ \
+			return get_fourth(); \
+		} \
+		\
+		inline const T::fifth_type& get_##FifthName() \
+		{ \
+			return get_fifth(); \
+		} \
+    \
     protected: \
     \
         const char* get_first_name() const override { return #SecondName; } \
@@ -360,11 +342,6 @@ namespace ax
         const char* get_third_name() const override { return #ThirdName; } \
         const char* get_fourth_name() const override { return #FourthName; } \
         const char* get_fifth_name() const override { return #FifthName; } \
-    \
-    public: \
-    \
-        CONSTRAINT(T); \
-        using ::ax::choice5<FirstType, SecondType, ThirdType, FourthType, FifthType>::choice5; \
     }; \
     \
     using FirstName##_t = FirstType; \
@@ -421,81 +398,6 @@ namespace ax
     inline T FifthName(FifthType&& fifth_value) \
     { \
         return T(fifth_value, false, false, false, false, false); \
-    } \
-    \
-    inline bool is_##FirstName(const T& chc) \
-    { \
-        return is_first(chc); \
-    } \
-    \
-    inline bool is_##SecondName(const T& chc) \
-    { \
-        return is_second(chc); \
-    } \
-    \
-    inline bool is_##ThirdName(const T& chc) \
-    { \
-        return is_third(chc); \
-    } \
-    \
-    inline bool is_##FourthName(const T& chc) \
-    { \
-        return is_fourth(chc); \
-    } \
-    \
-    inline bool is_##FifthName(const T& chc) \
-    { \
-        return is_fifth(chc); \
-    } \
-    \
-    inline const T::first_type& get_##FirstName(const T& chc) \
-    { \
-        return get_first(chc); \
-    } \
-    \
-    inline const T::second_type& get_##SecondName(const T& chc) \
-    { \
-        return get_second(chc); \
-    } \
-    \
-    inline const T::third_type& get_##ThirdName(const T& chc) \
-    { \
-        return get_third(chc); \
-    } \
-    \
-    inline const T::fourth_type& get_##FourthName(const T& chc) \
-    { \
-        return get_fourth(chc); \
-    } \
-    \
-    inline const T::fifth_type& get_##FifthName(const T& chc) \
-    { \
-        return get_fifth(chc); \
-    } \
-    \
-    inline T::first_type& get_##FirstName(T& chc) \
-    { \
-        return get_first(chc); \
-    } \
-    \
-    inline T::second_type& get_##SecondName(T& chc) \
-    { \
-        return get_second(chc); \
-    } \
-    \
-    inline T::third_type& get_##ThirdName(T& chc) \
-    { \
-        return get_third(chc); \
-    } \
-    \
-    inline const T::fourth_type& get_##FourthName(T& chc) \
-    { \
-        return get_fourth(chc); \
-    } \
-    \
-    inline const T::fifth_type& get_##FifthName(T& chc) \
-    { \
-        return get_fifth(chc); \
     } \
     \
     using T##_sum_type5 = void

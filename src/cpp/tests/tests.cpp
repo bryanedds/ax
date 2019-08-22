@@ -225,7 +225,7 @@ namespace ax
         CHECK(is_none(target.option_none_value));
         CHECK(*target.either_right_value == 4);
         CHECK(~target.either_left_value == "msg");
-        CHECK(get_third(target.choice_value) == 3);
+        CHECK(target.choice_value.get_third() == 3);
     }
 
     TEST("parser works")
@@ -265,7 +265,7 @@ namespace ax
         CHECK(is_none(target.option_none_value));
         CHECK(*target.either_right_value == 4);
         CHECK(~target.either_left_value == "msg");
-        CHECK(get_third(target.choice_value) == 3);
+        CHECK(target.choice_value.get_third() == 3);
     }
 
     TEST("properties work")

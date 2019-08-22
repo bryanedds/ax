@@ -152,7 +152,7 @@ namespace ax
         void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             VAR* vector_ptr = static_cast<std::vector<T>*>(target_ptr);
-            match3(source_symbol,
+			source_symbol.match(
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& symbols)
@@ -201,7 +201,7 @@ namespace ax
         void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             VAR* set_ptr = static_cast<std::unordered_set<T>*>(target_ptr);
-            match3(source_symbol,
+			source_symbol.match(
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& symbols)
@@ -250,7 +250,7 @@ namespace ax
         void read_value(const symbol& source_symbol, void* target_ptr) const override
         {
             VAR* map_ptr = static_cast<std::unordered_map<K, V>*>(target_ptr);
-            match3(source_symbol,
+			source_symbol.match(
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& symbols)
@@ -260,15 +260,15 @@ namespace ax
                 VAL& value_type_descriptor = get_type_descriptor<V>();
                 for (VAL& symbol : symbols)
                 {
-                    match3(symbol,
+					symbol.match(
                     [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                     [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                     [&](VAL& symbols)
                     {
                         // ensure correct symbol structure
                         if (symbols.size() != 2 ||
-                            !is_atom(symbols[0]) ||
-                            !is_atom(symbols[1]))
+                            !symbols[0].is_atom() ||
+                            !symbols[1].is_atom())
                             throw std::invalid_argument("Expected two symbol leaves.");
 
                         // read value
@@ -354,7 +354,7 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(P, pair);
             VAR* pair_ptr = static_cast<P*>(target_ptr);
-            match3(source_symbol,
+			source_symbol.match(
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& source_symbols)
@@ -410,7 +410,7 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(R, record);
             VAR* record_ptr = static_cast<R*>(target_ptr);
-            match3(source_symbol,
+			source_symbol.match(
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& source_symbols)
@@ -471,7 +471,7 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(R, record4);
             VAR* record_ptr = static_cast<R*>(target_ptr);
-            match3(source_symbol,
+			source_symbol.match(
                 [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                 [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                 [&](VAL& source_symbols)
@@ -537,7 +537,7 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(R, record5);
             VAR* record_ptr = static_cast<R*>(target_ptr);
-            match3(source_symbol,
+			source_symbol.match(
                 [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                 [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                 [&](VAL& source_symbols)
@@ -610,7 +610,7 @@ namespace ax
         {
             VAR* option_ptr = static_cast<option<T>*>(target_ptr);
             VAL& type_descriptor = get_type_descriptor<T>();
-            match3(source_symbol,
+			source_symbol.match(
             [&](VAL& atom)
             {
                 if (atom != "none") throw std::invalid_argument("Expected the atom 'none'.");
@@ -623,8 +623,8 @@ namespace ax
             [&](VAL& symbols)
             {
                 if (symbols.size() != 2 ||
-                    !is_atom(symbols[0]) ||
-                    get_atom(symbols[0]) != "some")
+                    !symbols[0].is_atom() ||
+                    symbols[0].get_atom() != "some")
                     throw std::invalid_argument("Expected two symbols, with the first being the atom 'some'.");
                 T some_value_mvb{};
                 ax::read_value(*type_descriptor, symbols[1], &some_value_mvb);
@@ -669,7 +669,7 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(E, either);
             VAR* either_ptr = static_cast<E*>(target_ptr);
-            match3(source_symbol,
+			source_symbol.match(
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& source_symbols)
@@ -681,13 +681,13 @@ namespace ax
                 // validate correct symbol name usage
                 VAL& symbol_name = source_symbols[0];
                 VAL& symbol_value = source_symbols[1];
-                VAL& right_name = get_right_name(*either_ptr);
-                VAL& left_name = get_left_name(*either_ptr);
-                if (!is_atom(symbol_name))
+                VAL& right_name = either_ptr->get_right_name();
+                VAL& left_name = either_ptr->get_left_name();
+                if (!symbol_name.is_atom())
                     throw std::invalid_argument("Expected two symbols with valid atom names.");
 
                 // populate target either
-                VAL& either_name = get_atom(symbol_name);
+                VAL& either_name = symbol_name.get_atom();
                 if (either_name == right_name)
                 {
                     typename E::right_type right_value_mvb{};
@@ -716,20 +716,20 @@ namespace ax
         {
             CONSTRAIN(E, either);
             VAL* either_ptr = static_cast<const E*>(source_ptr);
-            match2(*either_ptr,
+			either_ptr->match(
             [&](VAL& right_value)
             {
                 symbol symbol_mvb{};
                 VAL& right_type_descriptor = get_type_descriptor<typename E::right_type>();
                 ax::write_value(*right_type_descriptor, static_cast<const void*>(&right_value), symbol_mvb);
-                target_symbol = symbols({ atom(get_right_name(*either_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(either_ptr->get_right_name()), std::move(symbol_mvb) });
             },
             [&](VAL& left_value)
             {
                 symbol symbol_mvb{};
                 VAL& left_type_descriptor = get_type_descriptor<typename E::left_type>();
                 ax::write_value(*left_type_descriptor, static_cast<const void*>(&left_value), symbol_mvb);
-                target_symbol = symbols({ atom(get_left_name(*either_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(either_ptr->get_left_name()), std::move(symbol_mvb) });
             });
         }
     };
@@ -756,7 +756,7 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(C, choice);
             VAR* choice_ptr = static_cast<C*>(target_ptr);
-            match3(source_symbol,
+			source_symbol.match(
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
             [&](VAL& source_symbols)
@@ -768,14 +768,14 @@ namespace ax
                 // validate correct symbol name usage
                 VAL& symbol_name = source_symbols[0];
                 VAL& symbol_value = source_symbols[1];
-                VAL& first_name = get_first_name(*choice_ptr);
-                VAL& second_name = get_second_name(*choice_ptr);
-                VAL& third_name = get_third_name(*choice_ptr);
-                if (!is_atom(symbol_name))
+                VAL& first_name = choice_ptr->get_first_name();
+                VAL& second_name = choice_ptr->get_second_name();
+                VAL& third_name = choice_ptr->get_third_name();
+                if (!symbol_name.is_atom())
                     throw std::invalid_argument("Expected two symbols with valid atom names.");
 
                 // populate target choice
-                VAL& choice_name = get_atom(symbol_name);
+                VAL& choice_name = symbol_name.get_atom();
                 if (choice_name == first_name)
                 {
                     typename C::first_type first_value_mvb{};
@@ -812,27 +812,27 @@ namespace ax
         {
             CONSTRAIN(C, choice);
             VAL* choice_ptr = static_cast<const C*>(source_ptr);
-            match3(*choice_ptr,
+			choice_ptr->match(
             [&](VAL& first_value)
             {
                 symbol symbol_mvb{};
                 VAL& first_type_descriptor = get_type_descriptor<typename C::first_type>();
                 ax::write_value(*first_type_descriptor, static_cast<const void*>(&first_value), symbol_mvb);
-                target_symbol = symbols({ atom(get_first_name(*choice_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(choice_ptr->get_first_name()), std::move(symbol_mvb) });
             },
             [&](VAL& second_value)
             {
                 symbol symbol_mvb{};
                 VAL& second_type_descriptor = get_type_descriptor<typename C::second_type>();
                 ax::write_value(*second_type_descriptor, static_cast<const void*>(&second_value), symbol_mvb);
-                target_symbol = symbols({ atom(get_second_name(*choice_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(choice_ptr->get_second_name()), std::move(symbol_mvb) });
             },
             [&](VAL& third_value)
             {
                 symbol symbol_mvb{};
                 VAL& third_type_descriptor = get_type_descriptor<typename C::third_type>();
                 ax::write_value(*third_type_descriptor, static_cast<const void*>(&third_value), symbol_mvb);
-                target_symbol = symbols({ atom(get_third_name(*choice_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(choice_ptr->get_third_name()), std::move(symbol_mvb) });
             });
         }
     };
@@ -859,7 +859,7 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(C, choice4);
             VAR* choice_ptr = static_cast<C*>(target_ptr);
-            match3(source_symbol,
+			source_symbol.match(
                 [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                 [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                 [&](VAL& source_symbols)
@@ -871,15 +871,15 @@ namespace ax
                 // validate correct symbol name usage
                 VAL& symbol_name = source_symbols[0];
                 VAL& symbol_value = source_symbols[1];
-                VAL& first_name = get_first_name(*choice_ptr);
-                VAL& second_name = get_second_name(*choice_ptr);
-                VAL& third_name = get_third_name(*choice_ptr);
-                VAL& fourth_name = get_fourth_name(*choice_ptr);
-                if (!is_atom(symbol_name))
+                VAL& first_name = choice_ptr->get_first_name();
+                VAL& second_name = choice_ptr->get_second_name();
+                VAL& third_name = choice_ptr->get_third_name();
+                VAL& fourth_name = choice_ptr->get_fourth_name();
+                if (!symbol_name.is_atom())
                     throw std::invalid_argument("Expected two symbols with valid atom names.");
 
                 // populate target choice
-                VAL& choice_name = get_atom(symbol_name);
+                VAL& choice_name = symbol_name.get_atom();
                 if (choice_name == first_name)
                 {
                     typename C::first_type first_value_mvb{};
@@ -924,34 +924,34 @@ namespace ax
         {
             CONSTRAIN(C, choice4);
             VAL* choice_ptr = static_cast<const C*>(source_ptr);
-            match4(*choice_ptr,
+			choice_ptr->match(
             [&](VAL& first_value)
             {
                 symbol symbol_mvb{};
                 VAL& first_type_descriptor = get_type_descriptor<typename C::first_type>();
                 ax::write_value(*first_type_descriptor, static_cast<const void*>(&first_value), symbol_mvb);
-                target_symbol = symbols({ atom(get_first_name(*choice_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(choice_ptr->get_first_name()), std::move(symbol_mvb) });
             },
             [&](VAL& second_value)
             {
                 symbol symbol_mvb{};
                 VAL& second_type_descriptor = get_type_descriptor<typename C::second_type>();
                 ax::write_value(*second_type_descriptor, static_cast<const void*>(&second_value), symbol_mvb);
-                target_symbol = symbols({ atom(get_second_name(*choice_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(choice_ptr->get_second_name()), std::move(symbol_mvb) });
             },
             [&](VAL& third_value)
             {
                 symbol symbol_mvb{};
                 VAL& third_type_descriptor = get_type_descriptor<typename C::third_type>();
                 ax::write_value(*third_type_descriptor, static_cast<const void*>(&third_value), symbol_mvb);
-                target_symbol = symbols({ atom(get_third_name(*choice_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(choice_ptr->get_third_name()), std::move(symbol_mvb) });
             },
             [&](VAL& fourth_value)
             {
                 symbol symbol_mvb{};
                 VAL& fourth_type_descriptor = get_type_descriptor<typename C::fourth_type>();
                 ax::write_value(*fourth_type_descriptor, static_cast<const void*>(&fourth_value), symbol_mvb);
-                target_symbol = symbols({ atom(get_fourth_name(*choice_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(choice_ptr->get_fourth_name()), std::move(symbol_mvb) });
             });
         }
     };
@@ -978,7 +978,7 @@ namespace ax
             // read target value from source symbol
             CONSTRAIN(C, choice5);
             VAR* choice_ptr = static_cast<C*>(target_ptr);
-            match3(source_symbol,
+			source_symbol.match(
                 [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                 [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
                 [&](VAL& source_symbols)
@@ -990,16 +990,16 @@ namespace ax
                 // validate correct symbol name usage
                 VAL& symbol_name = source_symbols[0];
                 VAL& symbol_value = source_symbols[1];
-                VAL& first_name = get_first_name(*choice_ptr);
-                VAL& second_name = get_second_name(*choice_ptr);
-                VAL& third_name = get_third_name(*choice_ptr);
-                VAL& fourth_name = get_fourth_name(*choice_ptr);
-                VAL& fifth_name = get_fifth_name(*choice_ptr);
-                if (!is_atom(symbol_name))
+                VAL& first_name = choice_ptr->get_first_name();
+                VAL& second_name = choice_ptr->get_second_name();
+                VAL& third_name = choice_ptr->get_third_name();
+                VAL& fourth_name = choice_ptr->get_fourth_name();
+                VAL& fifth_name = choice_ptr->get_fifth_name();
+                if (!symbol_name.is_atom())
                     throw std::invalid_argument("Expected two symbols with valid atom names.");
 
                 // populate target choice
-                VAL& choice_name = get_atom(symbol_name);
+                VAL& choice_name = symbol_name.get_atom();
                 if (choice_name == first_name)
                 {
                     typename C::first_type first_value_mvb{};
@@ -1052,41 +1052,41 @@ namespace ax
         {
             CONSTRAIN(C, choice5);
             VAL* choice_ptr = static_cast<const C*>(source_ptr);
-            match5(*choice_ptr,
+			choice_ptr->match(
             [&](VAL& first_value)
             {
                 symbol symbol_mvb{};
                 VAL& first_type_descriptor = get_type_descriptor<typename C::first_type>();
                 ax::write_value(*first_type_descriptor, static_cast<const void*>(&first_value), symbol_mvb);
-                target_symbol = symbols({ atom(get_first_name(*choice_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(choice_ptr->get_first_name()), std::move(symbol_mvb) });
             },
             [&](VAL& second_value)
             {
                 symbol symbol_mvb{};
                 VAL& second_type_descriptor = get_type_descriptor<typename C::second_type>();
                 ax::write_value(*second_type_descriptor, static_cast<const void*>(&second_value), symbol_mvb);
-                target_symbol = symbols({ atom(get_second_name(*choice_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(choice_ptr->get_second_name()), std::move(symbol_mvb) });
             },
             [&](VAL& third_value)
             {
                 symbol symbol_mvb{};
                 VAL& third_type_descriptor = get_type_descriptor<typename C::third_type>();
                 ax::write_value(*third_type_descriptor, static_cast<const void*>(&third_value), symbol_mvb);
-                target_symbol = symbols({ atom(get_third_name(*choice_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(choice_ptr->get_third_name()), std::move(symbol_mvb) });
             },
             [&](VAL& fourth_value)
             {
                 symbol symbol_mvb{};
                 VAL& fourth_type_descriptor = get_type_descriptor<typename C::fourth_type>();
                 ax::write_value(*fourth_type_descriptor, static_cast<const void*>(&fourth_value), symbol_mvb);
-                target_symbol = symbols({ atom(get_fourth_name(*choice_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(choice_ptr->get_fourth_name()), std::move(symbol_mvb) });
             },
             [&](VAL& fifth_value)
             {
                 symbol symbol_mvb{};
                 VAL& fifth_type_descriptor = get_type_descriptor<typename C::fifth_type>();
                 ax::write_value(*fifth_type_descriptor, static_cast<const void*>(&fifth_value), symbol_mvb);
-                target_symbol = symbols({ atom(get_fifth_name(*choice_ptr)), std::move(symbol_mvb) });
+                target_symbol = symbols({ atom(choice_ptr->get_fifth_name()), std::move(symbol_mvb) });
             });
         }
     };

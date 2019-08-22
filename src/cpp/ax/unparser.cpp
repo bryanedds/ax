@@ -9,8 +9,7 @@ namespace ax
     // NOTE: this is implemented in the pure functional style, so may not be fast enough for certain cases.
     std::string unparse_symbol(const symbol& symbol)
     {
-        return
-            match3(symbol,
+        return symbol.match(
             [&](VAL& atom) { return atom; },
             [&](VAL& quote) { return "`"_s + quote + "'"; },
             [&](VAL& symbols)
