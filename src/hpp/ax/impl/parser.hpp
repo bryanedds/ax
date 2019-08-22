@@ -23,7 +23,10 @@ namespace ax
         using reify = parse<A>;
         using either<T, std::string>::either;
 
-	protected:
+		bool is_success() const { return is_right(); }
+		bool is_failure() const { return is_left(); }
+		const T& get_success() const { return get_right(); }
+		const std::string& get_failure() const { return get_left(); }
 
 		const char* get_right_name() const override { return "parse_success"; }
 		const char* get_left_name() const override { return "parse_failure"; }
@@ -55,34 +58,6 @@ namespace ax
     parse<T> parse_failure(std::string&& error_str)
     {
         return parse<T>(error_str, false, false);
-    }
-
-    // Query that a parse is successful.
-    template<typename T>
-    bool is_parse_success(const parse<T>& parse)
-    {
-        return is_right(parse);
-    }
-
-    // Query that a parse is a failure.
-    template<typename T>
-    bool is_parse_failure(const parse<T>& parse)
-    {
-        return is_left(parse);
-    }
-
-    // Get the parse success value.
-    template<typename T>
-    const T& get_parse_success(const parse<T>& parse)
-    {
-        return parse.get_right();
-    }
-
-    // Get the parse failure value.
-    template<typename T>
-    const std::string& get_parse_failure(const parse<T>& parse)
-    {
-        return parse.get_left();
     }
 
     // Try to run a parse, rewinding the parsing iterator upon failure.

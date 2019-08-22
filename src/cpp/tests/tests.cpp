@@ -206,8 +206,8 @@ namespace ax
             make_pair(50, 100), make_record(150, 200, 250),
             some(2), none<int>(), right<int, std::string>(4), left<int>("msg"_s), third<int, int, int>(3));
         reflectable_test target{};
-        write_value(source, symbol);
-        read_value(symbol, target);
+        ax::write_value(source, symbol);
+		ax::read_value(symbol, target);
         CHECK(target.bool_value);
         CHECK(target.int_value == 5);
         CHECK(target.float_value == 10.0f);
@@ -245,9 +245,9 @@ namespace ax
               [left \"msg\"] \
               [  third  3  ]  ]"; // a little extra whitespace to try to throw off the parser
         VAL& parse = parse_symbol(str);
-        VAL& symbol = get_parse_success(parse);
+        VAL& symbol = parse.get_success();
         reflectable_test target{};
-        read_value(symbol, target);
+		ax::read_value(symbol, target);
         CHECK(target.bool_value);
         CHECK(target.int_value == 5);
         CHECK(target.float_value == 10.0f);

@@ -20,9 +20,6 @@
 // NOTE: included in this file is an optimized entity-component-system prototype, an interesting seed for a fast C++
 // game engine.
 
-// NOTE: I've stepped away from the pure DAS-style here - it's simply too unpragmatic in C++ to make all member
-// functions non-class. Also, I now use the more typical public-to-private declaration ordering.
-
 namespace ax
 {
 	class entity;
@@ -148,20 +145,6 @@ namespace ax
 	{
 	public:
 
-		ax::transform* try_get_transform(const ax::address& address);
-
-		ax::entity_t* try_get_entity(const ax::address& address);
-
-		bool entity_exists(const ax::address& address);
-
-		ax::component* try_add_component(const ax::name_t& system_name, const ax::address& address);
-
-		bool try_remove_component(const ax::name_t& system_name, const ax::address& address);
-
-		std::shared_ptr<ax::entity> create_entity(const ax::address& address);
-
-		bool destroy_entity(const ax::address& address);
-
 		template<typename T>
 		T* try_add_component(const ax::name_t& system_name, const ax::address& address, const T& component = T())
 		{
@@ -185,12 +168,18 @@ namespace ax
 			return nullptr;
 		}
 
+		ax::transform* try_get_transform(const ax::address& address);
+		ax::entity_t* try_get_entity(const ax::address& address);
+		bool entity_exists(const ax::address& address);
+		ax::component* try_add_component(const ax::name_t& system_name, const ax::address& address);
+		bool try_remove_component(const ax::name_t& system_name, const ax::address& address);
+		std::shared_ptr<ax::entity> create_entity(const ax::address& address);
+		bool destroy_entity(const ax::address& address);
+
 	private:
 
 		ax::entity_t* try_add_entity(const ax::address& address);
-
 		bool try_remove_entity(const ax::address& address);
-
 		std::unordered_map<ax::name_t, std::shared_ptr<ax::system>> systems;
 	};
 
@@ -207,22 +196,26 @@ namespace ax
 			world(world)
 		{ }
 
+		template<typename T>
+		const T* try_get_component(const ax::name_t& name) const { return world.try_get_component<T>(name, get_address()); }
+
+		template<typename T>
+		T* try_get_component(const ax::name_t& name) { return world.try_get_component<T>(name, get_address()); }
+
+		template<typename T>
+		const T& get_component(const ax::name_t& name) const { return *try_get_component<T>(name); }
+
+		template<typename T>
+		T& get_component(const ax::name_t& name) { return *try_get_component<T>(name); }
+
 		ax::transform& get_transform() const { return *world.try_get_transform(get_address()); }
-
 		ax::transform& set_transform(const ax::transform& transform) { return get_transform() = transform; }
-
 		float get_x_pos() const { return get_transform().x_pos; }
-
 		float set_x_pos(float value) { return get_transform().x_pos = value; }
-
 		float get_y_pos() const { return get_transform().y_pos; }
-
 		float set_y_pos(float value) { return get_transform().y_pos = value; }
-
 		float get_rotation() const { return get_transform().rotation; }
-
 		float set_rotation(float value) { return get_transform().rotation = value; }
-
 		bool exists() const { return world.entity_exists(get_address()); }
 
 	private:

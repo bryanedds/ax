@@ -28,7 +28,7 @@ namespace ax
         static constexpr id_t invalid() { return id_t(); }
         explicit operator std::size_t() const { return static_cast<std::size_t>(x ^ y); }
 
-		inline id_t succ<id_t>()
+		id_t succ()
 		{
 			if (x == std::numeric_limits<int64_t>::max())
 			{

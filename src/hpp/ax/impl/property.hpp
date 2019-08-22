@@ -34,28 +34,16 @@ namespace ax
 		T& operator*() { return data; }
 
 		template<typename T>
-		const T& get_value() const
-		{
-			return **this;
-		}
+		const T& get_value() const { return **this; }
 
 		template<typename T>
-		T& get_value()
-		{
-			return **this;
-		}
+		T& get_value() { return **this; }
 
 		template<typename T>
-		T& set_value(const T& value)
-		{
-			return *this = value;
-		}
+		T& set_value(const T& value) { return *this = value; }
 
 		template<typename T>
-		T& set_value(T&& value)
-		{
-			return *this = value;
-		}
+		T& set_value(T&& value) { return *this = value; }
 
     protected:
 
