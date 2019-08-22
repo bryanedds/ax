@@ -67,9 +67,6 @@
     <ClInclude Include="..\..\src\hpp\ax\impl\id.hpp">
       <Filter>Header Files\ax\impl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\hpp\ax\impl\mailbox.hpp">
-      <Filter>Header Files\ax\impl</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\impl\name.hpp">
       <Filter>Header Files\ax\impl</Filter>
     </ClInclude>
@@ -127,9 +124,6 @@
     <ClInclude Include="..\..\src\hpp\ax\impl\propertied.hpp">
       <Filter>Header Files\ax\impl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\hpp\ax\impl\logging.hpp">
-      <Filter>Header Files\ax\impl</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\events.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
@@ -165,12 +159,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\impl\functional.hpp">
       <Filter>Header Files\ax\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\hpp\ax\logging.hpp">
-      <Filter>Header Files\ax</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\hpp\ax\mailbox.hpp">
-      <Filter>Header Files\ax</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\symbol.hpp">
       <Filter>Header Files\ax</Filter>

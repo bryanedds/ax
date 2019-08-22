@@ -36,8 +36,6 @@
     <ClInclude Include="..\..\src\hpp\ax\impl\record4.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\record5.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\reflectable.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\logging.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\mailbox.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\name.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\option.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\pair.hpp" />
@@ -65,8 +63,6 @@
     <ClInclude Include="..\..\src\hpp\tom\tom.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\algebraic.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\casting.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\logging.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\mailbox.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\utility.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\events.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\reflection.hpp" />

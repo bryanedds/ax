@@ -3,7 +3,6 @@
 
 #include "prelude.hpp"
 #include "hash.hpp"
-#include "logging.hpp"
 #include "string.hpp"
 #include "functional.hpp"
 #include "id.hpp"
@@ -23,7 +22,6 @@
 #include "propertied.hpp"
 #include "symbol.hpp"
 #include "parser.hpp"
-#include "mailbox.hpp"
 #include "address.hpp"
 #include "addressable.hpp"
 #include "event.hpp"
