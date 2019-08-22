@@ -28,28 +28,13 @@ namespace ax
 		pair(const First& first, const Second& second) : first(first), second(second) { }
 		pair(First&& first, Second&& second) : first(first), second(second) { }
 
-    protected:
+		const First& fst() const { return first; }
+		const Second& snd() const { return second; }
+		First& fst() { return first; }
+		Second& snd() { return second; }
 
         virtual const char* get_first_name() const { return "first"; }
         virtual const char* get_second_name() const { return "second"; }
-
-        template<typename A, typename B>
-        friend const A& fst(const pair<A, B>& pr);
-
-        template<typename A, typename B>
-        friend const B& snd(const pair<A, B>& pr);
-
-        template<typename A, typename B>
-        friend A& fst(pair<A, B>& pr);
-
-        template<typename A, typename B>
-        friend B& snd(pair<A, B>& pr);
-
-        template<typename A, typename B>
-        friend const char* get_first_name(const pair<A, B>& pr);
-
-        template<typename A, typename B>
-        friend const char* get_second_name(const pair<A, B>& pr);
 
 	private:
 
@@ -58,40 +43,16 @@ namespace ax
     };
 
     template<typename First, typename Second>
-    const First& fst(const pair<First, Second>& pr)
-    {
-        return pr.first;
-    }
+    const First& fst(const pair<First, Second>& pr) { return pr.fst(); }
 
     template<typename First, typename Second>
-    const Second& snd(const pair<First, Second>& pr)
-    {
-        return pr.second;
-    }
+    const Second& snd(const pair<First, Second>& pr) { return pr.snd(); }
 
     template<typename First, typename Second>
-    First& fst(pair<First, Second>& pr)
-    {
-        return pr.first;
-    }
+    First& fst(pair<First, Second>& pr) { return pr.fst(); }
 
     template<typename First, typename Second>
-    Second& snd(pair<First, Second>& pr)
-    {
-        return pr.second;
-    }
-
-    template<typename First, typename Second>
-    const char* get_first_name(const pair<First, Second>& pr)
-    {
-        return pr.get_first_name();
-    }
-
-    template<typename First, typename Second>
-    const char* get_second_name(const pair<First, Second>& pr)
-    {
-        return pr.get_second_name();
-    }
+    Second& snd(pair<First, Second>& pr) { return pr.snd(); }
 
     template<typename First, typename Second>
     pair<First, Second> make_pair(const First& first, const Second& second)
@@ -109,36 +70,22 @@ namespace ax
 #define PRODUCT_TYPE(T, Ft, Fn, St, Sn) \
     class T : public ::ax::pair<Ft, St> \
     { \
-    protected: \
-    \
-        const char* get_first_name() const override { return #Sn; } \
-        const char* get_second_name() const override { return #Fn; } \
-    \
     public: \
     \
         CONSTRAINT(T); \
         using ::ax::pair<Ft, St>::pair; \
+		\
+		inline const T::first_type& get_##Fn() const { return fst(); } \
+		inline const T::second_type& get_##Sn() const { return snd(); } \
+		\
+		inline T::first_type& get_##Fn() { return fst(); } \
+		inline T::second_type& get_##Sn() { return snd(); } \
+    \
+    protected: \
+    \
+        const char* get_first_name() const override { return #Sn; } \
+        const char* get_second_name() const override { return #Fn; } \
     }; \
-    \
-    inline const T::first_type& get_##Fn(const T& pr) \
-    { \
-        return fst(pr); \
-    } \
-    \
-    inline const T::second_type& get_##Sn(const T& pr) \
-    { \
-        return snd(pr); \
-    } \
-    \
-    inline T::first_type& get_##Fn(T& pr) \
-    { \
-        return fst(pr); \
-    } \
-    \
-    inline T::second_type& get_##Sn(T& pr) \
-    { \
-        return snd(pr); \
-    } \
     \
     T make_##T(const T::first_type& first, const T::second_type& second) \
     { \

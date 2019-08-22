@@ -224,9 +224,7 @@ namespace ax
 		{ \
 			return get_left(); \
 		} \
-    \
-    protected: \
-    \
+		\
         const char* get_right_name() const override { return #Rn; } \
         const char* get_left_name() const override { return #Ln; } \
     }; \

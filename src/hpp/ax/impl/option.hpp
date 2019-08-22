@@ -19,110 +19,120 @@ namespace ax
         template<typename A>
         using reify = option<A>;
         
-        option() : is_some(false)
+        option() : is_some_flag(false)
         {
             new (&u) unit();
         }
         
-        option(const option& that) : is_some(that.is_some)
+        option(const option& that) : is_some_flag(that.is_some_flag)
         {
-            if (is_some) new (&u) T(that.u.content);
+            if (is_some_flag) new (&u) T(that.u.content);
             else new (&u) unit();
         }
         
-        option(option&& that) : is_some(that.is_some)
+        option(option&& that) : is_some_flag(that.is_some_flag)
         {
-            if (is_some) new (&u) T(std::move(that.u.content));
+            if (is_some_flag) new (&u) T(std::move(that.u.content));
             else new (&u) unit();
         }
 
         option& operator=(const option& that)
         {
-            if (is_some) u.content.T::~T();
+            if (is_some_flag) u.content.T::~T();
             else u.unit.unit::~unit();
-            is_some = that.is_some;
-            if (is_some) new (&u) T(that.u.content);
+            is_some_flag = that.is_some_flag;
+            if (is_some_flag) new (&u) T(that.u.content);
             else new (&u) unit();
             return *this;
         }
 
         option& operator=(option&& that)
         {
-            if (is_some) u.content.T::~T();
+            if (is_some_flag) u.content.T::~T();
             else u.unit.unit::~unit();
-            is_some = that.is_some;
-            if (is_some) new (&u) T(std::move(that.u.content));
+            is_some_flag = that.is_some_flag;
+            if (is_some_flag) new (&u) T(std::move(that.u.content));
             else new (&u) unit();
             return *this;
         }
 
-        explicit option(const T& content, bool) : is_some(true)
+        explicit option(const T& content, bool) : is_some_flag(true)
         {
             new (&u) T(content);
         }
 
-        explicit option(T&& content, bool) : is_some(true)
+        explicit option(T&& content, bool) : is_some_flag(true)
         {
             new (&u) T(content);
         }
 
         ~option()
         {
-            if (is_some) u.content.T::~T();
+            if (is_some_flag) u.content.T::~T();
             else u.unit.unit::~unit();
         }
 
         const T& operator*() const
         {
-            if (is_some) return u.content;
+            if (is_some_flag) return u.content;
             throw std::runtime_error("Cannot get invalid option content.");
         }
 
         T& operator*()
         {
-            if (is_some) return u.content;
+            if (is_some_flag) return u.content;
             throw std::runtime_error("Cannot get invalid option content.");
         }
 
         explicit operator bool() const
         {
-            return is_some;
+            return is_some_flag;
         }
 
         explicit operator bool()
         {
-            return is_some;
+            return is_some_flag;
         }
+
+		template<typename Sf, typename Nf>
+		VAR match(Sf some_fn, Nf none_fn) const
+		{
+			if (is_none()) return none_fn();
+			return some_fn(get_content());
+		}
+
+		template<typename Sf, typename Nf>
+		VAR match(Sf some_fn, Nf none_fn)
+		{
+			if (is_none()) return none_fn();
+			return some_fn(get_content());
+		}
+
+		bool is_some() const
+		{
+			return static_cast<bool>(*this);
+		}
+
+		bool is_none() const
+		{
+			return !static_cast<bool>(*this);
+		}
+
+		const T& get_content() const
+		{
+			return **this;
+		}
+
+		T& get_content()
+		{
+			return **this;
+		}
 
 	private:
 
 		union union_t { T content; ax::unit unit; union_t() { } ~union_t() { } } u;
-		bool is_some;
+		bool is_some_flag;
     };
-
-    template<typename T>
-    bool is_some(const option<T>& opt)
-    {
-        return static_cast<bool>(opt);
-    }
-
-    template<typename T>
-    bool is_none(const option<T>& opt)
-    {
-        return !static_cast<bool>(opt);
-    }
-
-    template<typename T>
-    const T& get_content(const option<T>& opt)
-    {
-        return *opt;
-    }
-
-    template<typename T>
-    T& get_content(option<T>& opt)
-    {
-        return *opt;
-    }
 
     template<typename T>
     option<T> some(const T& content)
@@ -140,22 +150,6 @@ namespace ax
     option<T> none()
     {
         return option<T>();
-    }
-
-    template<typename O, typename Sf, typename Nf>
-    VAR match_opt(const O& opt, Sf some_fn, Nf none_fn)
-    {
-        CONSTRAIN(O, option);
-        if (is_none(opt)) return none_fn();
-        return some_fn(get_content(opt));
-    }
-
-    template<typename O, typename Sf, typename Nf>
-    VAR match_opt(O& opt, Sf some_fn, Nf none_fn)
-    {
-        CONSTRAIN(O, option);
-        if (is_none(opt)) return none_fn();
-        return some_fn(get_content(opt));
     }
 }
 

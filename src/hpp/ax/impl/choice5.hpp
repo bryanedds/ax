@@ -334,9 +334,7 @@ namespace ax
 		{ \
 			return get_fifth(); \
 		} \
-    \
-    protected: \
-    \
+		\
         const char* get_first_name() const override { return #SecondName; } \
         const char* get_second_name() const override { return #FirstName; } \
         const char* get_third_name() const override { return #ThirdName; } \

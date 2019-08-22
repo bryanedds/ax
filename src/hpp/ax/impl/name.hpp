@@ -25,11 +25,8 @@ namespace ax
         name_t(const std::string& name_str);
         explicit name_t(std::string&& name_str);
         bool operator==(const name_t& that) const;
-
-		// Get the hash of the name.
 		inline explicit operator std::size_t() const { return hash_code; }
 
-		// Get the string from which the name is composed.
 		inline const std::string& get_name_str() const { return name_str; }
 
 	private:

@@ -222,7 +222,7 @@ namespace ax
         CHECK(snd(target.record_value) == 200);
         CHECK(thd(target.record_value) == 250);
         CHECK(*target.option_some_value == 2);
-        CHECK(is_none(target.option_none_value));
+        CHECK(target.option_none_value.is_none());
         CHECK(*target.either_right_value == 4);
         CHECK(~target.either_left_value == "msg");
         CHECK(target.choice_value.get_third() == 3);
@@ -262,7 +262,7 @@ namespace ax
         CHECK(snd(target.record_value) == 200);
         CHECK(thd(target.record_value) == 250);
         CHECK(*target.option_some_value == 2);
-        CHECK(is_none(target.option_none_value));
+        CHECK(target.option_none_value.is_none());
         CHECK(*target.either_right_value == 4);
         CHECK(~target.either_left_value == "msg");
         CHECK(target.choice_value.get_third() == 3);

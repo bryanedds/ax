@@ -31,11 +31,8 @@ namespace ax
         explicit address(const std::string& names_str);
         bool operator==(const address& that) const;
         address operator+(const address& that) const;
-
-		// Get the hash of the names.
 		inline explicit operator std::size_t() const { return hash_code; }
 
-		// Get the names of which an address consists.
 		inline const std::vector<name_t>& get_names() const { return names; }
 
 	private:

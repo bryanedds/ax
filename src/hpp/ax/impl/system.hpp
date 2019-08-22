@@ -15,6 +15,7 @@
 #include "address.hpp"
 #include "addressable.hpp"
 #include "castable.hpp"
+#include "eventable.hpp"
 
 // NOTE: included in this file is an optimized entity-component-system prototype, an interesting seed for a fast C++
 // game engine.
@@ -143,7 +144,7 @@ namespace ax
 		std::queue<std::size_t> free_list;
 	};
 
-	class world
+	class world : public ax::eventable<world>
 	{
 	public:
 

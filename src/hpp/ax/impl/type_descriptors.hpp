@@ -635,7 +635,7 @@ namespace ax
         void write_value(const void* source_ptr, symbol& target_symbol) const override
         {
             VAL* option_ptr = static_cast<const option<T>*>(source_ptr);
-            match_opt(*option_ptr,
+			option_ptr->match(
             [&](VAL& some_value)
             {
                 symbol symbol_value_mvb{};

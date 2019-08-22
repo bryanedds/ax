@@ -240,9 +240,7 @@ namespace ax
 		{ \
 			return get_third(); \
 		} \
-    \
-    protected: \
-    \
+		\
         const char* get_first_name() const override { return #Sn; } \
         const char* get_second_name() const override { return #Fn; } \
         const char* get_third_name() const override { return #Tn; } \
