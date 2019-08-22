@@ -11,11 +11,23 @@ namespace ax
     template<typename F, typename S, typename T>
     class record
     {
-    private:
+	public:
 
-        F first;
-        S second;
-        T third;
+		CONSTRAINT(record);
+		using first_type = F;
+		using second_type = S;
+		using third_type = T;
+		template<typename A, typename B, typename C>
+		using reify = record<A, B, C>;
+
+		record() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
+		record(const record&) = default;
+		record(record&&) = default;
+		record& operator=(const record&) = default;
+		record& operator=(record&&) = default;
+
+		record(const F& first, const S& second, const T& third) : first(first), second(second), third(third) { }
+		record(F&& first, S&& second, T&& third) : first(first), second(second), third(third) { }
 
     protected:
 
@@ -50,23 +62,11 @@ namespace ax
         template<typename A, typename B, typename C>
         friend const char* get_third_name(const record<A, B, C>& rcd);
 
-    public:
+	private:
 
-        CONSTRAINT(record);
-        using first_type = F;
-        using second_type = S;
-        using third_type = T;
-        template<typename A, typename B, typename C>
-        using reify = record<A, B, C>;
-        
-        record() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
-        record(const record&) = default;
-        record(record&&) = default;
-        record& operator=(const record&) = default;
-        record& operator=(record&&) = default;
-
-        record(const F& first, const S& second, const T& third) : first(first), second(second), third(third) { }
-        record(F&& first, S&& second, T&& third) : first(first), second(second), third(third) { }
+		F first;
+		S second;
+		T third;
     };
 
     template<typename F, typename S, typename T>

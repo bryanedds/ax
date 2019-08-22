@@ -12,43 +12,45 @@ namespace ax
     template<typename First, typename Second, typename Third, typename Fourth>
     class choice4
     {
-    private:
+	public:
 
-        union union_t { First first; Second second; Third third; Fourth fourth; union_t() { } ~union_t() { } } u;
-        std::size_t index;
+		CONSTRAINT(choice4);
+		using first_type = First;
+		using second_type = Second;
+		using third_type = Third;
+		using fourth_type = Fourth;
+		template<typename A, typename B, typename C, typename D>
+		using reify = choice4<A, B, C, D>;
 
-        void construct_u(const choice4& that)
-        {
-            switch (index)
-            {
-                case 0_z: new (&u) First(that.u.first); break;
-                case 1_z: new (&u) Second(that.u.second); break;
-                case 2_z: new (&u) Third(that.u.third); break;
-                case 3_z: new (&u) Fourth(that.u.fourth); break;
-            }
-        }
+		choice4() : index(0_z) { new (&u) First(); }
+		choice4(const choice4& that) : index(that.index) { construct_u(that); }
+		choice4(choice4&& that) : index(that.index) { construct_u(that); }
 
-        void construct_u(choice4&& that)
-        {
-            switch (index)
-            {
-                case 0_z: new (&u) First(std::move(that.u.first)); break;
-                case 1_z: new (&u) Second(std::move(that.u.second)); break;
-                case 2_z: new (&u) Third(std::move(that.u.third)); break;
-                case 3_z: new (&u) Fourth(std::move(that.u.fourth)); break;
-            }
-        }
+		choice4& operator=(const choice4& that)
+		{
+			destruct_u();
+			index = that.index;
+			construct_u(that);
+			return *this;
+		}
 
-        void destruct_u()
-        {
-            switch (index)
-            {
-                case 0_z: u.first.First::~First(); break;
-                case 1_z: u.second.Second::~Second(); break;
-                case 2_z: u.third.Third::~Third(); break;
-                case 3_z: u.fourth.Fourth::~Fourth(); break;
-            }
-        }
+		choice4& operator=(choice4&& that)
+		{
+			destruct_u();
+			index = that.index;
+			construct_u(that);
+			return *this;
+		}
+
+		explicit choice4(const First& first, bool) : index(0_z) { new (&u) First(first); }
+		explicit choice4(First&& first, bool) : index(0_z) { new (&u) First(first); }
+		explicit choice4(const Second& second, bool, bool) : index(1_z) { new (&u) Second(second); }
+		explicit choice4(Second&& second, bool, bool) : index(1_z) { new (&u) Second(second); }
+		explicit choice4(const Third& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
+		explicit choice4(Third&& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
+		explicit choice4(const Fourth& fourth, bool, bool, bool, bool) : index(3_z) { new (&u) Fourth(fourth); }
+		explicit choice4(Fourth&& fourth, bool, bool, bool, bool) : index(3_z) { new (&u) Fourth(fourth); }
+		~choice4() { destruct_u(); }
 
     protected:
 
@@ -96,45 +98,43 @@ namespace ax
         template<typename A, typename B, typename C, typename D>
         friend const char* get_fourth_name(const choice4<A, B, C, D>& chc);
 
-    public:
+	private:
 
-        CONSTRAINT(choice4);
-        using first_type = First;
-        using second_type = Second;
-        using third_type = Third;
-        using fourth_type = Fourth;
-        template<typename A, typename B, typename C, typename D>
-        using reify = choice4<A, B, C, D>;
+		void construct_u(const choice4& that)
+		{
+			switch (index)
+			{
+				case 0_z: new (&u) First(that.u.first); break;
+				case 1_z: new (&u) Second(that.u.second); break;
+				case 2_z: new (&u) Third(that.u.third); break;
+				case 3_z: new (&u) Fourth(that.u.fourth); break;
+			}
+		}
 
-        choice4() : index(0_z) { new (&u) First(); }
-        choice4(const choice4& that) : index(that.index) { construct_u(that); }
-        choice4(choice4&& that) : index(that.index) { construct_u(that); }
-        
-        choice4& operator=(const choice4& that)
-        {
-            destruct_u();
-            index = that.index;
-            construct_u(that);
-            return *this;
-        }
+		void construct_u(choice4&& that)
+		{
+			switch (index)
+			{
+				case 0_z: new (&u) First(std::move(that.u.first)); break;
+				case 1_z: new (&u) Second(std::move(that.u.second)); break;
+				case 2_z: new (&u) Third(std::move(that.u.third)); break;
+				case 3_z: new (&u) Fourth(std::move(that.u.fourth)); break;
+			}
+		}
 
-        choice4& operator=(choice4&& that)
-        {
-            destruct_u();
-            index = that.index;
-            construct_u(that);
-            return *this;
-        }
+		void destruct_u()
+		{
+			switch (index)
+			{
+				case 0_z: u.first.First::~First(); break;
+				case 1_z: u.second.Second::~Second(); break;
+				case 2_z: u.third.Third::~Third(); break;
+				case 3_z: u.fourth.Fourth::~Fourth(); break;
+			}
+		}
 
-        explicit choice4(const First& first, bool) : index(0_z) { new (&u) First(first); }
-        explicit choice4(First&& first, bool) : index(0_z) { new (&u) First(first); }
-        explicit choice4(const Second& second, bool, bool) : index(1_z) { new (&u) Second(second); }
-        explicit choice4(Second&& second, bool, bool) : index(1_z) { new (&u) Second(second); }
-        explicit choice4(const Third& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
-        explicit choice4(Third&& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
-        explicit choice4(const Fourth& fourth, bool, bool, bool, bool) : index(3_z) { new (&u) Fourth(fourth); }
-        explicit choice4(Fourth&& fourth, bool, bool, bool, bool) : index(3_z) { new (&u) Fourth(fourth); }
-        ~choice4() { destruct_u(); }
+		union union_t { First first; Second second; Third third; Fourth fourth; union_t() { } ~union_t() { } } u;
+		std::size_t index;
     };
 
     template<typename First, typename Second, typename Third, typename Fourth>

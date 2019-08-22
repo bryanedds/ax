@@ -15,13 +15,13 @@ namespace ax
 {
     class type_t
     {
-    private:
+	public:
 
-        static std::unordered_map<std::type_index, std::shared_ptr<type_t>> type_map;
-        const std::shared_ptr<std::type_index> base_type_index_opt;
-        const std::type_index type_index;
-        const ax::field_map field_map;
-        const ax::field_vector field_vector;
+		type_t(
+			const std::shared_ptr<std::type_index>& base_type_index_opt,
+			std::type_index type_index,
+			const ax::field_map& field_map,
+			const ax::field_vector& field_vector);
 
     protected:
         
@@ -33,13 +33,13 @@ namespace ax
         friend const ax::field_map& get_field_map(const type_t& type);
         friend const ax::field_vector& get_field_vector(const type_t& type);
 
-    public:
+	private:
 
-        type_t(
-            const std::shared_ptr<std::type_index>& base_type_index_opt,
-            std::type_index type_index,
-            const ax::field_map& field_map,
-            const ax::field_vector& field_vector);
+		static std::unordered_map<std::type_index, std::shared_ptr<type_t>> type_map;
+		const std::shared_ptr<std::type_index> base_type_index_opt;
+		const std::type_index type_index;
+		const ax::field_map field_map;
+		const ax::field_vector field_vector;
     };
 
     // The alias for a type map.

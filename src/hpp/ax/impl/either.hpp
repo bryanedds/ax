@@ -12,10 +12,110 @@ namespace ax
     template<typename R, typename L>
     class either
     {
-    private:
+	public:
 
-        union union_t { R right; L left; union_t() { } ~union_t() { } } u;
-        bool is_right;
+		CONSTRAINT(either);
+		using right_type = R;
+		using left_type = L;
+		template<typename A, typename B>
+		using reify = either<A, B>;
+
+		either() : is_right(true)
+		{
+			new (&u) R();
+		}
+
+		either(const either& that) : is_right(that.is_right)
+		{
+			if (is_right) new (&u) R(that.u.right);
+			else new (&u) L(that.u.left);
+		}
+
+		either(either&& that) : is_right(that.is_right)
+		{
+			if (is_right) new (&u) R(std::move(that.u.right));
+			else new (&u) L(std::move(that.u.left));
+		}
+
+		either& operator=(const either& that)
+		{
+			if (is_right) u.right.R::~R();
+			else u.left.L::~L();
+			is_right = that.is_right;
+			if (is_right) new (&u) R(that.u.right);
+			else new (&u) L(that.u.left);
+			return *this;
+		}
+
+		either& operator=(either&& that)
+		{
+			if (is_right) u.right.R::~R();
+			else u.left.L::~L();
+			is_right = that.is_right;
+			if (is_right) new (&u) R(std::move(that.u.right));
+			else new (&u) L(std::move(that.u.left));
+			return *this;
+		}
+
+		explicit either(const R& right, bool) : is_right(true)
+		{
+			new (&u) R(right);
+		}
+
+		explicit either(R&& right, bool) : is_right(true)
+		{
+			new (&u) R(right);
+		}
+
+		explicit either(const L& left, bool, bool) : is_right(false)
+		{
+			new (&u) L(left);
+		}
+
+		explicit either(L&& left, bool, bool) : is_right(false)
+		{
+			new (&u) L(left);
+		}
+
+		~either()
+		{
+			if (is_right) u.right.R::~R();
+			else u.left.L::~L();
+		}
+
+		const R& operator*() const
+		{
+			if (is_right) return u.right;
+			throw std::runtime_error("Cannot get non-existent right value.");
+		}
+
+		R& operator*()
+		{
+			if (is_right) return u.right;
+			throw std::runtime_error("Cannot get non-existent right value.");
+		}
+
+		const L& operator~() const
+		{
+			if (!is_right) return u.left;
+			throw std::runtime_error("Cannot get non-existent left value.");
+		}
+
+		L& operator~()
+		{
+			if (!is_right) return u.left;
+			throw std::runtime_error("Cannot get non-existent left value.");
+		}
+
+		explicit operator bool() const
+		{
+			return is_right;
+		}
+
+		explicit operator bool()
+		{
+			return is_right;
+		}
 
     protected:
 
@@ -40,110 +140,10 @@ namespace ax
         template<typename A, typename B>
         friend const char* get_left_name(const either<A, B>& eir);
 
-    public:
+	private:
 
-        CONSTRAINT(either);
-        using right_type = R;
-        using left_type = L;
-        template<typename A, typename B>
-        using reify = either<A, B>;
-        
-        either() : is_right(true)
-        {
-            new (&u) R();
-        }
-
-        either(const either& that) : is_right(that.is_right)
-        {
-            if (is_right) new (&u) R(that.u.right);
-            else new (&u) L(that.u.left);
-        }
-
-        either(either&& that) : is_right(that.is_right)
-        {
-            if (is_right) new (&u) R(std::move(that.u.right));
-            else new (&u) L(std::move(that.u.left));
-        }
-
-        either& operator=(const either& that)
-        {
-            if (is_right) u.right.R::~R();
-            else u.left.L::~L();
-            is_right = that.is_right;
-            if (is_right) new (&u) R(that.u.right);
-            else new (&u) L(that.u.left);
-            return *this;
-        }
-
-        either& operator=(either&& that)
-        {
-            if (is_right) u.right.R::~R();
-            else u.left.L::~L();
-            is_right = that.is_right;
-            if (is_right) new (&u) R(std::move(that.u.right));
-            else new (&u) L(std::move(that.u.left));
-            return *this;
-        }
-
-        explicit either(const R& right, bool) : is_right(true)
-        {
-            new (&u) R(right);
-        }
-
-        explicit either(R&& right, bool) : is_right(true)
-        {
-            new (&u) R(right);
-        }
-
-        explicit either(const L& left, bool, bool) : is_right(false)
-        {
-            new (&u) L(left);
-        }
-
-        explicit either(L&& left, bool, bool) : is_right(false)
-        {
-            new (&u) L(left);
-        }
-
-        ~either()
-        {
-            if (is_right) u.right.R::~R();
-            else u.left.L::~L();
-        }
-
-        const R& operator*() const
-        {
-            if (is_right) return u.right;
-            throw std::runtime_error("Cannot get non-existent right value.");
-        }
-
-        R& operator*()
-        {
-            if (is_right) return u.right;
-            throw std::runtime_error("Cannot get non-existent right value.");
-        }
-
-        const L& operator~() const
-        {
-            if (!is_right) return u.left;
-            throw std::runtime_error("Cannot get non-existent left value.");
-        }
-
-        L& operator~()
-        {
-            if (!is_right) return u.left;
-            throw std::runtime_error("Cannot get non-existent left value.");
-        }
-
-        explicit operator bool() const
-        {
-            return is_right;
-        }
-
-        explicit operator bool()
-        {
-            return is_right;
-        }
+		union union_t { R right; L left; union_t() { } ~union_t() { } } u;
+		bool is_right;
     };
 
     template<typename R, typename L>

@@ -16,9 +16,6 @@ namespace ax
     class id_t
     {
     public:
-
-        const int64_t x;
-        const int64_t y;
         
         constexpr id_t() : x(zero<int64_t>()), y(zero<int64_t>()) { }
         constexpr id_t(const id_t&) = default;
@@ -30,6 +27,9 @@ namespace ax
         constexpr bool operator==(const id_t& that) const { return x == that.x && y == that.y; }
         static constexpr id_t invalid() { return id_t(); }
         explicit operator std::size_t() const { return static_cast<std::size_t>(x ^ y); }
+
+		const int64_t x;
+		const int64_t y;
     };
 
     template<>

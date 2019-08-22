@@ -11,12 +11,27 @@ namespace ax
     template<typename First, typename Second, typename Third, typename Fourth>
     class record4
     {
-    private:
+	public:
 
-        First first;
-        Second second;
-        Third third;
-        Fourth fourth;
+		CONSTRAINT(record4);
+		using first_type = First;
+		using second_type = Second;
+		using third_type = Third;
+		using fourth_type = Fourth;
+		template<typename A, typename B, typename C, typename D>
+		using reify = record4<A, B, C, D>;
+
+		record4() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
+		record4(const record4&) = default;
+		record4(record4&&) = default;
+		record4& operator=(const record4&) = default;
+		record4& operator=(record4&&) = default;
+
+		record4(const First& first, const Second& second, const Third& third, const Fourth& fourth) :
+			first(first), second(second), third(third), fourth(fourth) { }
+
+		record4(First&& first, Second&& second, Third&& third, Fourth&& fourth) :
+			first(first), second(second), third(third), fourth(fourth) { }
 
     protected:
 
@@ -61,27 +76,12 @@ namespace ax
         template<typename A, typename B, typename C, typename D>
         friend const char* get_fourth_name(const record4<A, B, C, D>& rcd);
 
-    public:
+	private:
 
-        CONSTRAINT(record4);
-        using first_type = First;
-        using second_type = Second;
-        using third_type = Third;
-        using fourth_type = Fourth;
-        template<typename A, typename B, typename C, typename D>
-        using reify = record4<A, B, C, D>;
-        
-        record4() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
-        record4(const record4&) = default;
-        record4(record4&&) = default;
-        record4& operator=(const record4&) = default;
-        record4& operator=(record4&&) = default;
-
-        record4(const First& first, const Second& second, const Third& third, const Fourth& fourth) :
-            first(first), second(second), third(third), fourth(fourth) { }
-        
-        record4(First&& first, Second&& second, Third&& third, Fourth&& fourth) :
-            first(first), second(second), third(third), fourth(fourth) { }
+		First first;
+		Second second;
+		Third third;
+		Fourth fourth;
     };
 
     template<typename First, typename Second, typename Third, typename Fourth>

@@ -15,31 +15,31 @@ namespace ax
     template<typename T>
     class property : public castable
     {
-    private:
+	public:
 
-        T data;
+		CONSTRAINT(property);
+		template<typename A>
+		using reify = property<A>;
+
+		property() = default;
+		property(const property&) = default;
+		property(property&&) = default;
+		property& operator=(const property&) = default;
+		property& operator=(property&&) = default;
+
+		explicit property(const T& value) : data(value) { }
+		T& operator=(const T& value) { return data = value; }
+		T& operator=(T&& value) { return data = value; }
+		const T& operator*() const { return data; }
+		T& operator*() { return data; }
 
     protected:
 
         ENABLE_CAST(property<T>, castable);
 
-    public:
+	private:
 
-        CONSTRAINT(property);
-        template<typename A>
-        using reify = property<A>;
-
-        property() = default;
-        property(const property&) = default;
-        property(property&&) = default;
-        property& operator=(const property&) = default;
-        property& operator=(property&&) = default;
-
-        explicit property(const T& value) : data(value) { }
-        T& operator=(const T& value) { return data = value; }
-        T& operator=(T&& value) { return data = value; }
-        const T& operator*() const { return data; }
-        T& operator*() { return data; }
+		T data;
     };
 
     template<typename T>

@@ -21,17 +21,17 @@ namespace ax
     // library.
     class reflectable : public castable
     {
+	public:
+
+		CONSTRAINT(reflectable);
+		reflectable() = default;
+
     protected:
 
         ENABLE_CAST(reflectable, castable);
         const std::shared_ptr<type_t> type = register_type<reflectable>({});
         virtual std::shared_ptr<type_t> get_type() const;
         friend std::shared_ptr<type_t> get_type(const reflectable& source);
-
-    public:
-        
-        CONSTRAINT(reflectable);
-        reflectable() = default;
     };
 
     // Get the type of a value.

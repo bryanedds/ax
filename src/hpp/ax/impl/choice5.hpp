@@ -12,46 +12,48 @@ namespace ax
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
     class choice5
     {
-    private:
+	public:
 
-        union union_t { First first; Second second; Third third; Fourth fourth; Fifth fifth; union_t() { } ~union_t() { } } u;
-        std::size_t index;
+		CONSTRAINT(choice5);
+		using first_type = First;
+		using second_type = Second;
+		using third_type = Third;
+		using fourth_type = Fourth;
+		using fifth_type = Fifth;
+		template<typename A, typename B, typename C, typename D, typename E>
+		using reify = choice5<A, B, C, D, E>;
 
-        void construct_u(const choice5& that)
-        {
-            switch (index)
-            {
-                case 0_z: new (&u) First(that.u.first); break;
-                case 1_z: new (&u) Second(that.u.second); break;
-                case 2_z: new (&u) Third(that.u.third); break;
-                case 3_z: new (&u) Fourth(that.u.fourth); break;
-                case 4_z: new (&u) Fifth(that.u.fifth); break;
-            }
-        }
+		choice5() : index(0_z) { new (&u) First(); }
+		choice5(const choice5& that) : index(that.index) { construct_u(that); }
+		choice5(choice5&& that) : index(that.index) { construct_u(that); }
 
-        void construct_u(choice5&& that)
-        {
-            switch (index)
-            {
-                case 0_z: new (&u) First(std::move(that.u.first)); break;
-                case 1_z: new (&u) Second(std::move(that.u.second)); break;
-                case 2_z: new (&u) Third(std::move(that.u.third)); break;
-                case 3_z: new (&u) Fourth(std::move(that.u.fourth)); break;
-                case 4_z: new (&u) Fifth(std::move(that.u.fifth)); break;
-            }
-        }
+		choice5& operator=(const choice5& that)
+		{
+			destruct_u();
+			index = that.index;
+			construct_u(that);
+			return *this;
+		}
 
-        void destruct_u()
-        {
-            switch (index)
-            {
-                case 0_z: u.first.First::~First(); break;
-                case 1_z: u.second.Second::~Second(); break;
-                case 2_z: u.third.Third::~Third(); break;
-                case 3_z: u.fourth.Fourth::~Fourth(); break;
-                case 4_z: u.fifth.Fifth::~Fifth(); break;
-            }
-        }
+		choice5& operator=(choice5&& that)
+		{
+			destruct_u();
+			index = that.index;
+			construct_u(that);
+			return *this;
+		}
+
+		explicit choice5(const First& first, bool) : index(0_z) { new (&u) First(first); }
+		explicit choice5(First&& first, bool) : index(0_z) { new (&u) First(first); }
+		explicit choice5(const Second& second, bool, bool) : index(1_z) { new (&u) Second(second); }
+		explicit choice5(Second&& second, bool, bool) : index(1_z) { new (&u) Second(second); }
+		explicit choice5(const Third& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
+		explicit choice5(Third&& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
+		explicit choice5(const Fourth& fourth, bool, bool, bool, bool) : index(3_z) { new (&u) Fourth(fourth); }
+		explicit choice5(Fourth&& fourth, bool, bool, bool, bool) : index(3_z) { new (&u) Fourth(fourth); }
+		explicit choice5(const Fifth& fifth, bool, bool, bool, bool, bool) : index(4_z) { new (&u) Fifth(fifth); }
+		explicit choice5(Fifth&& fifth, bool, bool, bool, bool, bool) : index(4_z) { new (&u) Fifth(fifth); }
+		~choice5() { destruct_u(); }
 
     protected:
 
@@ -109,48 +111,46 @@ namespace ax
         template<typename A, typename B, typename C, typename D, typename E>
         friend const char* get_fifth_name(const choice5<A, B, C, D, E>& chc);
 
-    public:
+	private:
 
-        CONSTRAINT(choice5);
-        using first_type = First;
-        using second_type = Second;
-        using third_type = Third;
-        using fourth_type = Fourth;
-        using fifth_type = Fifth;
-        template<typename A, typename B, typename C, typename D, typename E>
-        using reify = choice5<A, B, C, D, E>;
+		void construct_u(const choice5& that)
+		{
+			switch (index)
+			{
+				case 0_z: new (&u) First(that.u.first); break;
+				case 1_z: new (&u) Second(that.u.second); break;
+				case 2_z: new (&u) Third(that.u.third); break;
+				case 3_z: new (&u) Fourth(that.u.fourth); break;
+				case 4_z: new (&u) Fifth(that.u.fifth); break;
+			}
+		}
 
-        choice5() : index(0_z) { new (&u) First(); }
-        choice5(const choice5& that) : index(that.index) { construct_u(that); }
-        choice5(choice5&& that) : index(that.index) { construct_u(that); }
+		void construct_u(choice5&& that)
+		{
+			switch (index)
+			{
+				case 0_z: new (&u) First(std::move(that.u.first)); break;
+				case 1_z: new (&u) Second(std::move(that.u.second)); break;
+				case 2_z: new (&u) Third(std::move(that.u.third)); break;
+				case 3_z: new (&u) Fourth(std::move(that.u.fourth)); break;
+				case 4_z: new (&u) Fifth(std::move(that.u.fifth)); break;
+			}
+		}
 
-        choice5& operator=(const choice5& that)
-        {
-            destruct_u();
-            index = that.index;
-            construct_u(that);
-            return *this;
-        }
+		void destruct_u()
+		{
+			switch (index)
+			{
+				case 0_z: u.first.First::~First(); break;
+				case 1_z: u.second.Second::~Second(); break;
+				case 2_z: u.third.Third::~Third(); break;
+				case 3_z: u.fourth.Fourth::~Fourth(); break;
+				case 4_z: u.fifth.Fifth::~Fifth(); break;
+			}
+		}
 
-        choice5& operator=(choice5&& that)
-        {
-            destruct_u();
-            index = that.index;
-            construct_u(that);
-            return *this;
-        }
-
-        explicit choice5(const First& first, bool) : index(0_z) { new (&u) First(first); }
-        explicit choice5(First&& first, bool) : index(0_z) { new (&u) First(first); }
-        explicit choice5(const Second& second, bool, bool) : index(1_z) { new (&u) Second(second); }
-        explicit choice5(Second&& second, bool, bool) : index(1_z) { new (&u) Second(second); }
-        explicit choice5(const Third& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
-        explicit choice5(Third&& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
-        explicit choice5(const Fourth& fourth, bool, bool, bool, bool) : index(3_z) { new (&u) Fourth(fourth); }
-        explicit choice5(Fourth&& fourth, bool, bool, bool, bool) : index(3_z) { new (&u) Fourth(fourth); }
-        explicit choice5(const Fifth& fifth, bool, bool, bool, bool, bool) : index(4_z) { new (&u) Fifth(fifth); }
-        explicit choice5(Fifth&& fifth, bool, bool, bool, bool, bool) : index(4_z) { new (&u) Fifth(fifth); }
-        ~choice5() { destruct_u(); }
+		union union_t { First first; Second second; Third third; Fourth fourth; Fifth fifth; union_t() { } ~union_t() { } } u;
+		std::size_t index;
     };
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>

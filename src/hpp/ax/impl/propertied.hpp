@@ -12,9 +12,10 @@ namespace ax
 {
     class propertied : public reflectable
     {
-    private:
+	public:
 
-        property_map properties;
+		CONSTRAINT(propertied);
+		propertied() = default;
 
     protected:
 
@@ -38,10 +39,9 @@ namespace ax
         template<typename T>
         friend void attach(propertied& propertied, const name_t& name, T&& value);
 
-    public:
+	private:
 
-        CONSTRAINT(propertied);
-        propertied() = default;
+		property_map properties;
     };
 
     template<typename T>

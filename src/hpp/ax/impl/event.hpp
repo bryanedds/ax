@@ -9,9 +9,7 @@
 
 namespace ax
 {
-    // The event type. There is no need to make this an abstract data type for the same reason
-    // there's no need to make a Matrix an abstract data type. Sometimes data is just data and
-    // life is a breeze!
+    // The event type.
     template<typename T>
     struct event
     {

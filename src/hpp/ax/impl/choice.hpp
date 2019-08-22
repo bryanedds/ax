@@ -12,40 +12,42 @@ namespace ax
     template<typename F, typename S, typename T>
     class choice
     {
-    private:
+	public:
 
-        union union_t { F first; S second; T third; union_t() { } ~union_t() { } } u;
-        std::size_t index;
+		CONSTRAINT(choice);
+		using first_type = F;
+		using second_type = S;
+		using third_type = T;
+		template<typename A, typename B, typename C>
+		using reify = choice<A, B, C>;
 
-        void construct_u(const choice& that)
-        {
-            switch (index)
-            {
-                case 0_z: new (&u) F(that.u.first); break;
-                case 1_z: new (&u) S(that.u.second); break;
-                case 2_z: new (&u) T(that.u.third); break;
-            }
-        }
+		choice() : index(0_z) { new (&u) F(); }
+		choice(const choice& that) : index(that.index) { construct_u(that); }
+		choice(choice&& that) : index(that.index) { construct_u(that); }
 
-        void construct_u(choice&& that)
-        {
-            switch (index)
-            {
-                case 0_z: new (&u) F(std::move(that.u.first)); break;
-                case 1_z: new (&u) S(std::move(that.u.second)); break;
-                case 2_z: new (&u) T(std::move(that.u.third)); break;
-            }
-        }
+		choice& operator=(const choice& that)
+		{
+			destruct_u();
+			index = that.index;
+			construct_u(that);
+			return *this;
+		}
 
-        void destruct_u()
-        {
-            switch (index)
-            {
-                case 0_z: u.first.F::~F(); break;
-                case 1_z: u.second.S::~S(); break;
-                case 2_z: u.third.T::~T(); break;
-            }
-        }
+		choice& operator=(choice&& that)
+		{
+			destruct_u();
+			index = that.index;
+			construct_u(that);
+			return *this;
+		}
+
+		explicit choice(const F& first, bool) : index(0_z) { new (&u) F(first); }
+		explicit choice(F&& first, bool) : index(0_z) { new (&u) F(first); }
+		explicit choice(const S& second, bool, bool) : index(1_z) { new (&u) S(second); }
+		explicit choice(S&& second, bool, bool) : index(1_z) { new (&u) S(second); }
+		explicit choice(const T& third, bool, bool, bool) : index(2_z) { new (&u) T(third); }
+		explicit choice(T&& third, bool, bool, bool) : index(2_z) { new (&u) T(third); }
+		~choice() { destruct_u(); }
 
     protected:
 
@@ -82,43 +84,40 @@ namespace ax
 
         template<typename A, typename B, typename C>
         friend const char* get_third_name(const choice<A, B, C>& chc);
+	private:
 
-    public:
+		void construct_u(const choice& that)
+		{
+			switch (index)
+			{
+				case 0_z: new (&u) F(that.u.first); break;
+				case 1_z: new (&u) S(that.u.second); break;
+				case 2_z: new (&u) T(that.u.third); break;
+			}
+		}
 
-        CONSTRAINT(choice);
-        using first_type = F;
-        using second_type = S;
-        using third_type = T;
-        template<typename A, typename B, typename C>
-        using reify = choice<A, B, C>;
+		void construct_u(choice&& that)
+		{
+			switch (index)
+			{
+				case 0_z: new (&u) F(std::move(that.u.first)); break;
+				case 1_z: new (&u) S(std::move(that.u.second)); break;
+				case 2_z: new (&u) T(std::move(that.u.third)); break;
+			}
+		}
 
-        choice() : index(0_z) { new (&u) F(); }
-        choice(const choice& that) : index(that.index) { construct_u(that); }
-        choice(choice&& that) : index(that.index) { construct_u(that); }
-        
-        choice& operator=(const choice& that)
-        {
-            destruct_u();
-            index = that.index;
-            construct_u(that);
-            return *this;
-        }
+		void destruct_u()
+		{
+			switch (index)
+			{
+				case 0_z: u.first.F::~F(); break;
+				case 1_z: u.second.S::~S(); break;
+				case 2_z: u.third.T::~T(); break;
+			}
+		}
 
-        choice& operator=(choice&& that)
-        {
-            destruct_u();
-            index = that.index;
-            construct_u(that);
-            return *this;
-        }
-
-        explicit choice(const F& first, bool) : index(0_z) { new (&u) F(first); }
-        explicit choice(F&& first, bool) : index(0_z) { new (&u) F(first); }
-        explicit choice(const S& second, bool, bool) : index(1_z) { new (&u) S(second); }
-        explicit choice(S&& second, bool, bool) : index(1_z) { new (&u) S(second); }
-        explicit choice(const T& third, bool, bool, bool) : index(2_z) { new (&u) T(third); }
-        explicit choice(T&& third, bool, bool, bool) : index(2_z) { new (&u) T(third); }
-        ~choice() { destruct_u(); }
+		union union_t { F first; S second; T third; union_t() { } ~union_t() { } } u;
+		std::size_t index;
     };
 
     template<typename F, typename S, typename T>

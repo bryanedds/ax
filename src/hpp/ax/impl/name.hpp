@@ -13,11 +13,6 @@ namespace ax
     // lookup.
     class name_t
     {
-    private:
-
-        std::size_t hash_code;
-        std::string name_str;
-
     public:
 
         name_t() = default;
@@ -36,6 +31,11 @@ namespace ax
 
 		// Get the string from which the name is composed.
 		inline const std::string& get_name_str() const { return name_str; }
+
+	private:
+
+		std::size_t hash_code;
+		std::string name_str;
     };
 }
 

@@ -11,13 +11,28 @@ namespace ax
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
     class record5
     {
-    private:
+	public:
 
-        First first;
-        Second second;
-        Third third;
-        Fourth fourth;
-        Fifth fifth;
+		CONSTRAINT(record5);
+		using first_type = First;
+		using second_type = Second;
+		using third_type = Third;
+		using fourth_type = Fourth;
+		using fifth_type = Fifth;
+		template<typename A, typename B, typename C, typename D, typename E>
+		using reify = record5<A, B, C, D, E>;
+
+		record5() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
+		record5(const record5&) = default;
+		record5(record5&&) = default;
+		record5& operator=(const record5&) = default;
+		record5& operator=(record5&&) = default;
+
+		record5(const First& first, const Second& second, const Third& third, const Fourth& fourth, const Fifth& fifth) :
+			first(first), second(second), third(third), fourth(fourth), fifth(fifth) { }
+
+		record5(First&& first, Second&& second, Third&& third, Fourth&& fourth, Fifth&& fifth) :
+			first(first), second(second), third(third), fourth(fourth), fifth(fifth) { }
 
     protected:
 
@@ -72,28 +87,13 @@ namespace ax
         template<typename A, typename B, typename C, typename D, typename E>
         friend const char* get_fifth_name(const record5<A, B, C, D, E>& rcd);
 
-    public:
+	private:
 
-        CONSTRAINT(record5);
-        using first_type = First;
-        using second_type = Second;
-        using third_type = Third;
-        using fourth_type = Fourth;
-        using fifth_type = Fifth;
-        template<typename A, typename B, typename C, typename D, typename E>
-        using reify = record5<A, B, C, D, E>;
-
-        record5() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
-        record5(const record5&) = default;
-        record5(record5&&) = default;
-        record5& operator=(const record5&) = default;
-        record5& operator=(record5&&) = default;
-
-        record5(const First& first, const Second& second, const Third& third, const Fourth& fourth, const Fifth& fifth) :
-            first(first), second(second), third(third), fourth(fourth), fifth(fifth) { }
-
-        record5(First&& first, Second&& second, Third&& third, Fourth&& fourth, Fifth&& fifth) :
-            first(first), second(second), third(third), fourth(fourth), fifth(fifth) { }
+		First first;
+		Second second;
+		Third third;
+		Fourth fourth;
+		Fifth fifth;
     };
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>

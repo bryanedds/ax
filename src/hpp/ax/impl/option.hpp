@@ -12,11 +12,6 @@ namespace ax
     template<typename T>
     class option
     {
-    private:
-
-        union union_t { T content; ax::unit unit; union_t() { } ~union_t() { } } u;
-        bool is_some;
-
     public:
 
         CONSTRAINT(option);
@@ -98,6 +93,11 @@ namespace ax
         {
             return is_some;
         }
+
+	private:
+
+		union union_t { T content; ax::unit unit; union_t() { } ~union_t() { } } u;
+		bool is_some;
     };
 
     template<typename T>

@@ -11,10 +11,22 @@ namespace ax
     template<typename First, typename Second>
     class pair
     {
-    private:
+	public:
 
-        First first;
-        Second second;
+		CONSTRAINT(pair);
+		using first_type = First;
+		using second_type = Second;
+		template<typename A, typename B>
+		using reify = pair<A, B>;
+
+		pair() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
+		pair(const pair&) = default;
+		pair(pair&&) = default;
+		pair& operator=(const pair&) = default;
+		pair& operator=(pair&&) = default;
+
+		pair(const First& first, const Second& second) : first(first), second(second) { }
+		pair(First&& first, Second&& second) : first(first), second(second) { }
 
     protected:
 
@@ -39,22 +51,10 @@ namespace ax
         template<typename A, typename B>
         friend const char* get_second_name(const pair<A, B>& pr);
 
-    public:
+	private:
 
-        CONSTRAINT(pair);
-        using first_type = First;
-        using second_type = Second;
-        template<typename A, typename B>
-        using reify = pair<A, B>;
-        
-        pair() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
-        pair(const pair&) = default;
-        pair(pair&&) = default;
-        pair& operator=(const pair&) = default;
-        pair& operator=(pair&&) = default;
-
-        pair(const First& first, const Second& second) : first(first), second(second) { }
-        pair(First&& first, Second&& second) : first(first), second(second) { }
+		First first;
+		Second second;
     };
 
     template<typename First, typename Second>

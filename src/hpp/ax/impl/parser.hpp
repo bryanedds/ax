@@ -16,17 +16,17 @@ namespace ax
     template<typename T>
     class parse : public either<T, std::string>
     {
-    protected:
-
-        const char* get_right_name() const override { return "parse_success"; }
-        const char* get_left_name() const override { return "parse_failure"; }
-
     public:
 
         CONSTRAINT(parse);
         template<typename A>
         using reify = parse<A>;
         using either<T, std::string>::either;
+
+	protected:
+
+		const char* get_right_name() const override { return "parse_success"; }
+		const char* get_left_name() const override { return "parse_failure"; }
     };
 
     // Make a successful parse result.
