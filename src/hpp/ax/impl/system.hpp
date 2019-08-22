@@ -18,7 +18,8 @@
 #include "eventable.hpp"
 
 // NOTE: included in this file is an optimized entity-component-system prototype, an interesting seed for a fast C++
-// game engine.
+// game engine. This prototype is limited in functionality by disallowing more than one of any type of component per
+// entity. This may not be an acceptable limitation in practical usage.
 
 namespace ax
 {
