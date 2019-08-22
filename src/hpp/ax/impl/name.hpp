@@ -18,10 +18,6 @@ namespace ax
         std::size_t hash_code;
         std::string name_str;
 
-    protected:
-
-        friend const std::string& get_name_str(const name_t& name);
-
     public:
 
         name_t() = default;
@@ -33,12 +29,14 @@ namespace ax
         name_t(const char* name_str);
         name_t(const std::string& name_str);
         explicit name_t(std::string&& name_str);
-        explicit operator std::size_t() const;
         bool operator==(const name_t& that) const;
-    };
 
-    // Get the string of which a name is composed.
-    const std::string& get_name_str(const name_t& name);
+		// Get the hash of the name.
+		inline explicit operator std::size_t() const { return hash_code; }
+
+		// Get the string from which the name is composed.
+		inline const std::string& get_name_str() const { return name_str; }
+    };
 }
 
 // Name suffix operator.

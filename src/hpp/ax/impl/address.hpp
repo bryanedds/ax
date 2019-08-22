@@ -20,10 +20,6 @@ namespace ax
         std::size_t hash_code;
         std::vector<name_t> names;
 
-    protected:
-
-        friend const std::vector<name_t>& get_names(const address& address);
-
     public:
 
         address() = default;
@@ -40,11 +36,13 @@ namespace ax
         explicit address(const std::string& names_str);
         bool operator==(const address& that) const;
         address operator+(const address& that) const;
-        explicit operator std::size_t() const;
-    };
 
-    // Get the names of which an address consists.
-    const std::vector<name_t>& get_names(const address& address);
+		// Get the hash of the names.
+		inline operator std::size_t() const { return hash_code; }
+
+		// Get the names of which an address consists.
+		inline const std::vector<name_t>& get_names() const { return names; }
+    };
 
     // Adds a phantom type T to addresses.
     // TODO: implement type-absorbing operators, a la -

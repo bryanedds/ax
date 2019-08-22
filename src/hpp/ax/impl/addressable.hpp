@@ -5,7 +5,7 @@
 
 #include "prelude.hpp"
 #include "castable.hpp"
-#include "name.hpp"
+#include "address.hpp"
 
 namespace ax
 {
@@ -22,24 +22,18 @@ namespace ax
     {
     private:
 
-        name_t name;
+        address address;
 
     protected:
 
         ENABLE_CAST(addressable, castable);
-        friend name_t get_name(const addressable& addressable);
 
     public:
 
         CONSTRAINT(addressable);
-        explicit addressable(const name_t& name) : name(name) { }
+        explicit addressable(const ax::address& address) : address(address) { }
+		inline const ax::address& get_address() const { return address; }
     };
-
-    // The name of the addressable instance.
-    inline name_t get_name(const addressable& addressable)
-    {
-        return addressable.name;
-    }
 }
 
 #endif

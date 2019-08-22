@@ -4,6 +4,8 @@
 
 #include "../../hpp/ax/impl/ax.hpp"
 
+#include "../../hpp/ax/impl/system.hpp"
+
 namespace ax
 {
     // A trivial type to demonstrate the castable type.

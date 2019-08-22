@@ -49,6 +49,7 @@
     <ClInclude Include="..\..\src\hpp\ax\impl\subscription.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\symbol.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\record.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\impl\system.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\type.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\type_descriptor.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\type_descriptors.hpp" />

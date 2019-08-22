@@ -257,7 +257,7 @@ namespace ax
     void name_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* name_ptr = static_cast<const name_t*>(source_ptr);
-        target_symbol = atom(get_name_str(*name_ptr));
+        target_symbol = atom(name_ptr->get_name_str());
     }
 
     /* address_descriptor */
@@ -284,8 +284,8 @@ namespace ax
     void address_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* address_ptr = static_cast<const address*>(source_ptr);
-        VAL& address_names = get_names(*address_ptr);
-        VAL& address_strs = map<std::string>(address_names, get_name_str);
+        VAL& address_names = address_ptr->get_names();
+		VAL& address_strs = map<std::string>(address_names, [](const name_t& name) { return name.get_name_str(); });
         target_symbol = atom(join_strings(address_strs, '/'));
     }
 

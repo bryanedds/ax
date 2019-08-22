@@ -30,14 +30,4 @@ namespace ax
         for (VAL& name : right.names) names_summed.push_back(name);
         return address(names_summed);
     }
-
-    address::operator std::size_t() const
-    {
-        return hash_code;
-    }
-
-    const std::vector<name_t>& get_names(const address& address)
-    {
-        return address.names;
-    }
 }
