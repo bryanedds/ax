@@ -5,17 +5,26 @@
 
 namespace ax
 {
-    address::address(const name_t& name) : hash_code(get_hash(name)), names({ name }) { }
+    address::address(const name_t& name) :
+        hash_code(get_hash(name)),
+        names({ name }) { }
 
-    address::address(const std::vector<name_t>& names) : hash_code(get_hash_range<name_t>(names.cbegin(), names.cend())), names(names) { }
+    address::address(const std::vector<name_t>& names) :
+        hash_code(get_hash_range<name_t>(names.cbegin(), names.cend())),
+        names(names) { }
 
-    address::address(std::vector<name_t>&& names) : hash_code(get_hash_range<name_t>(names.cbegin(), names.cend())), names(names) { }
+    address::address(std::vector<name_t>&& names) :
+        hash_code(get_hash_range<name_t>(names.cbegin(), names.cend())),
+        names(names) { }
 
-    address::address(const std::vector<std::string>& names) : address(std::transform<std::vector<name_t>>(names.cbegin(), names.cend(), [](VAL& name) { return name_t(name); })) { }
+    address::address(const std::vector<std::string>& names) :
+        address(std::transform<std::vector<name_t>>(names.cbegin(), names.cend(), [](VAL& name) { return name_t(name); })) { }
 
-    address::address(const char* names_str) : address(std::string(names_str)) { }
+    address::address(const char* names_str) :
+        address(std::string(names_str)) { }
 
-    address::address(const std::string& names_str) : address(split_string(names_str, '/')) { }
+    address::address(const std::string& names_str) :
+        address(split_string(names_str, '/')) { }
 
     bool address::operator==(const address& that) const
     {
