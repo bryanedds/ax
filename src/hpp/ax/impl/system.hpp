@@ -45,7 +45,7 @@ namespace ax
         float rotation;
     };
 
-    class system : public castable
+    class system : public ax::castable
     {
     public:
 
