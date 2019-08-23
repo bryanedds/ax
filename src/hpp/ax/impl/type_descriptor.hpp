@@ -20,22 +20,19 @@ namespace ax
 
         CONSTRAINT(type_descriptor);
 
-    protected:
-
-        friend const std::unordered_map<std::type_index, std::shared_ptr<type_descriptor>>& get_type_descriptor_map();
-
-        template<typename T, typename D>
-        friend std::shared_ptr<D> register_type_descriptor(const std::shared_ptr<D>& type_descriptor);
-
-        friend void inspect_value(const type_descriptor& type_descriptor, const reflectable& source, const field& field, void* target_ptr);
-        friend void inject_value(const type_descriptor& type_descriptor, const field& field, const void* source_ptr, reflectable& target);
-        friend void read_value(const type_descriptor& type_descriptor, const symbol& source_symbol, void* target_ptr);
-        friend void write_value(const type_descriptor& type_descriptor, const void* source_ptr, symbol& target_symbol);
+        void inspect_value(const reflectable& source, const field& field, void* target_ptr) const;
+        void inject_value(const field& field, const void* source_ptr, reflectable& target) const;
 
         virtual void inspect_value(const void* source_ptr, void* target_ptr) const = 0;
         virtual void inject_value(const void* source_ptr, void* target_ptr) const = 0;
         virtual void read_value(const symbol& source_symbol, void* target_ptr) const = 0;
         virtual void write_value(const void* source_ptr, symbol& target_symbol) const = 0;
+
+    protected:
+
+        template<typename T, typename D>
+        friend std::shared_ptr<D> register_type_descriptor(const std::shared_ptr<D>& type_descriptor);
+        friend const std::unordered_map<std::type_index, std::shared_ptr<type_descriptor>>& get_type_descriptor_map();
 
     private:
 
@@ -99,12 +96,6 @@ namespace ax
         target_ptr_ptr->reset(source_ptr_ptr->get());
     }
 
-    // Inspect a value of a reflectable value, placing it into a void ptr.
-    void inspect_value(const type_descriptor& type_descriptor, const reflectable& source, const field& field, void* target_ptr);
-
-    // Inject a value into a reflectable value, via a void ptr.
-    void inject_value(const type_descriptor& type_descriptor, const field& field, const void* source_ptr, reflectable& target);
-
     // Inspect a value of a reflectable value.
     template<typename T>
     void inspect_value(const reflectable& source, const field& field, T& target)
@@ -127,14 +118,8 @@ namespace ax
         inject_value(*type_descriptor, field, source_ptr, target);
     }
 
-    // Read a value from a symbol, placing it into a void ptr.
-    void read_value(const type_descriptor& type_descriptor, const symbol& source_symbol, void* target_ptr);
-
     // Read a reflectable value from a symbol.
     void read_value(const symbol& source_symbol, reflectable& target_reflectable);
-
-    // Write a value to a symbol, via a void ptr.
-    void write_value(const type_descriptor& type_descriptor, const void* source_ptr, symbol& target_symbol);
 
     // Write a reflectable value to a symbol.
     void write_value(const reflectable& source_reflectable, symbol& target_symbol);
