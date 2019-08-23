@@ -11,8 +11,10 @@ namespace ax
 {
     // The event type.
     template<typename T>
-    struct event
+    class event
     {
+    public:
+
         CONSTRAINT(event);
 
         template<typename A>

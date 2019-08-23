@@ -195,7 +195,7 @@ namespace ax
     \
         CONSTRAINT(T); \
         using ::ax::choice<Ft, St, Tt>::choice; \
-    \
+        \
         inline bool is_##Fn() const \
         { \
             return is_first(); \

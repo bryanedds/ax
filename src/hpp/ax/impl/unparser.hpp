@@ -18,7 +18,7 @@ namespace ax
         ax::symbol symbol{};
         VAL& type_index = std::type_index(typeid(value));
         VAL& type_descriptor = get_type_descriptor(type_index);
-        write_value(type_descriptor, &value, symbol);
+        type_descriptor->write_value(&value, symbol);
         str = unparse_symbol(symbol);
     }
 
