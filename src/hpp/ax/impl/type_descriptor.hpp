@@ -127,8 +127,7 @@ namespace ax
     // A generalized type descriptor for reflectable types.
     class reflectable_descriptor : public type_descriptor
     {
-    protected:
-
+    public:
         void inspect_value(const void* source_ptr, void* target_ptr) const override;
         void inject_value(const void* source_ptr, void* target_ptr) const override;
         void read_value(const symbol& source_symbol, void* target_ptr) const override;
