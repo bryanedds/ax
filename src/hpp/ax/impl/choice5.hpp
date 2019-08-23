@@ -83,10 +83,7 @@ namespace ax
             throw std::logic_error("Unexpected missing case.");
         }
 
-        std::size_t get_index() const
-        {
-            return index;
-        }
+        std::size_t get_index() const { return index; }
 
         const First& get_first() const
         {
@@ -118,30 +115,11 @@ namespace ax
             throw std::runtime_error("Cannot get '"_s + get_fifth_name() + "' value.");
         }
 
-        bool is_first() const
-        {
-            return get_index() == 0_z;
-        }
-
-        bool is_second() const
-        {
-            return get_index() == 1_z;
-        }
-
-        bool is_third() const
-        {
-            return get_index() == 2_z;
-        }
-
-        bool is_fourth() const
-        {
-            return get_index() == 3_z;
-        }
-
-        bool is_fifth() const
-        {
-            return get_index() == 4_z;
-        }
+        bool is_first() const { return get_index() == 0_z; }
+        bool is_second() const { return get_index() == 1_z; }
+        bool is_third() const { return get_index() == 2_z; }
+        bool is_fourth() const { return get_index() == 3_z; }
+        bool is_fifth() const { return get_index() == 4_z; }
 
         First& get_first()
         {
@@ -222,34 +200,19 @@ namespace ax
     };
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    choice5<First, Second, Third, Fourth, Fifth> first(const First& first)
-    {
-        return choice5<First, Second, Third, Fourth, Fifth>(first, false);
-    }
+    choice5<First, Second, Third, Fourth, Fifth> first(const First& first) { return choice5<First, Second, Third, Fourth, Fifth>(first, false); }
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    choice5<First, Second, Third, Fourth, Fifth> second(const Second& second)
-    {
-        return choice5<First, Second, Third, Fourth, Fifth>(second, false, false);
-    }
+    choice5<First, Second, Third, Fourth, Fifth> second(const Second& second) { return choice5<First, Second, Third, Fourth, Fifth>(second, false, false); }
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    choice5<First, Second, Third, Fourth, Fifth> third(const Third& third)
-    {
-        return choice5<First, Second, Third, Fourth, Fifth>(third, false, false, false);
-    }
+    choice5<First, Second, Third, Fourth, Fifth> third(const Third& third) { return choice5<First, Second, Third, Fourth, Fifth>(third, false, false, false); }
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    choice5<First, Second, Third, Fourth, Fifth> fourth(const Fourth& fourth)
-    {
-        return choice5<First, Second, Third, Fourth, Fifth>(fourth, false, false, false, false);
-    }
+    choice5<First, Second, Third, Fourth, Fifth> frth(const Fourth& fourth) { return choice5<First, Second, Third, Fourth, Fifth>(fourth, false, false, false, false); }
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    choice5<First, Second, Third, Fourth, Fifth> fifth(const Fifth& fifth)
-    {
-        return choice5<First, Second, Third, Fourth, Fifth>(fifth, false, false, false, false, false);
-    }
+    choice5<First, Second, Third, Fourth, Fifth> ffth(const Fifth& fifth) { return choice5<First, Second, Third, Fourth, Fifth>(fifth, false, false, false, false, false); }
 }
 
 #define SUM_TYPE5(T, FirstType, FirstName, SecondType, SecondName, ThirdType, ThirdName, FourthType, FourthName, FifthType, FifthName) \
@@ -260,80 +223,23 @@ namespace ax
         CONSTRAINT(T); \
         using ::ax::choice5<FirstType, SecondType, ThirdType, FourthType, FifthType>::choice5; \
         \
-        inline bool is_##FirstName() const \
-        { \
-            return is_first(); \
-        } \
+        inline bool is_##FirstName() const { return is_first(); } \
+        inline bool is_##SecondName() const { return is_second(); } \
+        inline bool is_##ThirdName() const { return is_third(); } \
+        inline bool is_##FourthName() const { return is_fourth(); } \
+        inline bool is_##FifthName() const { return is_fifth(); } \
         \
-        inline bool is_##SecondName() const \
-        { \
-            return is_second(); \
-        } \
+        inline const T::first_type& get_##FirstName() const { return get_first(); } \
+        inline const T::second_type& get_##SecondName() const { return get_second(); } \
+        inline const T::third_type& get_##ThirdName() const { return get_third(); } \
+        inline const T::fourth_type& get_##FourthName() const { return get_fourth(); } \
+        inline const T::fifth_type& get_##FifthName() const { return get_fifth(); } \
         \
-        inline bool is_##ThirdName() const \
-        { \
-            return is_third(); \
-        } \
-        \
-        inline bool is_##FourthName() const \
-        { \
-            return is_fourth(); \
-        } \
-        \
-        inline bool is_##FifthName() const \
-        { \
-            return is_fifth(); \
-        } \
-        \
-        inline const T::first_type& get_##FirstName() const \
-        { \
-            return get_first(); \
-        } \
-        \
-        inline const T::second_type& get_##SecondName() const \
-        { \
-            return get_second(); \
-        } \
-        \
-        inline const T::third_type& get_##ThirdName() const \
-        { \
-            return get_third(); \
-        } \
-        \
-        inline const T::fourth_type& get_##FourthName() const \
-        { \
-            return get_fourth(); \
-        } \
-        \
-        inline const T::fifth_type& get_##FifthName() const \
-        { \
-            return get_fifth(); \
-        } \
-        \
-        inline T::first_type& get_##FirstName() \
-        { \
-            return get_first(); \
-        } \
-        \
-        inline T::second_type& get_##SecondName() \
-        { \
-            return get_second(); \
-        } \
-        \
-        inline T::third_type& get_##ThirdName() \
-        { \
-            return get_third(); \
-        } \
-        \
-        inline const T::fourth_type& get_##FourthName() \
-        { \
-            return get_fourth(); \
-        } \
-        \
-        inline const T::fifth_type& get_##FifthName() \
-        { \
-            return get_fifth(); \
-        } \
+        inline T::first_type& get_##FirstName() { return get_first(); } \
+        inline T::second_type& get_##SecondName() { return get_second(); } \
+        inline T::third_type& get_##ThirdName() { return get_third(); } \
+        inline T::fourth_type& get_##FourthName() { return get_fourth(); } \
+        inline const T::fifth_type& get_##FifthName() { return get_fifth(); } \
         \
         const char* get_first_name() const override { return #SecondName; } \
         const char* get_second_name() const override { return #FirstName; } \
@@ -348,55 +254,17 @@ namespace ax
     using FourthName##_t = FourthType; \
     using FifthName##_t = FifthType; \
     \
-    inline T FirstName(const FirstType& first_value) \
-    { \
-        return T(first_value, false); \
-    } \
+    inline T FirstName(const FirstType& first_value) { return T(first_value, false); } \
+    inline T SecondName(const SecondType& second_value) { return T(second_value, false, false); } \
+    inline T ThirdName(const ThirdType& third_value) { return T(third_value, false, false, false); } \
+    inline T FourthName(const FourthType& fourth_value) { return T(fourth_value, false, false, false, false); } \
+    inline T FifthName(const FifthType& fifth_value) { return T(fifth_value, false, false, false, false, false); } \
     \
-    inline T SecondName(const SecondType& second_value) \
-    { \
-        return T(second_value, false, false); \
-    } \
-    \
-    inline T ThirdName(const ThirdType& third_value) \
-    { \
-        return T(third_value, false, false, false); \
-    } \
-    \
-    inline T FourthName(const FourthType& fourth_value) \
-    { \
-        return T(fourth_value, false, false, false, false); \
-    } \
-    \
-    inline T FifthName(const FifthType& fifth_value) \
-    { \
-        return T(fifth_value, false, false, false, false, false); \
-    } \
-    \
-    inline T FirstName(FirstType&& first_value) \
-    { \
-        return T(first_value, false); \
-    } \
-    \
-    inline T SecondName(SecondType&& second_value) \
-    { \
-        return T(second_value, false, false); \
-    } \
-    \
-    inline T ThirdName(ThirdType&& third_value) \
-    { \
-        return T(third_value, false, false, false); \
-    } \
-    \
-    inline T FourthName(FourthType&& fourth_value) \
-    { \
-        return T(fourth_value, false, false, false, false); \
-    } \
-    \
-    inline T FifthName(FifthType&& fifth_value) \
-    { \
-        return T(fifth_value, false, false, false, false, false); \
-    } \
+    inline T FirstName(FirstType&& first_value) { return T(first_value, false); } \
+    inline T SecondName(SecondType&& second_value) { return T(second_value, false, false); } \
+    inline T ThirdName(ThirdType&& third_value) { return T(third_value, false, false, false); } \
+    inline T FourthName(FourthType&& fourth_value) { return T(fourth_value, false, false, false, false); } \
+    inline T FifthName(FifthType&& fifth_value) { return T(fifth_value, false, false, false, false, false); } \
     \
     using T##_sum_type5 = void
 

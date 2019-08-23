@@ -500,7 +500,7 @@ namespace ax
             first_type_descriptor->write_value(static_cast<const void*>(&fst(*record_ptr)), symbols_mvb[0]);
             second_type_descriptor->write_value(static_cast<const void*>(&snd(*record_ptr)), symbols_mvb[1]);
             third_type_descriptor->write_value(static_cast<const void*>(&thd(*record_ptr)), symbols_mvb[2]);
-            fourth_type_descriptor->write_value(static_cast<const void*>(&fourth(*record_ptr)), symbols_mvb[3]);
+            fourth_type_descriptor->write_value(static_cast<const void*>(&frth(*record_ptr)), symbols_mvb[3]);
             target_symbol = symbols(std::move(symbols_mvb));
         }
     };
@@ -575,8 +575,8 @@ namespace ax
             first_type_descriptor->write_value(static_cast<const void*>(&fst(*record_ptr)), symbols_mvb[0]);
             second_type_descriptor->write_value(static_cast<const void*>(&snd(*record_ptr)), symbols_mvb[1]);
             third_type_descriptor->write_value(static_cast<const void*>(&thd(*record_ptr)), symbols_mvb[2]);
-            fourth_type_descriptor->write_value(static_cast<const void*>(&fourth(*record_ptr)), symbols_mvb[3]);
-            fifth_type_descriptor->write_value(static_cast<const void*>(&fifth(*record_ptr)), symbols_mvb[4]);
+            fourth_type_descriptor->write_value(static_cast<const void*>(&frth(*record_ptr)), symbols_mvb[3]);
+            fifth_type_descriptor->write_value(static_cast<const void*>(&ffth(*record_ptr)), symbols_mvb[4]);
             target_symbol = symbols(std::move(symbols_mvb));
         }
     };

@@ -73,10 +73,7 @@ namespace ax
             throw std::logic_error("Unexpected missing case.");
         }
 
-        std::size_t get_index() const
-        {
-            return index;
-        }
+        std::size_t get_index() const { return index; }
 
         const F& get_first() const
         {
@@ -96,20 +93,9 @@ namespace ax
             throw std::runtime_error("Cannot get '"_s + get_third_name() + "' value.");
         }
 
-        bool is_first() const
-        {
-            return get_index() == 0_z;
-        }
-
-        bool is_second() const
-        {
-            return get_index() == 1_z;
-        }
-
-        bool is_third() const
-        {
-            return get_index() == 2_z;
-        }
+        bool is_first() const { return get_index() == 0_z; }
+        bool is_second() const { return get_index() == 1_z; }
+        bool is_third() const { return get_index() == 2_z; }
 
         F& get_first()
         {
@@ -170,22 +156,13 @@ namespace ax
     };
 
     template<typename F, typename S, typename T>
-    choice<F, S, T> first(const F& first)
-    {
-        return choice<F, S, T>(first, false);
-    }
+    choice<F, S, T> first(const F& first) { return choice<F, S, T>(first, false); }
 
     template<typename F, typename S, typename T>
-    choice<F, S, T> second(const S& second)
-    {
-        return choice<F, S, T>(second, false, false);
-    }
+    choice<F, S, T> second(const S& second) { return choice<F, S, T>(second, false, false); }
 
     template<typename F, typename S, typename T>
-    choice<F, S, T> third(const T& third)
-    {
-        return choice<F, S, T>(third, false, false, false);
-    }
+    choice<F, S, T> third(const T& third) { return choice<F, S, T>(third, false, false, false); }
 }
 
 #define SUM_TYPE3(T, Ft, Fn, St, Sn, Tt, Tn) \
@@ -196,50 +173,17 @@ namespace ax
         CONSTRAINT(T); \
         using ::ax::choice<Ft, St, Tt>::choice; \
         \
-        inline bool is_##Fn() const \
-        { \
-            return is_first(); \
-        } \
+        inline bool is_##Fn() const { return is_first(); } \
+        inline bool is_##Sn() const { return is_second(); } \
+        inline bool is_##Tn() const { return is_third(); } \
         \
-        inline bool is_##Sn() const \
-        { \
-            return is_second(); \
-        } \
+        inline const T::first_type& get_##Fn() const { return get_first(); } \
+        inline const T::second_type& get_##Sn() const { return get_second(); } \
+        inline const T::third_type& get_##Tn() const { return get_third(); } \
         \
-        inline bool is_##Tn() const \
-        { \
-            return is_third(); \
-        } \
-        \
-        inline const T::first_type& get_##Fn() const \
-        { \
-            return get_first(); \
-        } \
-        \
-        inline const T::second_type& get_##Sn() const \
-        { \
-            return get_second(); \
-        } \
-        \
-        inline const T::third_type& get_##Tn() const \
-        { \
-            return get_third(); \
-        } \
-        \
-        inline T::first_type& get_##Fn() \
-        { \
-            return get_first(); \
-        } \
-        \
-        inline T::second_type& get_##Sn() \
-        { \
-            return get_second(); \
-        } \
-        \
-        inline T::third_type& get_##Tn() \
-        { \
-            return get_third(); \
-        } \
+        inline T::first_type& get_##Fn() { return get_first(); } \
+        inline T::second_type& get_##Sn() { return get_second(); } \
+        inline T::third_type& get_##Tn() { return get_third(); } \
         \
         const char* get_first_name() const override { return #Sn; } \
         const char* get_second_name() const override { return #Fn; } \
@@ -250,35 +194,13 @@ namespace ax
     using Sn##_t = St; \
     using Tn##_t = Tt; \
     \
-    inline T Fn(const Ft& first_value) \
-    { \
-        return T(first_value, false); \
-    } \
+    inline T Fn(const Ft& first_value) { return T(first_value, false); } \
+    inline T Sn(const St& second_value) { return T(second_value, false, false); } \
+    inline T Tn(const Tt& third_value) { return T(third_value, false, false, false); } \
     \
-    inline T Sn(const St& second_value) \
-    { \
-        return T(second_value, false, false); \
-    } \
-    \
-    inline T Tn(const Tt& third_value) \
-    { \
-        return T(third_value, false, false, false); \
-    } \
-    \
-    inline T Fn(Ft&& first_value) \
-    { \
-        return T(first_value, false); \
-    } \
-    \
-    inline T Sn(St&& second_value) \
-    { \
-        return T(second_value, false, false); \
-    } \
-    \
-    inline T Tn(Tt&& third_value) \
-    { \
-        return T(third_value, false, false, false); \
-    } \
+    inline T Fn(Ft&& first_value) { return T(first_value, false); } \
+    inline T Sn(St&& second_value) { return T(second_value, false, false); } \
+    inline T Tn(Tt&& third_value) { return T(third_value, false, false, false); } \
     \
     using T##_sum_type3 = void
 
