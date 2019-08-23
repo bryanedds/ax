@@ -11,7 +11,7 @@
 - Functional operations map, filter, and fold (with more coming soon!) in **"functional.hpp"**
 - Algebraic data types including option, either, choice, pair and record, w/ macros for automatic derivation, 
 and a type-safe pattern matching system in **"algebraic.hpp"**
-- A prototype entity component system for a fast C++ game engine in **"system.hpp"**
+- An entity-component-system prototype in **"system.hpp"**
 - A couple other odds and ends in **"utility.hpp"**
 
 Ax was built in the clean and modular Data Abstration Style - https://github.com/bryanedds/das
