@@ -43,7 +43,7 @@ namespace ax
                 {
                     VAR& system = system_iter->second;
                     VAR& result = system->add_component(address);
-                    entity_opt->components.insert_or_assign(system_name, &result);
+                    std::insert_or_assign(entity_opt->components, system_name, &result);
                     return &result;
                 }
             }

@@ -121,6 +121,16 @@ namespace std
         }
         return transformed;
     }
+    
+    // Insert or assign to a mapping container.
+    // NOTE: this is only needed for clang builds.
+    template<typename Map, typename T>
+    auto insert_or_assign(Map& m, const typename Map::key_type& key, const T& value)
+    {
+        auto p = m.insert({ key, value });
+        if (!p.second) p.first->second = value;
+        return p;
+    }
 }
 
 #endif
