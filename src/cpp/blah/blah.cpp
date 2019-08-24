@@ -309,14 +309,18 @@ namespace blah
         lgr_(other.lgr_),
         e_(other.e_)
     {
-        assert(typeid(*rdbuf()) == typeid(counted_stringbuf));
-        static_cast<counted_stringbuf *>(rdbuf())->increment();
+        // NOTE: BGE: got rid of clang warning "warning: expression with side effects will be evaluated..."
+        std::streambuf* rdbuffer = rdbuf();
+        assert(typeid(*rdbuffer) == typeid(counted_stringbuf));
+        static_cast<counted_stringbuf *>(rdbuffer)->increment();
     }
 
     log_stream::~log_stream()
     {
-        assert(typeid(*rdbuf()) == typeid(counted_stringbuf));
-        counted_stringbuf *buff = static_cast<counted_stringbuf *>(rdbuf());
+        // NOTE: BGE: got rid of clang warning "warning: expression with side effects will be evaluated..."
+        std::streambuf* rdbuffer = rdbuf();
+        assert(typeid(*rdbuffer) == typeid(counted_stringbuf));
+        counted_stringbuf *buff = static_cast<counted_stringbuf *>(rdbuffer);
 
         try { if (buff->count() == 1) lgr_->log(e_, buff->str()); }
         catch (...) { }
