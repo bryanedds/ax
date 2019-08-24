@@ -8,7 +8,7 @@ matrix:
   include:
     - addons:
         apt:
-          packages: g++-7.3
+          packages: g++
           sources: ubuntu-toolchain-r-test
 
 script:
