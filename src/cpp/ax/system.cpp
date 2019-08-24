@@ -2,6 +2,15 @@
 
 namespace ax
 {
+    world::world(
+        std::function<void(ax::world& world)> initialize_systems_impl,
+        std::function<void(ax::world& world)> update_systems_impl,
+        std::function<void(ax::world& world)> clean_up_systems_impl) :
+        initialize_systems_impl(initialize_systems_impl),
+        update_systems_impl(update_systems_impl),
+        clean_up_systems_impl(clean_up_systems_impl)
+    { }
+
     ax::transform* world::try_get_transform(const ax::address& address)
     {
         VAL& transforms_iter = systems.find("transforms");
@@ -13,12 +22,12 @@ namespace ax
         return nullptr;
     }
 
-    ax::entity_t* world::try_get_entity(const ax::address& address)
+    ax::entity_component* world::try_get_entity(const ax::address& address)
     {
         VAL& entities_iter = systems.find("entities");
         if (entities_iter != systems.end())
         {
-            VAL& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
+            VAL& entities = ax::cast<ax::system_t<ax::entity_component>>(entities_iter->second);
             return entities->try_get_component(address);
         }
         return nullptr;
@@ -34,7 +43,7 @@ namespace ax
         VAL& entities_iter = systems.find("entities");
         if (entities_iter != systems.end())
         {
-            VAL& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
+            VAL& entities = ax::cast<ax::system_t<ax::entity_component>>(entities_iter->second);
             VAR* entity_opt = entities->try_get_component(address);
             if (entity_opt)
             {
@@ -56,7 +65,7 @@ namespace ax
         VAL& entities_iter = systems.find("entities");
         if (entities_iter != systems.end())
         {
-            VAL& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
+            VAL& entities = ax::cast<ax::system_t<ax::entity_component>>(entities_iter->second);
             VAR* entity_opt = entities->try_get_component(address);
             if (entity_opt)
             {
@@ -78,7 +87,7 @@ namespace ax
         VAL& entities_iter = systems.find("entities");
         if (entities_iter != systems.end())
         {
-            VAL& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
+            VAL& entities = ax::cast<ax::system_t<ax::entity_component>>(entities_iter->second);
             VAR* entity_opt = entities->try_get_component(address);
             if (entity_opt)
             {
@@ -94,7 +103,7 @@ namespace ax
         VAL& entities_iter = systems.find("entities");
         if (entities_iter != systems.end())
         {
-            VAL& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
+            VAL& entities = ax::cast<ax::system_t<ax::entity_component>>(entities_iter->second);
             VAR* entity_opt = entities->try_get_component(address);
             if (entity_opt)
             {
@@ -105,12 +114,38 @@ namespace ax
         return false;
     }
 
-    ax::entity_t* world::try_add_entity(const ax::address& address)
+    ax::system_ptr world::try_add_system(const ax::name_t& name, ax::system_ptr system)
+    {
+        std::insert_or_assign(systems, name, system);
+        return system;
+    }
+
+    bool world::remove_system(const ax::name_t& name)
+    {
+        return systems.erase(name) != 0;
+    }
+
+    void world::initialize_systems()
+    {
+        initialize_systems_impl(*this);
+    }
+
+    void world::update_systems()
+    {
+        update_systems_impl(*this);
+    }
+
+    void world::clean_up_systems()
+    {
+        clean_up_systems_impl(*this);
+    }
+
+    ax::entity_component* world::try_add_entity(const ax::address& address)
     {
         VAL& entities_iter = systems.find("entities");
         if (entities_iter != systems.end())
         {
-            VAL& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
+            VAL& entities = ax::cast<ax::system_t<ax::entity_component>>(entities_iter->second);
             VAR* entity_opt = entities->try_get_component(address);
             if (!entity_opt) return &entities->add_component(address);
         }
@@ -122,7 +157,7 @@ namespace ax
         VAL& entities_iter = systems.find("entities");
         if (entities_iter != systems.end())
         {
-            VAL& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
+            VAL& entities = ax::cast<ax::system_t<ax::entity_component>>(entities_iter->second);
             VAR* entity_opt = entities->try_get_component(address);
             if (entity_opt) return entities->remove_component(address);
         }

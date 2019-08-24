@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <stdexcept>
 #include <memory>
+#include <functional>
 #include <vector>
 #include <unordered_set>
 #include <unordered_map>
@@ -24,38 +25,58 @@
 namespace ax
 {
     class entity;
+    using entity_ptr = std::shared_ptr<ax::entity>;
+    class system;
+    using system_ptr = std::shared_ptr<ax::system>;
+    class world;
 
+    // A component in an entity-component-system.
     struct component
     {
         CONSTRAINT(component);
         bool active;
     };
 
-    struct entity_t : public ax::component
+    // A component that includes the address of the containing entity so that related components can be found.
+    struct composite_component : public ax::component
+    {
+        CONSTRAINT(composite_component);
+        ax::address address;
+    };
+
+    // The common data of an entity stored as a component.
+    struct entity_component : public ax::component
     {
         std::unordered_map<ax::name_t, ax::component*> components;
     };
 
+    // A transform component.
+    // NOTE: of course, we'd instead use math library types in here.
     struct transform : public ax::component
     {
-        // NOTE: of course, we'd instead use math library types here.
         float x_pos;
         float y_pos;
         float rotation;
     };
 
+    // A system in an entity-component-system.
     class system : public ax::castable
     {
     public:
 
         CONSTRAINT(system);
+        system(ax::world& world) : world(world) { }
+        virtual ~system() = default;
+
         virtual ax::component& add_component(const ax::address& address) = 0;
         virtual bool remove_component(const ax::address& address) = 0;
         virtual ax::component* try_get_component(const ax::address& address) = 0;
+        virtual void update(int mode = 0) = 0;
 
     protected:
 
         ENABLE_CAST(ax::system, ax::castable);
+        ax::world& world;
     };
 
     template<typename T>
@@ -131,20 +152,34 @@ namespace ax
             return nullptr;
         }
 
+        void update(int mode) override
+        {
+            for (VAR& component : components)
+            {
+                update_component(component, mode);
+            }
+        }
+
     protected:
 
         ENABLE_CAST(ax::system_t<T>, ax::system);
-
-    private:
+        virtual void update_component(T& component, int mode) = 0;
 
         std::vector<T> components;
         std::unordered_map<ax::address, std::size_t> component_map;
         std::queue<std::size_t> free_list;
     };
 
+    // The world that contains the entity-component-system, event system, and other mixins.
+    // Uses function members because the type is not meant to be inherited.
     class world : public ax::eventable<world>
     {
     public:
+
+        world(
+            std::function<void(ax::world& world)> initialize_systems_impl,
+            std::function<void(ax::world& world)> update_systems_impl,
+            std::function<void(ax::world& world)> clean_up_systems_impl);
 
         template<typename T>
         T* try_add_component(const ax::name_t& system_name, const ax::address& address, const T& component = T())
@@ -152,7 +187,7 @@ namespace ax
             VAL& entities_iter = systems.find("entities");
             if (entities_iter != systems.end())
             {
-                VAL& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
+                VAL& entities = ax::cast<ax::system_t<ax::entity_component>>(entities_iter->second);
                 VAR* entity_opt = entities->try_get_component(address);
                 if (entity_opt)
                 {
@@ -175,7 +210,7 @@ namespace ax
             VAL& entities_iter = systems.find("entities");
             if (entities_iter != systems.end())
             {
-                VAL& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
+                VAL& entities = ax::cast<ax::system_t<ax::entity_component>>(entities_iter->second);
                 VAR* entity_opt = entities->try_get_component(address);
                 if (entity_opt)
                 {
@@ -191,20 +226,29 @@ namespace ax
         }
 
         ax::transform* try_get_transform(const ax::address& address);
-        ax::entity_t* try_get_entity(const ax::address& address);
+        ax::entity_component* try_get_entity(const ax::address& address);
         bool entity_exists(const ax::address& address);
         ax::component* try_add_component(const ax::name_t& system_name, const ax::address& address);
         bool try_remove_component(const ax::name_t& system_name, const ax::address& address);
-        std::shared_ptr<ax::entity> create_entity(const ax::address& address);
+        ax::entity_ptr create_entity(const ax::address& address);
         bool destroy_entity(const ax::address& address);
+        ax::system_ptr try_add_system(const ax::name_t& name, ax::system_ptr system);
+        bool remove_system(const ax::name_t& name);
+        void initialize_systems();
+        void update_systems();
+        void clean_up_systems();
 
     private:
 
-        ax::entity_t* try_add_entity(const ax::address& address);
+        ax::entity_component* try_add_entity(const ax::address& address);
         bool try_remove_entity(const ax::address& address);
         std::unordered_map<ax::name_t, std::shared_ptr<ax::system>> systems;
+        std::function<void(ax::world& world)> initialize_systems_impl;
+        std::function<void(ax::world& world)> update_systems_impl;
+        std::function<void(ax::world& world)> clean_up_systems_impl;
     };
 
+    // A handle to an entity in an entity-component-system.
     class entity : public addressable
     {
     public:
