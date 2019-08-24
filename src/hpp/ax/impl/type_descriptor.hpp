@@ -19,6 +19,7 @@ namespace ax
     public:
 
         CONSTRAINT(type_descriptor);
+        virtual ~type_descriptor() = default;
 
         void inspect_value(const reflectable& source, const field& field, void* target_ptr) const;
         void inject_value(const field& field, const void* source_ptr, reflectable& target) const;
