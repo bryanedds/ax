@@ -24,6 +24,13 @@ namespace ax
         choice() : index(0_z) { new (&u) F(); }
         choice(const choice& that) : index(that.index) { construct_u(that); }
         choice(choice&& that) : index(that.index) { construct_u(that); }
+        explicit choice(const F& first, bool) : index(0_z) { new (&u) F(first); }
+        explicit choice(F&& first, bool) : index(0_z) { new (&u) F(first); }
+        explicit choice(const S& second, bool, bool) : index(1_z) { new (&u) S(second); }
+        explicit choice(S&& second, bool, bool) : index(1_z) { new (&u) S(second); }
+        explicit choice(const T& third, bool, bool, bool) : index(2_z) { new (&u) T(third); }
+        explicit choice(T&& third, bool, bool, bool) : index(2_z) { new (&u) T(third); }
+        virtual ~choice() { destruct_u(); }
 
         choice& operator=(const choice& that)
         {
@@ -40,14 +47,6 @@ namespace ax
             construct_u(that);
             return *this;
         }
-
-        explicit choice(const F& first, bool) : index(0_z) { new (&u) F(first); }
-        explicit choice(F&& first, bool) : index(0_z) { new (&u) F(first); }
-        explicit choice(const S& second, bool, bool) : index(1_z) { new (&u) S(second); }
-        explicit choice(S&& second, bool, bool) : index(1_z) { new (&u) S(second); }
-        explicit choice(const T& third, bool, bool, bool) : index(2_z) { new (&u) T(third); }
-        explicit choice(T&& third, bool, bool, bool) : index(2_z) { new (&u) T(third); }
-        ~choice() { destruct_u(); }
 
         template<typename FirstFn, typename SecondFn, typename ThirdFn>
         VAR match(FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn) const

@@ -22,11 +22,12 @@ namespace ax
         pair() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
         pair(const pair&) = default;
         pair(pair&&) = default;
-        pair& operator=(const pair&) = default;
-        pair& operator=(pair&&) = default;
-
         pair(const First& first, const Second& second) : first(first), second(second) { }
         pair(First&& first, Second&& second) : first(first), second(second) { }
+        virtual ~pair() = default;
+
+        pair& operator=(const pair&) = default;
+        pair& operator=(pair&&) = default;
 
         const First& fst() const { return first; }
         const Second& snd() const { return second; }

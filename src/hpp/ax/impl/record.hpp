@@ -23,11 +23,12 @@ namespace ax
         record() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
         record(const record&) = default;
         record(record&&) = default;
-        record& operator=(const record&) = default;
-        record& operator=(record&&) = default;
-
         record(const F& first, const S& second, const T& third) : first(first), second(second), third(third) { }
         record(F&& first, S&& second, T&& third) : first(first), second(second), third(third) { }
+        virtual ~record() = default;
+
+        record& operator=(const record&) = default;
+        record& operator=(record&&) = default;
 
         const F& fst() const { return first; }
         const S& snd() const { return second; }

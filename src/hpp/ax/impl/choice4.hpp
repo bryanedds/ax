@@ -25,6 +25,15 @@ namespace ax
         choice4() : index(0_z) { new (&u) First(); }
         choice4(const choice4& that) : index(that.index) { construct_u(that); }
         choice4(choice4&& that) : index(that.index) { construct_u(that); }
+        explicit choice4(const First& first, bool) : index(0_z) { new (&u) First(first); }
+        explicit choice4(First&& first, bool) : index(0_z) { new (&u) First(first); }
+        explicit choice4(const Second& second, bool, bool) : index(1_z) { new (&u) Second(second); }
+        explicit choice4(Second&& second, bool, bool) : index(1_z) { new (&u) Second(second); }
+        explicit choice4(const Third& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
+        explicit choice4(Third&& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
+        explicit choice4(const Fourth& fourth, bool, bool, bool, bool) : index(3_z) { new (&u) Fourth(fourth); }
+        explicit choice4(Fourth&& fourth, bool, bool, bool, bool) : index(3_z) { new (&u) Fourth(fourth); }
+        virtual ~choice4() = default;
 
         choice4& operator=(const choice4& that)
         {
@@ -41,16 +50,6 @@ namespace ax
             construct_u(that);
             return *this;
         }
-
-        explicit choice4(const First& first, bool) : index(0_z) { new (&u) First(first); }
-        explicit choice4(First&& first, bool) : index(0_z) { new (&u) First(first); }
-        explicit choice4(const Second& second, bool, bool) : index(1_z) { new (&u) Second(second); }
-        explicit choice4(Second&& second, bool, bool) : index(1_z) { new (&u) Second(second); }
-        explicit choice4(const Third& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
-        explicit choice4(Third&& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
-        explicit choice4(const Fourth& fourth, bool, bool, bool, bool) : index(3_z) { new (&u) Fourth(fourth); }
-        explicit choice4(Fourth&& fourth, bool, bool, bool, bool) : index(3_z) { new (&u) Fourth(fourth); }
-        ~choice4() { destruct_u(); }
 
         template<typename FirstFn, typename SecondFn, typename ThirdFn, typename FourthFn>
         VAR match(FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn, FourthFn fourth_fn) const

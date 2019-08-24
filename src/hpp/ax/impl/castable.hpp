@@ -23,10 +23,9 @@ namespace ax
         castable() = default;
         castable(const castable&) = delete;
         castable(castable&&) = delete;
+        virtual ~castable() = default;
         castable& operator=(const castable& castable) = delete;
         castable& operator=(castable&& castable) = delete;
-
-        virtual ~castable() = default;
 
     protected:
 

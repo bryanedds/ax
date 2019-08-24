@@ -34,6 +34,17 @@ namespace ax
             else new (&u) L(std::move(that.u.left));
         }
 
+        explicit either(const R& right, bool) : is_right_flag(true) { new (&u) R(right); }
+        explicit either(R&& right, bool) : is_right_flag(true) { new (&u) R(right); }
+        explicit either(const L& left, bool, bool) : is_right_flag(false) { new (&u) L(left); }
+        explicit either(L&& left, bool, bool) : is_right_flag(false) { new (&u) L(left); }
+
+        virtual ~either()
+        {
+            if (is_right_flag) u.right.R::~R();
+            else u.left.L::~L();
+        }
+
         either& operator=(const either& that)
         {
             if (is_right_flag) u.right.R::~R();
@@ -52,17 +63,6 @@ namespace ax
             if (is_right_flag) new (&u) R(std::move(that.u.right));
             else new (&u) L(std::move(that.u.left));
             return *this;
-        }
-
-        explicit either(const R& right, bool) : is_right_flag(true) { new (&u) R(right); }
-        explicit either(R&& right, bool) : is_right_flag(true) { new (&u) R(right); }
-        explicit either(const L& left, bool, bool) : is_right_flag(false) { new (&u) L(left); }
-        explicit either(L&& left, bool, bool) : is_right_flag(false) { new (&u) L(left); }
-
-        ~either()
-        {
-            if (is_right_flag) u.right.R::~R();
-            else u.left.L::~L();
         }
 
         const R& operator*() const

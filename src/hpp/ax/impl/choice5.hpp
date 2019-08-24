@@ -26,6 +26,17 @@ namespace ax
         choice5() : index(0_z) { new (&u) First(); }
         choice5(const choice5& that) : index(that.index) { construct_u(that); }
         choice5(choice5&& that) : index(that.index) { construct_u(that); }
+        explicit choice5(const First& first, bool) : index(0_z) { new (&u) First(first); }
+        explicit choice5(First&& first, bool) : index(0_z) { new (&u) First(first); }
+        explicit choice5(const Second& second, bool, bool) : index(1_z) { new (&u) Second(second); }
+        explicit choice5(Second&& second, bool, bool) : index(1_z) { new (&u) Second(second); }
+        explicit choice5(const Third& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
+        explicit choice5(Third&& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
+        explicit choice5(const Fourth& fourth, bool, bool, bool, bool) : index(3_z) { new (&u) Fourth(fourth); }
+        explicit choice5(Fourth&& fourth, bool, bool, bool, bool) : index(3_z) { new (&u) Fourth(fourth); }
+        explicit choice5(const Fifth& fifth, bool, bool, bool, bool, bool) : index(4_z) { new (&u) Fifth(fifth); }
+        explicit choice5(Fifth&& fifth, bool, bool, bool, bool, bool) : index(4_z) { new (&u) Fifth(fifth); }
+        virtual ~choice5() { destruct_u(); }
 
         choice5& operator=(const choice5& that)
         {
@@ -42,18 +53,6 @@ namespace ax
             construct_u(that);
             return *this;
         }
-
-        explicit choice5(const First& first, bool) : index(0_z) { new (&u) First(first); }
-        explicit choice5(First&& first, bool) : index(0_z) { new (&u) First(first); }
-        explicit choice5(const Second& second, bool, bool) : index(1_z) { new (&u) Second(second); }
-        explicit choice5(Second&& second, bool, bool) : index(1_z) { new (&u) Second(second); }
-        explicit choice5(const Third& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
-        explicit choice5(Third&& third, bool, bool, bool) : index(2_z) { new (&u) Third(third); }
-        explicit choice5(const Fourth& fourth, bool, bool, bool, bool) : index(3_z) { new (&u) Fourth(fourth); }
-        explicit choice5(Fourth&& fourth, bool, bool, bool, bool) : index(3_z) { new (&u) Fourth(fourth); }
-        explicit choice5(const Fifth& fifth, bool, bool, bool, bool, bool) : index(4_z) { new (&u) Fifth(fifth); }
-        explicit choice5(Fifth&& fifth, bool, bool, bool, bool, bool) : index(4_z) { new (&u) Fifth(fifth); }
-        ~choice5() { destruct_u(); }
 
         template<typename FirstFn, typename SecondFn, typename ThirdFn, typename FourthFn, typename FifthFn>
         VAR match(FirstFn first_fn, SecondFn second_fn, ThirdFn third_fn, FourthFn fourth_fn, FifthFn fifth_fn) const
