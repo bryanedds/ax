@@ -32,7 +32,7 @@ namespace ax
             pred_id(std::make_unique<id_t>())
         {
             CONSTRAIN(P, eventable);
-            program = &ax::cast<P>(*this);
+            program = dynamic_cast<P*>(this);
         }
 
         id_t get_subscription_id()
