@@ -9,8 +9,7 @@
 
 namespace ax
 {
-    // A name value implemented as a data abstraction. Its hash is cached for true constant-time
-    // lookup.
+    // A name value implemented as a data abstraction. Its hash is cached for true constant-time lookup.
     class name_t
     {
     public:
@@ -26,14 +25,19 @@ namespace ax
         explicit name_t(std::string&& name_str);
         bool operator==(const name_t& that) const;
         inline explicit operator std::size_t() const { return hash_code; }
-
-        inline const std::string& get_name_str() const { return name_str; }
+        inline const std::string& to_string() const { return name_str; }
 
     private:
 
         std::size_t hash_code;
         std::string name_str;
     };
+}
+
+// To string overload.
+inline std::string to_string(const ax::name_t& name)
+{
+    return name.to_string();
 }
 
 // Name suffix operator.

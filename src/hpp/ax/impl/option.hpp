@@ -19,10 +19,7 @@ namespace ax
         template<typename A>
         using reify = option<A>;
         
-        option() : is_some_flag(false)
-        {
-            new (&u) unit();
-        }
+        option() : is_some_flag(false) { new (&u) unit(); }
         
         option(const option& that) : is_some_flag(that.is_some_flag)
         {
@@ -56,15 +53,8 @@ namespace ax
             return *this;
         }
 
-        explicit option(const T& content, bool) : is_some_flag(true)
-        {
-            new (&u) T(content);
-        }
-
-        explicit option(T&& content, bool) : is_some_flag(true)
-        {
-            new (&u) T(content);
-        }
+        explicit option(const T& content, bool) : is_some_flag(true) { new (&u) T(content); }
+        explicit option(T&& content, bool) : is_some_flag(true) { new (&u) T(content); }
 
         ~option()
         {
@@ -84,15 +74,8 @@ namespace ax
             throw std::runtime_error("Cannot get invalid option content.");
         }
 
-        explicit operator bool() const
-        {
-            return is_some_flag;
-        }
-
-        explicit operator bool()
-        {
-            return is_some_flag;
-        }
+        explicit operator bool() const { return is_some_flag; }
+        explicit operator bool() { return is_some_flag; }
 
         template<typename Sf, typename Nf>
         VAR match(Sf some_fn, Nf none_fn) const
@@ -108,25 +91,11 @@ namespace ax
             return some_fn(get_content());
         }
 
-        bool is_some() const
-        {
-            return static_cast<bool>(*this);
-        }
+        bool is_some() const { return static_cast<bool>(*this); }
+        bool is_none() const { return !static_cast<bool>(*this); }
 
-        bool is_none() const
-        {
-            return !static_cast<bool>(*this);
-        }
-
-        const T& get_content() const
-        {
-            return **this;
-        }
-
-        T& get_content()
-        {
-            return **this;
-        }
+        const T& get_content() const { return **this; }
+        T& get_content() { return **this; }
 
     private:
 
@@ -135,34 +104,19 @@ namespace ax
     };
 
     template<typename T>
-    bool is_some(const option<T>& opt)
-    {
-        opt.is_some();
-    }
+    bool is_some(const option<T>& opt) { return opt.is_some(); }
 
     template<typename T>
-    bool is_none(const option<T>& opt)
-    {
-        opt.is_none();
-    }
+    bool is_none(const option<T>& opt) { return opt.is_none(); }
 
     template<typename T>
-    option<T> some(const T& content)
-    {
-        return option<T>(content, false);
-    }
+    option<T> some(const T& content) { return option<T>(content, false); }
 
     template<typename T>
-    option<T> some(T&& content)
-    {
-        return option<T>(content, false);
-    }
+    option<T> some(T&& content) { return option<T>(content, false); }
 
     template<typename T>
-    option<T> none()
-    {
-        return option<T>();
-    }
+    option<T> none() { return option<T>(); }
 }
 
 #endif

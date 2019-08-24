@@ -34,31 +34,19 @@ namespace ax
 
     // Make a successful parse result.
     template<typename T>
-    parse<T> parse_success(const T& t)
-    {
-        return parse<T>(t, false);
-    }
+    parse<T> parse_success(const T& t) { return parse<T>(t, false); }
 
     // Make a failed parse result.
     template<typename T>
-    parse<T> parse_failure(const std::string& error_str)
-    {
-        return parse<T>(error_str, false, false);
-    }
+    parse<T> parse_failure(const std::string& error_str) { return parse<T>(error_str, false, false); }
 
     // Make a successful parse result.
     template<typename T>
-    parse<T> parse_success(T&& value)
-    {
-        return parse<T>(value, false);
-    }
+    parse<T> parse_success(T&& value) { return parse<T>(value, false); }
 
     // Make a failed parse result.
     template<typename T>
-    parse<T> parse_failure(std::string&& error_str)
-    {
-        return parse<T>(error_str, false, false);
-    }
+    parse<T> parse_failure(std::string&& error_str) { return parse<T>(error_str, false, false); }
 
     // Try to run a parse, rewinding the parsing iterator upon failure.
     template<typename T, typename P>

@@ -70,7 +70,7 @@ namespace ax
                 }
             }
         }
-        return nullptr;
+        return false;
     }
 
     std::shared_ptr<ax::entity> world::create_entity(const ax::address& address)

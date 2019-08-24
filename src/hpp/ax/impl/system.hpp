@@ -115,7 +115,9 @@ namespace ax
                     component.active = false;
                 }
                 component_map.erase(address);
+                return true;
             }
+            return false;
         }
 
         T* try_get_component(const ax::address& address) override
@@ -167,6 +169,27 @@ namespace ax
             return nullptr;
         }
 
+        template<typename T>
+        T* try_get_component(const ax::name_t& system_name, const ax::address& address)
+        {
+            VAL& entities_iter = systems.find("entities");
+            if (entities_iter != systems.end())
+            {
+                VAL& entities = ax::cast<ax::system_t<ax::entity_t>>(entities_iter->second);
+                VAR* entity_opt = entities->try_get_component(address);
+                if (entity_opt)
+                {
+                    VAL& system_iter = systems.find(system_name);
+                    if (system_iter != systems.end())
+                    {
+                        VAL& system = ax::cast<ax::system_t<T>>(system_iter->second);
+                        return system->try_get_component(address);
+                    }
+                }
+            }
+            return nullptr;
+        }
+
         ax::transform* try_get_transform(const ax::address& address);
         ax::entity_t* try_get_entity(const ax::address& address);
         bool entity_exists(const ax::address& address);
@@ -186,10 +209,6 @@ namespace ax
     {
     public:
 
-        entity(const ax::entity& entity) :
-            entity(entity.get_address(), entity.world)
-        { };
-
         entity(const ax::address& address, ax::world& world) :
             ax::addressable(address),
             world(world)
@@ -205,7 +224,12 @@ namespace ax
         const T& get_component(const ax::name_t& name) const { return *try_get_component<T>(name); }
 
         template<typename T>
-        T& get_component(const ax::name_t& name) { return *try_get_component<T>(name); }
+        T& get_component(const ax::name_t& name)
+        {
+            VAR* component_opt = *try_get_component<T>(name);
+            if (component_opt) return *component_opt;
+            throw std::runtime_error("No component "_s + name.to_string() + " found at address " + get_address().to_string());
+        }
 
         ax::transform& get_transform() const { return *world.try_get_transform(get_address()); }
         ax::transform& set_transform(const ax::transform& transform) { return get_transform() = transform; }

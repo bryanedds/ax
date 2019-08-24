@@ -100,22 +100,22 @@ namespace ax
     template<typename T>
     void inspect_value(const reflectable& source, const field& field, T& target)
     {
-        VAL& type_index = get_type_index(field);
+        VAL& type_index = field.get_type_index();
         if (type_index != std::type_index(typeid(T))) throw std::invalid_argument("Field is not of required type.");
         VAL& type_descriptor = get_type_descriptor(type_index);
         VAR* target_ptr = static_cast<void*>(&target);
-        inspect_value(*type_descriptor, source, field, target_ptr);
+        type_descriptor->inspect_value(source, field, target_ptr);
     }
 
     // Inject a value into a reflectable value.
     template<typename T>
     void inject_value(const field& field, const T& source, reflectable& target)
     {
-        VAL& type_index = get_type_index(field);
+        VAL& type_index = field.get_type_index();
         if (type_index != std::type_index(typeid(T))) throw std::invalid_argument("Field is not of required type.");
         VAL& type_descriptor = get_type_descriptor(type_index);
         VAL* source_ptr = static_cast<const void*>(&source);
-        inject_value(*type_descriptor, field, source_ptr, target);
+        type_descriptor->inject_value(field, source_ptr, target);
     }
 
     // Read a reflectable value from a symbol.

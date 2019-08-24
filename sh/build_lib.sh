@@ -9,10 +9,11 @@ CPP_FILES="\
 ../src/cpp/ax/type.cpp \
 ../src/cpp/ax/name.cpp \
 ../src/cpp/ax/string.cpp \
+../src/cpp/ax/system.cpp \
 ../src/cpp/ax/type_descriptors.cpp \
 ../src/cpp/ax/unparser.cpp "
 mkdir -p ./bin
-$CXX -std=c++14 -Wall -Wextra -pedantic -g -O2 -pthread -march=native -c $CPP_FILES
+g++ -std=c++14 -Wall -Wextra -pedantic -g -O2 -pthread -march=native -D BLAH_NO_THREAD_SUPPORT -c $CPP_FILES
 mv *.o ./bin
 ar rcs ./bin/libax.a ./bin/*.o
 rm ./bin/*.o

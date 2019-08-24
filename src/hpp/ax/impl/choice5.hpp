@@ -209,10 +209,10 @@ namespace ax
     choice5<First, Second, Third, Fourth, Fifth> third(const Third& third) { return choice5<First, Second, Third, Fourth, Fifth>(third, false, false, false); }
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    choice5<First, Second, Third, Fourth, Fifth> frth(const Fourth& fourth) { return choice5<First, Second, Third, Fourth, Fifth>(fourth, false, false, false, false); }
+    choice5<First, Second, Third, Fourth, Fifth> fourth(const Fourth& fourth) { return choice5<First, Second, Third, Fourth, Fifth>(fourth, false, false, false, false); }
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    choice5<First, Second, Third, Fourth, Fifth> ffth(const Fifth& fifth) { return choice5<First, Second, Third, Fourth, Fifth>(fifth, false, false, false, false, false); }
+    choice5<First, Second, Third, Fourth, Fifth> fifth(const Fifth& fifth) { return choice5<First, Second, Third, Fourth, Fifth>(fifth, false, false, false, false, false); }
 }
 
 #define SUM_TYPE5(T, FirstType, FirstName, SecondType, SecondName, ThirdType, ThirdName, FourthType, FourthName, FifthType, FifthName) \

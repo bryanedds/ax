@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "prelude.hpp"
+#include "string.hpp"
 #include "name.hpp"
 
 namespace ax
@@ -32,6 +33,12 @@ namespace ax
         bool operator==(const address& that) const;
         address operator+(const address& that) const;
         inline explicit operator std::size_t() const { return hash_code; }
+        
+        inline const std::string to_string() const
+        {
+            VAL& name_strs = std::transform<std::vector<std::string>>(names.begin(), names.end(), [](const ax::name_t& name) { return name.to_string(); });
+            return ax::join_strings(name_strs, '/');
+        }
 
         inline const std::vector<name_t>& get_names() const { return names; }
 
@@ -40,6 +47,12 @@ namespace ax
         std::size_t hash_code;
         std::vector<name_t> names;
     };
+}
+
+// To string overload.
+inline std::string to_string(const ax::address& address)
+{
+    return address.to_string();
 }
 
 namespace std

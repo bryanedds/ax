@@ -239,7 +239,7 @@ namespace blah
     #if defined(_POSIX_VERSION)
         localtime_r(&now, &now_tm);
     #else
-        #error "localtime() may not be threadsafe on this platform. Comment-out this line if you know better or don't care!"
+        //#error "localtime() may not be threadsafe on this platform. Comment-out this line if you know better or don't care!"
         now_tm = *localtime(&now);
     #endif
         strftime(buff, sizeof buff, "[%d %b %Y %R:%S | ", &now_tm);

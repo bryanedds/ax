@@ -187,7 +187,7 @@ namespace ax
     choice4<First, Second, Third, Fourth> third(const Third& third) { return choice4<First, Second, Third, Fourth>(third, false, false, false); }
 
     template<typename First, typename Second, typename Third, typename Fourth>
-    choice4<First, Second, Third, Fourth> frth(const Fourth& fourth) { return choice4<First, Second, Third, Fourth>(fourth, false, false, false, false); }
+    choice4<First, Second, Third, Fourth> fourth(const Fourth& fourth) { return choice4<First, Second, Third, Fourth>(fourth, false, false, false, false); }
 }
 
 #define SUM_TYPE4(T, FirstType, FirstName, SecondType, SecondName, ThirdType, ThirdName, FourthType, FourthName) \
