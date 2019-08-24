@@ -34,12 +34,6 @@ namespace ax
     };
 }
 
-// To string overload.
-inline std::string to_string(const ax::name_t& name)
-{
-    return name.to_string();
-}
-
 // Name suffix operator.
 inline ax::name_t operator ""_n(const char *str, std::size_t len)
 {
@@ -48,6 +42,11 @@ inline ax::name_t operator ""_n(const char *str, std::size_t len)
 
 namespace std
 {
+    inline std::string to_string(const ax::name_t& name)
+    {
+        return name.to_string();
+    }
+
     template<>
     struct hash<ax::name_t>
     {

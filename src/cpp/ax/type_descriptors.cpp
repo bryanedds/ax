@@ -68,7 +68,7 @@ namespace ax
     void int_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* int_ptr = static_cast<const int*>(source_ptr);
-        target_symbol = atom(to_string(*int_ptr));
+        target_symbol = atom(std::to_string(*int_ptr));
     }
 
     /* int32_descriptor */
@@ -95,7 +95,7 @@ namespace ax
     void int32_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* int32_ptr = static_cast<const int32_t*>(source_ptr);
-        target_symbol = atom(to_string(*int32_ptr));
+        target_symbol = atom(std::to_string(*int32_ptr));
     }
 
     /* int64_descriptor */
@@ -122,7 +122,7 @@ namespace ax
     void int64_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* int64_ptr = static_cast<const int64_t*>(source_ptr);
-        target_symbol = atom(to_string(*int64_ptr));
+        target_symbol = atom(std::to_string(*int64_ptr));
     }
 
     /* float_descriptor */
@@ -149,7 +149,7 @@ namespace ax
     void float_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* float_ptr = static_cast<const float*>(source_ptr);
-        target_symbol = atom(to_string(*float_ptr));
+        target_symbol = atom(std::to_string(*float_ptr));
     }
 
     /* double_descriptor */
@@ -176,7 +176,7 @@ namespace ax
     void double_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* double_ptr = static_cast<const double*>(source_ptr);
-        target_symbol = atom(to_string(*double_ptr));
+        target_symbol = atom(std::to_string(*double_ptr));
     }
 
     /* size_descriptor */
@@ -203,7 +203,7 @@ namespace ax
     void size_descriptor::write_value(const void* source_ptr, symbol& target_symbol) const
     {
         VAL* size_ptr = static_cast<const size_t*>(source_ptr);
-        target_symbol = atom(to_string(*size_ptr));
+        target_symbol = atom(std::to_string(*size_ptr));
     }
 
     /* string_descriptor */

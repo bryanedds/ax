@@ -20,25 +20,25 @@ namespace ax
         template<typename T>
         const T& get(const name_t& name) const
         {
-            return properties.get_property<T>(name).get_value<T>();
+            return properties.get_property<T>(name).get_value();
         }
 
         template<typename T>
         T& get(const name_t& name)
         {
-            return properties.get_property<T>(name).get_value<T>();
+            return properties.get_property<T>(name).get_value();
         }
 
         template<typename T>
         T& set(const name_t& name, const T& value)
         {
-            return properties.get_property<T>(name).set_value<T>(value);
+            return properties.get_property<T>(name).set_value(value);
         }
 
         template<typename T>
         T& set(const name_t& name, T&& value)
         {
-            return properties.get_property<T>(name).set_value<T>(value);
+            return properties.get_property<T>(name).set_value(value);
         }
 
         template<typename T>

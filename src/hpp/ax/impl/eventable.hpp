@@ -99,7 +99,7 @@ namespace ax
                 VAL subscriptions_copy = *subscriptions_opt->second;
                 for (VAL& subscription : subscriptions_copy)
                 {
-                    VAL cascade = subscription->publish_subscription<T, P>(event_data, event_address, publisher, *program);
+                    VAL cascade = subscription->template publish_subscription<T, P>(event_data, event_address, publisher, *program);
                     if (!cascade) break;
                 }
             }

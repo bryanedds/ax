@@ -33,16 +33,9 @@ namespace ax
         const T& operator*() const { return data; }
         T& operator*() { return data; }
 
-        template<typename T>
         const T& get_value() const { return **this; }
-
-        template<typename T>
         T& get_value() { return **this; }
-
-        template<typename T>
         T& set_value(const T& value) { return *this = value; }
-
-        template<typename T>
         T& set_value(T&& value) { return *this = value; }
 
     protected:
@@ -67,7 +60,7 @@ namespace ax
         {
             VAL& property_opt = find(name);
             if (property_opt != end()) return cast<property<T>>(*property_opt->second);
-            throw std::logic_error("No such property '"_s + to_string(name) + "'.");
+            throw std::logic_error("No such property '"_s + std::to_string(name) + "'.");
         }
 
         template<typename T>
@@ -75,7 +68,7 @@ namespace ax
         {
             VAL& property_opt = find(name);
             if (property_opt != end()) return cast<property<T>>(*property_opt->second);
-            throw std::logic_error("No such property '"_s + name.to_string() + "'.");
+            throw std::logic_error("No such property '"_s + std::to_string(name) + "'.");
         }
 
         template<typename T>

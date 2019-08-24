@@ -8,7 +8,7 @@ matrix:
   include:
     - addons:
         apt:
-          packages: g++-8
+          packages: clang-5.0
           sources: ubuntu-toolchain-r-test
 
 script:

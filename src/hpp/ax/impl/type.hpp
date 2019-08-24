@@ -46,8 +46,8 @@ namespace ax
         static std::unordered_map<std::type_index, std::shared_ptr<type_t>> type_map;
         const std::shared_ptr<std::type_index> base_type_index_opt;
         const std::type_index type_index;
-        ax::field_map field_map;
-        ax::field_vector field_vector;
+        const ax::field_map field_map;
+        const ax::field_vector field_vector;
     };
 
     // The alias for a type map.

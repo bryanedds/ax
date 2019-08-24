@@ -49,14 +49,13 @@ namespace ax
     };
 }
 
-// To string overload.
-inline std::string to_string(const ax::address& address)
-{
-    return address.to_string();
-}
-
 namespace std
 {
+    inline std::string to_string(const ax::address& address)
+    {
+        return address.to_string();
+    }
+
     template<>
     struct hash<ax::address>
     {
