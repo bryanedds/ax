@@ -320,7 +320,7 @@ namespace ax
                 {
                     T elem_mvb{};
                     type_descriptor->read_value(symbol, static_cast<void*>(&elem_mvb));
-                    vector_ptr->emplace_back(std::move(elem_mvb));
+                    vector_ptr->push_back(elem_mvb); // implement ax::vector::emplace_back to std::move this in
                 }
             });
         }
@@ -334,7 +334,7 @@ namespace ax
                 ax::symbol symbol_mvb{};
                 VAL& type_descriptor = get_type_descriptor<T>();
                 type_descriptor->write_value(static_cast<const void*>(&elem), symbol_mvb);
-                symbols.emplace_back(std::move(symbol_mvb));
+                symbols.push_back(symbol_mvb); // implement ax::vector::emplace_back to std::move this in
             }
             target_symbol = ax::symbols(symbols);
         }

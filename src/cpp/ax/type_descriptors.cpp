@@ -346,7 +346,6 @@ namespace ax
         ax::register_type_descriptor<std::unordered_map<std::string, std::string>>(std::make_shared<ax::std_unordered_map_descriptor<std::string, std::string>>());
 
         // ax::vector type descriptors
-        ax::register_type_descriptor<std::vector<bool>>(std::make_shared<ax::ax_vector_descriptor<bool>>());
         ax::register_type_descriptor<std::vector<char>>(std::make_shared<ax::ax_vector_descriptor<char>>());
         ax::register_type_descriptor<std::vector<int>>(std::make_shared<ax::ax_vector_descriptor<int>>());
         ax::register_type_descriptor<std::vector<int32_t>>(std::make_shared<ax::ax_vector_descriptor<int32_t>>());

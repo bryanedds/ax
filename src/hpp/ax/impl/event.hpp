@@ -26,10 +26,10 @@ namespace ax
         const std::shared_ptr<addressable> publisher;
         
         event() = delete;
-        event(const ax::event& that) = default;
-        event(ax::event&& that) = default;
-        ax::event& operator=(const ax::event&) = default;
-        ax::event& operator=(ax::event&&) = default;
+        event(const event& that) = default;
+        event(event&& that) = default;
+        event& operator=(const event&) = default;
+        event& operator=(event&&) = default;
 
         event(
             const T& data,

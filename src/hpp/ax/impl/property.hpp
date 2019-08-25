@@ -22,10 +22,10 @@ namespace ax
         using reify = ax::property<A>;
 
         property() = default;
-        property(const ax::property&) = default;
-        property(ax::property&&) = default;
-        ax::property& operator=(const ax::property&) = default;
-        ax::property& operator=(ax::property&&) = default;
+        property(const property&) = default;
+        property(property&&) = default;
+        property& operator=(const property&) = default;
+        property& operator=(property&&) = default;
 
         explicit property(const T& value) : data(value) { }
         T& operator=(const T& value) { return data = value; }

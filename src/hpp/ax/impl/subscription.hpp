@@ -28,9 +28,9 @@ namespace ax
 
         subscription_detail() = delete;
         subscription_detail(const ax::handler<T, P>& handler) : handler(handler) { }
-        subscription_detail(const ax::subscription_detail& that) = delete;
-        subscription_detail(ax::subscription_detail&& that) = delete;
-        ax::subscription_detail& operator=(const ax::subscription_detail& that) = delete;
+        subscription_detail(const subscription_detail& that) = delete;
+        subscription_detail(subscription_detail&& that) = delete;
+        subscription_detail& operator=(const subscription_detail& that) = delete;
 
         bool publish_subscription_detail(const ax::event<T>& event, P& program)
         {

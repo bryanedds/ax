@@ -85,7 +85,7 @@ namespace ax
             VAL size = that.size();
             for (VAR i = 0_z; i < size; ++i)
             {
-                *small_end = items[i];
+                *small_end = that.small_begin[i];
                 ++small_end;
             }
             return *this;
@@ -126,59 +126,64 @@ namespace ax
         void push_back(const T& item)
         {
             VAL size = this->size();
-            if (size < N)
-            {
-                *small_end = item;
-                ++small_end;
-            }
-            else
+            if (size >= N)
             {
                 if (size == N) big_vector.insert(big_vector.begin(), small_begin, small_end);
                 big_vector.push_back(item);
+            }
+            else
+            {
+                new (small_end) T(item);
+                ++small_end;
             }
         }
 
         void pop_back()
         {
-            if (size() > N) big_vector.pop_back();
-            else --small_end;
-        }
-
-        T* erase(const T& item)
-        {
-            if (size() > N) return big_vector.erase(item);
-            else return small_end = std::remove(small_begin, small_end, item);
-        }
-
-        T* remove(const T& item)
-        {
-            if (size() > N) return big_vector.remove(item);
-            else return std::remove(small_begin, small_end, item);
-        }
-
-        T* at(std::size_t pos)
-        {
-            if (size() > N) return big_vector.at(pos);
-            else
+            VAL size = this->size();
+            if (size > N) return big_vector.pop_back();
+            if (size > 0)
             {
-                if (pos < size()) return small_begin + pos;
-                throw std::out_of_range();
+                (small_end - 1)->~T();
+                --small_end;
             }
         }
 
-        const T* at(std::size_t pos) const
+        T& at(std::size_t pos)
+        {
+            VAL size = this->size();
+            if (size > N) return big_vector.at(pos);
+            if (pos < size) return *(small_begin + pos);
+            throw std::out_of_range("ax::vector indexed out of range.");
+        }
+
+        const T& at(std::size_t pos) const
         {
             return const_cast<ax::vector<T, A, N>*>(this)->at(pos);
         }
 
         void assign(std::size_t pos, const T& item)
         {
-            if (size() > N) return big_vector.assign(pos, item);
-            else
-            {
-                if (pos < size()) return small_begin + pos;
-                throw std::out_of_range();
-            }
+            VAL size = this->size();
+            if (size > N) return big_vector.assign(pos, item);
+            if (pos < size) return small_begin + pos;
+            throw std::out_of_range("ax::vector indexed out of range.");
+        }
+
+        T& front()
+        {
+            VAL size = this->size();
+            if (size > N) return big_vector.front();
+            if (size > 0) return *small_begin;
+            throw std::out_of_range("ax::vector indexed out of range.");
+        }
+
+        T& back()
+        {
+            VAL size = this->size();
+            if (size > N) return big_vector.back();
+            if (size > 0) return *(small_end - 1);
+            throw std::out_of_range("ax::vector indexed out of range.");
         }
 
         std::size_t capacity() const

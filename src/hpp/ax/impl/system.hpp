@@ -124,16 +124,9 @@ namespace ax
             if (index_iter != component_map.end())
             {
                 VAL index = index_iter->second;
-                if (index == components.size() - 1)
-                {
-                    components.erase(components.end() - 1);
-                }
-                else
-                {
-                    free_list.push(index);
-                    VAR& component = components.at(index);
-                    component.active = false;
-                }
+                free_list.push(index);
+                VAR& component = components.at(index);
+                component.active = false;
                 component_map.erase(address);
                 return true;
             }
