@@ -167,7 +167,8 @@ namespace ax
         {
             if (big())
             {
-                return big_vector.pop_back();
+                big_vector.pop_back();
+                return;
             }
             else if (size() != 0)
             {
