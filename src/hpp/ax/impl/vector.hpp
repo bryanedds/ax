@@ -41,11 +41,11 @@ namespace ax
             else
             {
                 small_end = small_begin;
-                for (VAR i = 0_z; i < N && begin != end; ++i)
+                for (VAR i = 0_z; i < N && begin != end; ++i, ++begin)
                 {
                     *small_end = *begin;
                     ++small_end;
-                    ++begin;
+                    //++begin;
                 }
             }
         }
@@ -117,11 +117,19 @@ namespace ax
         bool operator==(const ax::vector<T, A, N>& that) const
         {
             VAL size = this->size();
-            if (size > N) return big_vector == that.big_vector;
-            VAR result = true;
-            for (VAR i = 0_z; result && i < size; ++i)
-                result = small_begin[i] == that.small_begin[i];
-            return result;
+            if (size > N)
+            {
+                return big_vector == that.big_vector;
+            }
+            else
+            {
+                VAR result = true;
+                for (VAR i = 0_z; result && i < size; ++i)
+                {
+                    result = small_begin[i] == that.small_begin[i];
+                }
+                return result;
+            }
         }
 
         bool operator!=(const ax::vector<T, A, N>& that) const
@@ -157,14 +165,17 @@ namespace ax
 
         void pop_back()
         {
-            if (big()) return big_vector.pop_back();
-            if (size() != 0)
+            if (big())
+            {
+                return big_vector.pop_back();
+            }
+            else if (size() != 0)
             {
                 (small_end - 1)->~T();
                 --small_end;
                 return;
             }
-            throw std::range_error("Cannot pop_back empty ax::vector.");
+            else throw std::range_error("Cannot pop_back empty ax::vector.");
         }
 
         T* erase(const T* iter)
@@ -175,8 +186,11 @@ namespace ax
                 VAL& iter = big_vector.begin() + pos;
                 return &*big_vector.erase(iter);
             }
-            small_end = std::remove(small_begin, small_end, *iter);
-            return small_end;
+            else
+            {
+                small_end = std::remove(small_begin, small_end, *iter);
+                return small_end;
+            }
         }
 
         T& at(std::size_t pos)

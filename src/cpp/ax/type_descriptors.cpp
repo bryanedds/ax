@@ -346,14 +346,15 @@ namespace ax
         ax::register_type_descriptor<std::unordered_map<std::string, std::string>>(std::make_shared<ax::std_unordered_map_descriptor<std::string, std::string>>());
 
         // ax::vector type descriptors
-        ax::register_type_descriptor<std::vector<char>>(std::make_shared<ax::ax_vector_descriptor<char>>());
-        ax::register_type_descriptor<std::vector<int>>(std::make_shared<ax::ax_vector_descriptor<int>>());
-        ax::register_type_descriptor<std::vector<int32_t>>(std::make_shared<ax::ax_vector_descriptor<int32_t>>());
-        ax::register_type_descriptor<std::vector<int64_t>>(std::make_shared<ax::ax_vector_descriptor<int64_t>>());
-        ax::register_type_descriptor<std::vector<float>>(std::make_shared<ax::ax_vector_descriptor<float>>());
-        ax::register_type_descriptor<std::vector<double>>(std::make_shared<ax::ax_vector_descriptor<double>>());
-        ax::register_type_descriptor<std::vector<std::size_t>>(std::make_shared<ax::ax_vector_descriptor<std::size_t>>());
-        ax::register_type_descriptor<std::vector<std::string>>(std::make_shared<ax::ax_vector_descriptor<std::string>>());
+        // UNSUPPORTED - ax::register_type_descriptor<ax::vector<bool>>(std::make_shared<ax::ax_vector_descriptor<bool>>());
+        ax::register_type_descriptor<ax::vector<char>>(std::make_shared<ax::ax_vector_descriptor<char>>());
+        ax::register_type_descriptor<ax::vector<int>>(std::make_shared<ax::ax_vector_descriptor<int>>());
+        ax::register_type_descriptor<ax::vector<int32_t>>(std::make_shared<ax::ax_vector_descriptor<int32_t>>());
+        ax::register_type_descriptor<ax::vector<int64_t>>(std::make_shared<ax::ax_vector_descriptor<int64_t>>());
+        ax::register_type_descriptor<ax::vector<float>>(std::make_shared<ax::ax_vector_descriptor<float>>());
+        ax::register_type_descriptor<ax::vector<double>>(std::make_shared<ax::ax_vector_descriptor<double>>());
+        ax::register_type_descriptor<ax::vector<std::size_t>>(std::make_shared<ax::ax_vector_descriptor<std::size_t>>());
+        ax::register_type_descriptor<ax::vector<std::string>>(std::make_shared<ax::ax_vector_descriptor<std::string>>());
 
         // ax::pair type descriptors
         ax::register_type_descriptor<ax::pair<bool, bool>>(std::make_shared<ax::ax_pair_descriptor<ax::pair<bool, bool>>>());

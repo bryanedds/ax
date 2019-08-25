@@ -152,7 +152,7 @@ namespace ax
             [&](VAL& symbols)
             {
                 vector_ptr->clear();
-                VAL& type_descriptor = get_type_descriptor<T>();
+                VAL& type_descriptor = ax::get_type_descriptor<T>();
                 for (VAL& symbol : symbols)
                 {
                     T elem_mvb{};
@@ -169,7 +169,7 @@ namespace ax
             for (VAL& elem : *vector_ptr)
             {
                 ax::symbol symbol_mvb{};
-                VAL& type_descriptor = get_type_descriptor<T>();
+                VAL& type_descriptor = ax::get_type_descriptor<T>();
                 type_descriptor->write_value(static_cast<const void*>(&elem), symbol_mvb);
                 symbols.emplace_back(std::move(symbol_mvb));
             }
@@ -201,7 +201,7 @@ namespace ax
             [&](VAL& symbols)
             {
                 set_ptr->clear();
-                VAL& type_descriptor = get_type_descriptor<T>();
+                VAL& type_descriptor = ax::get_type_descriptor<T>();
                 for (VAL& symbol : symbols)
                 {
                     T elem_mvb{};
@@ -218,7 +218,7 @@ namespace ax
             for (VAL& elem : *set_ptr)
             {
                 ax::symbol symbol_mvb{};
-                VAL& type_descriptor = get_type_descriptor<T>();
+                VAL& type_descriptor = ax::get_type_descriptor<T>();
                 type_descriptor->write_value(static_cast<const void*>(&elem), symbol_mvb);
                 symbols.emplace_back(std::move(symbol_mvb));
             }
@@ -250,8 +250,8 @@ namespace ax
             [&](VAL& symbols)
             {
                 map_ptr->clear();
-                VAL& key_type_descriptor = get_type_descriptor<K>();
-                VAL& value_type_descriptor = get_type_descriptor<V>();
+                VAL& key_type_descriptor = ax::get_type_descriptor<K>();
+                VAL& value_type_descriptor = ax::get_type_descriptor<V>();
                 for (VAL& symbol : symbols)
                 {
                     symbol.match(
@@ -280,8 +280,8 @@ namespace ax
         void write_value(const void* source_ptr, ax::symbol& target_symbol) const override
         {
             VAL* map_ptr = static_cast<const std::unordered_map<K, V>*>(source_ptr);
-            VAL& key_type_descriptor = get_type_descriptor<K>();
-            VAL& value_type_descriptor = get_type_descriptor<V>();
+            VAL& key_type_descriptor = ax::get_type_descriptor<K>();
+            VAL& value_type_descriptor = ax::get_type_descriptor<V>();
             std::vector<ax::symbol> symbols{};
             for (VAL& kvp : *map_ptr)
             {
@@ -319,7 +319,7 @@ namespace ax
                 [&](VAL& symbols)
             {
                 vector_ptr->clear();
-                VAL& type_descriptor = get_type_descriptor<T>();
+                VAL& type_descriptor = ax::get_type_descriptor<T>();
                 for (VAL& symbol : symbols)
                 {
                     T elem_mvb{};
@@ -371,7 +371,7 @@ namespace ax
         void write_value(const void* source_ptr, ax::symbol& target_symbol) const override
         {
             VAL* shared_ptr_ptr = static_cast<const std::shared_ptr<const T>*>(source_ptr);
-            VAL& type_descriptor = get_type_descriptor<T>();
+            VAL& type_descriptor = ax::get_type_descriptor<T>();
             type_descriptor->write_value(static_cast<const void*>(shared_ptr_ptr->get()), target_symbol);
         }
     };
@@ -412,8 +412,8 @@ namespace ax
                 // populate target pair
                 typename P::first_type first_value_mvb{};
                 typename P::second_type second_value_mvb{};
-                VAL& first_type_descriptor = get_type_descriptor<typename P::first_type>();
-                VAL& second_type_descriptor = get_type_descriptor<typename P::second_type>();
+                VAL& first_type_descriptor = ax::get_type_descriptor<typename P::first_type>();
+                VAL& second_type_descriptor = ax::get_type_descriptor<typename P::second_type>();
                 first_type_descriptor->read_value(source_symbols[0], &first_value_mvb);
                 second_type_descriptor->read_value(source_symbols[1], &second_value_mvb);
                 *pair_ptr = P(std::move(first_value_mvb), std::move(second_value_mvb));
@@ -426,8 +426,8 @@ namespace ax
             VAL* pair_ptr = static_cast<const P*>(source_ptr);
             ax::symbols_t symbols_mvb{};
             symbols_mvb.resize(2_z);
-            VAL& first_type_descriptor = get_type_descriptor<typename P::first_type>();
-            VAL& second_type_descriptor = get_type_descriptor<typename P::second_type>();
+            VAL& first_type_descriptor = ax::get_type_descriptor<typename P::first_type>();
+            VAL& second_type_descriptor = ax::get_type_descriptor<typename P::second_type>();
             first_type_descriptor->write_value(static_cast<const void*>(&ax::fst(*pair_ptr)), symbols_mvb[0]);
             second_type_descriptor->write_value(static_cast<const void*>(&ax::snd(*pair_ptr)), symbols_mvb[1]);
             target_symbol = ax::symbols(std::move(symbols_mvb));
@@ -469,9 +469,9 @@ namespace ax
                 typename R::first_type first_value_mvb{};
                 typename R::second_type second_value_mvb{};
                 typename R::third_type third_value_mvb{};
-                VAL& first_type_descriptor = get_type_descriptor<typename R::first_type>();
-                VAL& second_type_descriptor = get_type_descriptor<typename R::second_type>();
-                VAL& third_type_descriptor = get_type_descriptor<typename R::third_type>();
+                VAL& first_type_descriptor = ax::get_type_descriptor<typename R::first_type>();
+                VAL& second_type_descriptor = ax::get_type_descriptor<typename R::second_type>();
+                VAL& third_type_descriptor = ax::get_type_descriptor<typename R::third_type>();
                 first_type_descriptor->read_value(source_symbols[0], &first_value_mvb);
                 second_type_descriptor->read_value(source_symbols[1], &second_value_mvb);
                 third_type_descriptor->read_value(source_symbols[2], &third_value_mvb);
@@ -485,9 +485,9 @@ namespace ax
             VAL* record_ptr = static_cast<const R*>(source_ptr);
             ax::symbols_t symbols_mvb{};
             symbols_mvb.resize(3_z);
-            VAL& first_type_descriptor = get_type_descriptor<typename R::first_type>();
-            VAL& second_type_descriptor = get_type_descriptor<typename R::second_type>();
-            VAL& third_type_descriptor = get_type_descriptor<typename R::third_type>();
+            VAL& first_type_descriptor = ax::get_type_descriptor<typename R::first_type>();
+            VAL& second_type_descriptor = ax::get_type_descriptor<typename R::second_type>();
+            VAL& third_type_descriptor = ax::get_type_descriptor<typename R::third_type>();
             first_type_descriptor->write_value(static_cast<const void*>(&ax::fst(*record_ptr)), symbols_mvb[0]);
             second_type_descriptor->write_value(static_cast<const void*>(&ax::snd(*record_ptr)), symbols_mvb[1]);
             third_type_descriptor->write_value(static_cast<const void*>(&ax::thd(*record_ptr)), symbols_mvb[2]);
@@ -531,10 +531,10 @@ namespace ax
                 typename R::second_type second_value_mvb{};
                 typename R::third_type third_value_mvb{};
                 typename R::fourth_type fourth_value_mvb{};
-                VAL& first_type_descriptor = get_type_descriptor<typename R::first_type>();
-                VAL& second_type_descriptor = get_type_descriptor<typename R::second_type>();
-                VAL& third_type_descriptor = get_type_descriptor<typename R::third_type>();
-                VAL& fourth_type_descriptor = get_type_descriptor<typename R::fourth_type>();
+                VAL& first_type_descriptor = ax::get_type_descriptor<typename R::first_type>();
+                VAL& second_type_descriptor = ax::get_type_descriptor<typename R::second_type>();
+                VAL& third_type_descriptor = ax::get_type_descriptor<typename R::third_type>();
+                VAL& fourth_type_descriptor = ax::get_type_descriptor<typename R::fourth_type>();
                 first_type_descriptor->read_value(source_symbols[0], &first_value_mvb);
                 second_type_descriptor->read_value(source_symbols[1], &second_value_mvb);
                 third_type_descriptor->read_value(source_symbols[2], &third_value_mvb);
@@ -549,10 +549,10 @@ namespace ax
             VAL* record_ptr = static_cast<const R*>(source_ptr);
             ax::symbols_t symbols_mvb{};
             symbols_mvb.resize(4_z);
-            VAL& first_type_descriptor = get_type_descriptor<typename R::first_type>();
-            VAL& second_type_descriptor = get_type_descriptor<typename R::second_type>();
-            VAL& third_type_descriptor = get_type_descriptor<typename R::third_type>();
-            VAL& fourth_type_descriptor = get_type_descriptor<typename R::fourth_type>();
+            VAL& first_type_descriptor = ax::get_type_descriptor<typename R::first_type>();
+            VAL& second_type_descriptor = ax::get_type_descriptor<typename R::second_type>();
+            VAL& third_type_descriptor = ax::get_type_descriptor<typename R::third_type>();
+            VAL& fourth_type_descriptor = ax::get_type_descriptor<typename R::fourth_type>();
             first_type_descriptor->write_value(static_cast<const void*>(&ax::fst(*record_ptr)), symbols_mvb[0]);
             second_type_descriptor->write_value(static_cast<const void*>(&ax::snd(*record_ptr)), symbols_mvb[1]);
             third_type_descriptor->write_value(static_cast<const void*>(&ax::thd(*record_ptr)), symbols_mvb[2]);
@@ -598,11 +598,11 @@ namespace ax
                 typename R::third_type third_value_mvb{};
                 typename R::fourth_type fourth_value_mvb{};
                 typename R::fifth_type fifth_value_mvb{};
-                VAL& first_type_descriptor = get_type_descriptor<typename R::first_type>();
-                VAL& second_type_descriptor = get_type_descriptor<typename R::second_type>();
-                VAL& third_type_descriptor = get_type_descriptor<typename R::third_type>();
-                VAL& fourth_type_descriptor = get_type_descriptor<typename R::fourth_type>();
-                VAL& fifth_type_descriptor = get_type_descriptor<typename R::fifth_type>();
+                VAL& first_type_descriptor = ax::get_type_descriptor<typename R::first_type>();
+                VAL& second_type_descriptor = ax::get_type_descriptor<typename R::second_type>();
+                VAL& third_type_descriptor = ax::get_type_descriptor<typename R::third_type>();
+                VAL& fourth_type_descriptor = ax::get_type_descriptor<typename R::fourth_type>();
+                VAL& fifth_type_descriptor = ax::get_type_descriptor<typename R::fifth_type>();
                 first_type_descriptor->read_value(source_symbols[0], &first_value_mvb);
                 second_type_descriptor->read_value(source_symbols[1], &second_value_mvb);
                 third_type_descriptor->read_value(source_symbols[2], &third_value_mvb);
@@ -623,11 +623,11 @@ namespace ax
             VAL* record_ptr = static_cast<const R*>(source_ptr);
             ax::symbols_t symbols_mvb{};
             symbols_mvb.resize(5_z);
-            VAL& first_type_descriptor = get_type_descriptor<typename R::first_type>();
-            VAL& second_type_descriptor = get_type_descriptor<typename R::second_type>();
-            VAL& third_type_descriptor = get_type_descriptor<typename R::third_type>();
-            VAL& fourth_type_descriptor = get_type_descriptor<typename R::fourth_type>();
-            VAL& fifth_type_descriptor = get_type_descriptor<typename R::fifth_type>();
+            VAL& first_type_descriptor = ax::get_type_descriptor<typename R::first_type>();
+            VAL& second_type_descriptor = ax::get_type_descriptor<typename R::second_type>();
+            VAL& third_type_descriptor = ax::get_type_descriptor<typename R::third_type>();
+            VAL& fourth_type_descriptor = ax::get_type_descriptor<typename R::fourth_type>();
+            VAL& fifth_type_descriptor = ax::get_type_descriptor<typename R::fifth_type>();
             first_type_descriptor->write_value(static_cast<const void*>(&ax::fst(*record_ptr)), symbols_mvb[0]);
             second_type_descriptor->write_value(static_cast<const void*>(&ax::snd(*record_ptr)), symbols_mvb[1]);
             third_type_descriptor->write_value(static_cast<const void*>(&ax::thd(*record_ptr)), symbols_mvb[2]);
