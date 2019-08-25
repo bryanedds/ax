@@ -140,7 +140,11 @@ namespace ax
         {
             if (big())
             {
-                if (size() == N) big_vector.insert(big_vector.begin(), small_begin, small_end);
+                big_vector.push_back(item);
+            }
+            else if (size() == N)
+            {
+                big_vector.insert(big_vector.begin(), small_begin, small_end);
                 big_vector.push_back(item);
                 small_end = small_begin - 1;
             }
