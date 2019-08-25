@@ -30,50 +30,61 @@ namespace ax
         vector(std::initializer_list<T> il) :
             vector(il.begin(), il.end()) { }
 
-        vector(const T* begin, const T* end) :
-            big_vector(),
-            small_end(small_begin)
+        vector(const T* begin, const T* end)
         {
             VAR size = static_cast<std::size_t>(end - begin);
             if (size > N)
             {
+                small_end = small_begin - 1;
                 big_vector.insert(big_vector.begin(), begin, end);
             }
             else
             {
-                VAR i = 0_z;
-                while (begin != end)
+                small_end = small_begin;
+                for (VAR i = 0_z; i < N && begin != end; ++i)
                 {
-                    if (i >= N) break;
                     *small_end = *begin;
                     ++small_end;
                     ++begin;
-                    ++i;
                 }
             }
         }
 
-        vector(const ax::vector<T, A, N>& that) :
-            big_vector(that.big_vector),
-            small_end(small_begin)
+        vector(const ax::vector<T, A, N>& that)
         {
-            VAL size = that.size();
-            for (VAR i = 0_z; i < size; ++i)
+            if (that.small_end < that.small_begin)
             {
-                *small_end = that.small_begin[i];
-                ++small_end;
+                small_end = small_begin - 1;
+                big_vector = that.big_vector;
+            }
+            else
+            {
+                small_end = small_begin;
+                VAL size = that.size();
+                for (VAR i = 0_z; i < size; ++i)
+                {
+                    *small_end = that.small_begin[i];
+                    ++small_end;
+                }
             }
         }
 
-        vector(ax::vector<T, A, N>&& that) :
-            big_vector(std::move(that.big_vector)),
-            small_end(small_begin)
+        vector(ax::vector<T, A, N>&& that)
         {
-            VAL size = that.size();
-            for (VAR i = 0_z; i < size; ++i)
+            if (that.small_end < that.small_begin)
             {
-                *small_end = that.small_begin[i];
-                ++small_end;
+                small_end = small_begin - 1;
+                big_vector = std::move(that.big_vector);
+            }
+            else
+            {
+                small_end = small_begin;
+                VAL size = that.size();
+                for (VAR i = 0_z; i < size; ++i)
+                {
+                    *small_end = that.small_begin[i];
+                    ++small_end;
+                }
             }
         }
 
@@ -118,8 +129,8 @@ namespace ax
             return !(*this == that);
         }
 
-        T* begin() { return size() > N ? big_vector.data() : small_begin; }
-        T* end() { return size() > N ? big_vector.data() + big_vector.size() : small_end; }
+        T* begin() { return big() ? big_vector.data() : small_begin; }
+        T* end() { return big() ? big_vector.data() + big_vector.size() : small_end; }
         const T* cbegin() const { return const_cast<ax::vector<T, A, N>*>(this)->begin(); }
         const T* cend() const { return const_cast<ax::vector<T, A, N>*>(this)->end(); }
         const T* begin() const { return cbegin(); }
@@ -127,11 +138,11 @@ namespace ax
 
         void push_back(const T& item)
         {
-            VAL size = this->size();
-            if (size >= N)
+            if (big())
             {
-                if (size == N) big_vector.insert(big_vector.begin(), small_begin, small_end);
+                if (size() == N) big_vector.insert(big_vector.begin(), small_begin, small_end);
                 big_vector.push_back(item);
+                small_end = small_begin - 1;
             }
             else
             {
@@ -142,19 +153,19 @@ namespace ax
 
         void pop_back()
         {
-            VAL size = this->size();
-            if (size > N) return big_vector.pop_back();
-            if (size > 0)
+            if (big()) return big_vector.pop_back();
+            if (size() != 0)
             {
                 (small_end - 1)->~T();
                 --small_end;
+                return;
             }
+            throw std::range_error("Cannot pop_back empty ax::vector.");
         }
 
         T* erase(const T* iter)
         {
-            VAL size = this->size();
-            if (size > N)
+            if (big())
             {
                 VAL pos = iter - big_vector.data();
                 VAL& iter = big_vector.begin() + pos;
@@ -166,9 +177,8 @@ namespace ax
 
         T& at(std::size_t pos)
         {
-            VAL size = this->size();
-            if (size > N) return big_vector.at(pos);
-            if (pos < size) return *(small_begin + pos);
+            if (big()) return big_vector.at(pos);
+            if (pos < size()) return *(small_begin + pos);
             throw std::out_of_range("ax::vector indexed out of range.");
         }
 
@@ -179,43 +189,40 @@ namespace ax
 
         void assign(std::size_t pos, const T& item)
         {
-            VAL size = this->size();
-            if (size > N) return big_vector.assign(pos, item);
-            if (pos < size) return small_begin + pos;
+            if (big()) return big_vector.assign(pos, item);
+            if (pos < size()) return small_begin + pos;
             throw std::out_of_range("ax::vector indexed out of range.");
         }
 
         T& front()
         {
-            VAL size = this->size();
-            if (size > N) return big_vector.front();
-            if (size > 0) return *small_begin;
+            if (big()) return big_vector.front();
+            if (size() > 0) return *small_begin;
             throw std::out_of_range("ax::vector indexed out of range.");
         }
 
         T& back()
         {
-            VAL size = this->size();
-            if (size > N) return big_vector.back();
-            if (size > 0) return *(small_end - 1);
+            if (big()) return big_vector.back();
+            if (size() > 0) return *(small_end - 1);
             throw std::out_of_range("ax::vector indexed out of range.");
         }
 
         std::size_t capacity() const
         {
-            if (size() > N) return big_vector.capacity();
+            if (big()) return big_vector.capacity();
             return N;
         }
 
         void clear()
         {
-            if (size() > N) big_vector.clear();
+            if (big()) big_vector.clear();
             else small_end = small_begin;
         }
 
         T* data()
         {
-            if (size() > N) return big_vector.data();
+            if (big()) return big_vector.data();
             return small_begin;
         }
 
@@ -229,11 +236,16 @@ namespace ax
             return end() - begin();
         }
 
+        inline bool big() const
+        {
+            return small_end < small_begin;
+        }
+
     private:
 
-        std::vector<T, A> big_vector;
         T small_begin[N];
         T* small_end;
+        std::vector<T, A> big_vector;
     };
 }
 
