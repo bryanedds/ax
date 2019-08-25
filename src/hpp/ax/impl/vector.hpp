@@ -35,7 +35,7 @@ namespace ax
             VAR size = static_cast<std::size_t>(end - begin);
             if (size > N)
             {
-                small_end = small_begin - 1;
+                small_end = nullptr;
                 big_vector.insert(big_vector.begin(), begin, end);
             }
             else
@@ -52,9 +52,9 @@ namespace ax
 
         vector(const ax::vector<T, A, N>& that)
         {
-            if (that.small_end < that.small_begin)
+            if (that.big())
             {
-                small_end = small_begin - 1;
+                small_end = nullptr;
                 big_vector = that.big_vector;
             }
             else
@@ -71,9 +71,9 @@ namespace ax
 
         vector(ax::vector<T, A, N>&& that)
         {
-            if (that.small_end < that.small_begin)
+            if (that.big())
             {
-                small_end = small_begin - 1;
+                small_end = nullptr;
                 big_vector = std::move(that.big_vector);
             }
             else
@@ -146,7 +146,7 @@ namespace ax
             {
                 big_vector.insert(big_vector.begin(), small_begin, small_end);
                 big_vector.push_back(item);
-                small_end = small_begin - 1;
+                small_end = nullptr;
             }
             else
             {
@@ -242,7 +242,7 @@ namespace ax
 
         inline bool big() const
         {
-            return small_end < small_begin;
+            return !small_end;
         }
 
     private:
