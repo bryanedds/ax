@@ -2,15 +2,9 @@
 #define IMPL_AX_ARRAY_HPP
 
 #include <cstddef>
-#include <string>
-#include <vector>
-#include <numeric>
-#include <algorithm>
 #include <memory>
 
 #include "prelude.hpp"
-#include "string.hpp"
-#include "name.hpp"
 
 namespace ax
 {
