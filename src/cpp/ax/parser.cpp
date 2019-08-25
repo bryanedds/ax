@@ -96,10 +96,10 @@ namespace ax
         ax::symbols_t symbols{};
         for (VAR* node = parent_node->first_node(); node != nullptr; node = node->next_sibling())
         {
-            symbols.emplace_back(ax::atom(node->name()));
+            symbols.push_back(ax::atom(node->name()));
             for (VAR* attribute = node->first_attribute(); attribute != nullptr; attribute = attribute->next_attribute())
-                symbols.emplace_back(ax::atom(attribute->value()));
-            symbols.emplace_back(ax::parse_symbol_from_xml_node(node));
+                symbols.push_back(ax::atom(attribute->value()));
+            symbols.push_back(ax::parse_symbol_from_xml_node(node));
         }
         return ax::symbols(std::move(symbols));
     }

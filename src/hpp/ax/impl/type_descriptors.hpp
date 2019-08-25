@@ -210,7 +210,7 @@ namespace ax
         void write_value(const void* source_ptr, ax::symbol& target_symbol) const override
         {
             VAL* set_ptr = static_cast<const std::unordered_set<T>*>(source_ptr);
-            ax::vector<ax::symbol> symbols{};
+            std::vector<ax::symbol> symbols{};
             for (VAL& elem : *set_ptr)
             {
                 ax::symbol symbol_mvb{};
@@ -278,13 +278,13 @@ namespace ax
             VAL* map_ptr = static_cast<const std::unordered_map<K, V>*>(source_ptr);
             VAL& key_type_descriptor = get_type_descriptor<K>();
             VAL& value_type_descriptor = get_type_descriptor<V>();
-            ax::vector<ax::symbol> symbols{};
+            std::vector<ax::symbol> symbols{};
             for (VAL& kvp : *map_ptr)
             {
                 symbols_t symbol_kvp_mvb({ ax::symbol{}, ax::symbol{} });
                 key_type_descriptor->write_value(static_cast<const void*>(&kvp.first), symbol_kvp_mvb[0]);
                 value_type_descriptor->write_value(static_cast<const void*>(&kvp.second), symbol_kvp_mvb[1]);
-                symbols.emplace_back(ax::symbols(std::move(symbol_kvp_mvb)));
+                symbols.push_back(ax::symbols(std::move(symbol_kvp_mvb)));
             }
             target_symbol = ax::symbols(symbols);
         }
@@ -328,7 +328,7 @@ namespace ax
         void write_value(const void* source_ptr, ax::symbol& target_symbol) const override
         {
             VAL* vector_ptr = static_cast<const ax::vector<T>*>(source_ptr);
-            ax::vector<ax::symbol> symbols{};
+            std::vector<ax::symbol> symbols{};
             for (VAL& elem : *vector_ptr)
             {
                 ax::symbol symbol_mvb{};

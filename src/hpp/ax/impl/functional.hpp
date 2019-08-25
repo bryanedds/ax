@@ -15,7 +15,7 @@ namespace ax
     ax::vector<U> map(const ax::vector<T>& source, const F& mapper)
     {
         ax::vector<U> mapped{};
-        for (VAL& elem : source) mapped.emplace_back(mapper(elem));
+        for (VAL& elem : source) mapped.push_back(mapper(elem));
         return mapped;
     }
 
@@ -23,7 +23,7 @@ namespace ax
     std::vector<U> map(const std::vector<T>& source, const F& mapper)
     {
         std::vector<U> mapped{};
-        for (VAL& elem : source) mapped.emplace_back(mapper(elem));
+        for (VAL& elem : source) mapped.push_back(mapper(elem));
         return mapped;
     }
 
@@ -33,7 +33,7 @@ namespace ax
         ax::vector<T> filtered{};
         for (VAL& elem : source)
             if (predicate(elem))
-                filtered.emplace_back(elem);
+                filtered.push_back(elem);
         return filtered;
     }
 
@@ -43,7 +43,7 @@ namespace ax
         std::vector<T> filtered{};
         for (VAL& elem : source)
             if (predicate(elem))
-                filtered.emplace_back(elem);
+                filtered.push_back(elem);
         return filtered;
     }
 

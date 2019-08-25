@@ -21,19 +21,19 @@ namespace ax
         
         option() : is_some_flag(false) { new (&u) ax::unit(); }
         
-        option(const ax::option& that) : is_some_flag(that.is_some_flag)
+        option(const option& that) : is_some_flag(that.is_some_flag)
         {
             if (is_some_flag) new (&u) T(that.u.content);
             else new (&u) ax::unit();
         }
         
-        option(ax::option&& that) : is_some_flag(that.is_some_flag)
+        option(option&& that) : is_some_flag(that.is_some_flag)
         {
             if (is_some_flag) new (&u) T(std::move(that.u.content));
             else new (&u) ax::unit();
         }
 
-        ax::option& operator=(const ax::option& that)
+        option& operator=(const option& that)
         {
             if (is_some_flag) u.content.T::~T();
             else u.unit.unit::~unit();
@@ -43,7 +43,7 @@ namespace ax
             return *this;
         }
 
-        ax::option& operator=(ax::option&& that)
+        option& operator=(option&& that)
         {
             if (is_some_flag) u.content.T::~T();
             else u.unit.unit::~unit();
