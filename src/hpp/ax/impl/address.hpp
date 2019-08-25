@@ -10,9 +10,12 @@
 #include "prelude.hpp"
 #include "string.hpp"
 #include "name.hpp"
+#include "array.hpp"
 
 namespace ax
 {
+    using names_t = ax::array_t<ax::name_t, 3>;
+
     // The address of an event or a participant.
     class address
     {
@@ -25,6 +28,8 @@ namespace ax
         address& operator=(address&&) = default;
 
         explicit address(const name_t& name);
+        explicit address(const ax::names_t& names);
+        explicit address(ax::names_t&& names);
         explicit address(const std::vector<name_t>& names);
         explicit address(std::vector<name_t>&& names);
         explicit address(const std::vector<std::string>& names);
@@ -40,12 +45,12 @@ namespace ax
             return ax::join_strings(name_strs, '/');
         }
 
-        inline const std::vector<name_t>& get_names() const { return names; }
+        inline const ax::names_t& get_names() const { return names; }
 
     private:
 
         std::size_t hash_code;
-        std::vector<name_t> names;
+        ax::names_t names;
     };
 }
 

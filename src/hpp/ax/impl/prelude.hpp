@@ -112,7 +112,7 @@ namespace std
     Cr transform(const It& begin, const It& end, const Fn& fn)
     {
         CONSTRAIN_AS_CONTAINER(Cr);
-        CONSTRAIN_AS_ITERATOR(It);
+        // CONSTRAIN_AS_ITERATOR(It); NOTE: this was dummied out to make it easier to implement iterarots.
         Cr transformed{};
         for (VAR it = begin; it != end; ++it)
         {
