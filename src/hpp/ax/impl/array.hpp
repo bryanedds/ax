@@ -6,6 +6,7 @@
 #include <vector>
 #include <numeric>
 #include <algorithm>
+#include <memory>
 
 #include "prelude.hpp"
 #include "string.hpp"
@@ -13,7 +14,7 @@
 
 namespace ax
 {
-    // An array with small optimization.
+    // An array with small size optimization.
     template<typename T, std::size_t N>
     class array_t
     {
@@ -22,8 +23,8 @@ namespace ax
         CONSTRAINT(array_t);
         using value_type = T;
         using size_type = std::size_t;
-        template<typename T, std::size_t N>
-        using reify = array_t<T, N>;
+        template<typename T2, std::size_t N2>
+        using reify = array_t<T2, N2>;
 
         array_t() : array_t({ }) { }
 
@@ -41,7 +42,7 @@ namespace ax
             }
             else
             {
-                VAR i = 0;
+                VAR i = 0_z;
                 for (VAR& item : items)
                 {
                     if (i >= N) break;

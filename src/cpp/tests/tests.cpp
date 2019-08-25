@@ -1,4 +1,4 @@
-#include <istream>
+#include <iostream>
 
 #include "../../hpp/tom/tom.hpp"
 
@@ -277,9 +277,11 @@ namespace ax
         CHECK(p.get<int>("x") == 5);
     }
 
-    TEST("logging works")
+    TEST("misc")
     {
-        // TODO: implement
+        std::cout << std::to_string(sizeof(std::string)) << std::endl;
+        std::cout << std::to_string(sizeof(ax::name_t)) << std::endl;
+        std::cout << std::to_string(sizeof(ax::address)) << std::endl;
     }
 }
 
