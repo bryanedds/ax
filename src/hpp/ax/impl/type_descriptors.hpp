@@ -15,9 +15,13 @@
 #include "vector.hpp"
 #include "pair.hpp"
 #include "record.hpp"
+#include "record4.hpp"
+#include "record5.hpp"
 #include "option.hpp"
 #include "either.hpp"
 #include "choice.hpp"
+#include "choice4.hpp"
+#include "choice5.hpp"
 #include "symbol.hpp"
 #include "type_descriptor.hpp"
 

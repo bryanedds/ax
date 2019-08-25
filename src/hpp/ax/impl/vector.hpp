@@ -34,7 +34,7 @@ namespace ax
             big_vector(),
             small_end(small_begin)
         {
-            VAR size = end - begin;
+            VAR size = static_cast<std::size_t>(end - begin);
             if (size > N)
             {
                 big_vector.insert(big_vector.begin(), begin, end);
@@ -105,10 +105,12 @@ namespace ax
 
         bool operator==(const ax::vector<T, A, N>& that) const
         {
-            return
-                size() > N ?
-                big_vector == that.big_vector :
-                std::memcmp(small_begin, that.small_begin, sizeof(T) * N) == 0;
+            VAL size = this->size();
+            if (size > N) return big_vector == that.big_vector;
+            VAR result = true;
+            for (VAR i = 0_z; result && i < size; ++i)
+                result = small_begin[i] == that.small_begin[i];
+            return result;
         }
 
         bool operator!=(const ax::vector<T, A, N>& that) const
