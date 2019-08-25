@@ -10,13 +10,17 @@
 namespace ax
 {
     // A mixin for making a type addressable.
-    // TODO: make this reflectable?
     class addressable : public castable
     {
     public:
 
         CONSTRAINT(addressable);
         explicit addressable(const ax::address& address) : address(address) { }
+        addressable(const addressable& other) = default;
+        addressable(addressable&& other) = default;
+        addressable& operator=(const addressable& other) = default;
+        addressable& operator=(addressable&& other) = default;
+
         inline const ax::address& get_address() const { return address; }
 
     protected:
@@ -25,7 +29,7 @@ namespace ax
 
     private:
 
-        address address;
+        ax::address address;
     };
 }
 

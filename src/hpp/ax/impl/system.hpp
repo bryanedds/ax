@@ -25,7 +25,6 @@
 namespace ax
 {
     class entity;
-    using entity_ptr = std::shared_ptr<ax::entity>;
     class system;
     using system_ptr = std::shared_ptr<ax::system>;
     class world;
@@ -230,7 +229,7 @@ namespace ax
         bool entity_exists(const ax::address& address);
         ax::component* try_add_component(const ax::name_t& system_name, const ax::address& address);
         bool try_remove_component(const ax::name_t& system_name, const ax::address& address);
-        ax::entity_ptr create_entity(const ax::address& address);
+        ax::entity create_entity(const ax::address& address);
         bool destroy_entity(const ax::address& address);
         ax::system_ptr try_add_system(const ax::name_t& name, ax::system_ptr system);
         bool remove_system(const ax::name_t& name);
@@ -253,10 +252,11 @@ namespace ax
     {
     public:
 
-        entity(const ax::address& address, ax::world& world) :
-            ax::addressable(address),
-            world(world)
-        { }
+        entity(const entity& other) = default;
+        entity(entity&& other) = default;
+        entity& operator=(const entity& other) = default;
+        entity& operator=(entity&& other) = default;
+        entity(const ax::address& address, ax::world& world) : ax::addressable(address), world(world) { }
 
         template<typename T>
         const T* try_get_component(const ax::name_t& name) const { return world.try_get_component<T>(name, get_address()); }

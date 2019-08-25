@@ -21,11 +21,11 @@ namespace ax
         CONSTRAINT(castable);
 
         castable() = default;
-        castable(const castable&) = delete;
-        castable(castable&&) = delete;
+        castable(const castable&) = default;
+        castable(castable&&) = default;
         virtual ~castable() = default;
-        castable& operator=(const castable& castable) = delete;
-        castable& operator=(castable&& castable) = delete;
+        castable& operator=(const castable& castable) = default;
+        castable& operator=(castable&& castable) = default;
 
     protected:
 

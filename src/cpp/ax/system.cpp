@@ -82,7 +82,7 @@ namespace ax
         return false;
     }
 
-    std::shared_ptr<ax::entity> world::create_entity(const ax::address& address)
+    ax::entity world::create_entity(const ax::address& address)
     {
         VAL& entities_iter = systems.find("entities");
         if (entities_iter != systems.end())
@@ -95,7 +95,7 @@ namespace ax
                 try_add_component<ax::transform>("transform", address);
             }
         }
-        return std::make_shared<ax::entity>(address, *this);
+        return ax::entity(address, *this);
     }
 
     bool world::destroy_entity(const ax::address& address)
