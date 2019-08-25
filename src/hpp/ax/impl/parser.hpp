@@ -20,12 +20,13 @@ namespace ax
 
         CONSTRAINT(parse);
         template<typename A>
-        using reify = parse<A>;
+        using reify = ax::parse<A>;
+        using either<T, std::string>::either;
 
-        bool is_success() const { return is_right(); }
-        bool is_failure() const { return is_left(); }
-        const T& get_success() const { return get_right(); }
-        const std::string& get_failure() const { return get_left(); }
+        bool is_success() const { return either<T, std::string>::is_right(); }
+        bool is_failure() const { return either<T, std::string>::is_left(); }
+        const T& get_success() const { return either<T, std::string>::get_right(); }
+        const std::string& get_failure() const { return either<T, std::string>::get_left(); }
 
         const char* get_right_name() const override { return "parse_success"; }
         const char* get_left_name() const override { return "parse_failure"; }
@@ -88,10 +89,10 @@ namespace ax
     template<typename T>
     void read_value(const std::string& str, T& value)
     {
-        parse_symbol(str).match(
+        ax::parse_symbol(str).match(
         [&](VAL& symbol)
         {
-            VAL& type_descriptor = get_type_descriptor<T>();
+            VAL& type_descriptor = ax::get_type_descriptor<T>();
             type_descriptor.read_value(symbol, &value);
         },
         [&](VAL& error)
@@ -109,7 +110,7 @@ namespace ax
     T valueize(const std::string& str)
     {
         T value;
-        read_value(str, value);
+        ax::read_value(str, value);
         return value;
     }
 }

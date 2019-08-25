@@ -18,17 +18,17 @@ namespace ax
         using right_type = R;
         using left_type = L;
         template<typename A, typename B>
-        using reify = either<A, B>;
+        using reify = ax::either<A, B>;
 
         either() : is_right_flag(true) { new (&u) R(); }
 
-        either(const ax::either& that) : is_right_flag(that.is_right_flag)
+        either(const either& that) : is_right_flag(that.is_right_flag)
         {
             if (is_right_flag) new (&u) R(that.u.right);
             else new (&u) L(that.u.left);
         }
 
-        either(ax::either&& that) : is_right_flag(that.is_right_flag)
+        either(either&& that) : is_right_flag(that.is_right_flag)
         {
             if (is_right_flag) new (&u) R(std::move(that.u.right));
             else new (&u) L(std::move(that.u.left));
@@ -45,7 +45,7 @@ namespace ax
             else u.left.L::~L();
         }
 
-        ax::either& operator=(const ax::either& that)
+        either& operator=(const either& that)
         {
             if (is_right_flag) u.right.R::~R();
             else u.left.L::~L();
@@ -55,7 +55,7 @@ namespace ax
             return *this;
         }
 
-        ax::either& operator=(ax::either&& that)
+        either& operator=(either&& that)
         {
             if (is_right_flag) u.right.R::~R();
             else u.left.L::~L();

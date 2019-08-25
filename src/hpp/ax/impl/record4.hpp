@@ -22,8 +22,8 @@ namespace ax
         using reify = ax::record4<A, B, C, D>;
 
         record4() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
-        record4(const ax::record4&) = default;
-        record4(ax::record4&&) = default;
+        record4(const record4&) = default;
+        record4(record4&&) = default;
 
         record4(const First& first, const Second& second, const Third& third, const Fourth& fourth) :
             first(first), second(second), third(third), fourth(fourth) { }
@@ -33,8 +33,8 @@ namespace ax
 
         virtual ~record4() = default;
 
-        ax::record4& operator=(const ax::record4&) = default;
-        ax::record4& operator=(ax::record4&&) = default;
+        record4& operator=(const record4&) = default;
+        record4& operator=(record4&&) = default;
 
         const First& fst() const { return first; }
         const Second& snd() const { return second; }

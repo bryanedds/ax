@@ -21,14 +21,14 @@ namespace ax
         using reify = ax::record<A, B, C>;
 
         record() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
-        record(const ax::record&) = default;
-        record(ax::record&&) = default;
+        record(const record&) = default;
+        record(record&&) = default;
         record(const F& first, const S& second, const T& third) : first(first), second(second), third(third) { }
         record(F&& first, S&& second, T&& third) : first(first), second(second), third(third) { }
         virtual ~record() = default;
 
-        ax::record& operator=(const ax::record&) = default;
-        ax::record& operator=(ax::record&&) = default;
+        record& operator=(const record&) = default;
+        record& operator=(record&&) = default;
 
         const F& fst() const { return first; }
         const S& snd() const { return second; }

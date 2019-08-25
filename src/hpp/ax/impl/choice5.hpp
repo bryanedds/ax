@@ -24,8 +24,8 @@ namespace ax
         using reify = ax::choice5<A, B, C, D, E>;
 
         choice5() : index(0_z) { new (&u) First(); }
-        choice5(const ax::choice5& that) : index(that.index) { construct_u(that); }
-        choice5(ax::choice5&& that) : index(that.index) { construct_u(that); }
+        choice5(const choice5& that) : index(that.index) { construct_u(that); }
+        choice5(choice5&& that) : index(that.index) { construct_u(that); }
         explicit choice5(const First& first, bool) : index(0_z) { new (&u) First(first); }
         explicit choice5(First&& first, bool) : index(0_z) { new (&u) First(first); }
         explicit choice5(const Second& second, bool, bool) : index(1_z) { new (&u) Second(second); }
@@ -38,7 +38,7 @@ namespace ax
         explicit choice5(Fifth&& fifth, bool, bool, bool, bool, bool) : index(4_z) { new (&u) Fifth(fifth); }
         virtual ~choice5() { destruct_u(); }
 
-        ax::choice5& operator=(const ax::choice5& that)
+        choice5& operator=(const choice5& that)
         {
             destruct_u();
             index = that.index;
@@ -46,7 +46,7 @@ namespace ax
             return *this;
         }
 
-        ax::choice5& operator=(ax::choice5&& that)
+        choice5& operator=(choice5&& that)
         {
             destruct_u();
             index = that.index;
@@ -158,7 +158,7 @@ namespace ax
 
     private:
 
-        void construct_u(const ax::choice5& that)
+        void construct_u(const choice5& that)
         {
             switch (index)
             {
@@ -170,7 +170,7 @@ namespace ax
             }
         }
 
-        void construct_u(ax::choice5&& that)
+        void construct_u(choice5&& that)
         {
             switch (index)
             {

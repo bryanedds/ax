@@ -4,7 +4,6 @@
 #include <cstddef>
 #include <memory>
 #include <functional>
-#include <vector>
 #include <unordered_map>
 
 #include "prelude.hpp"
@@ -13,6 +12,7 @@
 #include "address.hpp"
 #include "addressable.hpp"
 #include "event.hpp"
+#include "vector.hpp"
 
 namespace ax
 {
@@ -84,7 +84,7 @@ namespace ax
         const std::unique_ptr<ax::castable> subscription_detail;
     };
 
-    using subscription_list = std::vector<std::shared_ptr<ax::subscription>>;
+    using subscription_list = ax::vector<std::shared_ptr<ax::subscription>>;
 
     using subscriptions_map = std::unordered_map<ax::address, std::unique_ptr<ax::subscription_list>>;
 

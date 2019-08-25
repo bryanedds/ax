@@ -284,7 +284,7 @@ namespace ax
     void address_descriptor::write_value(const void* source_ptr, ax::symbol& target_symbol) const
     {
         VAL* address_ptr = static_cast<const ax::address*>(source_ptr);
-        VAL& address_names = ax::to_vector(address_ptr->get_names());
+        VAL& address_names = ax::to_ax_vector(address_ptr->get_names());
         VAL& address_strs = ax::map<std::string>(address_names, [](const ax::name_t& name) { return name.to_string(); });
         target_symbol = ax::atom(join_strings(address_strs, '/'));
     }
@@ -313,48 +313,59 @@ namespace ax
         ax::register_type_descriptor<std::shared_ptr<ax::reflectable>>(std::make_shared<ax::shared_ptr_descriptor<ax::reflectable>>());
 
         // std::vector type descriptors
-        ax::register_type_descriptor<std::vector<bool>>(std::make_shared<ax::vector_descriptor<bool>>());
-        ax::register_type_descriptor<std::vector<char>>(std::make_shared<ax::vector_descriptor<char>>());
-        ax::register_type_descriptor<std::vector<int>>(std::make_shared<ax::vector_descriptor<int>>());
-        ax::register_type_descriptor<std::vector<int32_t>>(std::make_shared<ax::vector_descriptor<int32_t>>());
-        ax::register_type_descriptor<std::vector<int64_t>>(std::make_shared<ax::vector_descriptor<int64_t>>());
-        ax::register_type_descriptor<std::vector<float>>(std::make_shared<ax::vector_descriptor<float>>());
-        ax::register_type_descriptor<std::vector<double>>(std::make_shared<ax::vector_descriptor<double>>());
-        ax::register_type_descriptor<std::vector<std::size_t>>(std::make_shared<ax::vector_descriptor<std::size_t>>());
-        ax::register_type_descriptor<std::vector<std::string>>(std::make_shared<ax::vector_descriptor<std::string>>());
+        ax::register_type_descriptor<std::vector<bool>>(std::make_shared<ax::std_vector_descriptor<bool>>());
+        ax::register_type_descriptor<std::vector<char>>(std::make_shared<ax::std_vector_descriptor<char>>());
+        ax::register_type_descriptor<std::vector<int>>(std::make_shared<ax::std_vector_descriptor<int>>());
+        ax::register_type_descriptor<std::vector<int32_t>>(std::make_shared<ax::std_vector_descriptor<int32_t>>());
+        ax::register_type_descriptor<std::vector<int64_t>>(std::make_shared<ax::std_vector_descriptor<int64_t>>());
+        ax::register_type_descriptor<std::vector<float>>(std::make_shared<ax::std_vector_descriptor<float>>());
+        ax::register_type_descriptor<std::vector<double>>(std::make_shared<ax::std_vector_descriptor<double>>());
+        ax::register_type_descriptor<std::vector<std::size_t>>(std::make_shared<ax::std_vector_descriptor<std::size_t>>());
+        ax::register_type_descriptor<std::vector<std::string>>(std::make_shared<ax::std_vector_descriptor<std::string>>());
 
         // std::unordered_set type descriptors
-        ax::register_type_descriptor<std::unordered_set<bool>>(std::make_shared<ax::unordered_set_descriptor<bool>>());
-        ax::register_type_descriptor<std::unordered_set<char>>(std::make_shared<ax::unordered_set_descriptor<char>>());
-        ax::register_type_descriptor<std::unordered_set<int>>(std::make_shared<ax::unordered_set_descriptor<int>>());
-        ax::register_type_descriptor<std::unordered_set<int32_t>>(std::make_shared<ax::unordered_set_descriptor<int32_t>>());
-        ax::register_type_descriptor<std::unordered_set<int64_t>>(std::make_shared<ax::unordered_set_descriptor<int64_t>>());
-        ax::register_type_descriptor<std::unordered_set<float>>(std::make_shared<ax::unordered_set_descriptor<float>>());
-        ax::register_type_descriptor<std::unordered_set<double>>(std::make_shared<ax::unordered_set_descriptor<double>>());
-        ax::register_type_descriptor<std::unordered_set<std::size_t>>(std::make_shared<ax::unordered_set_descriptor<std::size_t>>());
-        ax::register_type_descriptor<std::unordered_set<std::string>>(std::make_shared<ax::unordered_set_descriptor<std::string>>());
+        ax::register_type_descriptor<std::unordered_set<bool>>(std::make_shared<ax::std_unordered_set_descriptor<bool>>());
+        ax::register_type_descriptor<std::unordered_set<char>>(std::make_shared<ax::std_unordered_set_descriptor<char>>());
+        ax::register_type_descriptor<std::unordered_set<int>>(std::make_shared<ax::std_unordered_set_descriptor<int>>());
+        ax::register_type_descriptor<std::unordered_set<int32_t>>(std::make_shared<ax::std_unordered_set_descriptor<int32_t>>());
+        ax::register_type_descriptor<std::unordered_set<int64_t>>(std::make_shared<ax::std_unordered_set_descriptor<int64_t>>());
+        ax::register_type_descriptor<std::unordered_set<float>>(std::make_shared<ax::std_unordered_set_descriptor<float>>());
+        ax::register_type_descriptor<std::unordered_set<double>>(std::make_shared<ax::std_unordered_set_descriptor<double>>());
+        ax::register_type_descriptor<std::unordered_set<std::size_t>>(std::make_shared<ax::std_unordered_set_descriptor<std::size_t>>());
+        ax::register_type_descriptor<std::unordered_set<std::string>>(std::make_shared<ax::std_unordered_set_descriptor<std::string>>());
 
         // std::unordered_map type descriptors
-        ax::register_type_descriptor<std::unordered_map<std::string, bool>>(std::make_shared<ax::unordered_map_descriptor<std::string, bool>>());
-        ax::register_type_descriptor<std::unordered_map<std::string, char>>(std::make_shared<ax::unordered_map_descriptor<std::string, char>>());
-        ax::register_type_descriptor<std::unordered_map<std::string, int>>(std::make_shared<ax::unordered_map_descriptor<std::string, int>>());
-        ax::register_type_descriptor<std::unordered_map<std::string, int32_t>>(std::make_shared<ax::unordered_map_descriptor<std::string, int32_t>>());
-        ax::register_type_descriptor<std::unordered_map<std::string, int64_t>>(std::make_shared<ax::unordered_map_descriptor<std::string, int64_t>>());
-        ax::register_type_descriptor<std::unordered_map<std::string, float>>(std::make_shared<ax::unordered_map_descriptor<std::string, float>>());
-        ax::register_type_descriptor<std::unordered_map<std::string, double>>(std::make_shared<ax::unordered_map_descriptor<std::string, double>>());
-        ax::register_type_descriptor<std::unordered_map<std::string, std::size_t>>(std::make_shared<ax::unordered_map_descriptor<std::string, std::size_t>>());
-        ax::register_type_descriptor<std::unordered_map<std::string, std::string>>(std::make_shared<ax::unordered_map_descriptor<std::string, std::string>>());
+        ax::register_type_descriptor<std::unordered_map<std::string, bool>>(std::make_shared<ax::std_unordered_map_descriptor<std::string, bool>>());
+        ax::register_type_descriptor<std::unordered_map<std::string, char>>(std::make_shared<ax::std_unordered_map_descriptor<std::string, char>>());
+        ax::register_type_descriptor<std::unordered_map<std::string, int>>(std::make_shared<ax::std_unordered_map_descriptor<std::string, int>>());
+        ax::register_type_descriptor<std::unordered_map<std::string, int32_t>>(std::make_shared<ax::std_unordered_map_descriptor<std::string, int32_t>>());
+        ax::register_type_descriptor<std::unordered_map<std::string, int64_t>>(std::make_shared<ax::std_unordered_map_descriptor<std::string, int64_t>>());
+        ax::register_type_descriptor<std::unordered_map<std::string, float>>(std::make_shared<ax::std_unordered_map_descriptor<std::string, float>>());
+        ax::register_type_descriptor<std::unordered_map<std::string, double>>(std::make_shared<ax::std_unordered_map_descriptor<std::string, double>>());
+        ax::register_type_descriptor<std::unordered_map<std::string, std::size_t>>(std::make_shared<ax::std_unordered_map_descriptor<std::string, std::size_t>>());
+        ax::register_type_descriptor<std::unordered_map<std::string, std::string>>(std::make_shared<ax::std_unordered_map_descriptor<std::string, std::string>>());
 
-        // pair type descriptors
-        ax::register_type_descriptor<ax::pair<bool, bool>>(std::make_shared<ax::pair_descriptor<ax::pair<bool, bool>>>());
-        ax::register_type_descriptor<ax::pair<char, char>>(std::make_shared<ax::pair_descriptor<ax::pair<char, char>>>());
-        ax::register_type_descriptor<ax::pair<int, int>>(std::make_shared<ax::pair_descriptor<ax::pair<int, int>>>());
-        ax::register_type_descriptor<ax::pair<int32_t, int32_t>>(std::make_shared<ax::pair_descriptor<ax::pair<int32_t, int32_t>>>());
-        ax::register_type_descriptor<ax::pair<int64_t, int64_t>>(std::make_shared<ax::pair_descriptor<ax::pair<int64_t, int64_t>>>());
-        ax::register_type_descriptor<ax::pair<float, float>>(std::make_shared<ax::pair_descriptor<ax::pair<float, float>>>());
-        ax::register_type_descriptor<ax::pair<double, double>>(std::make_shared<ax::pair_descriptor<ax::pair<double, double>>>());
-        ax::register_type_descriptor<ax::pair<std::size_t, std::size_t>>(std::make_shared<ax::pair_descriptor<ax::pair<std::size_t, std::size_t>>>());
-        ax::register_type_descriptor<ax::pair<std::string, std::string>>(std::make_shared<ax::pair_descriptor<ax::pair<std::string, std::string>>>());
+        // ax::vector type descriptors
+        ax::register_type_descriptor<std::vector<bool>>(std::make_shared<ax::ax_vector_descriptor<bool>>());
+        ax::register_type_descriptor<std::vector<char>>(std::make_shared<ax::ax_vector_descriptor<char>>());
+        ax::register_type_descriptor<std::vector<int>>(std::make_shared<ax::ax_vector_descriptor<int>>());
+        ax::register_type_descriptor<std::vector<int32_t>>(std::make_shared<ax::ax_vector_descriptor<int32_t>>());
+        ax::register_type_descriptor<std::vector<int64_t>>(std::make_shared<ax::ax_vector_descriptor<int64_t>>());
+        ax::register_type_descriptor<std::vector<float>>(std::make_shared<ax::ax_vector_descriptor<float>>());
+        ax::register_type_descriptor<std::vector<double>>(std::make_shared<ax::ax_vector_descriptor<double>>());
+        ax::register_type_descriptor<std::vector<std::size_t>>(std::make_shared<ax::ax_vector_descriptor<std::size_t>>());
+        ax::register_type_descriptor<std::vector<std::string>>(std::make_shared<ax::ax_vector_descriptor<std::string>>());
+
+        // ax::pair type descriptors
+        ax::register_type_descriptor<ax::pair<bool, bool>>(std::make_shared<ax::ax_pair_descriptor<ax::pair<bool, bool>>>());
+        ax::register_type_descriptor<ax::pair<char, char>>(std::make_shared<ax::ax_pair_descriptor<ax::pair<char, char>>>());
+        ax::register_type_descriptor<ax::pair<int, int>>(std::make_shared<ax::ax_pair_descriptor<ax::pair<int, int>>>());
+        ax::register_type_descriptor<ax::pair<int32_t, int32_t>>(std::make_shared<ax::ax_pair_descriptor<ax::pair<int32_t, int32_t>>>());
+        ax::register_type_descriptor<ax::pair<int64_t, int64_t>>(std::make_shared<ax::ax_pair_descriptor<ax::pair<int64_t, int64_t>>>());
+        ax::register_type_descriptor<ax::pair<float, float>>(std::make_shared<ax::ax_pair_descriptor<ax::pair<float, float>>>());
+        ax::register_type_descriptor<ax::pair<double, double>>(std::make_shared<ax::ax_pair_descriptor<ax::pair<double, double>>>());
+        ax::register_type_descriptor<ax::pair<std::size_t, std::size_t>>(std::make_shared<ax::ax_pair_descriptor<ax::pair<std::size_t, std::size_t>>>());
+        ax::register_type_descriptor<ax::pair<std::string, std::string>>(std::make_shared<ax::ax_pair_descriptor<ax::pair<std::string, std::string>>>());
 
         // record type descriptor (ints only)
         ax::register_type_descriptor<ax::record<int, int, int>>(std::make_shared<ax::record_descriptor<ax::record<int, int, int>>>());

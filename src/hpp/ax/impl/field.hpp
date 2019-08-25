@@ -4,11 +4,11 @@
 #include <cstddef>
 #include <typeindex>
 #include <memory>
-#include <vector>
 #include <unordered_map>
 
 #include "prelude.hpp"
 #include "name.hpp"
+#include "vector.hpp"
 
 namespace ax
 {
@@ -30,7 +30,7 @@ namespace ax
     using field_map = std::unordered_map<ax::name_t, std::shared_ptr<ax::field>>;
 
     // The alias for a field vector.
-    using field_vector = std::vector<std::pair<ax::name_t, std::shared_ptr<ax::field>>>;
+    using field_vector = ax::vector<std::pair<ax::name_t, std::shared_ptr<ax::field>>>;
 
     // Register a field for reflection.
     template<typename T>

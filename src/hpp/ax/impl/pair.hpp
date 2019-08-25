@@ -20,14 +20,14 @@ namespace ax
         using reify = ax::pair<A, B>;
 
         pair() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
-        pair(const ax::pair&) = default;
-        pair(ax::pair&&) = default;
+        pair(const pair&) = default;
+        pair(pair&&) = default;
         pair(const First& first, const Second& second) : first(first), second(second) { }
         pair(First&& first, Second&& second) : first(first), second(second) { }
         virtual ~pair() = default;
 
-        ax::pair& operator=(const ax::pair&) = default;
-        ax::pair& operator=(ax::pair&&) = default;
+        pair& operator=(const pair&) = default;
+        pair& operator=(pair&&) = default;
 
         const First& fst() const { return first; }
         const Second& snd() const { return second; }

@@ -14,7 +14,7 @@ namespace ax
             [&](VAL& quote) { return "`"_s + quote + "'"; },
             [&](VAL& symbols)
             {
-                VAL& symbols_str = fold(symbols, ""_s, [](VAL& str, VAL& symbol)
+                VAL& symbols_str = ax::fold(symbols, ""_s, [](VAL& str, VAL& symbol)
                 {
                     VAL& prestr = str.size() == 0 ? str : str + " ";
                     return prestr + unparse_symbol(symbol);

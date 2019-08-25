@@ -61,7 +61,7 @@ namespace ax
     template<typename T, typename D>
     std::shared_ptr<D> register_type_descriptor(const std::shared_ptr<D>& type_descriptor)
     {
-        CONSTRAIN(D, ax::type_descriptor);
+        CONSTRAIN(D, type_descriptor);
         VAL& type_index = std::type_index(typeid(T));
         VAR insertion = ax::type_descriptor::type_descriptor_map.emplace(type_index, type_descriptor);
         if (!insertion.second) insertion.first->second = type_descriptor;

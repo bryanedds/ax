@@ -22,8 +22,8 @@ namespace ax
         using reify = ax::choice<A, B, C>;
 
         choice() : index(0_z) { new (&u) F(); }
-        choice(const ax::choice& that) : index(that.index) { construct_u(that); }
-        choice(ax::choice&& that) : index(that.index) { construct_u(that); }
+        choice(const choice& that) : index(that.index) { construct_u(that); }
+        choice(choice&& that) : index(that.index) { construct_u(that); }
         explicit choice(const F& first, bool) : index(0_z) { new (&u) F(first); }
         explicit choice(F&& first, bool) : index(0_z) { new (&u) F(first); }
         explicit choice(const S& second, bool, bool) : index(1_z) { new (&u) S(second); }
@@ -32,7 +32,7 @@ namespace ax
         explicit choice(T&& third, bool, bool, bool) : index(2_z) { new (&u) T(third); }
         virtual ~choice() { destruct_u(); }
 
-        ax::choice& operator=(const ax::choice& that)
+        choice& operator=(const choice& that)
         {
             destruct_u();
             index = that.index;
@@ -40,7 +40,7 @@ namespace ax
             return *this;
         }
 
-        ax::choice& operator=(ax::choice&& that)
+        choice& operator=(choice&& that)
         {
             destruct_u();
             index = that.index;
@@ -120,7 +120,7 @@ namespace ax
 
     private:
 
-        void construct_u(const ax::choice& that)
+        void construct_u(const choice& that)
         {
             switch (index)
             {
@@ -130,7 +130,7 @@ namespace ax
             }
         }
 
-        void construct_u(ax::choice&& that)
+        void construct_u(choice&& that)
         {
             switch (index)
             {

@@ -7,12 +7,12 @@
 #include <memory>
 #include <algorithm>
 #include <string>
-#include <vector>
 #include <unordered_set>
 #include <unordered_map>
 
 #include "prelude.hpp"
 #include "string.hpp"
+#include "vector.hpp"
 #include "pair.hpp"
 #include "record.hpp"
 #include "option.hpp"
@@ -125,18 +125,18 @@ namespace ax
 
     // A type descriptor for std::vector<T> values.
     template<typename T>
-    class vector_descriptor : public ax::type_descriptor
+    class std_vector_descriptor : public ax::type_descriptor
     {
     public:
 
         void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
-            assign_value<std::vector<T>>(source_ptr, target_ptr);
+            ax::assign_value<std::vector<T>>(source_ptr, target_ptr);
         }
 
         void inject_value(const void* source_ptr, void* target_ptr) const override
         {
-            assign_value<std::vector<T>>(source_ptr, target_ptr);
+            ax::assign_value<std::vector<T>>(source_ptr, target_ptr);
         }
 
         void read_value(const ax::symbol& source_symbol, void* target_ptr) const override
@@ -174,18 +174,18 @@ namespace ax
     };
 
     template<typename T>
-    class unordered_set_descriptor : public ax::type_descriptor
+    class std_unordered_set_descriptor : public ax::type_descriptor
     {
     public:
 
         void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
-            assign_value<std::unordered_set<T>>(source_ptr, target_ptr);
+            ax::assign_value<std::unordered_set<T>>(source_ptr, target_ptr);
         }
 
         void inject_value(const void* source_ptr, void* target_ptr) const override
         {
-            assign_value<std::unordered_set<T>>(source_ptr, target_ptr);
+            ax::assign_value<std::unordered_set<T>>(source_ptr, target_ptr);
         }
 
         void read_value(const ax::symbol& source_symbol, void* target_ptr) const override
@@ -210,7 +210,7 @@ namespace ax
         void write_value(const void* source_ptr, ax::symbol& target_symbol) const override
         {
             VAL* set_ptr = static_cast<const std::unordered_set<T>*>(source_ptr);
-            std::vector<ax::symbol> symbols{};
+            ax::vector<ax::symbol> symbols{};
             for (VAL& elem : *set_ptr)
             {
                 ax::symbol symbol_mvb{};
@@ -223,18 +223,18 @@ namespace ax
     };
 
     template<typename K, typename V>
-    class unordered_map_descriptor : public ax::type_descriptor
+    class std_unordered_map_descriptor : public ax::type_descriptor
     {
     public:
 
         void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
-            assign_value<std::unordered_map<K, V>>(source_ptr, target_ptr);
+            ax::assign_value<std::unordered_map<K, V>>(source_ptr, target_ptr);
         }
 
         void inject_value(const void* source_ptr, void* target_ptr) const override
         {
-            assign_value<std::unordered_map<K, V>>(source_ptr, target_ptr);
+            ax::assign_value<std::unordered_map<K, V>>(source_ptr, target_ptr);
         }
 
         void read_value(const ax::symbol& source_symbol, void* target_ptr) const override
@@ -278,13 +278,63 @@ namespace ax
             VAL* map_ptr = static_cast<const std::unordered_map<K, V>*>(source_ptr);
             VAL& key_type_descriptor = get_type_descriptor<K>();
             VAL& value_type_descriptor = get_type_descriptor<V>();
-            std::vector<ax::symbol> symbols{};
+            ax::vector<ax::symbol> symbols{};
             for (VAL& kvp : *map_ptr)
             {
                 symbols_t symbol_kvp_mvb({ ax::symbol{}, ax::symbol{} });
                 key_type_descriptor->write_value(static_cast<const void*>(&kvp.first), symbol_kvp_mvb[0]);
                 value_type_descriptor->write_value(static_cast<const void*>(&kvp.second), symbol_kvp_mvb[1]);
                 symbols.emplace_back(ax::symbols(std::move(symbol_kvp_mvb)));
+            }
+            target_symbol = ax::symbols(symbols);
+        }
+    };
+
+    // A type descriptor for ax::vector<T> values.
+    template<typename T>
+    class ax_vector_descriptor : public ax::type_descriptor
+    {
+    public:
+
+        void inspect_value(const void* source_ptr, void* target_ptr) const override
+        {
+            ax::assign_value<ax::vector<T>>(source_ptr, target_ptr);
+        }
+
+        void inject_value(const void* source_ptr, void* target_ptr) const override
+        {
+            ax::assign_value<ax::vector<T>>(source_ptr, target_ptr);
+        }
+
+        void read_value(const ax::symbol& source_symbol, void* target_ptr) const override
+        {
+            VAR* vector_ptr = static_cast<ax::vector<T>*>(target_ptr);
+            source_symbol.match(
+                [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+                [](VAL&) { throw std::invalid_argument("Expected symbols value."); },
+                [&](VAL& symbols)
+            {
+                vector_ptr->clear();
+                VAL& type_descriptor = get_type_descriptor<T>();
+                for (VAL& symbol : symbols)
+                {
+                    T elem_mvb{};
+                    type_descriptor->read_value(symbol, static_cast<void*>(&elem_mvb));
+                    vector_ptr->emplace_back(std::move(elem_mvb));
+                }
+            });
+        }
+
+        void write_value(const void* source_ptr, ax::symbol& target_symbol) const override
+        {
+            VAL* vector_ptr = static_cast<const ax::vector<T>*>(source_ptr);
+            ax::vector<ax::symbol> symbols{};
+            for (VAL& elem : *vector_ptr)
+            {
+                ax::symbol symbol_mvb{};
+                VAL& type_descriptor = get_type_descriptor<T>();
+                type_descriptor->write_value(static_cast<const void*>(&elem), symbol_mvb);
+                symbols.emplace_back(std::move(symbol_mvb));
             }
             target_symbol = ax::symbols(symbols);
         }
@@ -297,12 +347,12 @@ namespace ax
 
         void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
-            assign_shared_ptr<std::shared_ptr<T>>(source_ptr, target_ptr);
+            ax::assign_shared_ptr<std::shared_ptr<T>>(source_ptr, target_ptr);
         }
 
         void inject_value(const void* source_ptr, void* target_ptr) const override
         {
-            assign_shared_ptr<std::shared_ptr<T>>(source_ptr, target_ptr);
+            ax::assign_shared_ptr<std::shared_ptr<T>>(source_ptr, target_ptr);
         }
 
         void read_value(const ax::symbol& source_symbol, void* target_ptr) const override
@@ -322,21 +372,23 @@ namespace ax
         }
     };
 
+    // TODO: std_pair_descriptor?
+
     template<typename P>
-    class pair_descriptor : public ax::type_descriptor
+    class ax_pair_descriptor : public ax::type_descriptor
     {
     public:
 
         void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(P, pair);
-            assign_value<P>(source_ptr, target_ptr);
+            ax::assign_value<P>(source_ptr, target_ptr);
         }
 
         void inject_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(P, pair);
-            assign_value<P>(source_ptr, target_ptr);
+            ax::assign_value<P>(source_ptr, target_ptr);
         }
 
         void read_value(const ax::symbol& source_symbol, void* target_ptr) const override
@@ -372,9 +424,9 @@ namespace ax
             symbols_mvb.resize(2_z);
             VAL& first_type_descriptor = get_type_descriptor<typename P::first_type>();
             VAL& second_type_descriptor = get_type_descriptor<typename P::second_type>();
-            first_type_descriptor->write_value(static_cast<const void*>(&fst(*pair_ptr)), symbols_mvb[0]);
-            second_type_descriptor->write_value(static_cast<const void*>(&snd(*pair_ptr)), symbols_mvb[1]);
-            target_symbol = symbols(std::move(symbols_mvb));
+            first_type_descriptor->write_value(static_cast<const void*>(&ax::fst(*pair_ptr)), symbols_mvb[0]);
+            second_type_descriptor->write_value(static_cast<const void*>(&ax::snd(*pair_ptr)), symbols_mvb[1]);
+            target_symbol = ax::symbols(std::move(symbols_mvb));
         }
     };
 
@@ -386,13 +438,13 @@ namespace ax
         void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(R, record);
-            assign_value<R>(source_ptr, target_ptr);
+            ax::assign_value<R>(source_ptr, target_ptr);
         }
 
         void inject_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(R, record);
-            assign_value<R>(source_ptr, target_ptr);
+            ax::assign_value<R>(source_ptr, target_ptr);
         }
 
         void read_value(const ax::symbol& source_symbol, void* target_ptr) const override
@@ -432,10 +484,10 @@ namespace ax
             VAL& first_type_descriptor = get_type_descriptor<typename R::first_type>();
             VAL& second_type_descriptor = get_type_descriptor<typename R::second_type>();
             VAL& third_type_descriptor = get_type_descriptor<typename R::third_type>();
-            first_type_descriptor->write_value(static_cast<const void*>(&fst(*record_ptr)), symbols_mvb[0]);
-            second_type_descriptor->write_value(static_cast<const void*>(&snd(*record_ptr)), symbols_mvb[1]);
-            third_type_descriptor->write_value(static_cast<const void*>(&thd(*record_ptr)), symbols_mvb[2]);
-            target_symbol = symbols(std::move(symbols_mvb));
+            first_type_descriptor->write_value(static_cast<const void*>(&ax::fst(*record_ptr)), symbols_mvb[0]);
+            second_type_descriptor->write_value(static_cast<const void*>(&ax::snd(*record_ptr)), symbols_mvb[1]);
+            third_type_descriptor->write_value(static_cast<const void*>(&ax::thd(*record_ptr)), symbols_mvb[2]);
+            target_symbol = ax::symbols(std::move(symbols_mvb));
         }
     };
 
@@ -447,13 +499,13 @@ namespace ax
         void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(R, record4);
-            assign_value<R>(source_ptr, target_ptr);
+            ax::assign_value<R>(source_ptr, target_ptr);
         }
 
         void inject_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(R, record4);
-            assign_value<R>(source_ptr, target_ptr);
+            ax::assign_value<R>(source_ptr, target_ptr);
         }
 
         void read_value(const ax::symbol& source_symbol, void* target_ptr) const override
@@ -497,11 +549,11 @@ namespace ax
             VAL& second_type_descriptor = get_type_descriptor<typename R::second_type>();
             VAL& third_type_descriptor = get_type_descriptor<typename R::third_type>();
             VAL& fourth_type_descriptor = get_type_descriptor<typename R::fourth_type>();
-            first_type_descriptor->write_value(static_cast<const void*>(&fst(*record_ptr)), symbols_mvb[0]);
-            second_type_descriptor->write_value(static_cast<const void*>(&snd(*record_ptr)), symbols_mvb[1]);
-            third_type_descriptor->write_value(static_cast<const void*>(&thd(*record_ptr)), symbols_mvb[2]);
-            fourth_type_descriptor->write_value(static_cast<const void*>(&frth(*record_ptr)), symbols_mvb[3]);
-            target_symbol = symbols(std::move(symbols_mvb));
+            first_type_descriptor->write_value(static_cast<const void*>(&ax::fst(*record_ptr)), symbols_mvb[0]);
+            second_type_descriptor->write_value(static_cast<const void*>(&ax::snd(*record_ptr)), symbols_mvb[1]);
+            third_type_descriptor->write_value(static_cast<const void*>(&ax::thd(*record_ptr)), symbols_mvb[2]);
+            fourth_type_descriptor->write_value(static_cast<const void*>(&ax::frth(*record_ptr)), symbols_mvb[3]);
+            target_symbol = ax::symbols(std::move(symbols_mvb));
         }
     };
 
@@ -513,13 +565,13 @@ namespace ax
         void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(R, record5);
-            assign_value<R>(source_ptr, target_ptr);
+            ax::assign_value<R>(source_ptr, target_ptr);
         }
 
         void inject_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(R, record5);
-            assign_value<R>(source_ptr, target_ptr);
+            ax::assign_value<R>(source_ptr, target_ptr);
         }
 
         void read_value(const ax::symbol& source_symbol, void* target_ptr) const override
@@ -572,12 +624,12 @@ namespace ax
             VAL& third_type_descriptor = get_type_descriptor<typename R::third_type>();
             VAL& fourth_type_descriptor = get_type_descriptor<typename R::fourth_type>();
             VAL& fifth_type_descriptor = get_type_descriptor<typename R::fifth_type>();
-            first_type_descriptor->write_value(static_cast<const void*>(&fst(*record_ptr)), symbols_mvb[0]);
-            second_type_descriptor->write_value(static_cast<const void*>(&snd(*record_ptr)), symbols_mvb[1]);
-            third_type_descriptor->write_value(static_cast<const void*>(&thd(*record_ptr)), symbols_mvb[2]);
-            fourth_type_descriptor->write_value(static_cast<const void*>(&frth(*record_ptr)), symbols_mvb[3]);
-            fifth_type_descriptor->write_value(static_cast<const void*>(&ffth(*record_ptr)), symbols_mvb[4]);
-            target_symbol = symbols(std::move(symbols_mvb));
+            first_type_descriptor->write_value(static_cast<const void*>(&ax::fst(*record_ptr)), symbols_mvb[0]);
+            second_type_descriptor->write_value(static_cast<const void*>(&ax::snd(*record_ptr)), symbols_mvb[1]);
+            third_type_descriptor->write_value(static_cast<const void*>(&ax::thd(*record_ptr)), symbols_mvb[2]);
+            fourth_type_descriptor->write_value(static_cast<const void*>(&ax::frth(*record_ptr)), symbols_mvb[3]);
+            fifth_type_descriptor->write_value(static_cast<const void*>(&ax::ffth(*record_ptr)), symbols_mvb[4]);
+            target_symbol = ax::symbols(std::move(symbols_mvb));
         }
     };
 
@@ -588,23 +640,23 @@ namespace ax
 
         void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
-            assign_value<option<T>>(source_ptr, target_ptr);
+            ax::assign_value<ax::option<T>>(source_ptr, target_ptr);
         }
 
         void inject_value(const void* source_ptr, void* target_ptr) const override
         {
-            assign_value<option<T>>(source_ptr, target_ptr);
+            ax::assign_value<ax::option<T>>(source_ptr, target_ptr);
         }
 
         void read_value(const ax::symbol& source_symbol, void* target_ptr) const override
         {
-            VAR* option_ptr = static_cast<option<T>*>(target_ptr);
-            VAL& type_descriptor = get_type_descriptor<T>();
+            VAR* option_ptr = static_cast<ax::option<T>*>(target_ptr);
+            VAL& type_descriptor = ax::get_type_descriptor<T>();
             source_symbol.match(
             [&](VAL& atom)
             {
                 if (atom != "none") throw std::invalid_argument("Expected the atom 'none'.");
-                *option_ptr = none<T>();
+                *option_ptr = ax::none<T>();
             },
             [&](VAL&)
             {
@@ -618,22 +670,22 @@ namespace ax
                     throw std::invalid_argument("Expected two symbols, with the first being the atom 'some'.");
                 T some_value_mvb{};
                 type_descriptor->read_value(symbols[1], &some_value_mvb);
-                *option_ptr = some(std::move(some_value_mvb));
+                *option_ptr = ax::some(std::move(some_value_mvb));
             });
         }
 
         void write_value(const void* source_ptr, ax::symbol& target_symbol) const override
         {
-            VAL* option_ptr = static_cast<const option<T>*>(source_ptr);
+            VAL* option_ptr = static_cast<const ax::option<T>*>(source_ptr);
             option_ptr->match(
             [&](VAL& some_value)
             {
                 ax::symbol symbol_value_mvb{};
-                VAL& type_descriptor = get_type_descriptor<T>();
+                VAL& type_descriptor = ax::get_type_descriptor<T>();
                 type_descriptor->write_value(static_cast<const void*>(&some_value), symbol_value_mvb);
-                target_symbol = symbols({ atom("some"), std::move(symbol_value_mvb) });
+                target_symbol = ax::symbols({ ax::atom("some"), std::move(symbol_value_mvb) });
             },
-            [&]() { target_symbol = atom("none"); });
+            [&]() { target_symbol = ax::atom("none"); });
         }
     };
 
@@ -681,14 +733,14 @@ namespace ax
                 if (either_name == right_name)
                 {
                     typename E::right_type right_value_mvb{};
-                    VAL& type_descriptor = get_type_descriptor<typename E::right_type>();
+                    VAL& type_descriptor = ax::get_type_descriptor<typename E::right_type>();
                     type_descriptor->read_value(symbol_value, &right_value_mvb);
                     *either_ptr = E(std::move(right_value_mvb), false);
                 }
                 else if (either_name == left_name)
                 {
                     typename E::left_type left_value_mvb{};
-                    VAL& type_descriptor = get_type_descriptor<typename E::left_type>();
+                    VAL& type_descriptor = ax::get_type_descriptor<typename E::left_type>();
                     type_descriptor->read_value(symbol_value, &left_value_mvb);
                     *either_ptr = E(std::move(left_value_mvb), false, false);
                 }
@@ -710,16 +762,16 @@ namespace ax
             [&](VAL& right_value)
             {
                 ax::symbol symbol_mvb{};
-                VAL& right_type_descriptor = get_type_descriptor<typename E::right_type>();
+                VAL& right_type_descriptor = ax::get_type_descriptor<typename E::right_type>();
                 right_type_descriptor->write_value(static_cast<const void*>(&right_value), symbol_mvb);
-                target_symbol = symbols({ atom(either_ptr->get_right_name()), std::move(symbol_mvb) });
+                target_symbol = ax::symbols({ ax::atom(either_ptr->get_right_name()), std::move(symbol_mvb) });
             },
             [&](VAL& left_value)
             {
                 ax::symbol symbol_mvb{};
-                VAL& left_type_descriptor = get_type_descriptor<typename E::left_type>();
+                VAL& left_type_descriptor = ax::get_type_descriptor<typename E::left_type>();
                 left_type_descriptor->write_value(static_cast<const void*>(&left_value), symbol_mvb);
-                target_symbol = symbols({ atom(either_ptr->get_left_name()), std::move(symbol_mvb) });
+                target_symbol = ax::symbols({ ax::atom(either_ptr->get_left_name()), std::move(symbol_mvb) });
             });
         }
     };
@@ -732,13 +784,13 @@ namespace ax
         void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(C, choice);
-            assign_value<C>(source_ptr, target_ptr);
+            ax::assign_value<C>(source_ptr, target_ptr);
         }
 
         void inject_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(C, choice);
-            assign_value<C>(source_ptr, target_ptr);
+            ax::assign_value<C>(source_ptr, target_ptr);
         }
 
         void read_value(const ax::symbol& source_symbol, void* target_ptr) const override
@@ -769,21 +821,21 @@ namespace ax
                 if (choice_name == first_name)
                 {
                     typename C::first_type first_value_mvb{};
-                    VAL& type_descriptor = get_type_descriptor<typename C::first_type>();
+                    VAL& type_descriptor = ax::get_type_descriptor<typename C::first_type>();
                     type_descriptor->read_value(symbol_value, &first_value_mvb);
                     *choice_ptr = C(std::move(first_value_mvb), false);
                 }
                 else if (choice_name == second_name)
                 {
                     typename C::second_type second_value_mvb{};
-                    VAL& type_descriptor = get_type_descriptor<typename C::second_type>();
+                    VAL& type_descriptor = ax::get_type_descriptor<typename C::second_type>();
                     type_descriptor->read_value(symbol_value, &second_value_mvb);
                     *choice_ptr = C(std::move(second_value_mvb), false, false);
                 }
                 else if (choice_name == third_name)
                 {
                     typename C::third_type third_value_mvb{};
-                    VAL& type_descriptor = get_type_descriptor<typename C::third_type>();
+                    VAL& type_descriptor = ax::get_type_descriptor<typename C::third_type>();
                     type_descriptor->read_value(symbol_value, &third_value_mvb);
                     *choice_ptr = C(std::move(third_value_mvb), false, false, false);
                 }
@@ -806,23 +858,23 @@ namespace ax
             [&](VAL& first_value)
             {
                 ax::symbol symbol_mvb{};
-                VAL& first_type_descriptor = get_type_descriptor<typename C::first_type>();
+                VAL& first_type_descriptor = ax::get_type_descriptor<typename C::first_type>();
                 first_type_descriptor->write_value(static_cast<const void*>(&first_value), symbol_mvb);
-                target_symbol = symbols({ atom(choice_ptr->get_first_name()), std::move(symbol_mvb) });
+                target_symbol = ax::symbols({ ax::atom(choice_ptr->get_first_name()), std::move(symbol_mvb) });
             },
             [&](VAL& second_value)
             {
                 ax::symbol symbol_mvb{};
-                VAL& second_type_descriptor = get_type_descriptor<typename C::second_type>();
+                VAL& second_type_descriptor = ax::get_type_descriptor<typename C::second_type>();
                 second_type_descriptor->write_value(static_cast<const void*>(&second_value), symbol_mvb);
-                target_symbol = symbols({ atom(choice_ptr->get_second_name()), std::move(symbol_mvb) });
+                target_symbol = ax::symbols({ ax::atom(choice_ptr->get_second_name()), std::move(symbol_mvb) });
             },
             [&](VAL& third_value)
             {
                 ax::symbol symbol_mvb{};
-                VAL& third_type_descriptor = get_type_descriptor<typename C::third_type>();
+                VAL& third_type_descriptor = ax::get_type_descriptor<typename C::third_type>();
                 third_type_descriptor->write_value(static_cast<const void*>(&third_value), symbol_mvb);
-                target_symbol = symbols({ atom(choice_ptr->get_third_name()), std::move(symbol_mvb) });
+                target_symbol = ax::symbols({ ax::atom(choice_ptr->get_third_name()), std::move(symbol_mvb) });
             });
         }
     };
@@ -835,13 +887,13 @@ namespace ax
         void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(C, choice4);
-            assign_value<C>(source_ptr, target_ptr);
+            ax::assign_value<C>(source_ptr, target_ptr);
         }
 
         void inject_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(C, choice4);
-            assign_value<C>(source_ptr, target_ptr);
+            ax::assign_value<C>(source_ptr, target_ptr);
         }
 
         void read_value(const ax::symbol& source_symbol, void* target_ptr) const override
@@ -873,28 +925,28 @@ namespace ax
                 if (choice_name == first_name)
                 {
                     typename C::first_type first_value_mvb{};
-                    VAL& type_descriptor = get_type_descriptor<typename C::first_type>();
+                    VAL& type_descriptor = ax::get_type_descriptor<typename C::first_type>();
                     type_descriptor->read_value(symbol_value, &first_value_mvb);
                     *choice_ptr = C(std::move(first_value_mvb), false);
                 }
                 else if (choice_name == second_name)
                 {
                     typename C::second_type second_value_mvb{};
-                    VAL& type_descriptor = get_type_descriptor<typename C::second_type>();
+                    VAL& type_descriptor = ax::get_type_descriptor<typename C::second_type>();
                     type_descriptor->read_value(symbol_value, &second_value_mvb);
                     *choice_ptr = C(std::move(second_value_mvb), false, false);
                 }
                 else if (choice_name == third_name)
                 {
                     typename C::third_type third_value_mvb{};
-                    VAL& type_descriptor = get_type_descriptor<typename C::third_type>();
+                    VAL& type_descriptor = ax::get_type_descriptor<typename C::third_type>();
                     type_descriptor->read_value(symbol_value, &third_value_mvb);
                     *choice_ptr = C(std::move(third_value_mvb), false, false, false);
                 }
                 else if (choice_name == fourth_name)
                 {
                     typename C::fourth_type fourth_value_mvb{};
-                    VAL& type_descriptor = get_type_descriptor<typename C::fourth_type>();
+                    VAL& type_descriptor = ax::get_type_descriptor<typename C::fourth_type>();
                     type_descriptor->read_value(symbol_value, &fourth_value_mvb);
                     *choice_ptr = C(std::move(fourth_value_mvb), false, false, false, false);
                 }
@@ -918,30 +970,30 @@ namespace ax
             [&](VAL& first_value)
             {
                 ax::symbol symbol_mvb{};
-                VAL& first_type_descriptor = get_type_descriptor<typename C::first_type>();
+                VAL& first_type_descriptor = ax::get_type_descriptor<typename C::first_type>();
                 first_type_descriptor->write_value(static_cast<const void*>(&first_value), symbol_mvb);
-                target_symbol = symbols({ atom(choice_ptr->get_first_name()), std::move(symbol_mvb) });
+                target_symbol = ax::symbols({ ax::atom(choice_ptr->get_first_name()), std::move(symbol_mvb) });
             },
             [&](VAL& second_value)
             {
                 ax::symbol symbol_mvb{};
-                VAL& second_type_descriptor = get_type_descriptor<typename C::second_type>();
+                VAL& second_type_descriptor = ax::get_type_descriptor<typename C::second_type>();
                 second_type_descriptor->write_value(static_cast<const void*>(&second_value), symbol_mvb);
-                target_symbol = symbols({ atom(choice_ptr->get_second_name()), std::move(symbol_mvb) });
+                target_symbol = ax::symbols({ ax::atom(choice_ptr->get_second_name()), std::move(symbol_mvb) });
             },
             [&](VAL& third_value)
             {
                 ax::symbol symbol_mvb{};
-                VAL& third_type_descriptor = get_type_descriptor<typename C::third_type>();
+                VAL& third_type_descriptor = ax::get_type_descriptor<typename C::third_type>();
                 third_type_descriptor->write_value(static_cast<const void*>(&third_value), symbol_mvb);
-                target_symbol = symbols({ atom(choice_ptr->get_third_name()), std::move(symbol_mvb) });
+                target_symbol = ax::symbols({ ax::atom(choice_ptr->get_third_name()), std::move(symbol_mvb) });
             },
             [&](VAL& fourth_value)
             {
                 ax::symbol symbol_mvb{};
-                VAL& fourth_type_descriptor = get_type_descriptor<typename C::fourth_type>();
+                VAL& fourth_type_descriptor = ax::get_type_descriptor<typename C::fourth_type>();
                 fourth_type_descriptor->write_value(static_cast<const void*>(&fourth_value), symbol_mvb);
-                target_symbol = symbols({ atom(choice_ptr->get_fourth_name()), std::move(symbol_mvb) });
+                target_symbol = ax::symbols({ ax::atom(choice_ptr->get_fourth_name()), std::move(symbol_mvb) });
             });
         }
     };
@@ -954,13 +1006,13 @@ namespace ax
         void inspect_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(C, choice5);
-            assign_value<C>(source_ptr, target_ptr);
+            ax::assign_value<C>(source_ptr, target_ptr);
         }
 
         void inject_value(const void* source_ptr, void* target_ptr) const override
         {
             CONSTRAIN(C, choice5);
-            assign_value<C>(source_ptr, target_ptr);
+            ax::assign_value<C>(source_ptr, target_ptr);
         }
 
         void read_value(const ax::symbol& source_symbol, void* target_ptr) const override
@@ -993,35 +1045,35 @@ namespace ax
                 if (choice_name == first_name)
                 {
                     typename C::first_type first_value_mvb{};
-                    VAL& type_descriptor = get_type_descriptor<typename C::first_type>();
+                    VAL& type_descriptor = ax::get_type_descriptor<typename C::first_type>();
                     type_descriptor->read_value(symbol_value, &first_value_mvb);
                     *choice_ptr = C(std::move(first_value_mvb), false);
                 }
                 else if (choice_name == second_name)
                 {
                     typename C::second_type second_value_mvb{};
-                    VAL& type_descriptor = get_type_descriptor<typename C::second_type>();
+                    VAL& type_descriptor = ax::get_type_descriptor<typename C::second_type>();
                     type_descriptor->read_value(symbol_value, &second_value_mvb);
                     *choice_ptr = C(std::move(second_value_mvb), false, false);
                 }
                 else if (choice_name == third_name)
                 {
                     typename C::third_type third_value_mvb{};
-                    VAL& type_descriptor = get_type_descriptor<typename C::third_type>();
+                    VAL& type_descriptor = ax::get_type_descriptor<typename C::third_type>();
                     type_descriptor->read_value(symbol_value, &third_value_mvb);
                     *choice_ptr = C(std::move(third_value_mvb), false, false, false);
                 }
                 else if (choice_name == fourth_name)
                 {
                     typename C::fourth_type fourth_value_mvb{};
-                    VAL& type_descriptor = get_type_descriptor<typename C::fourth_type>();
+                    VAL& type_descriptor = ax::get_type_descriptor<typename C::fourth_type>();
                     type_descriptor->read_value(symbol_value, &fourth_value_mvb);
                     *choice_ptr = C(std::move(fourth_value_mvb), false, false, false, false);
                 }
                 else if (choice_name == fifth_name)
                 {
                     typename C::fifth_type fifth_value_mvb{};
-                    VAL& type_descriptor = get_type_descriptor<typename C::fifth_type>();
+                    VAL& type_descriptor = ax::get_type_descriptor<typename C::fifth_type>();
                     type_descriptor->read_value(symbol_value, &fifth_value_mvb);
                     *choice_ptr = C(std::move(fifth_value_mvb), false, false, false, false, false);
                 }
@@ -1046,37 +1098,37 @@ namespace ax
             [&](VAL& first_value)
             {
                 ax::symbol symbol_mvb{};
-                VAL& first_type_descriptor = get_type_descriptor<typename C::first_type>();
+                VAL& first_type_descriptor = ax::get_type_descriptor<typename C::first_type>();
                 first_type_descriptor->write_value(static_cast<const void*>(&first_value), symbol_mvb);
-                target_symbol = symbols({ atom(choice_ptr->get_first_name()), std::move(symbol_mvb) });
+                target_symbol = ax::symbols({ ax::atom(choice_ptr->get_first_name()), std::move(symbol_mvb) });
             },
             [&](VAL& second_value)
             {
                 ax::symbol symbol_mvb{};
-                VAL& second_type_descriptor = get_type_descriptor<typename C::second_type>();
+                VAL& second_type_descriptor = ax::get_type_descriptor<typename C::second_type>();
                 second_type_descriptor->write_value(static_cast<const void*>(&second_value), symbol_mvb);
-                target_symbol = symbols({ atom(choice_ptr->get_second_name()), std::move(symbol_mvb) });
+                target_symbol = ax::symbols({ ax::atom(choice_ptr->get_second_name()), std::move(symbol_mvb) });
             },
             [&](VAL& third_value)
             {
                 ax::symbol symbol_mvb{};
-                VAL& third_type_descriptor = get_type_descriptor<typename C::third_type>();
+                VAL& third_type_descriptor = ax::get_type_descriptor<typename C::third_type>();
                 third_type_descriptor->write_value(static_cast<const void*>(&third_value), symbol_mvb);
-                target_symbol = symbols({ atom(choice_ptr->get_third_name()), std::move(symbol_mvb) });
+                target_symbol = ax::symbols({ ax::atom(choice_ptr->get_third_name()), std::move(symbol_mvb) });
             },
             [&](VAL& fourth_value)
             {
                 ax::symbol symbol_mvb{};
-                VAL& fourth_type_descriptor = get_type_descriptor<typename C::fourth_type>();
+                VAL& fourth_type_descriptor = ax::get_type_descriptor<typename C::fourth_type>();
                 fourth_type_descriptor->write_value(static_cast<const void*>(&fourth_value), symbol_mvb);
-                target_symbol = symbols({ atom(choice_ptr->get_fourth_name()), std::move(symbol_mvb) });
+                target_symbol = ax::symbols({ ax::atom(choice_ptr->get_fourth_name()), std::move(symbol_mvb) });
             },
             [&](VAL& fifth_value)
             {
                 ax::symbol symbol_mvb{};
-                VAL& fifth_type_descriptor = get_type_descriptor<typename C::fifth_type>();
+                VAL& fifth_type_descriptor = ax::get_type_descriptor<typename C::fifth_type>();
                 fifth_type_descriptor->write_value(static_cast<const void*>(&fifth_value), symbol_mvb);
-                target_symbol = symbols({ atom(choice_ptr->get_fifth_name()), std::move(symbol_mvb) });
+                target_symbol = ax::symbols({ ax::atom(choice_ptr->get_fifth_name()), std::move(symbol_mvb) });
             });
         }
     };

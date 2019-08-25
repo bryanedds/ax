@@ -17,7 +17,7 @@ namespace ax
     {
     public:
         
-        constexpr id_t() : x(zero<int64_t>()), y(zero<int64_t>()) { }
+        constexpr id_t() : x(ax::zero<int64_t>()), y(zero<int64_t>()) { }
         constexpr id_t(const ax::id_t&) = default;
         constexpr id_t(ax::id_t&&) = default;
         ax::id_t& operator=(const ax::id_t&) = default;
@@ -45,7 +45,7 @@ namespace ax
     template<>
     constexpr ax::id_t zero<ax::id_t>()
     {
-        return id_t::invalid();
+        return ax::id_t::invalid();
     }
 
     template<>

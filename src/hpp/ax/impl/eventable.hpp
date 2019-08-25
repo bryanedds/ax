@@ -29,21 +29,21 @@ namespace ax
         CONSTRAINT(eventable);
 
         eventable() :
-            pred_id(std::make_unique<id_t>())
+            pred_id(std::make_unique<ax::id_t>())
         {
             CONSTRAIN(P, eventable);
             program = dynamic_cast<P*>(this);
         }
 
-        id_t get_subscription_id()
+        ax::id_t get_subscription_id()
         {
             VAL& pred_id = *this->pred_id;
             VAL& succ_id = succ(pred_id);
-            this->pred_id = std::make_unique<id_t>(succ_id);
+            this->pred_id = std::make_unique<ax::id_t>(succ_id);
             return succ_id;
         }
 
-        void unsubscribe_event(id_t subscription_id)
+        void unsubscribe_event(ax::id_t subscription_id)
         {
             VAL& unsubscription_opt = unsubscription_map.find(subscription_id);
             if (unsubscription_opt != std::end(unsubscription_map))

@@ -5,13 +5,13 @@
 #include <stdexcept>
 #include <memory>
 #include <functional>
-#include <vector>
 #include <unordered_set>
 #include <unordered_map>
 #include <queue>
 
 #include "prelude.hpp"
 #include "string.hpp"
+#include "vector.hpp"
 #include "option.hpp"
 #include "address.hpp"
 #include "addressable.hpp"
@@ -87,7 +87,7 @@ namespace ax
 
         system_t(std::size_t capacity = 128)
         {
-            CONSTRAIN(T, ax::component);
+            CONSTRAIN(T, component);
             components.reserve(capacity);
             component_map.reserve(capacity);
         }
@@ -164,7 +164,7 @@ namespace ax
         ENABLE_CAST(ax::system_t<T>, ax::system);
         virtual void update_component(T& component, int mode) = 0;
 
-        std::vector<T> components;
+        ax::vector<T> components;
         std::unordered_map<ax::address, std::size_t> component_map;
         std::queue<std::size_t> free_list;
     };

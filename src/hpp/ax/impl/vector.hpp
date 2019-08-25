@@ -28,13 +28,12 @@ namespace ax
         vector() : vector({ }) { }
 
         vector(std::initializer_list<T> il) :
-            vector(il.begin(), il.end) { }
+            vector(il.begin(), il.end()) { }
 
         vector(const T* begin, const T* end) :
             big_vector(),
             small_end(small_begin)
         {
-            CONSTRAIN_AS_CONTAINER(C);
             VAR size = end - begin;
             if (size > N)
             {
@@ -43,7 +42,6 @@ namespace ax
             else
             {
                 VAR i = 0_z;
-                C::iterator begin = begin;
                 while (begin != end)
                 {
                     if (i >= N) break;
@@ -62,7 +60,7 @@ namespace ax
             VAL size = that.size();
             for (VAR i = 0_z; i < size; ++i)
             {
-                *small_end = items[i];
+                *small_end = that.small_begin[i];
                 ++small_end;
             }
         }
@@ -74,7 +72,7 @@ namespace ax
             VAL size = that.size();
             for (VAR i = 0_z; i < size; ++i)
             {
-                *small_end = items[i];
+                *small_end = that.small_begin[i];
                 ++small_end;
             }
         }
@@ -99,7 +97,7 @@ namespace ax
             VAL size = that.size();
             for (VAR i = 0_z; i < size; ++i)
             {
-                *small_end = items[i];
+                *small_end = that.small_begin[i];
                 ++small_end;
             }
             return *this;
@@ -108,8 +106,8 @@ namespace ax
         bool operator==(const ax::vector<T, A, N>& that) const
         {
             return
-                big_vector_used ?
-                big_vector = that.big_vector :
+                size() > N ?
+                big_vector == that.big_vector :
                 std::memcmp(small_begin, that.small_begin, sizeof(T) * N) == 0;
         }
 
@@ -118,8 +116,8 @@ namespace ax
             return !(*this == that);
         }
 
-        T* begin() { return big_vector_used ? big_vector.begin() : small_begin; }
-        T* end() { return (big_vector_used ? big_vector.end() : small_end; }
+        T* begin() { return size() > N ? big_vector.data() : small_begin; }
+        T* end() { return size() > N ? big_vector.data() + big_vector.size() : small_end; }
         const T* cbegin() const { return const_cast<ax::vector<T, A, N>*>(this)->begin(); }
         const T* cend() const { return const_cast<ax::vector<T, A, N>*>(this)->end(); }
         const T* begin() const { return cbegin(); }
@@ -127,7 +125,7 @@ namespace ax
 
         void push_back(const T& item)
         {
-            VAL size = size();
+            VAL size = this->size();
             if (size < N)
             {
                 *small_end = item;
@@ -135,7 +133,7 @@ namespace ax
             }
             else
             {
-                if (size = N) big_vector.insert(big_vector.begin(), small_begin, small_end);
+                if (size == N) big_vector.insert(big_vector.begin(), small_begin, small_end);
                 big_vector.push_back(item);
             }
         }

@@ -23,8 +23,8 @@ namespace ax
         using reify = ax::record5<A, B, C, D, E>;
 
         record5() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
-        record5(const ax::record5&) = default;
-        record5(ax::record5&&) = default;
+        record5(const record5&) = default;
+        record5(record5&&) = default;
 
         record5(const First& first, const Second& second, const Third& third, const Fourth& fourth, const Fifth& fifth) :
             first(first), second(second), third(third), fourth(fourth), fifth(fifth) { }
@@ -34,8 +34,8 @@ namespace ax
         
         virtual ~record5() = default;
 
-        ax::record5& operator=(const ax::record5&) = default;
-        ax::record5& operator=(ax::record5&&) = default;
+        record5& operator=(const record5&) = default;
+        record5& operator=(record5&&) = default;
 
         const First& fst() const { return first; }
         const Second& snd() const { return second; }
