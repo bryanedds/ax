@@ -10,11 +10,11 @@
 #include "prelude.hpp"
 #include "string.hpp"
 #include "name.hpp"
-#include "array.hpp"
+#include "vector.hpp"
 
 namespace ax
 {
-    using names_t = ax::array_t<ax::name_t, 3>;
+    using names_t = ax::vector<ax::name_t, std::allocator<ax::name_t>, 3>;
 
     // The address of an event or a participant.
     class address
@@ -30,9 +30,7 @@ namespace ax
         explicit address(const ax::name_t& name);
         explicit address(const ax::names_t& names);
         explicit address(ax::names_t&& names);
-        explicit address(const std::vector<name_t>& names);
-        explicit address(std::vector<ax::name_t>&& names);
-        explicit address(const std::vector<std::string>& names);
+        explicit address(const ax::vector<std::string>& names);
         explicit address(const char* names_str);
         explicit address(const std::string& names_str);
         bool operator==(const address& that) const;
@@ -41,7 +39,7 @@ namespace ax
         
         inline const std::string to_string() const
         {
-            VAL& name_strs = std::transform<std::vector<std::string>>(names.begin(), names.end(), [](const ax::name_t& name) { return name.to_string(); });
+            VAL& name_strs = std::transform<ax::vector<std::string>>(names.begin(), names.end(), [](const ax::name_t& name) { return name.to_string(); });
             return ax::join_strings(name_strs, '/');
         }
 

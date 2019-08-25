@@ -21,35 +21,35 @@ namespace ax
         CONSTRAINT(castable);
 
         castable() = default;
-        castable(const castable&) = default;
-        castable(castable&&) = default;
+        castable(const ax::castable&) = default;
+        castable(ax::castable&&) = default;
         virtual ~castable() = default;
-        castable& operator=(const castable& castable) = default;
-        castable& operator=(castable&& castable) = default;
+        ax::castable& operator=(const ax::castable& castable) = default;
+        ax::castable& operator=(ax::castable&& castable) = default;
 
     protected:
 
         virtual const void* try_cast(std::type_index type_index) const
         {
-            if (type_index == std::type_index(typeid(castable))) return static_cast<const void*>(this);
+            if (type_index == std::type_index(typeid(ax::castable))) return static_cast<const void*>(this);
             return nullptr;
         }
 
         virtual void* try_cast(std::type_index type_index)
         {
-            if (type_index == std::type_index(typeid(castable))) return static_cast<void*>(this);
+            if (type_index == std::type_index(typeid(ax::castable))) return static_cast<void*>(this);
             return nullptr;
         }
 
         template<typename T>
-        friend option<const T*> try_cast(const castable& castable);
+        friend ax::option<const T*> try_cast(const ax::castable& castable);
 
         template<typename T>
-        friend option<T*> try_cast(castable& castable);
+        friend ax::option<T*> try_cast(ax::castable& castable);
     };
 
     template<typename T>
-    option<const T*> try_cast(const castable& castable)
+    ax::option<const T*> try_cast(const ax::castable& castable)
     {
         VAL type_index = std::type_index(typeid(T));
         VAL* t_opt(static_cast<const T*>(castable.try_cast(type_index)));
@@ -57,7 +57,7 @@ namespace ax
     }
 
     template<typename T>
-    option<T*> try_cast(castable& castable)
+    ax::option<T*> try_cast(ax::castable& castable)
     {
         VAL type_index = std::type_index(typeid(T));
         VAR* t_opt(static_cast<T*>(castable.try_cast(type_index)));
@@ -65,13 +65,13 @@ namespace ax
     }
 
     template<typename T>
-    const T& cast(const castable& castable)
+    const T& cast(const ax::castable& castable)
     {
         return **try_cast<T>(castable);
     }
 
     template<typename T>
-    T& cast(castable& castable)
+    T& cast(ax::castable& castable)
     {
         return **try_cast<T>(castable);
     }

@@ -10,22 +10,22 @@
 namespace ax
 {
     // A mixin for making a type addressable.
-    class addressable : public castable
+    class addressable : public ax::castable
     {
     public:
 
         CONSTRAINT(addressable);
         explicit addressable(const ax::address& address) : address(address) { }
-        addressable(const addressable& other) = default;
-        addressable(addressable&& other) = default;
-        addressable& operator=(const addressable& other) = default;
-        addressable& operator=(addressable&& other) = default;
+        addressable(const ax::addressable& other) = default;
+        addressable(ax::addressable&& other) = default;
+        ax::addressable& operator=(const ax::addressable& other) = default;
+        ax::addressable& operator=(ax::addressable&& other) = default;
 
         inline const ax::address& get_address() const { return address; }
 
     protected:
 
-        ENABLE_CAST(addressable, castable);
+        ENABLE_CAST(ax::addressable, ax::castable);
 
     private:
 

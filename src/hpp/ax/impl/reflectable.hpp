@@ -19,7 +19,7 @@ namespace ax
     //
     // TODO: invoke run-time assertions to verify said behavior at the initialization of the
     // library.
-    class reflectable : public castable
+    class reflectable : public ax::castable
     {
     public:
 
@@ -28,14 +28,14 @@ namespace ax
 
     protected:
 
-        ENABLE_CAST(reflectable, castable);
-        const std::shared_ptr<type_t> type = register_type<reflectable>({});
+        ENABLE_CAST(ax::reflectable, ax::castable);
+        const std::shared_ptr<type_t> type = register_type<ax::reflectable>({});
         virtual std::shared_ptr<type_t> get_type() const;
-        friend std::shared_ptr<type_t> get_type(const reflectable& source);
+        friend std::shared_ptr<type_t> get_type(const ax::reflectable& source);
     };
 
     // Get the type of a value.
-    std::shared_ptr<type_t> get_type(const reflectable& source);
+    std::shared_ptr<type_t> get_type(const ax::reflectable& source);
 }
 
 #define ENABLE_REFLECTION_CUSTOM(t, s) \
@@ -60,10 +60,10 @@ namespace ax
 namespace ax
 {
     // A unit type enabled with reflection, allowing for more weakly-typed systems where needed.
-    class unitr : public reflectable
+    class unitr : public ax::reflectable
     {
-    protected: ENABLE_REFLECTION(unitr, ax::reflectable);
     public: CONSTRAINT(unitr);
+    protected: ENABLE_REFLECTION(unitr, ax::reflectable);
     };
 }
 

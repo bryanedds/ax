@@ -6,7 +6,7 @@
 #include "string.hpp"
 #include "functional.hpp"
 #include "id.hpp"
-#include "array.hpp"
+#include "vector.hpp"
 #include "option.hpp"
 #include "either.hpp"
 #include "choice.hpp"

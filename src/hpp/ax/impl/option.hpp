@@ -17,39 +17,39 @@ namespace ax
         CONSTRAINT(option);
         using value_type = T;
         template<typename A>
-        using reify = option<A>;
+        using reify = ax::option<A>;
         
-        option() : is_some_flag(false) { new (&u) unit(); }
+        option() : is_some_flag(false) { new (&u) ax::unit(); }
         
-        option(const option& that) : is_some_flag(that.is_some_flag)
+        option(const ax::option& that) : is_some_flag(that.is_some_flag)
         {
             if (is_some_flag) new (&u) T(that.u.content);
-            else new (&u) unit();
+            else new (&u) ax::unit();
         }
         
-        option(option&& that) : is_some_flag(that.is_some_flag)
+        option(ax::option&& that) : is_some_flag(that.is_some_flag)
         {
             if (is_some_flag) new (&u) T(std::move(that.u.content));
-            else new (&u) unit();
+            else new (&u) ax::unit();
         }
 
-        option& operator=(const option& that)
+        ax::option& operator=(const ax::option& that)
         {
             if (is_some_flag) u.content.T::~T();
             else u.unit.unit::~unit();
             is_some_flag = that.is_some_flag;
             if (is_some_flag) new (&u) T(that.u.content);
-            else new (&u) unit();
+            else new (&u) ax::unit();
             return *this;
         }
 
-        option& operator=(option&& that)
+        ax::option& operator=(ax::option&& that)
         {
             if (is_some_flag) u.content.T::~T();
             else u.unit.unit::~unit();
             is_some_flag = that.is_some_flag;
             if (is_some_flag) new (&u) T(std::move(that.u.content));
-            else new (&u) unit();
+            else new (&u) ax::unit();
             return *this;
         }
 
@@ -104,19 +104,19 @@ namespace ax
     };
 
     template<typename T>
-    bool is_some(const option<T>& opt) { return opt.is_some(); }
+    bool is_some(const ax::option<T>& opt) { return opt.is_some(); }
 
     template<typename T>
-    bool is_none(const option<T>& opt) { return opt.is_none(); }
+    bool is_none(const ax::option<T>& opt) { return opt.is_none(); }
 
     template<typename T>
-    option<T> some(const T& content) { return option<T>(content, false); }
+    ax::option<T> some(const T& content) { return ax::option<T>(content, false); }
 
     template<typename T>
-    option<T> some(T&& content) { return option<T>(content, false); }
+    ax::option<T> some(T&& content) { return ax::option<T>(content, false); }
 
     template<typename T>
-    option<T> none() { return option<T>(); }
+    ax::option<T> none() { return ax::option<T>(); }
 }
 
 #endif

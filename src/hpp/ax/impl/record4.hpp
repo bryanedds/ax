@@ -19,11 +19,11 @@ namespace ax
         using third_type = Third;
         using fourth_type = Fourth;
         template<typename A, typename B, typename C, typename D>
-        using reify = record4<A, B, C, D>;
+        using reify = ax::record4<A, B, C, D>;
 
         record4() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
-        record4(const record4&) = default;
-        record4(record4&&) = default;
+        record4(const ax::record4&) = default;
+        record4(ax::record4&&) = default;
 
         record4(const First& first, const Second& second, const Third& third, const Fourth& fourth) :
             first(first), second(second), third(third), fourth(fourth) { }
@@ -33,8 +33,8 @@ namespace ax
 
         virtual ~record4() = default;
 
-        record4& operator=(const record4&) = default;
-        record4& operator=(record4&&) = default;
+        ax::record4& operator=(const ax::record4&) = default;
+        ax::record4& operator=(ax::record4&&) = default;
 
         const First& fst() const { return first; }
         const Second& snd() const { return second; }
@@ -72,27 +72,27 @@ namespace ax
     const Fourth& frth(const record4<First, Second, Third, Fourth>& rcd) { return rcd.frth(); }
 
     template<typename First, typename Second, typename Third, typename Fourth>
-    First& fst(record4<First, Second, Third, Fourth>& rcd) { return rcd.fst(); }
+    First& fst(ax::record4<First, Second, Third, Fourth>& rcd) { return rcd.fst(); }
 
     template<typename First, typename Second, typename Third, typename Fourth>
-    Second& snd(record4<First, Second, Third, Fourth>& rcd) { return rcd.snd(); }
+    Second& snd(ax::record4<First, Second, Third, Fourth>& rcd) { return rcd.snd(); }
 
     template<typename First, typename Second, typename Third, typename Fourth>
-    Third& thd(record4<First, Second, Third, Fourth>& rcd) { return rcd.thd(); }
+    Third& thd(ax::record4<First, Second, Third, Fourth>& rcd) { return rcd.thd(); }
 
     template<typename First, typename Second, typename Third, typename Fourth>
-    Fourth& frth(record4<First, Second, Third, Fourth>& rcd) { return rcd.frth(); }
+    Fourth& frth(ax::record4<First, Second, Third, Fourth>& rcd) { return rcd.frth(); }
 
     template<typename First, typename Second, typename Third, typename Fourth>
-    record4<First, Second, Third, Fourth> make_record4(const First& first, const Second& second, const Third& third, const Fourth& fourth)
+    ax::record4<First, Second, Third, Fourth> make_record4(const First& first, const Second& second, const Third& third, const Fourth& fourth)
     {
-        return record4<First, Second, Third, Fourth>(first, second, third, fourth);
+        return ax::record4<First, Second, Third, Fourth>(first, second, third, fourth);
     }
 
     template<typename First, typename Second, typename Third, typename Fourth>
-    record4<First, Second, Third, Fourth> make_record4(First&& first, Second&& second, Third&& third, Fourth&& fourth)
+    ax::record4<First, Second, Third, Fourth> make_record4(First&& first, Second&& second, Third&& third, Fourth&& fourth)
     {
-        return record4<First, Second, Third, Fourth>(first, second, third, fourth);
+        return ax::record4<First, Second, Third, Fourth>(first, second, third, fourth);
     }
 }
 

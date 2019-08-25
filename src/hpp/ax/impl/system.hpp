@@ -171,7 +171,7 @@ namespace ax
 
     // The world that contains the entity-component-system, event system, and other mixins.
     // Uses function members because the type is not meant to be inherited.
-    class world : public ax::eventable<world>
+    class world : public ax::eventable<ax::world>
     {
     public:
 
@@ -252,10 +252,10 @@ namespace ax
     {
     public:
 
-        entity(const entity& other) = default;
-        entity(entity&& other) = default;
-        entity& operator=(const entity& other) = default;
-        entity& operator=(entity&& other) = default;
+        entity(const ax::entity& other) = default;
+        entity(ax::entity&& other) = default;
+        ax::entity& operator=(const ax::entity& other) = default;
+        ax::entity& operator=(ax::entity&& other) = default;
         entity(const ax::address& address, ax::world& world) : ax::addressable(address), world(world) { }
 
         template<typename T>

@@ -21,27 +21,27 @@ namespace ax
         CONSTRAINT(type_descriptor);
         virtual ~type_descriptor() = default;
 
-        void inspect_value(const reflectable& source, const field& field, void* target_ptr) const;
-        void inject_value(const field& field, const void* source_ptr, reflectable& target) const;
+        void inspect_value(const ax::reflectable& source, const ax::field& field, void* target_ptr) const;
+        void inject_value(const ax::field& field, const void* source_ptr, ax::reflectable& target) const;
 
         virtual void inspect_value(const void* source_ptr, void* target_ptr) const = 0;
         virtual void inject_value(const void* source_ptr, void* target_ptr) const = 0;
-        virtual void read_value(const symbol& source_symbol, void* target_ptr) const = 0;
-        virtual void write_value(const void* source_ptr, symbol& target_symbol) const = 0;
+        virtual void read_value(const ax::symbol& source_symbol, void* target_ptr) const = 0;
+        virtual void write_value(const void* source_ptr, ax::symbol& target_symbol) const = 0;
 
     protected:
 
         template<typename T, typename D>
         friend std::shared_ptr<D> register_type_descriptor(const std::shared_ptr<D>& type_descriptor);
-        friend const std::unordered_map<std::type_index, std::shared_ptr<type_descriptor>>& get_type_descriptor_map();
+        friend const std::unordered_map<std::type_index, std::shared_ptr<ax::type_descriptor>>& get_type_descriptor_map();
 
     private:
 
-        static std::unordered_map<std::type_index, std::shared_ptr<type_descriptor>> type_descriptor_map;
+        static std::unordered_map<std::type_index, std::shared_ptr<ax::type_descriptor>> type_descriptor_map;
     };
 
     // The alias for a type descriptor map.
-    using type_descriptor_map = std::unordered_map<std::type_index, std::shared_ptr<type_descriptor>>;
+    using type_descriptor_map = std::unordered_map<std::type_index, std::shared_ptr<ax::type_descriptor>>;
 
     // Get the type descriptor map.
     const type_descriptor_map& get_type_descriptor_map();
@@ -51,7 +51,7 @@ namespace ax
 
     // Get a type descriptor for the given template argument.
     template<typename T>
-    std::shared_ptr<type_descriptor> get_type_descriptor()
+    std::shared_ptr<ax::type_descriptor> get_type_descriptor()
     {
         VAL& type_index = std::type_index(typeid(T));
         return get_type_descriptor(type_index);
@@ -61,9 +61,9 @@ namespace ax
     template<typename T, typename D>
     std::shared_ptr<D> register_type_descriptor(const std::shared_ptr<D>& type_descriptor)
     {
-        CONSTRAIN(D, type_descriptor);
+        CONSTRAIN(D, ax::type_descriptor);
         VAL& type_index = std::type_index(typeid(T));
-        VAR insertion = type_descriptor::type_descriptor_map.emplace(type_index, type_descriptor);
+        VAR insertion = ax::type_descriptor::type_descriptor_map.emplace(type_index, type_descriptor);
         if (!insertion.second) insertion.first->second = type_descriptor;
         return type_descriptor;
     }
@@ -99,7 +99,7 @@ namespace ax
 
     // Inspect a value of a reflectable value.
     template<typename T>
-    void inspect_value(const reflectable& source, const field& field, T& target)
+    void inspect_value(const ax::reflectable& source, const ax::field& field, T& target)
     {
         VAL& type_index = field.get_type_index();
         if (type_index != std::type_index(typeid(T))) throw std::invalid_argument("Field is not of required type.");
@@ -110,7 +110,7 @@ namespace ax
 
     // Inject a value into a reflectable value.
     template<typename T>
-    void inject_value(const field& field, const T& source, reflectable& target)
+    void inject_value(const ax::field& field, const T& source, ax::reflectable& target)
     {
         VAL& type_index = field.get_type_index();
         if (type_index != std::type_index(typeid(T))) throw std::invalid_argument("Field is not of required type.");
@@ -120,19 +120,19 @@ namespace ax
     }
 
     // Read a reflectable value from a symbol.
-    void read_value(const symbol& source_symbol, reflectable& target_reflectable);
+    void read_value(const ax::symbol& source_symbol, ax::reflectable& target_reflectable);
 
     // Write a reflectable value to a symbol.
-    void write_value(const reflectable& source_reflectable, symbol& target_symbol);
+    void write_value(const ax::reflectable& source_reflectable, ax::symbol& target_symbol);
 
     // A generalized type descriptor for reflectable types.
-    class reflectable_descriptor : public type_descriptor
+    class reflectable_descriptor : public ax::type_descriptor
     {
     public:
         void inspect_value(const void* source_ptr, void* target_ptr) const override;
         void inject_value(const void* source_ptr, void* target_ptr) const override;
-        void read_value(const symbol& source_symbol, void* target_ptr) const override;
-        void write_value(const void* source_ptr, symbol& target_symbol) const override;
+        void read_value(const ax::symbol& source_symbol, void* target_ptr) const override;
+        void write_value(const void* source_ptr, ax::symbol& target_symbol) const override;
     };
 
     // Register the common type descriptors.

@@ -20,11 +20,11 @@ namespace ax
         using fourth_type = Fourth;
         using fifth_type = Fifth;
         template<typename A, typename B, typename C, typename D, typename E>
-        using reify = record5<A, B, C, D, E>;
+        using reify = ax::record5<A, B, C, D, E>;
 
         record5() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
-        record5(const record5&) = default;
-        record5(record5&&) = default;
+        record5(const ax::record5&) = default;
+        record5(ax::record5&&) = default;
 
         record5(const First& first, const Second& second, const Third& third, const Fourth& fourth, const Fifth& fifth) :
             first(first), second(second), third(third), fourth(fourth), fifth(fifth) { }
@@ -34,8 +34,8 @@ namespace ax
         
         virtual ~record5() = default;
 
-        record5& operator=(const record5&) = default;
-        record5& operator=(record5&&) = default;
+        ax::record5& operator=(const ax::record5&) = default;
+        ax::record5& operator=(ax::record5&&) = default;
 
         const First& fst() const { return first; }
         const Second& snd() const { return second; }
@@ -80,32 +80,32 @@ namespace ax
     const Fifth& ffth(const record5<First, Second, Third, Fourth, Fifth>& rcd) { return rcd.ffth(); }
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    First& fst(record5<First, Second, Third, Fourth, Fifth>& rcd) { return rcd.fst(); }
+    First& fst(ax::record5<First, Second, Third, Fourth, Fifth>& rcd) { return rcd.fst(); }
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    Second& snd(record5<First, Second, Third, Fourth, Fifth>& rcd) { return rcd.snd(); }
+    Second& snd(ax::record5<First, Second, Third, Fourth, Fifth>& rcd) { return rcd.snd(); }
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    Third& thd(record5<First, Second, Third, Fourth, Fifth>& rcd) { return rcd.thd(); }
+    Third& thd(ax::record5<First, Second, Third, Fourth, Fifth>& rcd) { return rcd.thd(); }
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    Fourth& frth(record5<First, Second, Third, Fourth, Fifth>& rcd) { return rcd.frth(); }
+    Fourth& frth(ax::record5<First, Second, Third, Fourth, Fifth>& rcd) { return rcd.frth(); }
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    Fifth& ffth(record5<First, Second, Third, Fourth, Fifth>& rcd) { return rcd.ffth(); }
+    Fifth& ffth(ax::record5<First, Second, Third, Fourth, Fifth>& rcd) { return rcd.ffth(); }
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    record5<First, Second, Third, Fourth, Fifth> make_record5(
+    ax::record5<First, Second, Third, Fourth, Fifth> make_record5(
         const First& first, const Second& second, const Third& third, const Fourth& fourth, const Fifth& fifth)
     {
-        return record5<First, Second, Third, Fourth, Fifth>(first, second, third, fourth, fifth);
+        return ax::record5<First, Second, Third, Fourth, Fifth>(first, second, third, fourth, fifth);
     }
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    record5<First, Second, Third, Fourth, Fifth> make_record5(
+    ax::record5<First, Second, Third, Fourth, Fifth> make_record5(
         First&& first, Second&& second, Third&& third, Fourth&& fourth, Fifth&& fifth)
     {
-        return record5<First, Second, Third, Fourth, Fifth>(first, second, third, fourth, fifth);
+        return ax::record5<First, Second, Third, Fourth, Fifth>(first, second, third, fourth, fifth);
     }
 }
 

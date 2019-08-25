@@ -7,7 +7,7 @@
 namespace ax
 {
     // NOTE: this is implemented in the pure functional style, so may not be fast enough for certain cases.
-    std::string unparse_symbol(const symbol& symbol)
+    std::string unparse_symbol(const ax::symbol& symbol)
     {
         return symbol.match(
             [&](VAL& atom) { return atom; },

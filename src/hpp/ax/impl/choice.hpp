@@ -19,11 +19,11 @@ namespace ax
         using second_type = S;
         using third_type = T;
         template<typename A, typename B, typename C>
-        using reify = choice<A, B, C>;
+        using reify = ax::choice<A, B, C>;
 
         choice() : index(0_z) { new (&u) F(); }
-        choice(const choice& that) : index(that.index) { construct_u(that); }
-        choice(choice&& that) : index(that.index) { construct_u(that); }
+        choice(const ax::choice& that) : index(that.index) { construct_u(that); }
+        choice(ax::choice&& that) : index(that.index) { construct_u(that); }
         explicit choice(const F& first, bool) : index(0_z) { new (&u) F(first); }
         explicit choice(F&& first, bool) : index(0_z) { new (&u) F(first); }
         explicit choice(const S& second, bool, bool) : index(1_z) { new (&u) S(second); }
@@ -32,7 +32,7 @@ namespace ax
         explicit choice(T&& third, bool, bool, bool) : index(2_z) { new (&u) T(third); }
         virtual ~choice() { destruct_u(); }
 
-        choice& operator=(const choice& that)
+        ax::choice& operator=(const ax::choice& that)
         {
             destruct_u();
             index = that.index;
@@ -40,7 +40,7 @@ namespace ax
             return *this;
         }
 
-        choice& operator=(choice&& that)
+        ax::choice& operator=(ax::choice&& that)
         {
             destruct_u();
             index = that.index;
@@ -120,7 +120,7 @@ namespace ax
 
     private:
 
-        void construct_u(const choice& that)
+        void construct_u(const ax::choice& that)
         {
             switch (index)
             {
@@ -130,7 +130,7 @@ namespace ax
             }
         }
 
-        void construct_u(choice&& that)
+        void construct_u(ax::choice&& that)
         {
             switch (index)
             {
@@ -155,13 +155,13 @@ namespace ax
     };
 
     template<typename F, typename S, typename T>
-    choice<F, S, T> first(const F& first) { return choice<F, S, T>(first, false); }
+    ax::choice<F, S, T> first(const F& first) { return ax::choice<F, S, T>(first, false); }
 
     template<typename F, typename S, typename T>
-    choice<F, S, T> second(const S& second) { return choice<F, S, T>(second, false, false); }
+    ax::choice<F, S, T> second(const S& second) { return ax::choice<F, S, T>(second, false, false); }
 
     template<typename F, typename S, typename T>
-    choice<F, S, T> third(const T& third) { return choice<F, S, T>(third, false, false, false); }
+    ax::choice<F, S, T> third(const T& third) { return ax::choice<F, S, T>(third, false, false, false); }
 }
 
 #define SUM_TYPE3(T, Ft, Fn, St, Sn, Tt, Tn) \

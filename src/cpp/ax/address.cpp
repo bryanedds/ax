@@ -34,17 +34,17 @@ namespace ax
     address::address(const std::string& names_str) :
         address(split_string(names_str, '/')) { }
 
-    bool address::operator==(const address& that) const
+    bool address::operator==(const ax::address& that) const
     {
         return
             hash_code == that.hash_code && // OPTIMIZATION: assuming hash_code check could hasten eq chacks
             names == that.names;
     }
 
-    address address::operator+(const address& right) const
+    ax::address address::operator+(const ax::address& right) const
     {
         std::vector<ax::name_t> names_summed(names.begin(), names.end());
         for (const ax::name_t& name : right.names) names_summed.push_back(name);
-        return address(names_summed);
+        return ax::address(names_summed);
     }
 }

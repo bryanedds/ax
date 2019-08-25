@@ -22,7 +22,7 @@ namespace ax
     // Well, it's like any other C++ mixin, except it's intended for use on the type that end-user
     // will represent his program with. Program mixins are the good alternative to OOP Singletons.
     template<typename P>
-    class eventable : public castable
+    class eventable : public ax::castable
     {
     public:
 
@@ -64,9 +64,9 @@ namespace ax
         }
 
         template<typename T, typename H>
-        unsubscriber<P> subscribe_event5(id_t subscription_id, const address& address, const std::shared_ptr<addressable>& subscriber, const H& handler)
+        ax::unsubscriber<P> subscribe_event5(ax::id_t subscription_id, const ax::address& address, const std::shared_ptr<ax::addressable>& subscriber, const H& handler)
         {
-            VAR subscription_detail_mvb = cast<castable>(std::make_unique<subscription_detail<T, P>>(handler));
+            VAR subscription_detail_mvb = cast<ax::castable>(std::make_unique<ax::subscription_detail<T, P>>(handler));
             VAR subscriptions_opt = subscriptions_map.find(address);
             if (subscriptions_opt != std::end(subscriptions_map))
             {
@@ -76,7 +76,7 @@ namespace ax
             else
             {
                 VAL& subscription = std::make_shared<ax::subscription>(subscription_id, subscriber, std::move(subscription_detail_mvb));
-                VAR subscriptions_mvb = std::make_unique<subscription_list>();
+                VAR subscriptions_mvb = std::make_unique<ax::subscription_list>();
                 subscriptions_mvb->push_back(subscription);
                 subscriptions_map.insert(std::make_pair(address, std::move(subscriptions_mvb)));
             }
@@ -85,13 +85,13 @@ namespace ax
         }
 
         template<typename T, typename H>
-        unsubscriber<P> subscribe_event(const address& address, const std::shared_ptr<addressable>& subscriber, const H& handler)
+        ax::unsubscriber<P> subscribe_event(const ax::address& address, const std::shared_ptr<ax::addressable>& subscriber, const H& handler)
         {
             return subscribe_event5<T>(get_subscription_id(), address, subscriber, handler);
         }
 
         template<typename T>
-        void publish_event(const T& event_data, const address& event_address, const std::shared_ptr<addressable>& publisher)
+        void publish_event(const T& event_data, const ax::address& event_address, const std::shared_ptr<ax::addressable>& publisher)
         {
             VAL& subscriptions_opt = subscriptions_map.find(event_address);
             if (subscriptions_opt != std::end(subscriptions_map))
@@ -107,12 +107,12 @@ namespace ax
 
     protected:
 
-        ENABLE_CAST(eventable<P>, castable);
+        ENABLE_CAST(ax::eventable<P>, ax::castable);
 
     private:
 
         P* program;
-        std::unique_ptr<id_t> pred_id;
+        std::unique_ptr<ax::id_t> pred_id;
         ax::subscriptions_map subscriptions_map;
         ax::unsubscription_map unsubscription_map;
     };

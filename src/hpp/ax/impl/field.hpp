@@ -27,17 +27,17 @@ namespace ax
     };
 
     // The alias for a field map.
-    using field_map = std::unordered_map<name_t, std::shared_ptr<field>>;
+    using field_map = std::unordered_map<ax::name_t, std::shared_ptr<ax::field>>;
 
     // The alias for a field vector.
-    using field_vector = std::vector<std::pair<name_t, std::shared_ptr<field>>>;
+    using field_vector = std::vector<std::pair<ax::name_t, std::shared_ptr<ax::field>>>;
 
     // Register a field for reflection.
     template<typename T>
-    field register_field(std::size_t value_offset)
+    ax::field register_field(std::size_t value_offset)
     {
         VAL& type_index = std::type_index(typeid(T));
-        return field(type_index, value_offset);
+        return ax::field(type_index, value_offset);
     }
 }
 

@@ -18,7 +18,7 @@ namespace ax
         CONSTRAINT(event);
 
         template<typename A>
-        using reify = event<A>;
+        using reify = ax::event<A>;
 
         const T data;
         const ax::address address;
@@ -26,16 +26,16 @@ namespace ax
         const std::shared_ptr<addressable> publisher;
         
         event() = delete;
-        event(const event& that) = default;
-        event(event&& that) = default;
-        event& operator=(const event&) = default;
-        event& operator=(event&&) = default;
+        event(const ax::event& that) = default;
+        event(ax::event&& that) = default;
+        ax::event& operator=(const ax::event&) = default;
+        ax::event& operator=(ax::event&&) = default;
 
         event(
             const T& data,
             const ax::address& address,
-            std::shared_ptr<addressable> subscriber,
-            std::shared_ptr<addressable> publisher) :
+            std::shared_ptr<ax::addressable> subscriber,
+            std::shared_ptr<ax::addressable> publisher) :
             data(data),
             address(address),
             subscriber(subscriber),

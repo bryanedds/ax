@@ -187,12 +187,6 @@
     <ClInclude Include="..\..\src\hpp\ax\system.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\hpp\ax\impl\array.hpp">
-      <Filter>Header Files\ax\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\hpp\ax\array.hpp">
-      <Filter>Header Files\ax</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\impl\vector.hpp">
       <Filter>Header Files\ax\impl</Filter>
     </ClInclude>

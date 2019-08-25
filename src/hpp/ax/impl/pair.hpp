@@ -17,17 +17,17 @@ namespace ax
         using first_type = First;
         using second_type = Second;
         template<typename A, typename B>
-        using reify = pair<A, B>;
+        using reify = ax::pair<A, B>;
 
         pair() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
-        pair(const pair&) = default;
-        pair(pair&&) = default;
+        pair(const ax::pair&) = default;
+        pair(ax::pair&&) = default;
         pair(const First& first, const Second& second) : first(first), second(second) { }
         pair(First&& first, Second&& second) : first(first), second(second) { }
         virtual ~pair() = default;
 
-        pair& operator=(const pair&) = default;
-        pair& operator=(pair&&) = default;
+        ax::pair& operator=(const ax::pair&) = default;
+        ax::pair& operator=(ax::pair&&) = default;
 
         const First& fst() const { return first; }
         const Second& snd() const { return second; }
@@ -44,27 +44,27 @@ namespace ax
     };
 
     template<typename First, typename Second>
-    const First& fst(const pair<First, Second>& pr) { return pr.fst(); }
+    const First& fst(const ax::pair<First, Second>& pr) { return pr.fst(); }
 
     template<typename First, typename Second>
-    const Second& snd(const pair<First, Second>& pr) { return pr.snd(); }
+    const Second& snd(const ax::pair<First, Second>& pr) { return pr.snd(); }
 
     template<typename First, typename Second>
-    First& fst(pair<First, Second>& pr) { return pr.fst(); }
+    First& fst(ax::pair<First, Second>& pr) { return pr.fst(); }
 
     template<typename First, typename Second>
-    Second& snd(pair<First, Second>& pr) { return pr.snd(); }
+    Second& snd(ax::pair<First, Second>& pr) { return pr.snd(); }
 
     template<typename First, typename Second>
-    pair<First, Second> make_pair(const First& first, const Second& second)
+    ax::pair<First, Second> make_pair(const First& first, const Second& second)
     {
-        return pair<First, Second>(first, second);
+        return ax::pair<First, Second>(first, second);
     }
 
     template<typename First, typename Second>
-    pair<First, Second> make_pair(First&& first, Second&& second)
+    ax::pair<First, Second> make_pair(First&& first, Second&& second)
     {
-        return pair<First, Second>(first, second);
+        return ax::pair<First, Second>(first, second);
     }
 }
 

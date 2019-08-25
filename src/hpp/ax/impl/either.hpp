@@ -22,13 +22,13 @@ namespace ax
 
         either() : is_right_flag(true) { new (&u) R(); }
 
-        either(const either& that) : is_right_flag(that.is_right_flag)
+        either(const ax::either& that) : is_right_flag(that.is_right_flag)
         {
             if (is_right_flag) new (&u) R(that.u.right);
             else new (&u) L(that.u.left);
         }
 
-        either(either&& that) : is_right_flag(that.is_right_flag)
+        either(ax::either&& that) : is_right_flag(that.is_right_flag)
         {
             if (is_right_flag) new (&u) R(std::move(that.u.right));
             else new (&u) L(std::move(that.u.left));
@@ -45,7 +45,7 @@ namespace ax
             else u.left.L::~L();
         }
 
-        either& operator=(const either& that)
+        ax::either& operator=(const ax::either& that)
         {
             if (is_right_flag) u.right.R::~R();
             else u.left.L::~L();
@@ -55,7 +55,7 @@ namespace ax
             return *this;
         }
 
-        either& operator=(either&& that)
+        ax::either& operator=(ax::either&& that)
         {
             if (is_right_flag) u.right.R::~R();
             else u.left.L::~L();
@@ -143,10 +143,10 @@ namespace ax
     };
 
     template<typename R, typename L>
-    either<R, L> right(R&& right) { return either<R, L>(right, false); }
+    ax::either<R, L> right(R&& right) { return ax::either<R, L>(right, false); }
 
     template<typename R, typename L>
-    either<R, L> left(L&& left) { return either<R, L>(left, false, false); }
+    ax::either<R, L> left(L&& left) { return ax::either<R, L>(left, false, false); }
 }
 
 #define SUM_TYPE(T, Rt, Rn, Lt, Ln) \

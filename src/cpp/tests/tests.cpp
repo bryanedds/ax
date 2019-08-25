@@ -9,56 +9,56 @@
 namespace ax
 {
     // A trivial type to demonstrate the castable type.
-    class castable_a : public castable
+    class castable_a : public ax::castable
     {
     protected:
-        ENABLE_CAST(castable_a, castable);
+        ENABLE_CAST(ax::castable_a, ax::castable);
     public:
         int i = 0;
     };
 
     // A trivial type to demonstrate the castable type.
-    class castable_b : public castable_a
+    class castable_b : public ax::castable_a
     {
     protected:
-        ENABLE_CAST(castable_b, castable_a);
+        ENABLE_CAST(ax::castable_b, ax::castable_a);
     public:
         int j = 0;
     };
 
     // A trivial program type to demonstrate the eventable program mixin.
-    class eventable_test : public eventable<eventable_test>
+    class eventable_test : public ax::eventable<ax::eventable_test>
     {
     protected:
-        ENABLE_CAST(eventable_test, eventable<eventable_test>);
+        ENABLE_CAST(ax::eventable_test, ax::eventable<ax::eventable_test>);
     };
 
-    class reflectable_test : public reflectable
+    class reflectable_test : public ax::reflectable
     {
     protected:
 
-        ENABLE_REFLECTION_CUSTOM(reflectable_test, reflectable);
+        ENABLE_REFLECTION_CUSTOM(ax::reflectable_test, ax::reflectable);
 
-        const std::shared_ptr<type_t> type = register_sub_type<reflectable_test>(typeid(reflectable),
+        const std::shared_ptr<ax::type_t> type = register_sub_type<ax::reflectable_test>(typeid(ax::reflectable),
         {
-            { "bool_value",             register_field<bool>                        (offsetof(reflectable_test, bool_value)) },
-            { "int_value",              register_field<int>                         (offsetof(reflectable_test, int_value)) },
-            { "float_value",            register_field<float>                       (offsetof(reflectable_test, float_value)) },
-            { "name_value",             register_field<name_t>                      (offsetof(reflectable_test, name_value)) },
-            { "address_value",          register_field<address>                     (offsetof(reflectable_test, address_value)) },
-            { "vector_int_value",       register_field<std::vector<int>>            (offsetof(reflectable_test, vector_int_value)) },
-            { "vector_string_value",    register_field<std::vector<std::string>>    (offsetof(reflectable_test, vector_string_value)) },
-            { "shared_int_value",       register_field<std::shared_ptr<int>>        (offsetof(reflectable_test, shared_int_value)) },
-            { "pair_value",             register_field<pair<int, int>>              (offsetof(reflectable_test, pair_value)) },
-            { "record_value",           register_field<record<int, int, int>>       (offsetof(reflectable_test, record_value)) },
-            { "option_some_value",      register_field<option<int>>                 (offsetof(reflectable_test, option_some_value)) },
-            { "option_none_value",      register_field<option<int>>                 (offsetof(reflectable_test, option_none_value)) },
-            { "either_right_value",     register_field<either<int, std::string>>    (offsetof(reflectable_test, either_right_value)) },
-            { "either_left_value",      register_field<either<int, std::string>>    (offsetof(reflectable_test, either_left_value)) },
-            { "choice_value",           register_field<choice<int, int, int>>       (offsetof(reflectable_test, choice_value)) }
+            { "bool_value",             register_field<bool>                            (offsetof(ax::reflectable_test, bool_value)) },
+            { "int_value",              register_field<int>                             (offsetof(ax::reflectable_test, int_value)) },
+            { "float_value",            register_field<float>                           (offsetof(ax::reflectable_test, float_value)) },
+            { "name_value",             register_field<ax::name_t>                      (offsetof(ax::reflectable_test, name_value)) },
+            { "address_value",          register_field<ax::address>                     (offsetof(ax::reflectable_test, address_value)) },
+            { "vector_int_value",       register_field<std::vector<int>>                (offsetof(ax::reflectable_test, vector_int_value)) },
+            { "vector_string_value",    register_field<std::vector<std::string>>        (offsetof(ax::reflectable_test, vector_string_value)) },
+            { "shared_int_value",       register_field<std::shared_ptr<int>>            (offsetof(ax::reflectable_test, shared_int_value)) },
+            { "pair_value",             register_field<ax::pair<int, int>>              (offsetof(ax::reflectable_test, pair_value)) },
+            { "record_value",           register_field<ax::record<int, int, int>>       (offsetof(ax::reflectable_test, record_value)) },
+            { "option_some_value",      register_field<ax::option<int>>                 (offsetof(ax::reflectable_test, option_some_value)) },
+            { "option_none_value",      register_field<ax::option<int>>                 (offsetof(ax::reflectable_test, option_none_value)) },
+            { "either_right_value",     register_field<ax::either<int, std::string>>    (offsetof(ax::reflectable_test, either_right_value)) },
+            { "either_left_value",      register_field<ax::either<int, std::string>>    (offsetof(ax::reflectable_test, either_left_value)) },
+            { "choice_value",           register_field<ax::choice<int, int, int>>       (offsetof(ax::reflectable_test, choice_value)) }
         });
 
-        std::shared_ptr<type_t> get_type() const override
+        std::shared_ptr<ax::type_t> get_type() const override
         {
             return type;
         };
@@ -68,18 +68,18 @@ namespace ax
         int bool_value;
         int int_value;
         float float_value;
-        name_t name_value;
-        address address_value;
+        ax::name_t name_value;
+        ax::address address_value;
         std::vector<int> vector_int_value;
         std::vector<std::string> vector_string_value;
         std::shared_ptr<int> shared_int_value;
-        pair<int, int> pair_value;
-        record<int, int, int> record_value;
-        option<int> option_some_value;
-        option<int> option_none_value;
-        either<int, std::string> either_right_value;
-        either<int, std::string> either_left_value;
-        choice<int, int, int> choice_value;
+        ax::pair<int, int> pair_value;
+        ax::record<int, int, int> record_value;
+        ax::option<int> option_some_value;
+        ax::option<int> option_none_value;
+        ax::either<int, std::string> either_right_value;
+        ax::either<int, std::string> either_left_value;
+        ax::choice<int, int, int> choice_value;
 
         reflectable_test() :
             bool_value(),
@@ -103,18 +103,18 @@ namespace ax
             bool bool_value,
             int int_value,
             float float_value,
-            name_t name_value,
-            address address_value,
+            ax::name_t name_value,
+            ax::address address_value,
             const std::vector<int>& vector_int_value,
             const std::vector<std::string>& vector_string_value,
             int shared_int_value,
-            pair<int, int> pair_value,
-            record<int, int, int> record_value,
-            option<int> option_some_value,
-            option<int> option_none_value,
-            either<int, std::string> either_right_value,
-            either<int, std::string> either_left_value,
-            choice<int, int, int> choice_value) :
+            ax::pair<int, int> pair_value,
+            ax::record<int, int, int> record_value,
+            ax::option<int> option_some_value,
+            ax::option<int> option_none_value,
+            ax::either<int, std::string> either_right_value,
+            ax::either<int, std::string> either_left_value,
+            ax::choice<int, int, int> choice_value) :
             bool_value(bool_value),
             int_value(int_value),
             float_value(float_value),
@@ -140,45 +140,45 @@ namespace ax
 
     TEST("castable works")
     {
-        castable_b b{};
+        ax::castable_b b{};
         b.i = 10;
         b.j = 20;
-        const castable_a& a = cast<castable_a>(b);
+        const ax::castable_a& a = ax::cast<ax::castable_a>(b);
         CHECK(a.i == 10);
-        const castable& c = cast<castable>(b);
-        const castable_a& a2 = cast<castable_a>(c);
+        const ax::castable& c = ax::cast<ax::castable>(b);
+        const ax::castable_a& a2 = ax::cast<ax::castable_a>(c);
         CHECK(a2.i == 10);
-        const castable_b& b2 = cast<castable_b>(c);
+        const ax::castable_b& b2 = ax::cast<ax::castable_b>(c);
         CHECK(b2.i == 10);
         CHECK(b2.j == 20);
     }
 
     TEST("shared castable works")
     {
-        std::shared_ptr<castable_b> b = std::make_shared<castable_b>();
+        std::shared_ptr<ax::castable_b> b = std::make_shared<ax::castable_b>();
         b->i = 10;
         b->j = 20;
-        std::shared_ptr<castable_a> a = cast<castable_a>(b);
+        std::shared_ptr<ax::castable_a> a = ax::cast<ax::castable_a>(b);
         CHECK(a->i == 10);
-        std::shared_ptr<castable> c = cast<castable>(b);
-        std::shared_ptr<castable_a> a2 = cast<castable_a>(c);
+        std::shared_ptr<ax::castable> c = ax::cast<ax::castable>(b);
+        std::shared_ptr<ax::castable_a> a2 = ax::cast<ax::castable_a>(c);
         CHECK(a2->i == 10);
-        std::shared_ptr<castable_b> b2 = cast<castable_b>(c);
+        std::shared_ptr<ax::castable_b> b2 = cast<ax::castable_b>(c);
         CHECK(b2->i == 10);
         CHECK(b2->j == 20);
     }
 
     TEST("unique castable works")
     {
-        std::unique_ptr<castable_b> b = std::make_unique<castable_b>();
+        std::unique_ptr<ax::castable_b> b = std::make_unique<ax::castable_b>();
         b->i = 10;
         b->j = 20;
-        std::unique_ptr<castable_a> a = cast<castable_a>(std::move(b));
+        std::unique_ptr<ax::castable_a> a = ax::cast<ax::castable_a>(std::move(b));
         CHECK(a->i == 10);
-        std::unique_ptr<castable> c = cast<castable>(std::move(a));
-        std::unique_ptr<castable_a> a2 = cast<castable_a>(std::move(c));
+        std::unique_ptr<ax::castable> c = ax::cast<ax::castable>(std::move(a));
+        std::unique_ptr<ax::castable_a> a2 = ax::cast<ax::castable_a>(std::move(c));
         CHECK(a2->i == 10);
-        std::unique_ptr<castable_b> b2 = cast<castable_b>(std::move(a2));
+        std::unique_ptr<ax::castable_b> b2 = ax::cast<ax::castable_b>(std::move(a2));
         CHECK(b2->i == 10);
         CHECK(b2->j == 20);
     }
@@ -187,8 +187,8 @@ namespace ax
     {
         VAR i = 0;
         ax::eventable_test program{};
-        VAL& event_address = address("event");
-        VAL participant = std::make_shared<ax::addressable>(address("participant"));
+        VAL& event_address = ax::address("event");
+        VAL participant = std::make_shared<ax::addressable>(ax::address("participant"));
         VAR handler = [&](VAL&, VAL&) { return ++i, true; };
         VAR unsubscriber = program.subscribe_event<std::string>(event_address, participant, handler);
         program.publish_event("Event handled!"_s, event_address, participant);
@@ -199,20 +199,20 @@ namespace ax
 
     TEST("read and write value works")
     {
-        symbol symbol{};
-        reflectable_test source(
-            true, 5, 10.0f, "jim bob", address("s/compton/la"),
+        ax::symbol symbol{};
+        ax::reflectable_test source(
+            true, 5, 10.0f, "jim bob", ax::address("s/compton/la"),
             { 1, 3, 5 }, { "a", "bb", "ccc" }, 777,
             make_pair(50, 100), make_record(150, 200, 250),
             some(2), none<int>(), right<int, std::string>(4), left<int>("msg"_s), third<int, int, int>(3));
-        reflectable_test target{};
+        ax::reflectable_test target{};
         ax::write_value(source, symbol);
         ax::read_value(symbol, target);
         CHECK(target.bool_value);
         CHECK(target.int_value == 5);
         CHECK(target.float_value == 10.0f);
         CHECK(target.name_value == "jim bob");
-        CHECK(target.address_value == address("s/compton/la"));
+        CHECK(target.address_value == ax::address("s/compton/la"));
         CHECK(target.vector_int_value == std::vector<int>({ 1, 3, 5 }));
         CHECK(target.vector_string_value == std::vector<std::string>({ "a", "bb", "ccc" }));
         CHECK(*target.shared_int_value == 777);
@@ -246,13 +246,13 @@ namespace ax
               [  third  3  ]  ]"; // a little extra whitespace to try to throw off the parser
         VAL& parse = parse_symbol(str);
         VAL& symbol = parse.get_success();
-        reflectable_test target{};
+        ax::reflectable_test target{};
         ax::read_value(symbol, target);
         CHECK(target.bool_value);
         CHECK(target.int_value == 5);
         CHECK(target.float_value == 10.0f);
         CHECK(target.name_value == "jim bob");
-        CHECK(target.address_value == address("s/compton/la"));
+        CHECK(target.address_value == ax::address("s/compton/la"));
         CHECK(target.vector_int_value == std::vector<int>({ 1, 3, 5 }));
         CHECK(target.vector_string_value == std::vector<std::string>({ "a", "bb", "ccc" }));
         CHECK(*target.shared_int_value == 777);
@@ -270,7 +270,7 @@ namespace ax
 
     TEST("properties work")
     {
-        propertied p{};
+        ax::propertied p{};
         p.attach("x", 0);
         CHECK(p.get<int>("x") == 0);
         p.set("x", 5);

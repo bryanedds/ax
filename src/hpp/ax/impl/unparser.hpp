@@ -9,7 +9,7 @@
 namespace ax
 {
     // Unparse an ax::symbol to a std::string.
-    std::string unparse_symbol(const symbol& symbol);
+    std::string unparse_symbol(const ax::symbol& symbol);
 
     // Write a value of type T to a std::string (where T is a smart ptr where applicable).
     template<typename T>

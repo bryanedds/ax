@@ -14,7 +14,7 @@ namespace ax
     SUM_TYPE3(symbol,
         std::string, atom,
         std::string, quote,
-        std::vector<symbol>, symbols);
+        std::vector<ax::symbol>, symbols);
 }
 
 #endif

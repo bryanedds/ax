@@ -21,11 +21,11 @@ namespace ax
         using fourth_type = Fourth;
         using fifth_type = Fifth;
         template<typename A, typename B, typename C, typename D, typename E>
-        using reify = choice5<A, B, C, D, E>;
+        using reify = ax::choice5<A, B, C, D, E>;
 
         choice5() : index(0_z) { new (&u) First(); }
-        choice5(const choice5& that) : index(that.index) { construct_u(that); }
-        choice5(choice5&& that) : index(that.index) { construct_u(that); }
+        choice5(const ax::choice5& that) : index(that.index) { construct_u(that); }
+        choice5(ax::choice5&& that) : index(that.index) { construct_u(that); }
         explicit choice5(const First& first, bool) : index(0_z) { new (&u) First(first); }
         explicit choice5(First&& first, bool) : index(0_z) { new (&u) First(first); }
         explicit choice5(const Second& second, bool, bool) : index(1_z) { new (&u) Second(second); }
@@ -38,7 +38,7 @@ namespace ax
         explicit choice5(Fifth&& fifth, bool, bool, bool, bool, bool) : index(4_z) { new (&u) Fifth(fifth); }
         virtual ~choice5() { destruct_u(); }
 
-        choice5& operator=(const choice5& that)
+        ax::choice5& operator=(const ax::choice5& that)
         {
             destruct_u();
             index = that.index;
@@ -46,7 +46,7 @@ namespace ax
             return *this;
         }
 
-        choice5& operator=(choice5&& that)
+        ax::choice5& operator=(ax::choice5&& that)
         {
             destruct_u();
             index = that.index;
@@ -158,7 +158,7 @@ namespace ax
 
     private:
 
-        void construct_u(const choice5& that)
+        void construct_u(const ax::choice5& that)
         {
             switch (index)
             {
@@ -170,7 +170,7 @@ namespace ax
             }
         }
 
-        void construct_u(choice5&& that)
+        void construct_u(ax::choice5&& that)
         {
             switch (index)
             {
@@ -199,19 +199,19 @@ namespace ax
     };
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    choice5<First, Second, Third, Fourth, Fifth> first(const First& first) { return choice5<First, Second, Third, Fourth, Fifth>(first, false); }
+    ax::choice5<First, Second, Third, Fourth, Fifth> first(const First& first) { return ax::choice5<First, Second, Third, Fourth, Fifth>(first, false); }
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    choice5<First, Second, Third, Fourth, Fifth> second(const Second& second) { return choice5<First, Second, Third, Fourth, Fifth>(second, false, false); }
+    ax::choice5<First, Second, Third, Fourth, Fifth> second(const Second& second) { return ax::choice5<First, Second, Third, Fourth, Fifth>(second, false, false); }
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    choice5<First, Second, Third, Fourth, Fifth> third(const Third& third) { return choice5<First, Second, Third, Fourth, Fifth>(third, false, false, false); }
+    ax::choice5<First, Second, Third, Fourth, Fifth> third(const Third& third) { return ax::choice5<First, Second, Third, Fourth, Fifth>(third, false, false, false); }
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    choice5<First, Second, Third, Fourth, Fifth> fourth(const Fourth& fourth) { return choice5<First, Second, Third, Fourth, Fifth>(fourth, false, false, false, false); }
+    ax::choice5<First, Second, Third, Fourth, Fifth> fourth(const Fourth& fourth) { return ax::choice5<First, Second, Third, Fourth, Fifth>(fourth, false, false, false, false); }
 
     template<typename First, typename Second, typename Third, typename Fourth, typename Fifth>
-    choice5<First, Second, Third, Fourth, Fifth> fifth(const Fifth& fifth) { return choice5<First, Second, Third, Fourth, Fifth>(fifth, false, false, false, false, false); }
+    ax::choice5<First, Second, Third, Fourth, Fifth> fifth(const Fifth& fifth) { return ax::choice5<First, Second, Third, Fourth, Fifth>(fifth, false, false, false, false, false); }
 }
 
 #define SUM_TYPE5(T, FirstType, FirstName, SecondType, SecondName, ThirdType, ThirdName, FourthType, FourthName, FifthType, FifthName) \

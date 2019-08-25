@@ -20,10 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\hpp\ax\address.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\array.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\address.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\addressable.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\array.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\ax.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\castable.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\choice.hpp" />

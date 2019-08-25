@@ -13,19 +13,19 @@
 namespace ax
 {
     template<typename T>
-    class property : public castable
+    class property : public ax::castable
     {
     public:
 
         CONSTRAINT(property);
         template<typename A>
-        using reify = property<A>;
+        using reify = ax::property<A>;
 
         property() = default;
-        property(const property&) = default;
-        property(property&&) = default;
-        property& operator=(const property&) = default;
-        property& operator=(property&&) = default;
+        property(const ax::property&) = default;
+        property(ax::property&&) = default;
+        ax::property& operator=(const ax::property&) = default;
+        ax::property& operator=(ax::property&&) = default;
 
         explicit property(const T& value) : data(value) { }
         T& operator=(const T& value) { return data = value; }
@@ -40,7 +40,7 @@ namespace ax
 
     protected:
 
-        ENABLE_CAST(property<T>, castable);
+        ENABLE_CAST(ax::property<T>, ax::castable);
 
     private:
 
@@ -48,39 +48,39 @@ namespace ax
     };
 
     // TODO: type descriptor
-    class property_map : public std::unordered_map<name_t, std::unique_ptr<castable>>
+    class property_map : public std::unordered_map<ax::name_t, std::unique_ptr<ax::castable>>
     {
     public:
 
         CONSTRAINT(property_map);
-        using std::unordered_map<name_t, std::unique_ptr<castable>>::unordered_map;
+        using std::unordered_map<name_t, std::unique_ptr<ax::castable>>::unordered_map;
 
         template<typename T>
-        const property<T>& get_property(const name_t& name) const
+        const ax::property<T>& get_property(const ax::name_t& name) const
         {
             VAL& property_opt = find(name);
-            if (property_opt != end()) return cast<property<T>>(*property_opt->second);
+            if (property_opt != end()) return ax::cast<ax::property<T>>(*property_opt->second);
             throw std::logic_error("No such property '"_s + std::to_string(name) + "'.");
         }
 
         template<typename T>
-        property<T>& get_property(const name_t& name)
+        ax::property<T>& get_property(const ax::name_t& name)
         {
             VAL& property_opt = find(name);
-            if (property_opt != end()) return cast<property<T>>(*property_opt->second);
+            if (property_opt != end()) return ax::cast<ax::property<T>>(*property_opt->second);
             throw std::logic_error("No such property '"_s + std::to_string(name) + "'.");
         }
 
         template<typename T>
-        void attach_property(const name_t& name, const T& value)
+        void attach_property(const ax::name_t& name, const T& value)
         {
-            insert(std::make_pair(name, std::make_unique<property<T>>(value)));
+            insert(std::make_pair(name, std::make_unique<ax::property<T>>(value)));
         }
 
         template<typename T>
-        void attach_property(const name_t& name, T&& value)
+        void attach_property(const ax::name_t& name, T&& value)
         {
-            insert(name, std::make_unique<property<T>>(value));
+            insert(name, std::make_unique<ax::property<T>>(value));
         }
     };
 }

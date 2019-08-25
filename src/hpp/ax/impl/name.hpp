@@ -15,15 +15,15 @@ namespace ax
     public:
 
         name_t() = default;
-        name_t(const name_t&) = default;
-        name_t(name_t&&) = default;
-        name_t& operator=(const name_t&) = default;
-        name_t& operator=(name_t&&) = default;
+        name_t(const ax::name_t&) = default;
+        name_t(ax::name_t&&) = default;
+        ax::name_t& operator=(const ax::name_t&) = default;
+        ax::name_t& operator=(ax::name_t&&) = default;
         
         name_t(const char* name_str);
         name_t(const std::string& name_str);
         explicit name_t(std::string&& name_str);
-        bool operator==(const name_t& that) const;
+        bool operator==(const ax::name_t& that) const;
         inline explicit operator std::size_t() const { return hash_code; }
         inline const std::string& to_string() const { return name_str; }
 

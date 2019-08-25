@@ -20,11 +20,11 @@ namespace ax
         using third_type = Third;
         using fourth_type = Fourth;
         template<typename A, typename B, typename C, typename D>
-        using reify = choice4<A, B, C, D>;
+        using reify = ax::choice4<A, B, C, D>;
 
         choice4() : index(0_z) { new (&u) First(); }
-        choice4(const choice4& that) : index(that.index) { construct_u(that); }
-        choice4(choice4&& that) : index(that.index) { construct_u(that); }
+        choice4(const ax::choice4& that) : index(that.index) { construct_u(that); }
+        choice4(ax::choice4&& that) : index(that.index) { construct_u(that); }
         explicit choice4(const First& first, bool) : index(0_z) { new (&u) First(first); }
         explicit choice4(First&& first, bool) : index(0_z) { new (&u) First(first); }
         explicit choice4(const Second& second, bool, bool) : index(1_z) { new (&u) Second(second); }
@@ -35,7 +35,7 @@ namespace ax
         explicit choice4(Fourth&& fourth, bool, bool, bool, bool) : index(3_z) { new (&u) Fourth(fourth); }
         virtual ~choice4() = default;
 
-        choice4& operator=(const choice4& that)
+        ax::choice4& operator=(const ax::choice4& that)
         {
             destruct_u();
             index = that.index;
@@ -43,7 +43,7 @@ namespace ax
             return *this;
         }
 
-        choice4& operator=(choice4&& that)
+        ax::choice4& operator=(ax::choice4&& that)
         {
             destruct_u();
             index = that.index;
@@ -139,7 +139,7 @@ namespace ax
 
     private:
 
-        void construct_u(const choice4& that)
+        void construct_u(const ax::choice4& that)
         {
             switch (index)
             {
@@ -150,7 +150,7 @@ namespace ax
             }
         }
 
-        void construct_u(choice4&& that)
+        void construct_u(ax::choice4&& that)
         {
             switch (index)
             {
@@ -177,16 +177,16 @@ namespace ax
     };
 
     template<typename First, typename Second, typename Third, typename Fourth>
-    choice4<First, Second, Third, Fourth> first(const First& first) { return choice4<First, Second, Third, Fourth>(first, false); }
+    ax::choice4<First, Second, Third, Fourth> first(const First& first) { return ax::choice4<First, Second, Third, Fourth>(first, false); }
 
     template<typename First, typename Second, typename Third, typename Fourth>
-    choice4<First, Second, Third, Fourth> second(const Second& second) { return choice4<First, Second, Third, Fourth>(second, false, false); }
+    ax::choice4<First, Second, Third, Fourth> second(const Second& second) { return ax::choice4<First, Second, Third, Fourth>(second, false, false); }
 
     template<typename First, typename Second, typename Third, typename Fourth>
-    choice4<First, Second, Third, Fourth> third(const Third& third) { return choice4<First, Second, Third, Fourth>(third, false, false, false); }
+    ax::choice4<First, Second, Third, Fourth> third(const Third& third) { return ax::choice4<First, Second, Third, Fourth>(third, false, false, false); }
 
     template<typename First, typename Second, typename Third, typename Fourth>
-    choice4<First, Second, Third, Fourth> fourth(const Fourth& fourth) { return choice4<First, Second, Third, Fourth>(fourth, false, false, false, false); }
+    ax::choice4<First, Second, Third, Fourth> fourth(const Fourth& fourth) { return ax::choice4<First, Second, Third, Fourth>(fourth, false, false, false, false); }
 }
 
 #define SUM_TYPE4(T, FirstType, FirstName, SecondType, SecondName, ThirdType, ThirdName, FourthType, FourthName) \
