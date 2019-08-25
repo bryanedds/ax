@@ -149,6 +149,19 @@ namespace ax
             }
         }
 
+        T* erase(const T* iter)
+        {
+            VAL size = this->size();
+            if (size > N)
+            {
+                VAL pos = iter - big_vector.data();
+                VAL& iter = big_vector.begin() + pos;
+                return &*big_vector.erase(iter);
+            }
+            small_end = std::remove(small_begin, small_end, *iter);
+            return small_end;
+        }
+
         T& at(std::size_t pos)
         {
             VAL size = this->size();
