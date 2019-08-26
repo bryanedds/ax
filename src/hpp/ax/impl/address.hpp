@@ -26,9 +26,9 @@ namespace ax
         address& operator=(const address&) = default;
         address& operator=(address&&) = default;
 
-        explicit address(const ax::name_t& name);
         explicit address(const ax::names_t& names);
         explicit address(ax::names_t&& names);
+        explicit address(const ax::name_t& name);
         explicit address(const ax::vector<std::string>& names);
         explicit address(const char* names_str);
         explicit address(const std::string& names_str);

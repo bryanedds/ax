@@ -6,10 +6,6 @@
 
 namespace ax
 {
-    address::address(const ax::name_t& name) :
-        hash_code(get_hash(name)),
-        names({ name }) { }
-
     address::address(const ax::names_t& names) :
         hash_code(get_hash_range<ax::name_t>(names.begin(), names.end())),
         names(names) { }
@@ -17,6 +13,10 @@ namespace ax
     address::address(ax::names_t&& names) :
         hash_code(get_hash_range<ax::name_t>(names.begin(), names.end())),
         names(names) { }
+
+    address::address(const ax::name_t& name) :
+        hash_code(get_hash(name)),
+        names({ name }) { }
 
     address::address(const ax::vector<std::string>& names) :
         address(std::transform<ax::names_t>(names.begin(), names.end(), [](VAL& name) { return ax::name_t(name); })) { }
