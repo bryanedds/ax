@@ -11,7 +11,7 @@ namespace ax
 {
     // The event type.
     template<typename T>
-    class event
+    struct event final
     {
     public:
 

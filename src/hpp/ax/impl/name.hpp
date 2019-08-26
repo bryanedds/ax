@@ -10,20 +10,20 @@
 namespace ax
 {
     // A name value implemented as a data abstraction. Its hash is cached for true constant-time lookup.
-    class name_t
+    struct name final
     {
     public:
 
-        name_t() = default;
-        name_t(const ax::name_t&) = default;
-        name_t(ax::name_t&&) = default;
-        ax::name_t& operator=(const ax::name_t&) = default;
-        ax::name_t& operator=(ax::name_t&&) = default;
+        name() = default;
+        name(const ax::name&) = default;
+        name(ax::name&&) = default;
+        ax::name& operator=(const ax::name&) = default;
+        ax::name& operator=(ax::name&&) = default;
         
-        name_t(const char* name_str);
-        name_t(const std::string& name_str);
-        explicit name_t(std::string&& name_str);
-        bool operator==(const ax::name_t& that) const;
+        name(const char* name_str);
+        name(const std::string& name_str);
+        explicit name(std::string&& name_str);
+        bool operator==(const ax::name& that) const;
         inline explicit operator std::size_t() const { return hash_code; }
         inline const std::string& to_string() const { return name_str; }
 
@@ -35,31 +35,31 @@ namespace ax
 }
 
 // Name suffix operator.
-inline ax::name_t operator ""_n(const char *str, std::size_t len)
+inline ax::name operator ""_n(const char *str, std::size_t len)
 {
-    return ax::name_t(std::string(str, len));
+    return ax::name(std::string(str, len));
 }
 
 namespace std
 {
-    inline std::string to_string(const ax::name_t& name)
+    inline std::string to_string(const ax::name& name)
     {
         return name.to_string();
     }
 
     template<>
-    struct hash<ax::name_t>
+    struct hash<ax::name>
     {
-        std::size_t operator()(const ax::name_t& name) const
+        std::size_t operator()(const ax::name& name) const
         {
             return static_cast<std::size_t>(name);
         }
     };
 
     template<>
-    struct equal_to<ax::name_t>
+    struct equal_to<ax::name>
     {
-        std::size_t operator()(const ax::name_t& left, const ax::name_t& right) const
+        std::size_t operator()(const ax::name& left, const ax::name& right) const
         {
             return left == right;
         }

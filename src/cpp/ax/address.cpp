@@ -7,19 +7,19 @@
 namespace ax
 {
     address::address(const ax::names_t& names) :
-        hash_code(get_hash_range<ax::name_t>(names.begin(), names.end())),
+        hash_code(get_hash_range<ax::name>(names.begin(), names.end())),
         names(names) { }
 
     address::address(ax::names_t&& names) :
-        hash_code(get_hash_range<ax::name_t>(names.begin(), names.end())),
+        hash_code(get_hash_range<ax::name>(names.begin(), names.end())),
         names(names) { }
 
-    address::address(const ax::name_t& name) :
+    address::address(const ax::name& name) :
         hash_code(get_hash(name)),
         names({ name }) { }
 
     address::address(const ax::vector<std::string>& names) :
-        address(std::transform<ax::names_t>(names.begin(), names.end(), [](VAL& name) { return ax::name_t(name); })) { }
+        address(std::transform<ax::names_t>(names.begin(), names.end(), [](VAL& name) { return ax::name(name); })) { }
 
     address::address(const char* names_str) :
         address(std::string(names_str)) { }
@@ -37,7 +37,7 @@ namespace ax
     ax::address address::operator+(const ax::address& right) const
     {
         ax::names_t names_summed(names.begin(), names.end());
-        for (const ax::name_t& name : right.names) names_summed.push_back(name);
+        for (const ax::name& name : right.names) names_summed.push_back(name);
         return ax::address(names_summed);
     }
 }

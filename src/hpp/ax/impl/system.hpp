@@ -46,7 +46,7 @@ namespace ax
     // The common data of an entity stored as a component.
     struct entity_component : public ax::component
     {
-        std::unordered_map<ax::name_t, ax::component*> components;
+        std::unordered_map<ax::name, ax::component*> components;
     };
 
     // A transform component.
@@ -164,7 +164,7 @@ namespace ax
 
     // The world that contains the entity-component-system, event system, and other mixins.
     // Uses function members because the type is not meant to be inherited.
-    class world : public ax::eventable<ax::world>
+    class world final : public ax::eventable<ax::world>
     {
     public:
 
@@ -174,7 +174,7 @@ namespace ax
             std::function<void(ax::world& world)> clean_up_systems_impl);
 
         template<typename T>
-        T* try_add_component(const ax::name_t& system_name, const ax::address& address, const T& component = T())
+        T* try_add_component(const ax::name& system_name, const ax::address& address, const T& component = T())
         {
             VAL& entities_iter = systems.find("entities");
             if (entities_iter != systems.end())
@@ -197,7 +197,7 @@ namespace ax
         }
 
         template<typename T>
-        T* try_get_component(const ax::name_t& system_name, const ax::address& address)
+        T* try_get_component(const ax::name& system_name, const ax::address& address)
         {
             VAL& entities_iter = systems.find("entities");
             if (entities_iter != systems.end())
@@ -220,12 +220,12 @@ namespace ax
         ax::transform* try_get_transform(const ax::address& address);
         ax::entity_component* try_get_entity(const ax::address& address);
         bool entity_exists(const ax::address& address);
-        ax::component* try_add_component(const ax::name_t& system_name, const ax::address& address);
-        bool try_remove_component(const ax::name_t& system_name, const ax::address& address);
+        ax::component* try_add_component(const ax::name& system_name, const ax::address& address);
+        bool try_remove_component(const ax::name& system_name, const ax::address& address);
         ax::entity create_entity(const ax::address& address);
         bool destroy_entity(const ax::address& address);
-        ax::system_ptr try_add_system(const ax::name_t& name, ax::system_ptr system);
-        bool remove_system(const ax::name_t& name);
+        ax::system_ptr try_add_system(const ax::name& name, ax::system_ptr system);
+        bool remove_system(const ax::name& name);
         void initialize_systems();
         void update_systems();
         void clean_up_systems();
@@ -234,14 +234,14 @@ namespace ax
 
         ax::entity_component* try_add_entity(const ax::address& address);
         bool try_remove_entity(const ax::address& address);
-        std::unordered_map<ax::name_t, std::shared_ptr<ax::system>> systems;
+        std::unordered_map<ax::name, std::shared_ptr<ax::system>> systems;
         std::function<void(ax::world& world)> initialize_systems_impl;
         std::function<void(ax::world& world)> update_systems_impl;
         std::function<void(ax::world& world)> clean_up_systems_impl;
     };
 
     // A handle to an entity in an entity-component-system.
-    class entity : public addressable
+    class entity final : public ax::addressable
     {
     public:
 
@@ -252,16 +252,16 @@ namespace ax
         entity(const ax::address& address, ax::world& world) : ax::addressable(address), world(world) { }
 
         template<typename T>
-        const T* try_get_component(const ax::name_t& name) const { return world.try_get_component<T>(name, get_address()); }
+        const T* try_get_component(const ax::name& name) const { return world.try_get_component<T>(name, get_address()); }
 
         template<typename T>
-        T* try_get_component(const ax::name_t& name) { return world.try_get_component<T>(name, get_address()); }
+        T* try_get_component(const ax::name& name) { return world.try_get_component<T>(name, get_address()); }
 
         template<typename T>
-        const T& get_component(const ax::name_t& name) const { return *try_get_component<T>(name); }
+        const T& get_component(const ax::name& name) const { return *try_get_component<T>(name); }
 
         template<typename T>
-        T& get_component(const ax::name_t& name)
+        T& get_component(const ax::name& name)
         {
             VAR* component_opt = *try_get_component<T>(name);
             if (component_opt) return *component_opt;

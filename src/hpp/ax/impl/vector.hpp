@@ -12,7 +12,7 @@ namespace ax
 {
     // A vector with small size optimization.
     template<typename T, typename A = std::allocator<T>, std::size_t N = 4>
-    class vector
+    struct vector
     {
     public:
 
@@ -25,10 +25,15 @@ namespace ax
         template<typename T2, typename A2, std::size_t N2>
         using reify = ax::vector<T2, A2, N2>;
 
-        vector() : vector({ }) { }
+        vector() :
+            small_begin{},
+            small_end(small_begin),
+            big_vector()
+        { }
 
         vector(std::initializer_list<T> il) :
-            vector(il.begin(), il.end()) { }
+            vector(il.begin(), il.end())
+        { }
 
         vector(const T* begin, const T* end)
         {

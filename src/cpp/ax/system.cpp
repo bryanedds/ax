@@ -38,7 +38,7 @@ namespace ax
         return try_get_entity(address) != nullptr;
     }
 
-    ax::component* world::try_add_component(const ax::name_t& system_name, const ax::address& address)
+    ax::component* world::try_add_component(const ax::name& system_name, const ax::address& address)
     {
         VAL& entities_iter = systems.find("entities");
         if (entities_iter != systems.end())
@@ -60,7 +60,7 @@ namespace ax
         return nullptr;
     }
 
-    bool world::try_remove_component(const ax::name_t& system_name, const ax::address& address)
+    bool world::try_remove_component(const ax::name& system_name, const ax::address& address)
     {
         VAL& entities_iter = systems.find("entities");
         if (entities_iter != systems.end())
@@ -114,13 +114,13 @@ namespace ax
         return false;
     }
 
-    ax::system_ptr world::try_add_system(const ax::name_t& name, ax::system_ptr system)
+    ax::system_ptr world::try_add_system(const ax::name& name, ax::system_ptr system)
     {
         std::insert_or_assign(systems, name, system);
         return system;
     }
 
-    bool world::remove_system(const ax::name_t& name)
+    bool world::remove_system(const ax::name& name)
     {
         return systems.erase(name) != 0;
     }

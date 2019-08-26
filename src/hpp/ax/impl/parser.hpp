@@ -14,7 +14,7 @@ namespace ax
 {
     // The result of a parser.
     template<typename T>
-    class parse : public ax::either<T, std::string>
+    class parse final : public ax::either<T, std::string>
     {
     public:
 

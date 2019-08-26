@@ -4,9 +4,9 @@
 
 namespace ax
 {
-    type_map type_t::type_map;
+    type_map ax::type::type_map;
 
-    type_t::type_t(
+    type::type(
         const std::shared_ptr<std::type_index>& base_type_index_opt,
         std::type_index type_index,
         const ax::field_map& field_map,
@@ -17,32 +17,32 @@ namespace ax
         field_vector(field_vector)
     { }
 
-    const std::shared_ptr<std::type_index>& type_t::get_base_type_index_opt() const
+    const std::shared_ptr<std::type_index>& type::get_base_type_index_opt() const
     {
         return base_type_index_opt;
     }
 
-    std::type_index type_t::get_type_index() const
+    std::type_index type::get_type_index() const
     {
         return type_index;
     }
 
-    const field_map& type_t::get_field_map() const
+    const field_map& type::get_field_map() const
     {
         return field_map;
     }
 
-    const field_vector& type_t::get_field_vector() const
+    const field_vector& type::get_field_vector() const
     {
         return field_vector;
     }
 
     const type_map& get_type_map()
     {
-        return type_t::type_map;
+        return ax::type::type_map;
     }
 
-    std::shared_ptr<type_t> get_type(std::type_index type_index)
+    std::shared_ptr<ax::type> get_type(std::type_index type_index)
     {
         VAL& type_map = get_type_map();
         VAL& type_iter = type_map.find(type_index);

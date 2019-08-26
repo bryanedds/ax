@@ -13,7 +13,7 @@
 namespace ax
 {
     template<typename T>
-    class property : public ax::castable
+    class property final : public ax::castable
     {
     public:
 
@@ -48,15 +48,15 @@ namespace ax
     };
 
     // TODO: type descriptor
-    class property_map : public std::unordered_map<ax::name_t, std::unique_ptr<ax::castable>>
+    struct property_map final : public std::unordered_map<ax::name, std::unique_ptr<ax::castable>>
     {
     public:
 
         CONSTRAINT(property_map);
-        using std::unordered_map<name_t, std::unique_ptr<ax::castable>>::unordered_map;
+        using std::unordered_map<name, std::unique_ptr<ax::castable>>::unordered_map;
 
         template<typename T>
-        const ax::property<T>& get_property(const ax::name_t& name) const
+        const ax::property<T>& get_property(const ax::name& name) const
         {
             VAL& property_opt = find(name);
             if (property_opt != end()) return ax::cast<ax::property<T>>(*property_opt->second);
@@ -64,7 +64,7 @@ namespace ax
         }
 
         template<typename T>
-        ax::property<T>& get_property(const ax::name_t& name)
+        ax::property<T>& get_property(const ax::name& name)
         {
             VAL& property_opt = find(name);
             if (property_opt != end()) return ax::cast<ax::property<T>>(*property_opt->second);
@@ -72,13 +72,13 @@ namespace ax
         }
 
         template<typename T>
-        void attach_property(const ax::name_t& name, const T& value)
+        void attach_property(const ax::name& name, const T& value)
         {
             insert(std::make_pair(name, std::make_unique<ax::property<T>>(value)));
         }
 
         template<typename T>
-        void attach_property(const ax::name_t& name, T&& value)
+        void attach_property(const ax::name& name, T&& value)
         {
             insert(name, std::make_unique<ax::property<T>>(value));
         }

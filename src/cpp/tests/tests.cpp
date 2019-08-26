@@ -11,40 +11,35 @@ namespace ax
     // A trivial type to demonstrate the castable type.
     class castable_a : public ax::castable
     {
-    protected:
-        ENABLE_CAST(ax::castable_a, ax::castable);
-    public:
-        int i = 0;
+    public: int i = 0;
+    protected: ENABLE_CAST(ax::castable_a, ax::castable);
     };
 
     // A trivial type to demonstrate the castable type.
     class castable_b : public ax::castable_a
     {
-    protected:
-        ENABLE_CAST(ax::castable_b, ax::castable_a);
-    public:
-        int j = 0;
+    public: int j = 0;
+    protected: ENABLE_CAST(ax::castable_b, ax::castable_a);
     };
 
     // A trivial program type to demonstrate the eventable program mixin.
-    class eventable_test : public ax::eventable<ax::eventable_test>
+    class eventable_test final : public ax::eventable<ax::eventable_test>
     {
-    protected:
-        ENABLE_CAST(ax::eventable_test, ax::eventable<ax::eventable_test>);
+    protected: ENABLE_CAST(ax::eventable_test, ax::eventable<ax::eventable_test>);
     };
 
-    class reflectable_test : public ax::reflectable
+    class reflectable_test final : public ax::reflectable
     {
     protected:
 
         ENABLE_REFLECTION_CUSTOM(ax::reflectable_test, ax::reflectable);
 
-        const std::shared_ptr<ax::type_t> type = register_sub_type<ax::reflectable_test>(typeid(ax::reflectable),
+        const std::shared_ptr<ax::type> type = register_sub_type<ax::reflectable_test>(typeid(ax::reflectable),
         {
             { "bool_value",             register_field<bool>                            (offsetof(ax::reflectable_test, bool_value)) },
             { "int_value",              register_field<int>                             (offsetof(ax::reflectable_test, int_value)) },
             { "float_value",            register_field<float>                           (offsetof(ax::reflectable_test, float_value)) },
-            { "name_value",             register_field<ax::name_t>                      (offsetof(ax::reflectable_test, name_value)) },
+            { "name_value",             register_field<ax::name>                      (offsetof(ax::reflectable_test, name_value)) },
             { "address_value",          register_field<ax::address>                     (offsetof(ax::reflectable_test, address_value)) },
             { "vector_int_value",       register_field<std::vector<int>>                (offsetof(ax::reflectable_test, vector_int_value)) },
             { "vector_string_value",    register_field<std::vector<std::string>>        (offsetof(ax::reflectable_test, vector_string_value)) },
@@ -58,7 +53,7 @@ namespace ax
             { "choice_value",           register_field<ax::choice<int, int, int>>       (offsetof(ax::reflectable_test, choice_value)) }
         });
 
-        std::shared_ptr<ax::type_t> get_type() const override
+        std::shared_ptr<ax::type> get_type() const override
         {
             return type;
         };
@@ -68,7 +63,7 @@ namespace ax
         int bool_value;
         int int_value;
         float float_value;
-        ax::name_t name_value;
+        ax::name name_value;
         ax::address address_value;
         std::vector<int> vector_int_value;
         std::vector<std::string> vector_string_value;
@@ -103,7 +98,7 @@ namespace ax
             bool bool_value,
             int int_value,
             float float_value,
-            ax::name_t name_value,
+            ax::name name_value,
             ax::address address_value,
             const std::vector<int>& vector_int_value,
             const std::vector<std::string>& vector_string_value,
@@ -280,7 +275,7 @@ namespace ax
     TEST("misc")
     {
         std::cout << std::to_string(sizeof(std::string)) << std::endl;
-        std::cout << std::to_string(sizeof(ax::name_t)) << std::endl;
+        std::cout << std::to_string(sizeof(ax::name)) << std::endl;
         std::cout << std::to_string(sizeof(ax::address)) << std::endl;
     }
 }

@@ -28,7 +28,7 @@
 namespace ax
 {
     // A type descriptor for boolean values.
-    class bool_descriptor : public ax::type_descriptor
+    class bool_descriptor final : public ax::type_descriptor
     {
     public:
         void inspect_value(const void* source_ptr, void* target_ptr) const override;
@@ -38,7 +38,7 @@ namespace ax
     };
 
     // A type descriptor for integer values.
-    class int_descriptor : public ax::type_descriptor
+    class int_descriptor final : public ax::type_descriptor
     {
     public:
         void inspect_value(const void* source_ptr, void* target_ptr) const override;
@@ -48,7 +48,7 @@ namespace ax
     };
 
     // A type descriptor for 32-bit integer values.
-    class int32_descriptor : public ax::type_descriptor
+    class int32_descriptor final : public ax::type_descriptor
     {
     public:
         void inspect_value(const void* source_ptr, void* target_ptr) const override;
@@ -58,7 +58,7 @@ namespace ax
     };
 
     // A type descriptor for 64-bit integer values.
-    class int64_descriptor : public ax::type_descriptor
+    class int64_descriptor final : public ax::type_descriptor
     {
     public:
         void inspect_value(const void* source_ptr, void* target_ptr) const override;
@@ -68,7 +68,7 @@ namespace ax
     };
 
     // A type descriptor for float values.
-    class float_descriptor : public ax::type_descriptor
+    class float_descriptor final : public ax::type_descriptor
     {
     public:
         void inspect_value(const void* source_ptr, void* target_ptr) const override;
@@ -78,7 +78,7 @@ namespace ax
     };
 
     // A type descriptor for double values.
-    class double_descriptor : public ax::type_descriptor
+    class double_descriptor final : public ax::type_descriptor
     {
     public:
         void inspect_value(const void* source_ptr, void* target_ptr) const override;
@@ -88,7 +88,7 @@ namespace ax
     };
 
     // A type descriptor for std::size_t values.
-    class size_descriptor : public ax::type_descriptor
+    class size_descriptor final : public ax::type_descriptor
     {
     public:
         void inspect_value(const void* source_ptr, void* target_ptr) const override;
@@ -98,7 +98,7 @@ namespace ax
     };
 
     // A type descriptor for std::string values.
-    class string_descriptor : public ax::type_descriptor
+    class string_descriptor final : public ax::type_descriptor
     {
     public:
         void inspect_value(const void* source_ptr, void* target_ptr) const override;
@@ -107,8 +107,8 @@ namespace ax
         void write_value(const void* source_ptr, ax::symbol& target_symbol) const override;
     };
 
-    // A type descriptor for ax::name_t values.
-    class name_descriptor : public ax::type_descriptor
+    // A type descriptor for ax::name values.
+    class name_descriptor final : public ax::type_descriptor
     {
     public:
         void inspect_value(const void* source_ptr, void* target_ptr) const override;
@@ -118,7 +118,7 @@ namespace ax
     };
 
     // A type descriptor for ax::address values.
-    class address_descriptor : public ax::type_descriptor
+    class address_descriptor final : public ax::type_descriptor
     {
     public:
         void inspect_value(const void* source_ptr, void* target_ptr) const override;
@@ -129,7 +129,7 @@ namespace ax
 
     // A type descriptor for std::vector<T> values.
     template<typename T>
-    class std_vector_descriptor : public ax::type_descriptor
+    class std_vector_descriptor final : public ax::type_descriptor
     {
     public:
 
@@ -178,7 +178,7 @@ namespace ax
     };
 
     template<typename T>
-    class std_unordered_set_descriptor : public ax::type_descriptor
+    class std_unordered_set_descriptor final : public ax::type_descriptor
     {
     public:
 
@@ -227,7 +227,7 @@ namespace ax
     };
 
     template<typename K, typename V>
-    class std_unordered_map_descriptor : public ax::type_descriptor
+    class std_unordered_map_descriptor final : public ax::type_descriptor
     {
     public:
 
@@ -296,7 +296,7 @@ namespace ax
 
     // A type descriptor for ax::vector<T> values.
     template<typename T>
-    class ax_vector_descriptor : public ax::type_descriptor
+    class ax_vector_descriptor final : public ax::type_descriptor
     {
     public:
 
@@ -345,7 +345,7 @@ namespace ax
     };
 
     template<typename T>
-    class shared_ptr_descriptor : public ax::type_descriptor
+    class shared_ptr_descriptor final : public ax::type_descriptor
     {
     public:
 
@@ -379,7 +379,7 @@ namespace ax
     // TODO: std_pair_descriptor?
 
     template<typename P>
-    class ax_pair_descriptor : public ax::type_descriptor
+    class ax_pair_descriptor final : public ax::type_descriptor
     {
     public:
 
@@ -435,7 +435,7 @@ namespace ax
     };
 
     template<typename R>
-    class record_descriptor : public ax::type_descriptor
+    class record_descriptor final : public ax::type_descriptor
     {
     public:
 
@@ -496,7 +496,7 @@ namespace ax
     };
 
     template<typename R>
-    class record4_descriptor : public ax::type_descriptor
+    class record4_descriptor final : public ax::type_descriptor
     {
     public:
 
@@ -562,7 +562,7 @@ namespace ax
     };
 
     template<typename R>
-    class record5_descriptor : public ax::type_descriptor
+    class record5_descriptor final : public ax::type_descriptor
     {
     public:
 
@@ -638,7 +638,7 @@ namespace ax
     };
 
     template<typename T>
-    class option_descriptor : public ax::type_descriptor
+    class option_descriptor final : public ax::type_descriptor
     {
     public:
 
@@ -694,7 +694,7 @@ namespace ax
     };
 
     template<typename E>
-    class either_descriptor : public ax::type_descriptor
+    class either_descriptor final : public ax::type_descriptor
     {
     public:
 
@@ -781,7 +781,7 @@ namespace ax
     };
 
     template<typename C>
-    class choice_descriptor : public ax::type_descriptor
+    class choice_descriptor final : public ax::type_descriptor
     {
     public:
 
@@ -884,7 +884,7 @@ namespace ax
     };
 
     template<typename C>
-    class choice4_descriptor : public ax::type_descriptor
+    class choice4_descriptor final : public ax::type_descriptor
     {
     public:
 
@@ -1003,7 +1003,7 @@ namespace ax
     };
 
     template<typename C>
-    class choice5_descriptor : public ax::type_descriptor
+    class choice5_descriptor final : public ax::type_descriptor
     {
     public:
 

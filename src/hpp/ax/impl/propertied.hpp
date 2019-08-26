@@ -18,37 +18,37 @@ namespace ax
         propertied() = default;
 
         template<typename T>
-        const T& get(const ax::name_t& name) const
+        const T& get(const ax::name& name) const
         {
             return properties.get_property<T>(name).get_value();
         }
 
         template<typename T>
-        T& get(const ax::name_t& name)
+        T& get(const ax::name& name)
         {
             return properties.get_property<T>(name).get_value();
         }
 
         template<typename T>
-        T& set(const ax::name_t& name, const T& value)
+        T& set(const ax::name& name, const T& value)
         {
             return properties.get_property<T>(name).set_value(value);
         }
 
         template<typename T>
-        T& set(const ax::name_t& name, T&& value)
+        T& set(const ax::name& name, T&& value)
         {
             return properties.get_property<T>(name).set_value(value);
         }
 
         template<typename T>
-        void attach(const ax::name_t& name, const T& value)
+        void attach(const ax::name& name, const T& value)
         {
             properties.attach_property<T>(name, value);
         }
 
         template<typename T>
-        void attach(const ax::name_t& name, T&& value)
+        void attach(const ax::name& name, T&& value)
         {
             properties.attach_property<T>(name, value);
         }

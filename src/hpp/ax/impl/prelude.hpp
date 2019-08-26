@@ -101,7 +101,7 @@ namespace ax
     T succ(T t) { return t + one<T>(); }
 
     // The unit type.
-    class unit { public: CONSTRAINT(unit); };
+    struct unit final { public: CONSTRAINT(unit); };
 }
 
 namespace std

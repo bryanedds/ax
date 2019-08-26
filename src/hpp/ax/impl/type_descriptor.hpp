@@ -126,7 +126,7 @@ namespace ax
     void write_value(const ax::reflectable& source_reflectable, ax::symbol& target_symbol);
 
     // A generalized type descriptor for reflectable types.
-    class reflectable_descriptor : public ax::type_descriptor
+    class reflectable_descriptor final : public ax::type_descriptor
     {
     public:
         void inspect_value(const void* source_ptr, void* target_ptr) const override;

@@ -237,17 +237,17 @@ namespace ax
 
     void name_descriptor::inspect_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value<ax::name_t>(source_ptr, target_ptr);
+        assign_value<ax::name>(source_ptr, target_ptr);
     }
 
     void name_descriptor::inject_value(const void* source_ptr, void* target_ptr) const
     {
-        assign_value<ax::name_t>(source_ptr, target_ptr);
+        assign_value<ax::name>(source_ptr, target_ptr);
     }
 
     void name_descriptor::read_value(const ax::symbol& source_symbol, void* target_ptr) const
     {
-        VAR* name_ptr = static_cast<ax::name_t*>(target_ptr);
+        VAR* name_ptr = static_cast<ax::name*>(target_ptr);
         source_symbol.match(
             [&](VAL& atom) { *name_ptr = atom; },
             [](VAL&) { throw std::invalid_argument("Expected atom."); },
@@ -256,7 +256,7 @@ namespace ax
 
     void name_descriptor::write_value(const void* source_ptr, ax::symbol& target_symbol) const
     {
-        VAL* name_ptr = static_cast<const ax::name_t*>(source_ptr);
+        VAL* name_ptr = static_cast<const ax::name*>(source_ptr);
         target_symbol = atom(name_ptr->to_string());
     }
 
@@ -285,7 +285,7 @@ namespace ax
     {
         VAL* address_ptr = static_cast<const ax::address*>(source_ptr);
         VAL& address_names = ax::to_ax_vector(address_ptr->get_names());
-        VAL& address_strs = ax::map<std::string>(address_names, [](const ax::name_t& name) { return name.to_string(); });
+        VAL& address_strs = ax::map<std::string>(address_names, [](const ax::name& name) { return name.to_string(); });
         target_symbol = ax::atom(join_strings(address_strs, '/'));
     }
 
@@ -304,7 +304,7 @@ namespace ax
         ax::register_type_descriptor<std::string>(std::make_shared<ax::string_descriptor>());
 
         // primitive ax type descriptors
-        ax::register_type_descriptor<ax::name_t>(std::make_shared<ax::name_descriptor>());
+        ax::register_type_descriptor<ax::name>(std::make_shared<ax::name_descriptor>());
         ax::register_type_descriptor<ax::address>(std::make_shared<ax::address_descriptor>());
 
         // std::shared_ptr type descriptors

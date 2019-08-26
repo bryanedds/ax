@@ -8,9 +8,9 @@ namespace ax
 {
     /* type_descriptor */
 
-    type_descriptor_map type_descriptor::type_descriptor_map;
+    ax::type_descriptor_map type_descriptor::type_descriptor_map;
 
-    void type_descriptor::inspect_value(const reflectable& source, const field& field, void* target_ptr) const
+    void type_descriptor::inspect_value(const ax::reflectable& source, const ax::field& field, void* target_ptr) const
     {
         VAR* source_ptr = &source;
         VAR* head_ptr = static_cast<const char*>(static_cast<const void*>(source_ptr));
@@ -18,7 +18,7 @@ namespace ax
         inspect_value(field_ptr, target_ptr);
     }
 
-    void type_descriptor::inject_value(const field& field, const void* source_ptr, reflectable& target) const
+    void type_descriptor::inject_value(const ax::field& field, const void* source_ptr, ax::reflectable& target) const
     {
         VAR* target_ptr = &target;
         VAR* head_ptr = static_cast<char*>(static_cast<void*>(target_ptr));
@@ -71,7 +71,7 @@ namespace ax
         throw std::runtime_error("reflectable_descriptor::inject_value not implemented.");
     }
 
-    static void read_value_internal(const std::shared_ptr<type_t>& type, const symbols_t& symbols, ax::reflectable& reflectable)
+    static void read_value_internal(const std::shared_ptr<ax::type>& type, const ax::symbols_t& symbols, ax::reflectable& reflectable)
     {
         // read sub-type values
         if (VAL* base_type_index = type->get_base_type_index_opt().get())
@@ -99,7 +99,7 @@ namespace ax
         }
     }
 
-    void write_value_internal(const std::shared_ptr<type_t>& type, const ax::reflectable& reflectable, ax::symbols_t& symbols)
+    void write_value_internal(const std::shared_ptr<ax::type>& type, const ax::reflectable& reflectable, ax::symbols_t& symbols)
     {
         // write sub-type values
         if (VAL* base_type_index = type->get_base_type_index_opt().get())

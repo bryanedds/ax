@@ -10,7 +10,7 @@ namespace ax
 {
     // Represents a value that may be missing for semantically-valid reasons.
     template<typename T>
-    class option
+    struct option final
     {
     public:
 

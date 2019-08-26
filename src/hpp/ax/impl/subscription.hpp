@@ -20,7 +20,7 @@ namespace ax
     using handler = std::function<bool(const ax::event<T>&, P&)>;
 
     template<typename T, typename P>
-    class subscription_detail : public ax::castable
+    class subscription_detail final : public ax::castable
     {
     public:
 
@@ -47,7 +47,7 @@ namespace ax
         const ax::handler<T, P> handler;
     };
 
-    class subscription
+    struct subscription final
     {
     public:
 
@@ -58,7 +58,7 @@ namespace ax
         ax::subscription& operator=(ax::subscription&&) = delete;
 
         subscription(
-            ax::id_t id,
+            ax::id id,
             std::shared_ptr<ax::addressable> subscriber,
             std::unique_ptr<ax::castable> subscription_detail) :
             id(id),
@@ -79,7 +79,7 @@ namespace ax
             return true;
         }
 
-        const ax::id_t id;
+        const ax::id id;
         const std::weak_ptr<ax::addressable> subscriber_opt;
         const std::unique_ptr<ax::castable> subscription_detail;
     };
@@ -88,7 +88,7 @@ namespace ax
 
     using subscriptions_map = std::unordered_map<ax::address, std::unique_ptr<ax::subscription_list>>;
 
-    using unsubscription_map = std::unordered_map<id_t, std::pair<address, std::weak_ptr<ax::addressable>>>;
+    using unsubscription_map = std::unordered_map<id, std::pair<address, std::weak_ptr<ax::addressable>>>;
 }
 
 #endif
