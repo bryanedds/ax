@@ -41,13 +41,6 @@
         static_assert(!std::is_same<typename type::constraint_name##_constraint, unique_type>::value, #type " needs to satisfy " #constraint_name "."); \
     } while (false)
 
-// Assert a type is an iterator.
-#define CONSTRAIN_AS_ITERATOR(type) \
-    do { \
-        struct unique_type; \
-        static_assert(!std::is_same<typename type::iterator_category, unique_type>::value, #type " needs to be an iterator."); \
-    } while (false)
-
 // Assert a type is a container.
 #define CONSTRAIN_AS_CONTAINER(type) \
     do { \
@@ -55,18 +48,18 @@
         static_assert(!std::is_same<typename type::size_type, unique_type>::value, #type " needs to be a container."); \
     } while (false)
 
-// Assert a type is a shared ptr.
-#define CONSTRAIN_AS_SHARED_PTR(type) \
-    do { \
-        struct unique_type; \
-        static_assert(!std::is_same<typename type::element_type, unique_type>::value, #type " needs to be a shared_ptr."); \
-    } while (false)
-
 // Assert a type is a unique ptr.
 #define CONSTRAIN_AS_UNIQUE_PTR(type) \
     do { \
         struct unique_type; \
         static_assert(!std::is_same<typename type::element_type, unique_type>::value, #type " needs to be a unique_ptr."); \
+    } while (false)
+
+// Assert a type is a shared ptr.
+#define CONSTRAIN_AS_SHARED_PTR(type) \
+    do { \
+        struct unique_type; \
+        static_assert(!std::is_same<typename type::element_type, unique_type>::value, #type " needs to be a shared_ptr."); \
     } while (false)
 
 // Enable std::size_t literals.
@@ -113,7 +106,6 @@ namespace std
     Cr transform(const It& begin, const It& end, const Fn& fn)
     {
         CONSTRAIN_AS_CONTAINER(Cr);
-        // CONSTRAIN_AS_ITERATOR(It); NOTE: this was dummied out to make it easier to implement iterators.
         Cr transformed{};
         for (VAR it = begin; it != end; ++it)
         {

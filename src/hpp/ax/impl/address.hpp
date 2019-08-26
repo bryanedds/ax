@@ -36,7 +36,7 @@ namespace ax
         address operator+(const address& that) const;
         inline explicit operator std::size_t() const { return hash_code; }
         
-        inline const std::string to_string() const
+        const std::string to_string() const
         {
             VAL& name_strs = std::transform<ax::vector<std::string>>(names.begin(), names.end(), [](const ax::name& name) { return name.to_string(); });
             return ax::join_strings(name_strs, '/');

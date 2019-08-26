@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <memory>
 #include <functional>
+#include <array>
 #include <unordered_set>
 #include <unordered_map>
 #include <queue>
@@ -19,8 +20,7 @@
 #include "eventable.hpp"
 
 // NOTE: included in this file is an optimized entity-component-system prototype, an interesting seed for a fast C++
-// game engine. This prototype is limited in functionality by disallowing more than one of any type of component per
-// entity. This may not be an acceptable limitation in practical usage.
+// game engine.
 
 namespace ax
 {
@@ -47,6 +47,15 @@ namespace ax
     struct entity_component : public ax::component
     {
         std::unordered_map<ax::name, ax::component*> components;
+    };
+
+    // A component that store multiple of the same type of component.
+    template<typename T, typename A, std::size_t N>
+    struct multi_component : public ax::component
+    {
+        CONSTRAINT(multi_component);
+        constexpr void static_check() { CONSTRAIN(T, component); }
+        ax::vector<T, A, N> components;
     };
 
     // A transform component.
@@ -84,10 +93,12 @@ namespace ax
     public:
 
         CONSTRAINT(system_t);
+        using component_t = T;
+        template<typename T> using reify = ax::system_t<T>;
 
         system_t(std::size_t capacity = 128)
         {
-            CONSTRAIN(T, component);
+            CONSTRAIN(T, ax::component);
             components.reserve(capacity);
             component_map.reserve(capacity);
         }
@@ -152,14 +163,43 @@ namespace ax
             }
         }
 
+        virtual void update_component(T& component, int mode) = 0;
+
     protected:
 
         ENABLE_CAST(ax::system_t<T>, ax::system);
-        virtual void update_component(T& component, int mode) = 0;
 
         ax::vector<T> components;
         std::unordered_map<ax::address, std::size_t> component_map;
         std::queue<std::size_t> free_list;
+    };
+
+    template<typename S, typename A, std::size_t N>
+    class multi_system final : public ax::system_t<ax::multi_component<typename S::component_t, A, N>>
+    {
+    public:
+
+        CONSTRAINT(multi_system);
+        using component_t = typename S::component_t;
+        using multi_component_t = typename ax::multi_component<component_t, A, N>;
+        template<typename S, typename A, std::size_t N> using reify = ax::multi_system<S, A, N>;
+
+        void update_component(multi_component_t& multicomponent, int mode) override
+        {
+            CONSTRAIN(S, ax::system_t<component_t>);
+            for (VAR& component : multi_component.components)
+            {
+                system.update_component(component, mode);
+            }
+        }
+
+    protected:
+
+        using multi_system_s_a_n = ax::multi_system<S, A, N>;
+        using system_t_c = ax::system_t<component_t>;
+        ENABLE_CAST(multi_system_s_a_n, system_t_c);
+
+        S& system;
     };
 
     // The world that contains the entity-component-system, event system, and other mixins.
