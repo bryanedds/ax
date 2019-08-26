@@ -202,7 +202,7 @@ namespace ax
     };
 
     // The world that contains the entity-component-system, event system, and other mixins.
-    struct world final : public ax::eventable<ax::world>
+    class world final : public ax::eventable<ax::world>
     {
     public:
 
