@@ -19,9 +19,6 @@
 #include "castable.hpp"
 #include "eventable.hpp"
 
-// NOTE: included in this file is an optimized entity-component-system prototype, an interesting seed for a fast C++
-// game engine.
-
 namespace ax
 {
     class entity;
@@ -184,6 +181,8 @@ namespace ax
         using multi_component_t = typename ax::multi_component<component_t, A, N>;
         template<typename S, typename A, std::size_t N> using reify = ax::multi_system<S, A, N>;
 
+        multi_system(S& system) : system(system) { }
+
         void update_component(multi_component_t& multicomponent, int mode) override
         {
             CONSTRAIN(S, ax::system_t<component_t>);
@@ -196,8 +195,7 @@ namespace ax
     protected:
 
         using multi_system_s_a_n = ax::multi_system<S, A, N>;
-        using system_t_c = ax::system_t<component_t>;
-        ENABLE_CAST(multi_system_s_a_n, system_t_c);
+        ENABLE_CAST(multi_system_s_a_n, ax::system_t<component_t>);
 
         S& system;
     };
