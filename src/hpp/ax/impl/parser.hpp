@@ -19,8 +19,7 @@ namespace ax
     public:
 
         CONSTRAINT(parse);
-        template<typename A>
-        using reify = ax::parse<A>;
+        template<typename A> using reify = ax::parse<A>;
         using either<T, std::string>::either;
 
         bool is_success() const { return either<T, std::string>::is_right(); }

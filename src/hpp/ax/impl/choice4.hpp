@@ -19,8 +19,7 @@ namespace ax
         using second_type = Second;
         using third_type = Third;
         using fourth_type = Fourth;
-        template<typename A, typename B, typename C, typename D>
-        using reify = ax::choice4<A, B, C, D>;
+        template<typename A, typename B, typename C, typename D> using reify = ax::choice4<A, B, C, D>;
 
         choice4() : index(0_z) { new (&u) First(); }
         choice4(const choice4& that) : index(that.index) { construct_u(that); }

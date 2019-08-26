@@ -22,8 +22,7 @@ namespace ax
         using iterator = T*;
         using const_iterator = const T*;
         using allocator = A; // TODO: see if this is a meaningful trait name
-        template<typename T2, typename A2, std::size_t N2>
-        using reify = ax::vector<T2, A2, N2>;
+        template<typename T2, typename A2, std::size_t N2> using reify = ax::vector<T2, A2, N2>;
 
         vector() :
             small_begin{},

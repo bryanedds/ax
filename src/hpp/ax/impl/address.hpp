@@ -13,7 +13,7 @@
 
 namespace ax
 {
-    using names_t = ax::vector<ax::name, std::allocator<ax::name>, 3>;
+    using names = ax::vector<ax::name, std::allocator<ax::name>, 3>;
 
     // The address of an event or a participant.
     struct address
@@ -26,8 +26,8 @@ namespace ax
         address& operator=(const address&) = default;
         address& operator=(address&&) = default;
 
-        explicit address(const ax::names_t& names);
-        explicit address(ax::names_t&& names);
+        explicit address(const ax::names& names);
+        explicit address(ax::names&& names);
         explicit address(const ax::name& name);
         explicit address(const ax::vector<std::string>& names);
         explicit address(const char* names_str);
@@ -42,12 +42,12 @@ namespace ax
             return ax::join_strings(name_strs, '/');
         }
 
-        inline const ax::names_t& get_names() const { return names; }
+        inline const ax::names& get_names() const { return names; }
 
     private:
 
         std::size_t hash_code;
-        ax::names_t names;
+        ax::names names;
     };
 }
 

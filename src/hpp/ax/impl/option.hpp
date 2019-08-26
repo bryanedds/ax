@@ -16,8 +16,7 @@ namespace ax
 
         CONSTRAINT(option);
         using value_type = T;
-        template<typename A>
-        using reify = ax::option<A>;
+        template<typename A> using reify = ax::option<A>;
         
         option() : is_some_flag(false) { new (&u) ax::unit(); }
         

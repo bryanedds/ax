@@ -18,8 +18,7 @@ namespace ax
         using second_type = Second;
         using third_type = Third;
         using fourth_type = Fourth;
-        template<typename A, typename B, typename C, typename D>
-        using reify = ax::record4<A, B, C, D>;
+        template<typename A, typename B, typename C, typename D> using reify = ax::record4<A, B, C, D>;
 
         record4() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
         record4(const record4&) = default;

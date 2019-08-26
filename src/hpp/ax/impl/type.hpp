@@ -54,7 +54,7 @@ namespace ax
     using type_map = std::unordered_map<std::type_index, std::shared_ptr<ax::type>>;
 
     // Get the type map.
-    const type_map& get_type_map();
+    const ax::type_map& get_type_map();
 
     // Get the type with the given type index.
     std::shared_ptr<ax::type> get_type(std::type_index type_index);
@@ -82,14 +82,14 @@ namespace ax
         std::initializer_list<std::pair<ax::name, ax::field>> field_init_list)
     {
         VAL& base_type_index_ptr = std::make_shared<std::type_index>(base_type_info);
-        return register_any_type<T>(base_type_index_ptr, field_init_list);
+        return ax::register_any_type<T>(base_type_index_ptr, field_init_list);
     }
 
     // Register a type for reflection.
     template<typename T>
     std::shared_ptr<ax::type> register_type(std::initializer_list<std::pair<ax::name, ax::field>> field_init_list)
     {
-        return register_any_type<T>(std::shared_ptr<std::type_index>(), field_init_list);
+        return ax::register_any_type<T>(std::shared_ptr<std::type_index>(), field_init_list);
     }
 }
 

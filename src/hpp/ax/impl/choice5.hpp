@@ -20,8 +20,7 @@ namespace ax
         using third_type = Third;
         using fourth_type = Fourth;
         using fifth_type = Fifth;
-        template<typename A, typename B, typename C, typename D, typename E>
-        using reify = ax::choice5<A, B, C, D, E>;
+        template<typename A, typename B, typename C, typename D, typename E> using reify = ax::choice5<A, B, C, D, E>;
 
         choice5() : index(0_z) { new (&u) First(); }
         choice5(const choice5& that) : index(that.index) { construct_u(that); }

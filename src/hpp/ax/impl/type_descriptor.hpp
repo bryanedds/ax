@@ -47,7 +47,7 @@ namespace ax
     const type_descriptor_map& get_type_descriptor_map();
 
     // Get the type descriptor for the given type index.
-    std::shared_ptr<type_descriptor> get_type_descriptor(std::type_index type_index);
+    std::shared_ptr<ax::type_descriptor> get_type_descriptor(std::type_index type_index);
 
     // Get a type descriptor for the given template argument.
     template<typename T>

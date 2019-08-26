@@ -17,8 +17,7 @@ namespace ax
         CONSTRAINT(either);
         using right_type = R;
         using left_type = L;
-        template<typename A, typename B>
-        using reify = ax::either<A, B>;
+        template<typename A, typename B> using reify = ax::either<A, B>;
 
         either() : is_right_flag(true) { new (&u) R(); }
 

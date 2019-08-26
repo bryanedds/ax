@@ -18,8 +18,7 @@ namespace ax
     public:
 
         CONSTRAINT(property);
-        template<typename A>
-        using reify = ax::property<A>;
+        template<typename A> using reify = ax::property<A>;
 
         property() = default;
         property(const property&) = default;
@@ -53,7 +52,7 @@ namespace ax
     public:
 
         CONSTRAINT(property_map);
-        using std::unordered_map<name, std::unique_ptr<ax::castable>>::unordered_map;
+        using std::unordered_map<ax::name, std::unique_ptr<ax::castable>>::unordered_map;
 
         template<typename T>
         const ax::property<T>& get_property(const ax::name& name) const

@@ -16,8 +16,7 @@ namespace ax
         CONSTRAINT(pair);
         using first_type = First;
         using second_type = Second;
-        template<typename A, typename B>
-        using reify = ax::pair<A, B>;
+        template<typename A, typename B> using reify = ax::pair<A, B>;
 
         pair() { } // NOTE: do not change this to = default as that makes MSVC think it is deleted when inherited!
         pair(const pair&) = default;
