@@ -50,10 +50,13 @@ namespace ax
                 VAL& system_iter = systems.find(system_name);
                 if (system_iter != systems.end())
                 {
-                    VAR& system = system_iter->second;
-                    VAR& result = system->add_component(address);
-                    entity_opt->components[system_name] = &result;
-                    return &result;
+                    VAL& system_opt = ax::try_cast<ax::system_n>(system_iter->second);
+                    if (system_opt)
+                    {
+                        VAR& result = system_opt->add_component(address);
+                        entity_opt->components[system_name] = &result;
+                        return &result;
+                    }
                 }
             }
         }
@@ -72,10 +75,13 @@ namespace ax
                 VAL& system_iter = systems.find(system_name);
                 if (system_iter != systems.end())
                 {
-                    VAR& system = system_iter->second;
-                    VAR result = system->remove_component(address);
-                    entity_opt->components.erase(system_name);
-                    return result;
+                    VAL& system_opt = ax::try_cast<ax::system_n>(system_iter->second);
+                    if (system_opt)
+                    {
+                        VAR result = system_opt->remove_component(address);
+                        entity_opt->components.erase(system_name);
+                        return result;
+                    }
                 }
             }
         }

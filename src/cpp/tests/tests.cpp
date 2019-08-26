@@ -277,6 +277,7 @@ namespace ax
         std::cout << std::to_string(sizeof(std::string)) << std::endl;
         std::cout << std::to_string(sizeof(ax::name)) << std::endl;
         std::cout << std::to_string(sizeof(ax::address)) << std::endl;
+        std::cout << std::to_string(sizeof(ax::entity)) << std::endl;
     }
 }
 

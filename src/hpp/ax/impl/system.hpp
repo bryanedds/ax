@@ -40,12 +40,6 @@ namespace ax
         ax::address address;
     };
 
-    // The common data of an entity stored as a component.
-    struct entity_component : public ax::component
-    {
-        std::unordered_map<ax::name, ax::component*> components;
-    };
-
     // A component that store multiple of the same type of component.
     template<typename T, typename Allocator, std::size_t N>
     struct multi_component : public ax::component
@@ -54,6 +48,12 @@ namespace ax
         template<typename A, typename B, std::size_t C> using reify = ax::multi_component<A, B, C>;
         constexpr void static_check() { CONSTRAIN(T, component); }
         ax::vector<T, Allocator, N> components;
+    };
+
+    // The common data of an entity stored as a component.
+    struct entity_component : public ax::component
+    {
+        std::unordered_map<ax::name, ax::component*> components;
     };
 
     // A transform component.
@@ -72,11 +72,6 @@ namespace ax
 
         CONSTRAINT(system);
         system(ax::world& world) : world(world) { }
-        virtual ~system() = default;
-
-        virtual ax::component& add_component(const ax::address& address) = 0;
-        virtual bool remove_component(const ax::address& address) = 0;
-        virtual ax::component* try_get_component(const ax::address& address) = 0;
         virtual void update(int mode = 0) = 0;
 
     protected:
@@ -85,8 +80,45 @@ namespace ax
         ax::world& world;
     };
 
+    // A singleton system.
     template<typename T>
-    class system_t : public ax::system
+    class system_s : public ax::system
+    {
+    public:
+
+        CONSTRAINT(system_s);
+        using component_t = T;
+        template<typename A> using reify = ax::system_s<A>;
+
+        system_s(ax::world& world) : system(world) { }
+        const T& get_component() const { return component; }
+        T& get_component() { return component; }
+
+    protected:
+
+        ENABLE_CAST(ax::system_s<T>, ax::system);
+        T component;
+    };
+
+    // A non-singleton system.
+    class system_n : public ax::system
+    {
+    public:
+
+        CONSTRAINT(system_n);
+        system_n(ax::world& world) : system(world) { }
+        virtual ax::component& add_component(const ax::address& address) = 0;
+        virtual bool remove_component(const ax::address& address) = 0;
+        virtual ax::component* try_get_component(const ax::address& address) = 0;
+
+    protected:
+
+        ENABLE_CAST(ax::system_n, ax::system);
+    };
+
+    // A generic non-singleton system.
+    template<typename T>
+    class system_t : public ax::system_n
     {
     public:
 
@@ -165,13 +197,14 @@ namespace ax
 
     protected:
 
-        ENABLE_CAST(ax::system_t<T>, ax::system);
+        ENABLE_CAST(ax::system_t<T>, ax::system_n);
 
         ax::vector<T> components;
         std::unordered_map<ax::address, std::size_t> component_map;
         std::queue<std::size_t> free_list;
     };
 
+    // A multi-component system.
     template<typename S, typename Allocator, std::size_t N>
     class multi_system_t final : public ax::system_t<ax::multi_component<typename S::component_t, Allocator, N>>
     {
@@ -224,10 +257,13 @@ namespace ax
                     VAL& system_iter = systems.find(system_name);
                     if (system_iter != systems.end())
                     {
-                        VAL& system = ax::cast<ax::system_t<T>>(system_iter->second);
-                        VAR& result = system->add_component(address, component);
-                        entity_opt->components[system_name] = &result;
-                        return &result;
+                        VAL& system_opt = ax::try_cast<ax::system_t<T>>(system_iter->second);
+                        if (system_opt)
+                        {
+                            VAR& result = system_opt->add_component(address, component);
+                            entity_opt->components[system_name] = &result;
+                            return &result;
+                        }
                     }
                 }
             }
@@ -247,10 +283,22 @@ namespace ax
                     VAL& system_iter = systems.find(system_name);
                     if (system_iter != systems.end())
                     {
-                        VAL& system = ax::cast<ax::system_t<T>>(system_iter->second);
-                        return system->try_get_component(address);
+                        VAL& system_opt = ax::try_cast<ax::system_t<T>>(system_iter->second);
+                        if (system_opt) return system_opt->try_get_component(address);
                     }
                 }
+            }
+            return nullptr;
+        }
+
+        template<typename T>
+        T* try_get_component(const ax::name& system_name)
+        {
+            VAL& system_iter = systems.find(system_name);
+            if (system_iter != systems.end())
+            {
+                VAL& system_opt = ax::try_cast<ax::system_s<T>>(system_iter->second);
+                if (system_opt) return &system_opt->get_component();
             }
             return nullptr;
         }
