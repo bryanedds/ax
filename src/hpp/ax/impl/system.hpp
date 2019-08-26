@@ -172,16 +172,16 @@ namespace ax
     };
 
     template<typename S, typename A, std::size_t N>
-    class multi_system final : public ax::system_t<ax::multi_component<typename S::component_t, A, N>>
+    class multi_system_t final : public ax::system_t<ax::multi_component<typename S::component_t, A, N>>
     {
     public:
 
-        CONSTRAINT(multi_system);
+        CONSTRAINT(multi_system_t);
         using component_t = typename S::component_t;
         using multi_component_t = typename ax::multi_component<component_t, A, N>;
-        template<typename S, typename A, std::size_t N> using reify = ax::multi_system<S, A, N>;
+        template<typename S, typename A, std::size_t N> using reify = ax::multi_system_t<S, A, N>;
 
-        multi_system(S& system) : system(system) { }
+        multi_system_t(S& system) : system(system) { }
 
         void update_component(multi_component_t& multicomponent, int mode) override
         {
@@ -194,7 +194,7 @@ namespace ax
 
     protected:
 
-        using multi_system_s_a_n = ax::multi_system<S, A, N>;
+        using multi_system_s_a_n = ax::multi_system_t<S, A, N>;
         ENABLE_CAST(multi_system_s_a_n, ax::system_t<component_t>);
 
         S& system;
