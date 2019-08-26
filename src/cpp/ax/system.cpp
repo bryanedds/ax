@@ -52,7 +52,7 @@ namespace ax
                 {
                     VAR& system = system_iter->second;
                     VAR& result = system->add_component(address);
-                    std::insert_or_assign(entity_opt->components, system_name, &result);
+                    entity_opt->components[system_name] = &result;
                     return &result;
                 }
             }
@@ -116,7 +116,7 @@ namespace ax
 
     ax::system_ptr world::try_add_system(const ax::name& name, ax::system_ptr system)
     {
-        std::insert_or_assign(systems, name, system);
+        systems[name] = system;
         return system;
     }
 

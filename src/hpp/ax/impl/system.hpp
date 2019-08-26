@@ -114,7 +114,7 @@ namespace ax
             {
                 VAL index = free_list.front();
                 free_list.pop();
-                std::insert_or_assign(component_map, address, index);
+                component_map[address] = index;
                 VAR& component_found = components.at(index);
                 component_found = component;
                 component_found.active = true; // ensure active after assignment
@@ -227,7 +227,7 @@ namespace ax
                     {
                         VAL& system = ax::cast<ax::system_t<T>>(system_iter->second);
                         VAR& result = system->add_component(address, component);
-                        std::insert_or_assign(entity_opt->components, system_name, &result);
+                        entity_opt->components[system_name] = &result;
                         return &result;
                     }
                 }
