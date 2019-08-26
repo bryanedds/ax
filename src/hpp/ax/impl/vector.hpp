@@ -11,7 +11,7 @@
 namespace ax
 {
     // A vector with small size optimization.
-    template<typename T, typename A = std::allocator<T>, std::size_t N = 4>
+    template<typename T, typename Allocator = std::allocator<T>, std::size_t N = 4>
     struct vector
     {
     public:
@@ -21,8 +21,8 @@ namespace ax
         using size_type = std::size_t;
         using iterator = T*;
         using const_iterator = const T*;
-        using allocator = A; // TODO: see if this is a meaningful trait name
-        template<typename T2, typename A2, std::size_t N2> using reify = ax::vector<T2, A2, N2>;
+        using allocator = Allocator; // TODO: see if this is a meaningful trait name
+        template<typename A, typename B, std::size_t C> using reify = ax::vector<A, B, C>;
 
         vector() :
             small_begin{},
@@ -53,7 +53,7 @@ namespace ax
             }
         }
 
-        vector(const ax::vector<T, A, N>& that)
+        vector(const vector& that)
         {
             if (that.big())
             {
@@ -72,7 +72,7 @@ namespace ax
             }
         }
 
-        vector(ax::vector<T, A, N>&& that)
+        vector(vector&& that)
         {
             if (that.big())
             {
@@ -93,7 +93,7 @@ namespace ax
 
         ~vector() = default;
 
-        ax::vector<T, A, N>& operator=(const ax::vector<T, A, N>& that)
+        vector& operator=(const vector& that)
         {
             big_vector = that.big_vector;
             VAL size = that.size();
@@ -105,7 +105,7 @@ namespace ax
             return *this;
         }
 
-        ax::vector<T, A, N>& operator=(ax::vector<T, A, N>&& that)
+        vector& operator=(vector&& that)
         {
             big_vector = std::move(that.big_vector);
             VAL size = that.size();
@@ -117,7 +117,7 @@ namespace ax
             return *this;
         }
 
-        bool operator==(const ax::vector<T, A, N>& that) const
+        bool operator==(const vector& that) const
         {
             VAL size = this->size();
             if (size > N)
@@ -135,15 +135,15 @@ namespace ax
             }
         }
 
-        bool operator!=(const ax::vector<T, A, N>& that) const
+        bool operator!=(const vector& that) const
         {
             return !(*this == that);
         }
 
         T* begin() { return big() ? big_vector.data() : small_begin; }
         T* end() { return big() ? big_vector.data() + big_vector.size() : small_end; }
-        const T* cbegin() const { return const_cast<ax::vector<T, A, N>*>(this)->begin(); }
-        const T* cend() const { return const_cast<ax::vector<T, A, N>*>(this)->end(); }
+        const T* cbegin() const { return const_cast<ax::vector<T, Allocator, N>*>(this)->begin(); }
+        const T* cend() const { return const_cast<ax::vector<T, Allocator, N>*>(this)->end(); }
         const T* begin() const { return cbegin(); }
         const T* end() const { return cend(); }
 
@@ -206,7 +206,7 @@ namespace ax
 
         const T& at(std::size_t pos) const
         {
-            return const_cast<ax::vector<T, A, N>*>(this)->at(pos);
+            return const_cast<ax::vector<T, Allocator, N>*>(this)->at(pos);
         }
 
         void assign(std::size_t pos, const T& item)
@@ -250,7 +250,7 @@ namespace ax
 
         const T* data() const
         {
-            return const_cast<ax::vector<T, A, N>*>(this)->data();
+            return const_cast<ax::vector<T, Allocator, N>*>(this)->data();
         }
 
         std::size_t size() const
@@ -267,7 +267,7 @@ namespace ax
 
         T small_begin[N];
         T* small_end;
-        std::vector<T, A> big_vector;
+        std::vector<T, Allocator> big_vector;
     };
 }
 

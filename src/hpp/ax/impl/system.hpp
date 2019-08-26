@@ -47,12 +47,13 @@ namespace ax
     };
 
     // A component that store multiple of the same type of component.
-    template<typename T, typename A, std::size_t N>
+    template<typename T, typename Allocator, std::size_t N>
     struct multi_component : public ax::component
     {
         CONSTRAINT(multi_component);
+        template<typename A, typename B, std::size_t C> using reify = ax::multi_component<A, B, C>;
         constexpr void static_check() { CONSTRAIN(T, component); }
-        ax::vector<T, A, N> components;
+        ax::vector<T, Allocator, N> components;
     };
 
     // A transform component.
@@ -91,7 +92,7 @@ namespace ax
 
         CONSTRAINT(system_t);
         using component_t = T;
-        template<typename T2> using reify = ax::system_t<T2>;
+        template<typename A> using reify = ax::system_t<A>;
 
         system_t(std::size_t capacity = 128)
         {
@@ -171,16 +172,16 @@ namespace ax
         std::queue<std::size_t> free_list;
     };
 
-    template<typename S, typename A, std::size_t N>
-    class multi_system_t final : public ax::system_t<ax::multi_component<typename S::component_t, A, N>>
+    template<typename S, typename Allocator, std::size_t N>
+    class multi_system_t final : public ax::system_t<ax::multi_component<typename S::component_t, Allocator, N>>
     {
     public:
 
         CONSTRAINT(multi_system_t);
         using component_t = typename S::component_t;
-        using multi_component_t = typename ax::multi_component<component_t, A, N>;
+        using multi_component_t = typename ax::multi_component<component_t, Allocator, N>;
         using system_t_t = ax::system_t<component_t>;
-        template<typename S2, typename A2, std::size_t N2> using reify = ax::multi_system_t<S2, A2, N2>;
+        template<typename A, typename B, std::size_t C> using reify = ax::multi_system_t<A, B, C>;
 
         multi_system_t(S& system) : system(system) { }
 
@@ -195,7 +196,7 @@ namespace ax
 
     protected:
 
-        using multi_system_s_a_n = ax::multi_system_t<S, A, N>;
+        using multi_system_s_a_n = ax::multi_system_t<S, Allocator, N>;
         ENABLE_CAST(multi_system_s_a_n, system_t_t);
         S& system;
     };

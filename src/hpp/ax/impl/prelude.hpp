@@ -71,6 +71,9 @@ constexpr std::size_t operator""_z(unsigned long long n)
 
 namespace ax
 {
+    // Alias for std::size_t (not currently used).
+    using sz = std::size_t;
+
     // Convert from std::size_t to int.
     constexpr int ztoi(std::size_t z) { return static_cast<int>(z); }
 
