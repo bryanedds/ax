@@ -91,7 +91,7 @@ namespace ax
 
         CONSTRAINT(system_t);
         using component_t = T;
-        template<typename T> using reify = ax::system_t<T>;
+        template<typename T2> using reify = ax::system_t<T2>;
 
         system_t(std::size_t capacity = 128)
         {
@@ -179,13 +179,14 @@ namespace ax
         CONSTRAINT(multi_system_t);
         using component_t = typename S::component_t;
         using multi_component_t = typename ax::multi_component<component_t, A, N>;
-        template<typename S, typename A, std::size_t N> using reify = ax::multi_system_t<S, A, N>;
+        using system_t_t = ax::system_t<component_t>;
+        template<typename S2, typename A2, std::size_t N2> using reify = ax::multi_system_t<S2, A2, N2>;
 
         multi_system_t(S& system) : system(system) { }
 
-        void update_component(multi_component_t& multicomponent, int mode) override
+        void update_component(multi_component_t& multi_component, int mode) override
         {
-            CONSTRAIN(S, ax::system_t<component_t>);
+            CONSTRAIN(S, system_t_t);
             for (VAR& component : multi_component.components)
             {
                 system.update_component(component, mode);
@@ -195,8 +196,7 @@ namespace ax
     protected:
 
         using multi_system_s_a_n = ax::multi_system_t<S, A, N>;
-        ENABLE_CAST(multi_system_s_a_n, ax::system_t<component_t>);
-
+        ENABLE_CAST(multi_system_s_a_n, system_t_t);
         S& system;
     };
 
