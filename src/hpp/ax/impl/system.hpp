@@ -202,8 +202,7 @@ namespace ax
     };
 
     // The world that contains the entity-component-system, event system, and other mixins.
-    // Uses function members because the type is not meant to be inherited.
-    class world final : public ax::eventable<ax::world>
+    struct world final : public ax::eventable<ax::world>
     {
     public:
 
