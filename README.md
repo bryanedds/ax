@@ -14,8 +14,6 @@ and a type-safe pattern matching system in **"algebraic.hpp"**
 - An entity-component-system prototype in **"system.hpp"**
 - A couple other odds and ends in **"utility.hpp"**
 
-Ax was built in the clean and modular Data Abstration Style - https://github.com/bryanedds/das
-
 This library makes a good base for non-trivial projects like renderers, game engines, and other projects that absolutely *need* to be built with good programming semantics.
 
 ## WIP
