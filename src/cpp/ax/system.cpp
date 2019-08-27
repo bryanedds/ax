@@ -194,14 +194,14 @@ namespace ax
 
     const ax::property_map& entity::get_behavior_properties() const
     {
-        VAL& properties = try_get_behavior_properties();
+        VAL* properties = try_get_behavior_properties();
         if (properties) return *properties;
         throw std::logic_error("Entity does not have properties.");
     }
 
     ax::property_map& entity::get_behavior_properties()
     {
-        VAL& properties = try_get_behavior_properties();
+        VAR* properties = try_get_behavior_properties();
         if (properties) return *properties;
         throw std::logic_error("Entity does not have properties.");
     }

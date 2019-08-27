@@ -313,15 +313,7 @@ namespace ax
         }
 
         template <typename Behavior>
-        ax::entity create_entity_with_behavior(const ax::address& address)
-        {
-            CONSTRAIN(Behavior, ax::entity_behavior);
-            VAL entity = create_entity(address);
-            VAL behavior_ptr = std::make_shared<Behavior>(entity, this*);
-            VAL behavior_component = entity_behavior_component{ behavior };
-            try_add_component<ax::entity_behavior_component>("entity_behaviors", address, behavior_component);
-            return entity;
-        }
+        ax::entity create_entity_with_behavior(const ax::address& address);
 
         ax::transform* try_get_transform(const ax::address& address);
         ax::entity_component* try_get_entity(const ax::address& address);
@@ -463,6 +455,16 @@ namespace ax
         ax::entity entity;
         ax::world& world;
     };
+
+    template <typename Behavior>
+    ax::entity world::create_entity_with_behavior(const ax::address& address)
+    {
+        CONSTRAIN(Behavior, ax::entity_behavior);
+        VAL entity = create_entity(address);
+        VAL behavior_ptr = std::make_shared<Behavior>(entity, *this);
+        try_add_component<ax::entity_behavior_component>("entity_behaviors", address, entity_behavior_component{ behavior_ptr });
+        return entity;
+    }
 }
 
 #endif
