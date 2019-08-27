@@ -89,12 +89,12 @@ namespace ax
         {
             if (component_opt)
             {
-                component_opt = component_opt;
+                this.component_opt = component_opt;
                 index = component_opt->index;
             }
             else
             {
-                component_opt = nullptr;
+                this.component_opt = nullptr;
                 index = std::numeric_limits<std::size_t>::max();
             }
         }
@@ -292,7 +292,7 @@ namespace ax
             VAL& entity_states_iter = systems.find("entity_state");
             if (entity_states_iter != systems.end())
             {
-                VAL& entity_states = ax::cast<ax::system_t<ax::entity_component>>(entity_states_iter->second);
+                VAL& entity_states = ax::cast<ax::system_t<ax::entity_state_component>>(entity_states_iter->second);
                 VAR* entity_state_opt = entity_states->try_get_component(address);
                 if (entity_state_opt)
                 {
@@ -318,7 +318,7 @@ namespace ax
             VAL& entity_states_iter = systems.find("entity_state");
             if (entity_states_iter != systems.end())
             {
-                VAL& entity_states = ax::cast<ax::system_t<ax::entity_component>>(entity_states_iter->second);
+                VAL& entity_states = ax::cast<ax::system_t<ax::entity_state_component>>(entity_states_iter->second);
                 VAR* entity_state_opt = entity_states->try_get_component(address);
                 if (entity_state_opt)
                 {
