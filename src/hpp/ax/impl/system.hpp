@@ -74,10 +74,16 @@ namespace ax
     {
     public:
 
+        CONSTRAINT(component_cache);
+        using component_t = T;
+        template <typename A> using reify = ax::component_cache<A>;
+
         component_cache() :
             component_opt(),
             index(std::numeric_limits<std::size_t>::max())
-        { }
+        {
+            CONSTRAIN(T, component);
+        }
 
         T* try_get()
         {
@@ -85,7 +91,7 @@ namespace ax
             return nullptr;
         }
 
-        void reset(const component* component_opt = nullptr)
+        void reset(T* component_opt = nullptr)
         {
             if (component_opt)
             {
@@ -375,8 +381,8 @@ namespace ax
     public:
 
         entity(const ax::address& address, ax::world& world) :
-            entity_state_cache(),
             ax::addressable(address),
+            entity_state_cache(),
             world(world) { }
 
         entity(const ax::entity& other) = default;
