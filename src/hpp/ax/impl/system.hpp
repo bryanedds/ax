@@ -67,6 +67,42 @@ namespace ax
         float rotation;
     };
 
+    template <typename T>
+    struct component_cache
+    {
+    public:
+
+        component_cache() :
+            component_opt(),
+            index(std::numeric_limits<std::size_t>::max())
+        { }
+
+        T* try_get()
+        {
+            if (component_opt && index == component_opt->index) return component_opt;
+            return nullptr;
+        }
+
+        void reset(const component* component_opt = nullptr)
+        {
+            if (component_opt)
+            {
+                component_opt = component_opt;
+                index = component_opt->index;
+            }
+            else
+            {
+                component_opt = nullptr;
+                index = std::numeric_limits<std::size_t>::max();
+            }
+        }
+
+    private:
+
+        T* component_opt;
+        std::size_t index;
+    };
+
     // A system in an entity-component-system.
     class system : public ax::castable
     {
@@ -337,8 +373,7 @@ namespace ax
     public:
 
         entity(const ax::address& address, ax::world& world) :
-            entity_state_cache_index(std::numeric_limits<std::size_t>::max()),
-            entity_state_cache(nullptr),
+            entity_state_cache(),
             ax::addressable(address),
             world(world) { }
 
@@ -364,7 +399,7 @@ namespace ax
         {
             VAR* component_opt = *try_get_component<T>(name);
             if (component_opt) return *component_opt;
-            throw std::runtime_error("No component "_s + name.to_string() + " found at address " + get_address().to_string());
+            throw std::runtime_error("No component_opt "_s + name.to_string() + " found at address " + get_address().to_string());
         }
 
         template<typename T>
@@ -372,7 +407,7 @@ namespace ax
         {
             VAR* component_opt = *try_get_component<T>(name);
             if (component_opt) return *component_opt;
-            throw std::runtime_error("No component "_s + name.to_string() + " found at address " + get_address().to_string());
+            throw std::runtime_error("No component_opt "_s + name.to_string() + " found at address " + get_address().to_string());
         }
 
         template<typename T>
@@ -434,8 +469,7 @@ namespace ax
 
     private:
 
-        std::size_t entity_state_cache_index;
-        ax::entity_state* entity_state_cache;
+        ax::component_cache<ax::entity_state> entity_state_cache;
         ax::world& world;
     };
 

@@ -224,8 +224,18 @@ namespace ax
 
     ax::entity_state* entity::try_get_entity_state()
     {
-        if (entity_state_cache && entity_state_cache_index == entity_state_cache->index) return entity_state_cache;
-        return world.try_get_entity_state(get_address());
+        VAR* entity_state_opt = entity_state_cache.try_get();
+        if (!entity_state_opt)
+        {
+            VAR* entity_state_opt = world.try_get_entity_state(get_address());
+            if (entity_state_opt)
+            {
+                entity_state_cache.reset(entity_state_opt);
+                return entity_state_opt;
+            }
+            return nullptr;
+        }
+        return entity_state_opt;
     }
 
     const ax::entity_state& entity::get_entity_state() const
@@ -236,12 +246,7 @@ namespace ax
     ax::entity_state& entity::get_entity_state()
     {
         VAR* entity_state_opt = try_get_entity_state();
-        if (entity_state_opt)
-        {
-            entity_state_cache = entity_state_opt;
-            entity_state_cache_index = entity_state_opt->index;
-            return *entity_state_opt;
-        }
+        if (entity_state_opt) return *entity_state_opt;
         throw std::runtime_error("Could not get entity state.");
     }
 
