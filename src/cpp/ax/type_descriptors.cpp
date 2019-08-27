@@ -284,9 +284,9 @@ namespace ax
     void address_descriptor::write_value(const void* source_ptr, ax::symbol& target_symbol) const
     {
         VAL* address_ptr = static_cast<const ax::address*>(source_ptr);
-        VAL& address_names = ax::to_ax_vector(address_ptr->get_names());
+        VAL& address_names = address_ptr->get_names();
         VAL& address_strs = ax::map<std::string>(address_names, [](const ax::name& name) { return name.to_string(); });
-        target_symbol = ax::atom(join_strings(address_strs, '/'));
+        target_symbol = ax::atom(ax::join_strings(address_strs, '/'));
     }
 
     /* global functions */

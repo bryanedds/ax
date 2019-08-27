@@ -4,16 +4,16 @@
 
 namespace ax
 {
-    ax::vector<std::string> split_string(const std::string& str, char delimiter)
+    std::vector<std::string> split_string(const std::string& str, char delimiter)
     {
-        ax::vector<std::string> strs{};
+        std::vector<std::string> strs{};
         std::stringstream ss(str);
         std::string token{};
         while (std::getline(ss, token, delimiter)) strs.push_back(token);
         return strs;
     }
 
-    std::string join_strings(const ax::vector<std::string>& strs, char delimiter)
+    std::string join_strings(const std::vector<std::string>& strs, char delimiter)
     {
         std::string str_joined{};
         VAL& begin = std::begin(strs);

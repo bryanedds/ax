@@ -21,6 +21,9 @@ namespace ax
     address::address(const ax::vector<std::string>& names) :
         address(std::transform<ax::names>(names.begin(), names.end(), [](VAL& name) { return ax::name(name); })) { }
 
+    address::address(const std::vector<std::string>& names) :
+        address(std::transform<ax::names>(names.begin(), names.end(), [](VAL& name) { return ax::name(name); })) { }
+
     address::address(const char* names_str) :
         address(std::string(names_str)) { }
 

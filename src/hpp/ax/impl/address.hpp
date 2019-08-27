@@ -13,7 +13,7 @@
 
 namespace ax
 {
-    using names = ax::vector<ax::name, std::allocator<ax::name>, 3>;
+    using names = std::vector<ax::name>;
 
     // The address of an event or a participant.
     struct address
@@ -30,6 +30,7 @@ namespace ax
         explicit address(ax::names&& names);
         explicit address(const ax::name& name);
         explicit address(const ax::vector<std::string>& names);
+        explicit address(const std::vector<std::string>& names);
         explicit address(const char* names_str);
         explicit address(const std::string& names_str);
         bool operator==(const address& that) const;
@@ -38,7 +39,7 @@ namespace ax
         
         const std::string to_string() const
         {
-            VAL& name_strs = std::transform<ax::vector<std::string>>(names.begin(), names.end(), [](const ax::name& name) { return name.to_string(); });
+            VAL& name_strs = std::transform<std::vector<std::string>>(names.begin(), names.end(), [](const ax::name& name) { return name.to_string(); });
             return ax::join_strings(name_strs, '/');
         }
 

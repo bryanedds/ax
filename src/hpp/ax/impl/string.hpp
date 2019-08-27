@@ -15,10 +15,10 @@ inline std::string operator ""_s(const char *str, std::size_t len)
 namespace ax
 {
     // Split a string on a char delimiter.
-    ax::vector<std::string> split_string(const std::string& str, char delimiter);
+    std::vector<std::string> split_string(const std::string& str, char delimiter);
 
     // Join a vector of string on a char delimiter.
-    std::string join_strings(const ax::vector<std::string>& strs, char delimiter);
+    std::string join_strings(const std::vector<std::string>& strs, char delimiter);
 }
 
 #endif

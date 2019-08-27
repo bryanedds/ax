@@ -39,7 +39,7 @@ namespace ax
             { "bool_value",             register_field<bool>                            (offsetof(ax::reflectable_test, bool_value)) },
             { "int_value",              register_field<int>                             (offsetof(ax::reflectable_test, int_value)) },
             { "float_value",            register_field<float>                           (offsetof(ax::reflectable_test, float_value)) },
-            { "name_value",             register_field<ax::name>                      (offsetof(ax::reflectable_test, name_value)) },
+            { "name_value",             register_field<ax::name>                        (offsetof(ax::reflectable_test, name_value)) },
             { "address_value",          register_field<ax::address>                     (offsetof(ax::reflectable_test, address_value)) },
             { "vector_int_value",       register_field<std::vector<int>>                (offsetof(ax::reflectable_test, vector_int_value)) },
             { "vector_string_value",    register_field<std::vector<std::string>>        (offsetof(ax::reflectable_test, vector_string_value)) },
@@ -275,6 +275,7 @@ namespace ax
     TEST("misc")
     {
         std::cout << std::to_string(sizeof(std::string)) << std::endl;
+        std::cout << std::to_string(sizeof(std::vector<std::size_t>)) << std::endl;
         std::cout << std::to_string(sizeof(ax::name)) << std::endl;
         std::cout << std::to_string(sizeof(ax::address)) << std::endl;
         std::cout << std::to_string(sizeof(ax::entity)) << std::endl;
