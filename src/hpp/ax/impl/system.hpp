@@ -420,6 +420,8 @@ namespace ax
         const ax::entity_behavior& get_behavior() const;
         ax::entity_behavior& get_behavior();
 
+        const ax::entity_state* try_get_entity_state() const;
+        ax::entity_state* try_get_entity_state();
         const ax::entity_state& get_entity_state() const;
         ax::entity_state& get_entity_state();
         float get_x_pos() const { return get_entity_state().x_pos; }

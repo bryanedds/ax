@@ -171,9 +171,7 @@ namespace ax
 
     const ax::property_map* entity::try_get_behavior_properties() const
     {
-        VAL& behavior_component_opt = try_get_behavior();
-        if (behavior_component_opt) return &((*behavior_component_opt).get_behavior_properties());
-        return nullptr;
+        return const_cast<entity*>(this)->try_get_behavior_properties();
     }
 
     ax::property_map* entity::try_get_behavior_properties()
@@ -185,9 +183,7 @@ namespace ax
 
     const ax::property_map& entity::get_behavior_properties() const
     {
-        VAL* properties = try_get_behavior_properties();
-        if (properties) return *properties;
-        throw std::runtime_error("Entity does not have properties.");
+        return const_cast<entity*>(this)->get_behavior_properties();
     }
 
     ax::property_map& entity::get_behavior_properties()
@@ -199,9 +195,7 @@ namespace ax
 
     std::shared_ptr<const ax::entity_behavior> entity::try_get_behavior() const
     {
-        VAR* behavior_component_opt = world.try_get_entity_behavior(get_address());
-        if (behavior_component_opt) return behavior_component_opt->behavior;
-        return nullptr;
+        return const_cast<entity*>(this)->try_get_behavior();
     }
 
     std::shared_ptr<ax::entity_behavior> entity::try_get_behavior()
@@ -213,16 +207,25 @@ namespace ax
 
     const ax::entity_behavior& entity::get_behavior() const
     {
-        VAL& behavior = try_get_behavior();
-        if (behavior) return *behavior;
-        throw std::logic_error("Entity does not have behavior.");
+        return const_cast<entity*>(this)->get_behavior();
     }
 
     ax::entity_behavior& entity::get_behavior()
     {
         VAL& behavior = try_get_behavior();
         if (behavior) return *behavior;
-        throw std::logic_error("Entity does not have behavior.");
+        throw std::runtime_error("Entity does not have behavior.");
+    }
+
+    const ax::entity_state* entity::try_get_entity_state() const
+    {
+        return const_cast<entity*>(this)->try_get_entity_state();
+    }
+
+    ax::entity_state* entity::try_get_entity_state()
+    {
+        if (entity_state_cache && entity_state_cache_index == entity_state_cache->index) return entity_state_cache;
+        return world.try_get_entity_state(get_address());
     }
 
     const ax::entity_state& entity::get_entity_state() const
@@ -232,15 +235,19 @@ namespace ax
 
     ax::entity_state& entity::get_entity_state()
     {
-        if (entity_state_cache && entity_state_cache_index == entity_state_cache->index) return *entity_state_cache;
-        VAR& entity_state = *world.try_get_entity_state(get_address()); // always exists
-        entity_state_cache = &entity_state;
-        entity_state_cache_index = entity_state.index;
-        return entity_state;
+        VAR* entity_state_opt = try_get_entity_state();
+        if (entity_state_opt)
+        {
+            entity_state_cache = entity_state_opt;
+            entity_state_cache_index = entity_state_opt->index;
+            return *entity_state_opt;
+        }
+        throw std::runtime_error("Could not get entity state.");
     }
 
     bool entity::exists() const
     {
-        return world.entity_exists(get_address());
+        // OPTIMIZATION: checking entity state cache is faster than a fresh look-up.
+        return try_get_entity_state();
     }
 }
