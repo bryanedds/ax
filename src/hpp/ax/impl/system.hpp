@@ -18,12 +18,13 @@
 #include "addressable.hpp"
 #include "castable.hpp"
 #include "eventable.hpp"
+#include "property.hpp"
 
 namespace ax
 {
     class entity;
+    class entity_behavior;
     class system;
-    using system_ptr = std::shared_ptr<ax::system>;
     class world;
 
     // A component in an entity-component-system.
@@ -54,6 +55,12 @@ namespace ax
     struct entity_component : public ax::component
     {
         std::unordered_map<ax::name, ax::component*> components;
+    };
+
+    // An entity behavior component.
+    struct entity_behavior_component : public ax::component
+    {
+        std::shared_ptr<ax::entity_behavior> behavior;
     };
 
     // A transform component.
@@ -244,6 +251,8 @@ namespace ax
             std::function<void(ax::world& world)> update_systems_impl,
             std::function<void(ax::world& world)> clean_up_systems_impl);
 
+        ~world();
+
         template<typename T>
         T* try_add_component(const ax::name& system_name, const ax::address& address, const T& component = T())
         {
@@ -303,18 +312,28 @@ namespace ax
             return nullptr;
         }
 
+        template <typename Behavior>
+        ax::entity create_entity_with_behavior(const ax::address& address)
+        {
+            CONSTRAIN(Behavior, ax::entity_behavior);
+            VAL entity = create_entity(address);
+            VAL behavior_ptr = std::make_shared<Behavior>(entity, this*);
+            VAL behavior_component = entity_behavior_component{ behavior };
+            try_add_component<ax::entity_behavior_component>("entity_behaviors", address, behavior_component);
+            return entity;
+        }
+
         ax::transform* try_get_transform(const ax::address& address);
         ax::entity_component* try_get_entity(const ax::address& address);
+        ax::entity_behavior_component* try_get_entity_behavior(const ax::address& address);
         bool entity_exists(const ax::address& address);
         ax::component* try_add_component(const ax::name& system_name, const ax::address& address);
         bool try_remove_component(const ax::name& system_name, const ax::address& address);
         ax::entity create_entity(const ax::address& address);
         bool destroy_entity(const ax::address& address);
-        ax::system_ptr try_add_system(const ax::name& name, ax::system_ptr system);
+        std::shared_ptr<ax::system> try_add_system(const ax::name& name, std::shared_ptr<ax::system> system);
         bool remove_system(const ax::name& name);
-        void initialize_systems();
         void update_systems();
-        void clean_up_systems();
 
     private:
 
@@ -338,13 +357,24 @@ namespace ax
         entity(const ax::address& address, ax::world& world) : ax::addressable(address), world(world) { }
 
         template<typename T>
-        const T* try_get_component(const ax::name& name) const { return world.try_get_component<T>(name, get_address()); }
+        const T* try_get_component(const ax::name& name) const
+        {
+            return world.try_get_component<T>(name, get_address());
+        }
 
         template<typename T>
-        T* try_get_component(const ax::name& name) { return world.try_get_component<T>(name, get_address()); }
+        T* try_get_component(const ax::name& name)
+        {
+            return world.try_get_component<T>(name, get_address());
+        }
 
         template<typename T>
-        const T& get_component(const ax::name& name) const { return *try_get_component<T>(name); }
+        const T& get_component(const ax::name& name) const
+        {
+            VAR* component_opt = *try_get_component<T>(name);
+            if (component_opt) return *component_opt;
+            throw std::runtime_error("No component "_s + name.to_string() + " found at address " + get_address().to_string());
+        }
 
         template<typename T>
         T& get_component(const ax::name& name)
@@ -354,18 +384,83 @@ namespace ax
             throw std::runtime_error("No component "_s + name.to_string() + " found at address " + get_address().to_string());
         }
 
-        ax::transform& get_transform() const { return *world.try_get_transform(get_address()); }
-        ax::transform& set_transform(const ax::transform& transform) { return get_transform() = transform; }
+        template<typename T>
+        const T& get(const ax::name& name) const
+        {
+            return get_behavior_properties().get_property<T>(name).get_value();
+        }
+
+        template<typename T>
+        T& get(const ax::name& name)
+        {
+            return get_behavior_properties().get_property<T>(name).get_value();
+        }
+
+        template<typename T>
+        T& set(const ax::name& name, const T& value)
+        {
+            return get_behavior_properties().get_property<T>(name).set_value(value);
+        }
+
+        template<typename T>
+        T& set(const ax::name& name, T&& value)
+        {
+            return get_behavior_properties().get_property<T>(name).set_value(value);
+        }
+
+        template<typename T>
+        void attach(const ax::name& name, const T& value)
+        {
+            get_behavior_properties().attach_property<T>(name, value);
+        }
+
+        template<typename T>
+        void attach(const ax::name& name, T&& value)
+        {
+            get_behavior_properties().attach_property<T>(name, value);
+        }
+
+        const ax::property_map* try_get_behavior_properties() const;
+        ax::property_map* try_get_behavior_properties();
+        const ax::property_map& get_behavior_properties() const;
+        ax::property_map& get_behavior_properties();
+        std::shared_ptr<const ax::entity_behavior> try_get_behavior() const;
+        std::shared_ptr<ax::entity_behavior> try_get_behavior();
+        const ax::entity_behavior& get_behavior() const;
+        ax::entity_behavior& get_behavior();
+
+        const ax::transform& get_transform() const;
+        ax::transform& get_transform();
+        ax::transform& set_transform(const ax::transform& transform);
         float get_x_pos() const { return get_transform().x_pos; }
         float set_x_pos(float value) { return get_transform().x_pos = value; }
         float get_y_pos() const { return get_transform().y_pos; }
         float set_y_pos(float value) { return get_transform().y_pos = value; }
         float get_rotation() const { return get_transform().rotation; }
         float set_rotation(float value) { return get_transform().rotation = value; }
-        bool exists() const { return world.entity_exists(get_address()); }
+        bool exists() const;
 
     private:
 
+        ax::world& world;
+    };
+
+    // Allows high-level definition of entity behavior.
+    class entity_behavior : public ax::castable
+    {
+    public:
+
+        CONSTRAINT(behavior);
+        entity_behavior(ax::entity entity, ax::world& world) : properties(), entity(entity), world(world) { }
+        inline const ax::property_map& get_behavior_properties() const { return properties; }
+        inline ax::property_map& get_behavior_properties() { return properties; }
+        virtual void update(int mode = 0) { mode; }
+
+    protected:
+
+        ENABLE_CAST(ax::entity_behavior, ax::castable);
+        ax::property_map properties;
+        ax::entity entity;
         ax::world& world;
     };
 }

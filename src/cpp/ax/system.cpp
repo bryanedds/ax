@@ -9,7 +9,14 @@ namespace ax
         initialize_systems_impl(initialize_systems_impl),
         update_systems_impl(update_systems_impl),
         clean_up_systems_impl(clean_up_systems_impl)
-    { }
+    {
+        initialize_systems_impl(*this);
+    }
+
+    world::~world()
+    {
+        clean_up_systems_impl(*this);
+    }
 
     ax::transform* world::try_get_transform(const ax::address& address)
     {
@@ -29,6 +36,17 @@ namespace ax
         {
             VAL& entities = ax::cast<ax::system_t<ax::entity_component>>(entities_iter->second);
             return entities->try_get_component(address);
+        }
+        return nullptr;
+    }
+
+    ax::entity_behavior_component* world::try_get_entity_behavior(const ax::address& address)
+    {
+        VAL& behaviors_iter = systems.find("entity_behaviors");
+        if (behaviors_iter != systems.end())
+        {
+            VAL& behaviors = ax::cast<ax::system_t<ax::entity_behavior_component>>(behaviors_iter->second);
+            return behaviors->try_get_component(address);
         }
         return nullptr;
     }
@@ -120,7 +138,7 @@ namespace ax
         return false;
     }
 
-    ax::system_ptr world::try_add_system(const ax::name& name, ax::system_ptr system)
+    std::shared_ptr<ax::system> world::try_add_system(const ax::name& name, std::shared_ptr<ax::system> system)
     {
         systems[name] = system;
         return system;
@@ -131,19 +149,9 @@ namespace ax
         return systems.erase(name) != 0;
     }
 
-    void world::initialize_systems()
-    {
-        initialize_systems_impl(*this);
-    }
-
     void world::update_systems()
     {
         update_systems_impl(*this);
-    }
-
-    void world::clean_up_systems()
-    {
-        clean_up_systems_impl(*this);
     }
 
     ax::entity_component* world::try_add_entity(const ax::address& address)
@@ -168,5 +176,81 @@ namespace ax
             if (entity_opt) return entities->remove_component(address);
         }
         return false;
+    }
+
+    const ax::property_map* entity::try_get_behavior_properties() const
+    {
+        VAL& behavior_component_opt = try_get_behavior();
+        if (behavior_component_opt) return &((*behavior_component_opt).get_behavior_properties());
+        return nullptr;
+    }
+
+    ax::property_map* entity::try_get_behavior_properties()
+    {
+        VAL& behavior_component_opt = try_get_behavior();
+        if (behavior_component_opt) return &((*behavior_component_opt).get_behavior_properties());
+        return nullptr;
+    }
+
+    const ax::property_map& entity::get_behavior_properties() const
+    {
+        VAL& properties = try_get_behavior_properties();
+        if (properties) return *properties;
+        throw std::logic_error("Entity does not have properties.");
+    }
+
+    ax::property_map& entity::get_behavior_properties()
+    {
+        VAL& properties = try_get_behavior_properties();
+        if (properties) return *properties;
+        throw std::logic_error("Entity does not have properties.");
+    }
+
+    std::shared_ptr<const ax::entity_behavior> entity::try_get_behavior() const
+    {
+        VAR* behavior_component_opt = world.try_get_entity_behavior(get_address());
+        if (behavior_component_opt) return behavior_component_opt->behavior;
+        return nullptr;
+    }
+
+    std::shared_ptr<ax::entity_behavior> entity::try_get_behavior()
+    {
+        VAR* behavior_component_opt = world.try_get_entity_behavior(get_address());
+        if (behavior_component_opt) return behavior_component_opt->behavior;
+        return nullptr;
+    }
+
+    const ax::entity_behavior& entity::get_behavior() const
+    {
+        VAL& behavior = try_get_behavior();
+        if (behavior) return *behavior;
+        throw std::logic_error("Entity does not have behavior.");
+    }
+
+    ax::entity_behavior& entity::get_behavior()
+    {
+        VAL& behavior = try_get_behavior();
+        if (behavior) return *behavior;
+        throw std::logic_error("Entity does not have behavior.");
+    }
+
+    const ax::transform& entity::get_transform() const
+    {
+        return *world.try_get_transform(get_address());
+    }
+
+    ax::transform& entity::get_transform()
+    {
+        return *world.try_get_transform(get_address());
+    }
+
+    ax::transform& entity::set_transform(const ax::transform& transform)
+    {
+        return get_transform() = transform;
+    }
+
+    bool entity::exists() const
+    {
+        return world.entity_exists(get_address());
     }
 }
