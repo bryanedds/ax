@@ -89,12 +89,12 @@ namespace ax
         {
             if (component_opt)
             {
-                this.component_opt = component_opt;
+                this->component_opt = component_opt;
                 index = component_opt->index;
             }
             else
             {
-                this.component_opt = nullptr;
+                this->component_opt = nullptr;
                 index = std::numeric_limits<std::size_t>::max();
             }
         }
