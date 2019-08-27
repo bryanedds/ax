@@ -31,7 +31,7 @@ namespace ax
     struct component
     {
         CONSTRAINT(component);
-        bool active;
+        std::size_t index;
     };
 
     // A component that includes the address of the containing entity so that related components can be found.
@@ -146,7 +146,7 @@ namespace ax
             {
                 components.push_back(component);
                 VAR& component_found = components.back();
-                component_found.active = false;
+                component_found.index = std::numeric_limits<std::size_t>::max();
                 return component_found;
             }
             else
@@ -156,7 +156,7 @@ namespace ax
                 component_map[address] = index;
                 VAR& component_found = components.at(index);
                 component_found = component;
-                component_found.active = true; // ensure active after assignment
+                component_found.index = index; // ensure valid index
                 return component_found;
             }
         }
@@ -174,7 +174,7 @@ namespace ax
                 VAL index = index_iter->second;
                 free_list.push(index);
                 VAR& component = components.at(index);
-                component.active = false;
+                component.index = std::numeric_limits<std::size_t>::max();
                 component_map.erase(address);
                 return true;
             }
@@ -342,11 +342,16 @@ namespace ax
     {
     public:
 
+        entity(const ax::address& address, ax::world& world) :
+            transform_cache_index(std::numeric_limits<std::size_t>::max()),
+            transform_cache(nullptr),
+            ax::addressable(address),
+            world(world) { }
+
         entity(const ax::entity& other) = default;
         entity(ax::entity&& other) = default;
         ax::entity& operator=(const ax::entity& other) = default;
         ax::entity& operator=(ax::entity&& other) = default;
-        entity(const ax::address& address, ax::world& world) : ax::addressable(address), world(world) { }
 
         template<typename T>
         const T* try_get_component(const ax::name& name) const
@@ -434,6 +439,8 @@ namespace ax
 
     private:
 
+        std::size_t transform_cache_index;
+        ax::transform* transform_cache;
         ax::world& world;
     };
 

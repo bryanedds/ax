@@ -236,12 +236,16 @@ namespace ax
 
     const ax::transform& entity::get_transform() const
     {
-        return *world.try_get_transform(get_address());
+        return const_cast<entity*>(this)->get_transform();
     }
 
     ax::transform& entity::get_transform()
     {
-        return *world.try_get_transform(get_address());
+        if (transform_cache && transform_cache_index == transform_cache->index) return *transform_cache;
+        VAR& transform = *world.try_get_transform(get_address()); // always exists
+        transform_cache = &transform;
+        transform_cache_index = transform.index;
+        return transform;
     }
 
     ax::transform& entity::set_transform(const ax::transform& transform)
