@@ -52,9 +52,9 @@ namespace ax
         ax::vector<T, Allocator, N> components;
     };
 
-    // The static state common to all entities.
+    // The component common to all entities.
     // NOTE: of course, we'd instead use math library types in here.
-    struct entity_state_component : public ax::component
+    struct entity_core_component : public ax::component
     {
         std::unordered_map<ax::name, ax::component*> components;
         float x_pos;
@@ -66,6 +66,7 @@ namespace ax
     struct entity_behavior_component : public ax::component
     {
         std::shared_ptr<ax::entity_behavior> behavior;
+        // could add facets here like in Nu...
     };
 
     // Assists in caching component pointers.
@@ -295,12 +296,12 @@ namespace ax
         template<typename T>
         T* try_add_component(const ax::name& system_name, const ax::address& address, const T& component = T())
         {
-            VAL& entity_states_iter = systems.find("entity_state");
-            if (entity_states_iter != systems.end())
+            VAL& entity_cores_iter = systems.find("entity_core");
+            if (entity_cores_iter != systems.end())
             {
-                VAL& entity_states = ax::cast<ax::system_t<ax::entity_state_component>>(entity_states_iter->second);
-                VAR* entity_state_opt = entity_states->try_get_component(address);
-                if (entity_state_opt)
+                VAL& entity_cores = ax::cast<ax::system_t<ax::entity_core_component>>(entity_cores_iter->second);
+                VAR* entity_core_opt = entity_cores->try_get_component(address);
+                if (entity_core_opt)
                 {
                     VAL& system_iter = systems.find(system_name);
                     if (system_iter != systems.end())
@@ -309,7 +310,7 @@ namespace ax
                         if (system_opt)
                         {
                             VAR& result = system_opt->add_component(address, component);
-                            entity_state_opt->components[system_name] = &result;
+                            entity_core_opt->components[system_name] = &result;
                             return &result;
                         }
                     }
@@ -321,12 +322,12 @@ namespace ax
         template<typename T>
         T* try_get_component(const ax::name& system_name, const ax::address& address)
         {
-            VAL& entity_states_iter = systems.find("entity_state");
-            if (entity_states_iter != systems.end())
+            VAL& entity_cores_iter = systems.find("entity_core");
+            if (entity_cores_iter != systems.end())
             {
-                VAL& entity_states = ax::cast<ax::system_t<ax::entity_state_component>>(entity_states_iter->second);
-                VAR* entity_state_opt = entity_states->try_get_component(address);
-                if (entity_state_opt)
+                VAL& entity_cores = ax::cast<ax::system_t<ax::entity_core_component>>(entity_cores_iter->second);
+                VAR* entity_core_opt = entity_cores->try_get_component(address);
+                if (entity_core_opt)
                 {
                     VAL& system_iter = systems.find(system_name);
                     if (system_iter != systems.end())
@@ -354,7 +355,7 @@ namespace ax
         template <typename Behavior>
         ax::entity create_entity_with_behavior(const ax::address& address);
 
-        ax::entity_state_component* try_get_entity_state(const ax::address& address);
+        ax::entity_core_component* try_get_entity_core(const ax::address& address);
         ax::entity_behavior_component* try_get_entity_behavior(const ax::address& address);
         bool entity_exists(const ax::address& address);
         ax::component* try_add_component(const ax::name& system_name, const ax::address& address);
@@ -367,7 +368,7 @@ namespace ax
 
     private:
 
-        ax::entity_state_component* try_add_entity(const ax::address& address);
+        ax::entity_core_component* try_add_entity(const ax::address& address);
         bool try_remove_entity(const ax::address& address);
         std::unordered_map<ax::name, std::shared_ptr<ax::system>> systems;
         std::function<void(ax::world& world)> initialize_systems_impl;
@@ -382,8 +383,9 @@ namespace ax
 
         entity(const ax::address& address, ax::world& world) :
             ax::addressable(address),
-            entity_state_cache(),
-            world(world) { }
+            entity_core_cache(),
+            world(world)
+        { }
 
         entity(const ax::entity& other) = default;
         entity(ax::entity&& other) = default;
@@ -463,21 +465,21 @@ namespace ax
         const ax::entity_behavior& get_behavior() const;
         ax::entity_behavior& get_behavior();
 
-        const ax::entity_state_component* try_get_entity_state() const;
-        ax::entity_state_component* try_get_entity_state();
-        const ax::entity_state_component& get_entity_state() const;
-        ax::entity_state_component& get_entity_state();
-        float get_x_pos() const { return get_entity_state().x_pos; }
-        float set_x_pos(float value) { return get_entity_state().x_pos = value; }
-        float get_y_pos() const { return get_entity_state().y_pos; }
-        float set_y_pos(float value) { return get_entity_state().y_pos = value; }
-        float get_rotation() const { return get_entity_state().rotation; }
-        float set_rotation(float value) { return get_entity_state().rotation = value; }
+        const ax::entity_core_component* try_get_entity_core() const;
+        ax::entity_core_component* try_get_entity_core();
+        const ax::entity_core_component& get_entity_core() const;
+        ax::entity_core_component& get_entity_core();
+        float get_x_pos() const { return get_entity_core().x_pos; }
+        float set_x_pos(float value) { return get_entity_core().x_pos = value; }
+        float get_y_pos() const { return get_entity_core().y_pos; }
+        float set_y_pos(float value) { return get_entity_core().y_pos = value; }
+        float get_rotation() const { return get_entity_core().rotation; }
+        float set_rotation(float value) { return get_entity_core().rotation = value; }
         bool exists() const;
 
     private:
 
-        ax::component_cache<ax::entity_state_component> entity_state_cache;
+        ax::component_cache<ax::entity_core_component> entity_core_cache;
         ax::world& world;
     };
 

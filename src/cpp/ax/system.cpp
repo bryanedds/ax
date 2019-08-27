@@ -18,13 +18,13 @@ namespace ax
         clean_up_systems_impl(*this);
     }
 
-    ax::entity_state_component* world::try_get_entity_state(const ax::address& address)
+    ax::entity_core_component* world::try_get_entity_core(const ax::address& address)
     {
-        VAL& entity_states_iter = systems.find("entity_state");
-        if (entity_states_iter != systems.end())
+        VAL& entity_cores_iter = systems.find("entity_core");
+        if (entity_cores_iter != systems.end())
         {
-            VAL& entity_states = ax::cast<ax::system_t<ax::entity_state_component>>(entity_states_iter->second);
-            return entity_states->try_get_component(address);
+            VAL& entity_cores = ax::cast<ax::system_t<ax::entity_core_component>>(entity_cores_iter->second);
+            return entity_cores->try_get_component(address);
         }
         return nullptr;
     }
@@ -42,17 +42,17 @@ namespace ax
 
     bool world::entity_exists(const ax::address& address)
     {
-        return try_get_entity_state(address);
+        return try_get_entity_core(address);
     }
 
     ax::component* world::try_add_component(const ax::name& system_name, const ax::address& address)
     {
-        VAL& entity_states_iter = systems.find("entity_state");
-        if (entity_states_iter != systems.end())
+        VAL& entity_cores_iter = systems.find("entity_core");
+        if (entity_cores_iter != systems.end())
         {
-            VAL& entity_states = ax::cast<ax::system_t<ax::entity_state_component>>(entity_states_iter->second);
-            VAR* entity_state_opt = entity_states->try_get_component(address);
-            if (entity_state_opt)
+            VAL& entity_cores = ax::cast<ax::system_t<ax::entity_core_component>>(entity_cores_iter->second);
+            VAR* entity_core_opt = entity_cores->try_get_component(address);
+            if (entity_core_opt)
             {
                 VAL& system_iter = systems.find(system_name);
                 if (system_iter != systems.end())
@@ -61,7 +61,7 @@ namespace ax
                     if (system_opt)
                     {
                         VAR& result = system_opt->add_component(address);
-                        entity_state_opt->components[system_name] = &result;
+                        entity_core_opt->components[system_name] = &result;
                         return &result;
                     }
                 }
@@ -72,12 +72,12 @@ namespace ax
 
     bool world::try_remove_component(const ax::name& system_name, const ax::address& address)
     {
-        VAL& entity_states_iter = systems.find("entity_state");
-        if (entity_states_iter != systems.end())
+        VAL& entity_cores_iter = systems.find("entity_core");
+        if (entity_cores_iter != systems.end())
         {
-            VAL& entity_states = ax::cast<ax::system_t<ax::entity_state_component>>(entity_states_iter->second);
-            VAR* entity_state_opt = entity_states->try_get_component(address);
-            if (entity_state_opt)
+            VAL& entity_cores = ax::cast<ax::system_t<ax::entity_core_component>>(entity_cores_iter->second);
+            VAR* entity_core_opt = entity_cores->try_get_component(address);
+            if (entity_core_opt)
             {
                 VAL& system_iter = systems.find(system_name);
                 if (system_iter != systems.end())
@@ -86,7 +86,7 @@ namespace ax
                     if (system_opt)
                     {
                         VAR result = system_opt->remove_component(address);
-                        entity_state_opt->components.erase(system_name);
+                        entity_core_opt->components.erase(system_name);
                         return result;
                     }
                 }
@@ -97,15 +97,15 @@ namespace ax
 
     ax::entity world::create_entity(const ax::address& address)
     {
-        VAL& entity_states_iter = systems.find("entity_state");
-        if (entity_states_iter != systems.end())
+        VAL& entity_cores_iter = systems.find("entity_core");
+        if (entity_cores_iter != systems.end())
         {
-            VAL& entity_states = ax::cast<ax::system_t<ax::entity_state_component>>(entity_states_iter->second);
-            VAR* entity_state_opt = entity_states->try_get_component(address);
-            if (!entity_state_opt)
+            VAL& entity_cores = ax::cast<ax::system_t<ax::entity_core_component>>(entity_cores_iter->second);
+            VAR* entity_core_opt = entity_cores->try_get_component(address);
+            if (!entity_core_opt)
             {
-                VAR* entity_state_opt = try_add_entity(address);
-                if (entity_state_opt) return ax::entity(address, *this);
+                VAR* entity_core_opt = try_add_entity(address);
+                if (entity_core_opt) return ax::entity(address, *this);
                 throw std::runtime_error("Could not create entity.");
             }
             return ax::entity(address, *this);
@@ -115,14 +115,14 @@ namespace ax
 
     bool world::destroy_entity(const ax::address& address)
     {
-        VAL& entity_states_iter = systems.find("entity_state");
-        if (entity_states_iter != systems.end())
+        VAL& entity_cores_iter = systems.find("entity_core");
+        if (entity_cores_iter != systems.end())
         {
-            VAL& entity_states = ax::cast<ax::system_t<ax::entity_state_component>>(entity_states_iter->second);
-            VAR* entity_state_opt = entity_states->try_get_component(address);
-            if (entity_state_opt)
+            VAL& entity_cores = ax::cast<ax::system_t<ax::entity_core_component>>(entity_cores_iter->second);
+            VAR* entity_core_opt = entity_cores->try_get_component(address);
+            if (entity_core_opt)
             {
-                try_remove_component("entity_state", address);
+                try_remove_component("entity_core", address);
                 return try_remove_entity(address);
             }
         }
@@ -145,26 +145,26 @@ namespace ax
         update_systems_impl(*this);
     }
 
-    ax::entity_state_component* world::try_add_entity(const ax::address& address)
+    ax::entity_core_component* world::try_add_entity(const ax::address& address)
     {
-        VAL& entity_states_iter = systems.find("entity_state");
-        if (entity_states_iter != systems.end())
+        VAL& entity_cores_iter = systems.find("entity_core");
+        if (entity_cores_iter != systems.end())
         {
-            VAL& entity_states = ax::cast<ax::system_t<ax::entity_state_component>>(entity_states_iter->second);
-            VAR* entity_state_opt = entity_states->try_get_component(address);
-            if (!entity_state_opt) return &entity_states->add_component(address);
+            VAL& entity_cores = ax::cast<ax::system_t<ax::entity_core_component>>(entity_cores_iter->second);
+            VAR* entity_core_opt = entity_cores->try_get_component(address);
+            if (!entity_core_opt) return &entity_cores->add_component(address);
         }
         return nullptr;
     }
 
     bool world::try_remove_entity(const ax::address& address)
     {
-        VAL& entity_states_iter = systems.find("entity_state");
-        if (entity_states_iter != systems.end())
+        VAL& entity_cores_iter = systems.find("entity_core");
+        if (entity_cores_iter != systems.end())
         {
-            VAL& entity_states = ax::cast<ax::system_t<ax::entity_state_component>>(entity_states_iter->second);
-            VAR* entity_state_opt = entity_states->try_get_component(address);
-            if (entity_state_opt) return entity_states->remove_component(address);
+            VAL& entity_cores = ax::cast<ax::system_t<ax::entity_core_component>>(entity_cores_iter->second);
+            VAR* entity_core_opt = entity_cores->try_get_component(address);
+            if (entity_core_opt) return entity_cores->remove_component(address);
         }
         return false;
     }
@@ -217,42 +217,42 @@ namespace ax
         throw std::runtime_error("Entity does not have behavior.");
     }
 
-    const ax::entity_state_component* entity::try_get_entity_state() const
+    const ax::entity_core_component* entity::try_get_entity_core() const
     {
-        return const_cast<entity*>(this)->try_get_entity_state();
+        return const_cast<entity*>(this)->try_get_entity_core();
     }
 
-    ax::entity_state_component* entity::try_get_entity_state()
+    ax::entity_core_component* entity::try_get_entity_core()
     {
-        VAR* entity_state_opt = entity_state_cache.try_get();
-        if (!entity_state_opt)
+        VAR* entity_core_opt = entity_core_cache.try_get();
+        if (!entity_core_opt)
         {
-            VAR* entity_state_opt = world.try_get_entity_state(get_address());
-            if (entity_state_opt)
+            VAR* entity_core_opt = world.try_get_entity_core(get_address());
+            if (entity_core_opt)
             {
-                entity_state_cache.reset(entity_state_opt);
-                return entity_state_opt;
+                entity_core_cache.reset(entity_core_opt);
+                return entity_core_opt;
             }
             return nullptr;
         }
-        return entity_state_opt;
+        return entity_core_opt;
     }
 
-    const ax::entity_state_component& entity::get_entity_state() const
+    const ax::entity_core_component& entity::get_entity_core() const
     {
-        return const_cast<entity*>(this)->get_entity_state();
+        return const_cast<entity*>(this)->get_entity_core();
     }
 
-    ax::entity_state_component& entity::get_entity_state()
+    ax::entity_core_component& entity::get_entity_core()
     {
-        VAR* entity_state_opt = try_get_entity_state();
-        if (entity_state_opt) return *entity_state_opt;
+        VAR* entity_core_opt = try_get_entity_core();
+        if (entity_core_opt) return *entity_core_opt;
         throw std::runtime_error("Could not get entity state.");
     }
 
     bool entity::exists() const
     {
         // OPTIMIZATION: checking entity state cache is faster than a fresh look-up.
-        return try_get_entity_state();
+        return try_get_entity_core();
     }
 }
