@@ -106,7 +106,7 @@ namespace std
     // NOTE: it is not legal to add to the std namespace, but since this form is so egregiously
     // missing, I did it anyway.
     template<typename Cr, typename It, typename Fn>
-    Cr entity_state(const It& begin, const It& end, const Fn& fn)
+    Cr transform(const It& begin, const It& end, const Fn& fn)
     {
         CONSTRAIN_AS_CONTAINER(Cr);
         Cr transformed{};

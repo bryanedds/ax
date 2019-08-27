@@ -59,7 +59,7 @@ namespace ax
 
     // The static state common to all entities.
     // NOTE: of course, we'd instead use math library types in here.
-    struct entity_state : public ax::component
+    struct entity_state_component : public ax::component
     {
         std::unordered_map<ax::name, ax::component*> components;
         float x_pos;
@@ -67,6 +67,7 @@ namespace ax
         float rotation;
     };
 
+    // Assists in caching component pointers.
     template <typename T>
     struct component_cache
     {
@@ -346,7 +347,7 @@ namespace ax
         template <typename Behavior>
         ax::entity create_entity_with_behavior(const ax::address& address);
 
-        ax::entity_state* try_get_entity_state(const ax::address& address);
+        ax::entity_state_component* try_get_entity_state(const ax::address& address);
         ax::entity_behavior_component* try_get_entity_behavior(const ax::address& address);
         bool entity_exists(const ax::address& address);
         ax::component* try_add_component(const ax::name& system_name, const ax::address& address);
@@ -359,7 +360,7 @@ namespace ax
 
     private:
 
-        ax::entity_state* try_add_entity(const ax::address& address);
+        ax::entity_state_component* try_add_entity(const ax::address& address);
         bool try_remove_entity(const ax::address& address);
         std::unordered_map<ax::name, std::shared_ptr<ax::system>> systems;
         std::function<void(ax::world& world)> initialize_systems_impl;
@@ -455,10 +456,10 @@ namespace ax
         const ax::entity_behavior& get_behavior() const;
         ax::entity_behavior& get_behavior();
 
-        const ax::entity_state* try_get_entity_state() const;
-        ax::entity_state* try_get_entity_state();
-        const ax::entity_state& get_entity_state() const;
-        ax::entity_state& get_entity_state();
+        const ax::entity_state_component* try_get_entity_state() const;
+        ax::entity_state_component* try_get_entity_state();
+        const ax::entity_state_component& get_entity_state() const;
+        ax::entity_state_component& get_entity_state();
         float get_x_pos() const { return get_entity_state().x_pos; }
         float set_x_pos(float value) { return get_entity_state().x_pos = value; }
         float get_y_pos() const { return get_entity_state().y_pos; }
@@ -469,7 +470,7 @@ namespace ax
 
     private:
 
-        ax::component_cache<ax::entity_state> entity_state_cache;
+        ax::component_cache<ax::entity_state_component> entity_state_cache;
         ax::world& world;
     };
 

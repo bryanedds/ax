@@ -39,7 +39,7 @@ namespace ax
         
         const std::string to_string() const
         {
-            VAL& name_strs = std::entity_state<std::vector<std::string>>(names.begin(), names.end(), [](const ax::name& name) { return name.to_string(); });
+            VAL& name_strs = std::transform<std::vector<std::string>>(names.begin(), names.end(), [](const ax::name& name) { return name.to_string(); });
             return ax::join_strings(name_strs, '/');
         }
 
