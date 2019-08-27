@@ -35,13 +35,14 @@ namespace ax
     };
 
     // A component that includes the address of the containing entity so that related components can be found.
+    // Convenient to use, but would be slower than using component_cache.
     struct composite_component : public ax::component
     {
         CONSTRAINT(composite_component);
         ax::address address;
     };
 
-    // A component that store multiple of the same type of component.
+    // A component that stores multiple of the same type of component.
     template<typename T, typename Allocator, std::size_t N>
     struct multi_component : public ax::component
     {
@@ -49,12 +50,6 @@ namespace ax
         template<typename A, typename B, std::size_t C> using reify = ax::multi_component<A, B, C>;
         constexpr void static_check() { CONSTRAIN(T, component); }
         ax::vector<T, Allocator, N> components;
-    };
-
-    // An entity behavior component.
-    struct entity_behavior_component : public ax::component
-    {
-        std::shared_ptr<ax::entity_behavior> behavior;
     };
 
     // The static state common to all entities.
@@ -65,6 +60,12 @@ namespace ax
         float x_pos;
         float y_pos;
         float rotation;
+    };
+
+    // An entity behavior component.
+    struct entity_behavior_component : public ax::component
+    {
+        std::shared_ptr<ax::entity_behavior> behavior;
     };
 
     // Assists in caching component pointers.
