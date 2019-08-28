@@ -76,13 +76,13 @@ namespace ax
     template<typename T>
     const T* try_cast(const ax::castable* castable)
     {
-        return try_cast(*castable);
+        return try_cast<T>(*castable);
     }
 
     template<typename T>
     T* try_cast(ax::castable* castable)
     {
-        return try_cast(*castable);
+        return try_cast<T>(*castable);
     }
 
     template<typename T>

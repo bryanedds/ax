@@ -487,7 +487,7 @@ namespace ax
         entity_behavior(ax::entity entity, ax::world& world) : properties(), entity(entity), world(world) { }
         inline const ax::property_map& get_behavior_properties() const { return properties; }
         inline ax::property_map& get_behavior_properties() { return properties; }
-        virtual void update(int mode = 0) { mode; }
+        virtual void update(int /*mode*/ = 0) { }
 
     protected:
 
