@@ -381,12 +381,7 @@ namespace ax
     {
     public:
 
-        entity(const ax::address& address, ax::world& world) :
-            ax::addressable(address),
-            entity_core_cache(),
-            world(world)
-        { }
-
+        entity(const ax::address& address, ax::world& world);
         entity(const ax::entity& other) = default;
         entity(ax::entity&& other) = default;
         ax::entity& operator=(const ax::entity& other) = default;

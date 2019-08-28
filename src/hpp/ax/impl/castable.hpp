@@ -7,7 +7,6 @@
 #include <memory>
 
 #include "prelude.hpp"
-#include "option.hpp"
 
 namespace ax
 {
@@ -42,45 +41,67 @@ namespace ax
         }
 
         template<typename T>
-        friend ax::option<const T*> try_cast(const ax::castable& castable);
+        friend const T* try_cast(const ax::castable& castable);
 
         template<typename T>
-        friend ax::option<T*> try_cast(ax::castable& castable);
+        friend T* try_cast(ax::castable& castable);
     };
 
     template<typename T>
-    ax::option<const T*> try_cast(const ax::castable& castable)
+    const T* try_cast(const ax::castable& castable)
     {
         VAL type_index = std::type_index(typeid(T));
-        VAL* t_opt(static_cast<const T*>(castable.try_cast(type_index)));
-        return t_opt ? some<const T*>(t_opt) : none<const T*>();
+        return static_cast<const T*>(castable.try_cast(type_index));
     }
 
     template<typename T>
-    ax::option<T*> try_cast(ax::castable& castable)
+    T* try_cast(ax::castable& castable)
     {
         VAL type_index = std::type_index(typeid(T));
-        VAR* t_opt(static_cast<T*>(castable.try_cast(type_index)));
-        return t_opt ? some<T*>(t_opt) : none<T*>();
+        return static_cast<T*>(castable.try_cast(type_index));
     }
 
     template<typename T>
     const T& cast(const ax::castable& castable)
     {
-        return **try_cast<T>(castable);
+        return *try_cast<T>(castable);
     }
 
     template<typename T>
     T& cast(ax::castable& castable)
     {
-        return **try_cast<T>(castable);
+        return *try_cast<T>(castable);
+    }
+
+    template<typename T>
+    const T* try_cast(const ax::castable* castable)
+    {
+        return try_cast(*castable);
+    }
+
+    template<typename T>
+    T* try_cast(ax::castable* castable)
+    {
+        return try_cast(*castable);
+    }
+
+    template<typename T>
+    const T* cast(const ax::castable* castable)
+    {
+        return &cast<T>(*castable);
+    }
+
+    template<typename T>
+    T* cast(ax::castable* castable)
+    {
+        return &cast<T>(*castable);
     }
 
     template<typename U, typename T>
     std::shared_ptr<U> try_cast(const std::shared_ptr<T>& source)
     {
         VAR u_opt = try_cast<U>(*source);
-        if (u_opt) return std::shared_ptr<U>(source, *u_opt);
+        if (u_opt) return std::shared_ptr<U>(source, u_opt);
         return std::shared_ptr<U>();
     }
 
@@ -88,7 +109,7 @@ namespace ax
     std::shared_ptr<U> cast(const std::shared_ptr<T>& source)
     {
         VAR u_opt = try_cast<U>(*source);
-        if (u_opt) return std::shared_ptr<U>(source, *u_opt);
+        if (u_opt) return std::shared_ptr<U>(source, u_opt);
         throw std::logic_error("Invalid cast.");
     }
 
@@ -99,7 +120,7 @@ namespace ax
         if (u_opt)
         {
             source.release();
-            return std::unique_ptr<U>(*u_opt);
+            return std::unique_ptr<U>(u_opt);
         }
         throw std::logic_error("Invalid cast.");
     }

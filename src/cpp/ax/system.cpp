@@ -169,6 +169,12 @@ namespace ax
         return false;
     }
 
+    entity::entity(const ax::address& address, ax::world& world) :
+        ax::addressable(address),
+        entity_core_cache(),
+        world(world)
+    { }
+
     const ax::property_map* entity::try_get_behavior_properties() const
     {
         return const_cast<entity*>(this)->try_get_behavior_properties();

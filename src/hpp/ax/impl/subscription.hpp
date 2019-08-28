@@ -73,7 +73,7 @@ namespace ax
                 VAL& subscriber = subscriber_opt.lock();
                 VAL& event = ax::event<T>(event_data, event_address, subscriber, publisher);
                 VAL& subscription_detail_opt = try_cast<ax::subscription_detail<T, P>>(*subscription_detail);
-                if (subscription_detail_opt) return (*subscription_detail_opt)->publish_subscription_detail(event, program);
+                if (subscription_detail_opt) return subscription_detail_opt->publish_subscription_detail(event, program);
                 return true;
             }
             return true;
