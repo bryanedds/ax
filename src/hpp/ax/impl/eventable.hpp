@@ -30,21 +30,21 @@ namespace ax
         CONSTRAINT(eventable);
 
         eventable() :
-            pred_id(std::make_unique<ax::id>())
+            pred_id(std::make_unique<ax::id_t>())
         {
             CONSTRAIN(P, eventable);
             program = dynamic_cast<P*>(this);
         }
 
-        ax::id get_subscription_id()
+        ax::id_t get_subscription_id()
         {
             VAL& pred_id = *this->pred_id;
             VAL& succ_id = succ(pred_id);
-            this->pred_id = std::make_unique<ax::id>(succ_id);
+            this->pred_id = std::make_unique<ax::id_t>(succ_id);
             return succ_id;
         }
 
-        void unsubscribe_event(ax::id subscription_id)
+        void unsubscribe_event(ax::id_t subscription_id)
         {
             VAL& unsubscription_opt = unsubscription_map.find(subscription_id);
             if (unsubscription_opt != std::end(unsubscription_map))
@@ -65,7 +65,7 @@ namespace ax
         }
 
         template<typename T, typename H>
-        ax::unsubscriber<P> subscribe_event5(ax::id subscription_id, const ax::address& address, const std::shared_ptr<ax::addressable>& subscriber, const H& handler)
+        ax::unsubscriber<P> subscribe_event5(ax::id_t subscription_id, const ax::address& address, const std::shared_ptr<ax::addressable>& subscriber, const H& handler)
         {
             VAR subscription_detail_mvb = cast<ax::castable>(std::make_unique<ax::subscription_detail<T, P>>(handler));
             VAR subscriptions_opt = subscriptions_map.find(address);
@@ -113,7 +113,7 @@ namespace ax
     private:
 
         P* program;
-        std::unique_ptr<ax::id> pred_id;
+        std::unique_ptr<ax::id_t> pred_id;
         ax::subscriptions_map subscriptions_map;
         ax::unsubscription_map unsubscription_map;
     };
