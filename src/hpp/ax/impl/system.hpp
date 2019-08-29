@@ -60,6 +60,7 @@ namespace ax
         float x_pos;
         float y_pos;
         float rotation;
+        int dirty_flags;
     };
 
     // An entity behavior component.

@@ -32,6 +32,9 @@
     <Filter Include="Header Files\ax\impl">
       <UniqueIdentifier>{a465dd24-8f0f-4e71-b250-21cf8127c704}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\stduuid">
+      <UniqueIdentifier>{c1344a0c-df37-4f3b-9026-6e0e623f1228}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\hpp\blah\blah.hpp">
@@ -192,6 +195,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\vector.hpp">
       <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\hpp\stduuid\uuid.h">
+      <Filter>Source Files\stduuid</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\hpp\ax\impl\stream.hpp">
+      <Filter>Header Files\ax\impl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

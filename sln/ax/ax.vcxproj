@@ -43,6 +43,7 @@
     <ClInclude Include="..\..\src\hpp\ax\impl\prelude.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\propertied.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\property.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\impl\stream.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\string.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\subscription.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\symbol.hpp" />
@@ -62,6 +63,7 @@
     <ClInclude Include="..\..\src\hpp\rxml\rapidxml_iterators.hpp" />
     <ClInclude Include="..\..\src\hpp\rxml\rapidxml_print.hpp" />
     <ClInclude Include="..\..\src\hpp\rxml\rapidxml_utils.hpp" />
+    <ClInclude Include="..\..\src\hpp\stduuid\uuid.h" />
     <ClInclude Include="..\..\src\hpp\tom\tom.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\algebraic.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\casting.hpp" />
