@@ -6,13 +6,14 @@
 #include <string>
 #include <memory>
 
+#include "../../crossguid/Guid.hpp"
+
 #include "prelude.hpp"
 #include "id.hpp"
 #include "castable.hpp"
 #include "address.hpp"
 #include "addressable.hpp"
 #include "eventable.hpp"
-#include "../../stduuid/uuid.h"
 
 namespace ax
 {
@@ -42,7 +43,7 @@ namespace ax
             VAL& subscribe = [event_address](W& w)
             {
                 VAL& global_participant = w.get_global_participant();
-                VAL& subscription_key = uuids::uuid_system_generator{}();
+                VAL& subscription_key = xg::newGuid(); // TODO: make ax::make_guid();
                 VAL& subscription_address = ax::address(ax::name(std::to_string(subscription_key)));
                 VAL& unsubscribe = [](W& w) { return w.unsubscribe<W>(subscription_key); };
                 VAL& subscription = [](const ax::event<T>& evt)

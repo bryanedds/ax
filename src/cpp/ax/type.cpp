@@ -1,3 +1,5 @@
+#include <exception>
+
 #include "../../hpp/ax/impl/type.hpp"
 
 #include "../../hpp/ax/impl/string.hpp"

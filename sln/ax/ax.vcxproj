@@ -59,11 +59,11 @@
     <ClInclude Include="..\..\src\hpp\ax\system.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\vector.hpp" />
     <ClInclude Include="..\..\src\hpp\blah\blah.hpp" />
+    <ClInclude Include="..\..\src\hpp\crossguid\Guid.hpp" />
     <ClInclude Include="..\..\src\hpp\rxml\rapidxml.hpp" />
     <ClInclude Include="..\..\src\hpp\rxml\rapidxml_iterators.hpp" />
     <ClInclude Include="..\..\src\hpp\rxml\rapidxml_print.hpp" />
     <ClInclude Include="..\..\src\hpp\rxml\rapidxml_utils.hpp" />
-    <ClInclude Include="..\..\src\hpp\stduuid\uuid.h" />
     <ClInclude Include="..\..\src\hpp\tom\tom.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\algebraic.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\casting.hpp" />
@@ -88,6 +88,7 @@
     <ClCompile Include="..\..\src\cpp\ax\type_descriptors.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\unparser.cpp" />
     <ClCompile Include="..\..\src\cpp\blah\blah.cpp" />
+    <ClCompile Include="..\..\src\cpp\crossguid\Guid.cpp" />
     <ClCompile Include="..\..\src\cpp\tom\tom.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
