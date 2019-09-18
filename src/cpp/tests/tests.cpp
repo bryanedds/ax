@@ -135,7 +135,7 @@ namespace ax
 
     TEST("castable works")
     {
-        ax::castable_b b{};
+        ax::castable_b b;
         b.i = 10;
         b.j = 20;
         const ax::castable_a& a = ax::cast<ax::castable_a>(b);
@@ -181,7 +181,7 @@ namespace ax
     TEST("events work")
     {
         VAR i = 0;
-        ax::eventable_test program{};
+        ax::eventable_test program;
         VAL& event_address = ax::address("event");
         VAL participant = std::make_shared<ax::addressable>(ax::address("participant"));
         VAR handler = [&](VAL&, VAL&) { return ++i, true; };
@@ -194,13 +194,13 @@ namespace ax
 
     TEST("read and write value works")
     {
-        ax::symbol symbol{};
+        ax::symbol symbol;
         ax::reflectable_test source(
             true, 5, 10.0f, "jim bob", ax::address("s/compton/la"),
             { 1, 3, 5 }, { "a", "bb", "ccc" }, 777,
             make_pair(50, 100), make_record(150, 200, 250),
             some(2), none<int>(), right<int, std::string>(4), left<int>("msg"_s), third<int, int, int>(3));
-        ax::reflectable_test target{};
+        ax::reflectable_test target;
         ax::write_value(source, symbol);
         ax::read_value(symbol, target);
         CHECK(target.bool_value);
@@ -241,7 +241,7 @@ namespace ax
               [  third  3  ]  ]"; // a little extra whitespace to try to throw off the parser
         VAL& parse = parse_symbol(str);
         VAL& symbol = parse.get_success();
-        ax::reflectable_test target{};
+        ax::reflectable_test target;
         ax::read_value(symbol, target);
         CHECK(target.bool_value);
         CHECK(target.int_value == 5);
@@ -265,7 +265,7 @@ namespace ax
 
     TEST("properties work")
     {
-        ax::propertied p{};
+        ax::propertied p;
         p.attach("x", 0);
         CHECK(p.get<int>("x") == 0);
         p.set("x", 5);

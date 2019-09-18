@@ -65,9 +65,9 @@ namespace ax
         std::shared_ptr<std::type_index> base_type_index_opt,
         std::initializer_list<std::pair<ax::name, ax::field>> field_init_list)
     {
-        ax::field_vector field_vector{};
+        ax::field_vector field_vector;
         for (VAL& field_kvp : field_init_list) field_vector.push_back(std::make_pair(field_kvp.first, std::make_shared<field>(field_kvp.second)));
-        ax::field_map field_map{};
+        ax::field_map field_map;
         for (VAL& field_kvp : field_vector) field_map.insert(field_kvp);
         VAL& type_index = std::type_index(typeid(T));
         VAL& type = std::make_shared<ax::type>(base_type_index_opt, type_index, field_map, field_vector);

@@ -14,7 +14,7 @@ namespace ax
     template<typename U, typename T, typename F>
     ax::vector<U> map(const ax::vector<T>& source, const F& mapper)
     {
-        ax::vector<U> mapped{};
+        ax::vector<U> mapped;
         for (VAL& elem : source) mapped.push_back(mapper(elem));
         return mapped;
     }
@@ -22,7 +22,7 @@ namespace ax
     template<typename U, typename T, typename F>
     std::vector<U> map(const std::vector<T>& source, const F& mapper)
     {
-        std::vector<U> mapped{};
+        std::vector<U> mapped;
         for (VAL& elem : source) mapped.push_back(mapper(elem));
         return mapped;
     }
@@ -30,7 +30,7 @@ namespace ax
     template<typename T, typename F>
     ax::vector<T> filter(const ax::vector<T>& source, const F& predicate)
     {
-        ax::vector<T> filtered{};
+        ax::vector<T> filtered;
         for (VAL& elem : source)
             if (predicate(elem))
                 filtered.push_back(elem);
@@ -40,7 +40,7 @@ namespace ax
     template<typename T, typename F>
     std::vector<T> filter(const std::vector<T>& source, const F& predicate)
     {
-        std::vector<T> filtered{};
+        std::vector<T> filtered;
         for (VAL& elem : source)
             if (predicate(elem))
                 filtered.push_back(elem);

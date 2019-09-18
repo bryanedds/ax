@@ -112,7 +112,7 @@ namespace ax
         VAL& field_vector = type->get_field_vector();
         for (VAL& field_kvp : field_vector)
         {
-            ax::symbol field_symbol_mvb{};
+            ax::symbol field_symbol_mvb;
             VAL& field = field_kvp.second;
             VAL& field_type_index = field->get_type_index();
             VAL& field_type_descriptor = ax::get_type_descriptor(field_type_index);

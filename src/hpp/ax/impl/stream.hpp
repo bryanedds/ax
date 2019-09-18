@@ -52,8 +52,8 @@ namespace ax
             {
                 // TODO: event tracing
                 // TODO: subscription sorting
-                // TODO: allow wildcard flag (= false)
-                // TODO: event cascading (= cascade)
+                // TODO: allow wildcard flag (default false)
+                // TODO: event cascading (default cascade)
                 w.publish_event<T>(evt.data, subscription_address, global_participant);
             };
             w.subscribe_event<T>(subscription_key, event_address, global_participant, subscription);

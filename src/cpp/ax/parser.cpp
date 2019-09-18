@@ -51,7 +51,7 @@ namespace ax
     ax::parse<std::string> parse_until_given_char(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end, char chr)
     {
         VAR success = false;
-        std::string str_mvb{};
+        std::string str_mvb;
         while (iter != end)
         {
             if (*iter != chr)
@@ -72,7 +72,7 @@ namespace ax
     ax::parse<std::string> parse_until_any_given_char(std::istream_iterator<char>& iter, const std::istream_iterator<char>& end, std::string chars)
     {
         VAR success = false;
-        std::string str_mvb{};
+        std::string str_mvb;
         while (iter != end)
         {
             VAL chr = *iter;
@@ -93,7 +93,7 @@ namespace ax
 
     static ax::symbol parse_symbol_from_xml_node(rapidxml::xml_node<char>* parent_node)
     {
-        ax::symbols_t symbols{};
+        ax::symbols_t symbols;
         for (VAR* node = parent_node->first_node(); node != nullptr; node = node->next_sibling())
         {
             symbols.push_back(ax::atom(node->name()));
@@ -106,7 +106,7 @@ namespace ax
 
     ax::parse<ax::symbol> parse_symbol_from_xml_buffer(char* buffer)
     {
-        rapidxml::xml_document<char> document{};
+        rapidxml::xml_document<char> document;
         document.parse<rapidxml::parse_default>(buffer);
         VAR* root = document.first_node();
         return ax::parse_success(ax::parse_symbol_from_xml_node(root));
@@ -123,7 +123,7 @@ namespace ax
                 case '[':
                 {
                     ax::skip_whitespace_many(iter, end);
-                    std::vector<ax::symbol> children_mvb{};
+                    std::vector<ax::symbol> children_mvb;
                     while (iter != end && *iter != ']')
                     {
                         if (VAL& parse = ax::parse_symbol_from_stream(iter, end)) children_mvb.push_back(*parse);

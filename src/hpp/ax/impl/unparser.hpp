@@ -15,7 +15,7 @@ namespace ax
     template<typename T>
     void write_value(const T& value, std::string& str)
     {
-        ax::symbol symbol{};
+        ax::symbol symbol;
         VAL& type_index = std::type_index(typeid(value));
         VAL& type_descriptor = get_type_descriptor(type_index);
         type_descriptor->write_value(&value, symbol);
