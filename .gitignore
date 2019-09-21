@@ -194,3 +194,6 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+
+# Assimp Source
+assimp-4.1.0
