@@ -1,9 +1,9 @@
 #ifndef AX_IMPL_MATH_HPP
 #define AX_IMPL_MATH_HPP
 
-#include "assimp/color4.h"
-#include "assimp/vector2.h"
-#include "assimp/vector3.h"
+#include "assimp/color4.inl"
+#include "assimp/vector2.inl"
+#include "assimp/vector3.inl"
 
 namespace ax
 {
