@@ -15,8 +15,8 @@ namespace ax
 
     tga_image::tga_image(int w, int h) : data(), width(w), height(h), bytespp(RGBA)
     {
-        unsigned long nbytes = width * height * bytespp;
-        data = new unsigned char[nbytes];
+        uint32_t nbytes = width * height * bytespp;
+        data = new uint8_t[nbytes];
         std::memset(data, 0, nbytes);
     }
 
@@ -25,8 +25,8 @@ namespace ax
         width = img.width;
         height = img.height;
         bytespp = img.bytespp;
-        unsigned long nbytes = width * height * bytespp;
-        data = new unsigned char[nbytes];
+        uint32_t nbytes = width * height * bytespp;
+        data = new uint8_t[nbytes];
         memcpy(data, img.data, nbytes);
     }
 
@@ -43,8 +43,8 @@ namespace ax
             width = img.width;
             height = img.height;
             bytespp = img.bytespp;
-            unsigned long nbytes = width * height * bytespp;
-            data = new unsigned char[nbytes];
+            uint32_t nbytes = width * height * bytespp;
+            data = new uint8_t[nbytes];
             memcpy(data, img.data, nbytes);
         }
         return *this;
@@ -143,8 +143,8 @@ namespace ax
             std::cerr << "bad bpp (or width/height) value\n";
             return false;
         }
-        unsigned long nbytes = bytespp * width * height;
-        data = new unsigned char[nbytes];
+        uint32_t nbytes = bytespp * width * height;
+        data = new uint8_t[nbytes];
         if (3 == header.datatypecode || 2 == header.datatypecode)
         {
             in.read((char*)data, nbytes);
@@ -174,9 +174,9 @@ namespace ax
 
     bool tga_image::write_tga_file(const char *file_name) const
     {
-        unsigned char developer_area_ref[4] = { 0, 0, 0, 0 };
-        unsigned char extension_area_ref[4] = { 0, 0, 0, 0 };
-        unsigned char footer[18] = { 'T','R','U','E','V','I','S','I','O','N','-','X','F','I','L','E','.','\0' };
+        uint8_t developer_area_ref[4] = { 0, 0, 0, 0 };
+        uint8_t extension_area_ref[4] = { 0, 0, 0, 0 };
+        uint8_t footer[18] = { 'T','R','U','E','V','I','S','I','O','N','-','X','F','I','L','E','.','\0' };
         std::ofstream out;
         out.open(file_name, std::ios::binary);
         if (!out.is_open())

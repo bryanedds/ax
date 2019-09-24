@@ -27,24 +27,24 @@ namespace ax
 
         int nverts() const;
         int nfaces() const;
-        v3 normal(int iface, int nthvert) const;
-        v3 normal(v2 uv) const;
-        v3 vert(int i) const;
-        v3 vert(int iface, int nthvert) const;
-        v2 uv(int iface, int nthvert) const;
-        ax::tga_color diffuse(v2 uv) const;
-        float specular(v2 uv) const;
+        ax::v3 normal(int iface, int nthvert) const;
+        ax::v3 normal(ax::v2 uv) const;
+        ax::v3 vert(int i) const;
+        ax::v3 vert(int iface, int nthvert) const;
+        ax::v2 uv(int iface, int nthvert) const;
+        ax::color diffuse(ax::v2 uv) const;
+        float specular(ax::v2 uv) const;
         std::vector<int> face(int idx) const;
 
     private:
 
-        void load_texture(std::string file_name, const char *suffix, ax::tga_image &img);
+        bool try_load_texture(std::string file_name, const char *suffix, ax::tga_image &img);
 
-        std::vector<std::vector<v3i>> faces; // NOTE: this v3i means vertex/uv/normal. TODO: make it mean vertex/normal/uv instead.
-        std::vector<v3> verts;
-        std::vector<v3> norms;
-        std::vector<v2> uvs;
-        ax::option<std::vector<basic_vert>> stream_opt;
+        std::vector<std::vector<ax::v3i>> faces; // NOTE: this v3i means vertex/uv/normal. TODO: make it mean vertex/normal/uv instead.
+        std::vector<ax::v3> verts;
+        std::vector<ax::v3> norms;
+        std::vector<ax::v2> uvs;
+        ax::option<std::vector<ax::basic_vert>> stream_opt;
         ax::tga_image diffuse_map;
         ax::tga_image normal_map;
         ax::tga_image specular_map;
