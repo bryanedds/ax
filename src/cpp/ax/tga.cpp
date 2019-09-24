@@ -11,11 +11,11 @@
 
 namespace ax
 {
-    tga_image::tga_image() : data(nullptr), width(0), height(0), bytespp(0) { }
+    tga_image::tga_image() : tga_image(0, 0) { }
 
-    tga_image::tga_image(int w, int h, int bpp) : data(nullptr), width(w), height(h), bytespp(bpp)
+    tga_image::tga_image(int w, int h) : data(), width(w), height(h), bytespp(RGBA)
     {
-        unsigned long nbytes = width * height*bytespp;
+        unsigned long nbytes = width * height * bytespp;
         data = new unsigned char[nbytes];
         std::memset(data, 0, nbytes);
     }
@@ -43,33 +43,35 @@ namespace ax
             width = img.width;
             height = img.height;
             bytespp = img.bytespp;
-            unsigned long nbytes = width * height*bytespp;
+            unsigned long nbytes = width * height * bytespp;
             data = new unsigned char[nbytes];
             memcpy(data, img.data, nbytes);
         }
         return *this;
     }
 
-    tga_color tga_image::get_point(int x, int y)
+    color tga_image::get_point(int x, int y) const
     {
-        if (!data || x < 0 || y < 0 || x >= width || y >= height) return tga_color();
-        return tga_color(data + (x + y * width) * bytespp, bytespp);
+        if (x < 0 || y < 0 || x >= width || y >= height) throw std::out_of_range("tga_image point index out of range.");
+        VAL tga_color = ax::tga_color(data + (x + y * width) * bytespp);
+        return ax::color(tga_color.r, tga_color.g, tga_color.b, tga_color.a);
     }
 
-    bool tga_image::set_point(int x, int y, const tga_color& c)
+    bool tga_image::set_point(int x, int y, const ax::color& color)
     {
-        if (!data || x < 0 || y < 0 || x >= width || y >= height) return false;
-        memcpy(data + (x + y * width)*bytespp, c.raw, bytespp);
+        if (x < 0 || y < 0 || x >= width || y >= height) return false;
+        VAL tga_color = ax::tga_color(color.r, color.g, color.b, color.a);
+        memcpy(data + (x + y * width) * bytespp, tga_color.raw, bytespp);
         return true;
     }
 
-    void tga_image::draw_line(int x, int y, int x2, int y2, const tga_color& c)
+    void tga_image::draw_line(int x, int y, int x2, int y2, const ax::color& color)
     {
         // local functions
         struct local
         {
-            static void set_point_normal(int x, int y, const tga_color& c, tga_image& image) { image.set_point(x, y, c); }
-            static void set_point_swapped(int x, int y, const tga_color& c, tga_image& image) { image.set_point(y, x, c); }
+            static void set_point_normal(int x, int y, const ax::color& c, tga_image& image) { image.set_point(x, y, c); }
+            static void set_point_swapped(int x, int y, const ax::color& c, tga_image& image) { image.set_point(y, x, c); }
         };
 
         // determine steepness
@@ -97,7 +99,7 @@ namespace ax
         VAL set_point_local = steep ? &local::set_point_swapped : &local::set_point_normal;
         for (VAR error = 0, i = x, j = y; i < x2; ++i)
         {
-            set_point_local(i, j, c, *this);
+            set_point_local(i, j, color, *this);
             error += error_delta;
             if (error > x_delta)
             {
@@ -112,15 +114,15 @@ namespace ax
         std::memset(data, 0, width * height * bytespp);
     }
 
-    bool tga_image::read_tga_file(const char *filename)
+    bool tga_image::read_tga_file(const char* file_name)
     {
         if (data) delete[] data;
         data = nullptr;
         std::ifstream in;
-        in.open(filename, std::ios::binary);
+        in.open(file_name, std::ios::binary);
         if (!in.is_open())
         {
-            std::cerr << "can't open file " << filename << "\n";
+            std::cerr << "can't open file " << file_name << "\n";
             in.close();
             return false;
         }
@@ -135,13 +137,13 @@ namespace ax
         width = header.width;
         height = header.height;
         bytespp = header.bitsperpixel >> 3;
-        if (width <= 0 || height <= 0 || (bytespp != GRAYSCALE && bytespp != RGB && bytespp != RGBA))
+        if (width <= 0 || height <= 0 || bytespp != RGBA)
         {
             in.close();
             std::cerr << "bad bpp (or width/height) value\n";
             return false;
         }
-        unsigned long nbytes = bytespp * width*height;
+        unsigned long nbytes = bytespp * width * height;
         data = new unsigned char[nbytes];
         if (3 == header.datatypecode || 2 == header.datatypecode)
         {
@@ -170,16 +172,16 @@ namespace ax
         return true;
     }
 
-    bool tga_image::write_tga_file(const char *filename)
+    bool tga_image::write_tga_file(const char *file_name) const
     {
         unsigned char developer_area_ref[4] = { 0, 0, 0, 0 };
         unsigned char extension_area_ref[4] = { 0, 0, 0, 0 };
         unsigned char footer[18] = { 'T','R','U','E','V','I','S','I','O','N','-','X','F','I','L','E','.','\0' };
         std::ofstream out;
-        out.open(filename, std::ios::binary);
+        out.open(file_name, std::ios::binary);
         if (!out.is_open())
         {
-            std::cerr << "can't open file " << filename << "\n";
+            std::cerr << "can't open file " << file_name << "\n";
             out.close();
             return false;
         }
@@ -188,7 +190,7 @@ namespace ax
         header.bitsperpixel = static_cast<char>(bytespp << 3);
         header.width = static_cast<short>(width);
         header.height = static_cast<short>(height);
-        header.datatypecode = bytespp == GRAYSCALE ? 3 : 2;
+        header.datatypecode = 2;
         header.imagedescriptor = 0x20; // top-left origin
         out.write((char*)&header, sizeof(header));
         if (!out.good())

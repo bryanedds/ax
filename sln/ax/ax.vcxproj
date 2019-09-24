@@ -33,6 +33,8 @@
     <ClInclude Include="..\..\src\hpp\ax\impl\field.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\hash.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\id.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\impl\basic_obj_model.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\impl\math.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\record4.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\record5.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\reflectable.hpp" />
@@ -80,6 +82,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\cpp\ax\address.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\field.cpp" />
+    <ClCompile Include="..\..\src\cpp\ax\basic_obj_model.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\reflectable.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\name.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\parser.cpp" />
@@ -151,12 +154,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -180,11 +185,17 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\deps\assimp-4.1.0\include;$(SolutionDir)..\deps\assimp-4.1.0\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>
+      </AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>$(SolutionDir)..\deps\assimp-4.1.0\build\code\MinSizeRel\assimp-vc141-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -214,6 +225,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\deps\assimp-4.1.0\include;$(SolutionDir)..\deps\assimp-4.1.0\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>
+      </AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -221,6 +235,9 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Lib>
+      <AdditionalDependencies>$(SolutionDir)..\deps\assimp-4.1.0\build\code\MinSizeRel\assimp-vc141-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

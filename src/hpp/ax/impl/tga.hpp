@@ -5,12 +5,12 @@
 
 #include <fstream>
 
+#include "math.hpp"
+
 namespace ax
 {
     enum tga_format
     {
-        GRAYSCALE = 1,
-        RGB = 3,
         RGBA = 4
     };
 
@@ -36,30 +36,26 @@ namespace ax
     {
         union
         {
-            struct { unsigned char b, g, r, a; };
-            unsigned char raw[4];
-            unsigned int val;
+            struct { uint8_t b, g, r, a; };
+            uint8_t raw[4];
+            uint32_t val;
         };
 
-        int bytespp;
+        tga_color() : tga_color(0) { }
+        tga_color(uint8_t R, uint8_t G, uint8_t B, uint8_t A) : b(B), g(G), r(R), a(A) { }
+        tga_color(int v) : val(v) { }
+        tga_color(const tga_color &color) : val(color.val) { }
 
-        tga_color() : val(0), bytespp(1) { }
-        tga_color(const tga_color &c) : val(c.val), bytespp(c.bytespp) { }
-        tga_color(unsigned char R, unsigned char G, unsigned char B, unsigned char A) : b(B), g(G), r(R), a(A), bytespp(4) { }
-        tga_color(int v, int bpp) : val(v), bytespp(bpp) { }
-
-        tga_color(const unsigned char *p, int bpp) : val(0), bytespp(bpp)
+        // NOTE: this looks particularly dangerous...
+        // TODO: get rid of this.
+        tga_color(const uint8_t *p) : val(0)
         {
-            for (int i = 0; i < bpp; ++i) raw[i] = p[i];
+            for (int i = 0; i < RGBA; ++i) raw[i] = p[i];
         }
 
-        tga_color& operator=(const tga_color &c)
+        tga_color& operator=(const tga_color &color)
         {
-            if (this != &c)
-            {
-                bytespp = c.bytespp;
-                val = c.val;
-            }
+            if (this != &color) val = color.val;
             return *this;
         }
     };
@@ -69,27 +65,28 @@ namespace ax
     public:
 
         tga_image();
-        tga_image(int w, int h, int bpp);
+        tga_image(int w, int h);
         tga_image(const tga_image& img);
         ~tga_image();
 
         tga_image& operator=(const tga_image& img);
 
-        inline int get_bytespp() { return bytespp; }
-        inline int get_width() { return width; }
-        inline int get_height() { return height; }
-        inline unsigned char* get_buffer() { return data; }
-        tga_color get_point(int x, int y);
-        bool set_point(int x, int y, const tga_color& c);
-        void draw_line(int x, int y, int x2, int y2, const tga_color& c);
+        inline int get_bytespp() const { return bytespp; }
+        inline int get_width() const { return width; }
+        inline int get_height() const { return height; }
+        inline const uint8_t* get_buffer() const { return data; }
+        inline uint8_t* get_buffer() { return data; }
+        ax::color get_point(int x, int y) const;
+        bool set_point(int x, int y, const ax::color& color);
+        void draw_line(int x, int y, int x2, int y2, const ax::color& color);
         void clear();
 
         bool read_tga_file(const char *filename);
-        bool write_tga_file(const char *filename);
+        bool write_tga_file(const char *filename) const;
 
     private:
 
-        unsigned char* data;
+        uint8_t* data;
         int width;
         int height;
         int bytespp;
