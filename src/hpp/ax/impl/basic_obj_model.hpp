@@ -13,9 +13,9 @@ namespace ax
 {
     struct basic_vert
     {
-        v3 vert;
-        v3 norm;
-        v2 uv;
+        ax::v3 vert;
+        ax::v3 norm;
+        ax::v2 uv;
     };
 
     struct basic_obj_model

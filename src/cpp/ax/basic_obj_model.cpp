@@ -62,7 +62,8 @@ namespace ax
                 }
             }
 
-            // TODO: use the map_XX parses instead of hard-coding like this
+            // TODO: use the map_XX parses instead of hard-coding like this.
+            // TODO: check results.
             // https://en.wikipedia.org/wiki/Wavefront_.obj_file#Texture_maps
             try_load_texture(file_name, "_diffuse.tga", diffuse_map);
             try_load_texture(file_name, "_nm_tangent.tga", normal_map);
