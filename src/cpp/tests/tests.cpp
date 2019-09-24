@@ -302,6 +302,7 @@ namespace ax
                 image.draw_line(x0, y0, x1, y1, ax::color(255, 255, 255, 255));
             }
         }
+        image.write_tga_file("../../../../data/image.tga");
     }
 }
 
