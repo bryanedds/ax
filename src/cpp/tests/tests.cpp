@@ -6,6 +6,8 @@
 
 #include "../../hpp/ax/impl/system.hpp"
 #include "../../hpp/ax/impl/basic_obj_model.hpp"
+#include "../../hpp/ax/impl/buffer.hpp"
+#include "../../hpp/ax/impl/buffer_ops.hpp"
 
 namespace ax
 {
@@ -296,20 +298,8 @@ namespace ax
         render_target.clear(ax::color(0, 0, 0, 255));
 
         // render wire mesh to target
-        for (VAR i = 0; i < model.nfaces(); i++)
-        {
-            VAL& face = model.face(i);
-            for (VAR j = 0; j < 3; j++)
-            {
-                ax::v3 v0 = model.vert(face[j]);
-                ax::v3 v1 = model.vert(face[(j + 1) % 3]);
-                VAL x0 = static_cast<int>((v0.x + 1.0f) * width / 2.0f);
-                VAL y0 = static_cast<int>((v0.y + 1.0f) * height / 2.0f);
-                VAL x1 = static_cast<int>((v1.x + 1.0f) * width / 2.0f);
-                VAL y1 = static_cast<int>((v1.y + 1.0f) * height / 2.0f);
-                render_target.draw_line(x0, y0, x1, y1, ax::color(255, 255, 255, 255));
-            }
-        }
+        VAL color = ax::color(255, 255, 255, 255);
+        ax::draw_basic_obj_model_wireframe(color, model, render_target);
 
         // write render target to file
         render_target.write_tga_file(image_file_path);

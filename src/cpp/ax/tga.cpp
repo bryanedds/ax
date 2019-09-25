@@ -53,7 +53,7 @@ namespace ax
     color tga_image::get_point(int x, int y) const
     {
         if (x < 0 || y < 0 || x >= width || y >= height) throw std::out_of_range("tga_image point index out of range.");
-        VAL tga_color = ax::tga_color(data + (x + y * width) * bytespp);
+        VAL tga_color = ax::tga_color(data + (x + (height - y) * width) * bytespp);
         return ax::color(tga_color.r, tga_color.g, tga_color.b, tga_color.a);
     }
 
@@ -61,52 +61,8 @@ namespace ax
     {
         if (x < 0 || y < 0 || x >= width || y >= height) return false;
         VAL tga_color = ax::tga_color(color.b, color.g, color.r, color.a);
-        memcpy(data + (x + y * width) * bytespp, tga_color.raw, bytespp);
+        memcpy(data + (x + (height - y) * width) * bytespp, tga_color.raw, bytespp);
         return true;
-    }
-
-    void tga_image::draw_line(int x, int y, int x2, int y2, const ax::color& color)
-    {
-        // local functions
-        struct local
-        {
-            static void set_point_normal(int x, int y, const ax::color& c, tga_image& image) { image.set_point(x, y, c); }
-            static void set_point_swapped(int x, int y, const ax::color& c, tga_image& image) { image.set_point(y, x, c); }
-        };
-
-        // determine steepness
-        VAL steep = std::abs(x - x2) < std::abs(y - y2);
-
-        // transpose
-        if (steep)
-        {
-            std::swap(x, y);
-            std::swap(x2, y2);
-        }
-
-        // invert
-        if (x > x2)
-        {
-            std::swap(x, x2);
-            std::swap(y, y2);
-        }
-
-        // draw loop
-        VAL x_delta = x2 - x;
-        VAL y_delta = y2 - y;
-        VAL error_delta = std::abs(y_delta) * 2;
-        VAL error_heading = y2 > y ? 1 : -1;
-        VAL set_point_local = steep ? &local::set_point_swapped : &local::set_point_normal;
-        for (VAR error = 0, i = x, j = y; i < x2; ++i)
-        {
-            set_point_local(i, j, color, *this);
-            error += error_delta;
-            if (error > x_delta)
-            {
-                j += error_heading;
-                error -= x_delta * 2;
-            }
-        }
     }
 
     void tga_image::clear(const ax::color& color)

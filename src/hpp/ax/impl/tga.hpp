@@ -6,6 +6,7 @@
 #include <fstream>
 
 #include "math.hpp"
+#include "buffer.hpp"
 
 namespace ax
 {
@@ -60,7 +61,7 @@ namespace ax
         }
     };
 
-    struct tga_image
+    class tga_image : public ax::buffer
     {
     public:
 
@@ -72,14 +73,13 @@ namespace ax
         tga_image& operator=(const tga_image& img);
 
         inline int get_bytespp() const { return bytespp; }
-        inline int get_width() const { return width; }
-        inline int get_height() const { return height; }
         inline const uint8_t* get_buffer() const { return data; }
         inline uint8_t* get_buffer() { return data; }
-        ax::color get_point(int x, int y) const;
-        bool set_point(int x, int y, const ax::color& color);
-        void draw_line(int x, int y, int x2, int y2, const ax::color& color);
-        void clear(const ax::color& color);
+        int get_width() const final { return width; };
+        int get_height() const final { return height; };
+        ax::color get_point(int x, int y) const final;
+        bool set_point(int x, int y, const ax::color& color) final;
+        void clear(const ax::color& color) final;
 
         bool read_tga_file(const char *filename);
         bool write_tga_file(const char *filename) const;
