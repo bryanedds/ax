@@ -111,12 +111,13 @@ namespace ax
 
     void tga_image::clear(const ax::color& color)
     {
-        VAL length = width * height;
-        VAL colori = (color.b << 24) + (color.g << 16) + (color.r << 8) + color.a;
-        VAL datai = reinterpret_cast<int*>(data);
-        for (VAR i = 0; i < length; ++i)
+        VAL length = width * height * bytespp;
+        for (VAR i = 0; i < length; i += bytespp)
         {
-            datai[i] = colori;
+            data[i] = color.b;
+            data[i+1] = color.g;
+            data[i+2] = color.r;
+            data[i+3] = color.a;
         }
     }
 
