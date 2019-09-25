@@ -11,7 +11,7 @@ namespace ax
 {
     enum tga_format
     {
-        RGBA = 4
+        BGRA = 4
     };
 
     #pragma pack(push,1)
@@ -42,7 +42,7 @@ namespace ax
         };
 
         tga_color() : tga_color(0) { }
-        tga_color(uint8_t R, uint8_t G, uint8_t B, uint8_t A) : b(B), g(G), r(R), a(A) { }
+        tga_color(uint8_t B, uint8_t G, uint8_t R, uint8_t A) : b(B), g(G), r(R), a(A) { }
         tga_color(int v) : val(v) { }
         tga_color(const tga_color &color) : val(color.val) { }
 
@@ -50,7 +50,7 @@ namespace ax
         // TODO: get rid of this.
         tga_color(const uint8_t *p) : val(0)
         {
-            for (int i = 0; i < RGBA; ++i) raw[i] = p[i];
+            for (int i = 0; i < BGRA; ++i) raw[i] = p[i];
         }
 
         tga_color& operator=(const tga_color &color)
@@ -79,7 +79,7 @@ namespace ax
         ax::color get_point(int x, int y) const;
         bool set_point(int x, int y, const ax::color& color);
         void draw_line(int x, int y, int x2, int y2, const ax::color& color);
-        void clear();
+        void clear(const ax::color& color);
 
         bool read_tga_file(const char *filename);
         bool write_tga_file(const char *filename) const;

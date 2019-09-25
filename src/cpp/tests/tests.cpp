@@ -284,10 +284,18 @@ namespace ax
 
     TEST("main")
     {
+        // open model
+        VAL model_file_path = "../../data/model.obj";
+        ax::basic_obj_model model(model_file_path);
+
+        // create render target
         VAL width = 800;
         VAL height = 800;
-        ax::tga_image image(width, height);
-        ax::basic_obj_model model("../../../../data/model.obj");
+        VAL image_file_path = "../../data/image.tga";
+        ax::tga_image render_target(width, height);
+        render_target.clear(ax::color(0, 0, 0, 255));
+
+        // render wire mesh to target
         for (VAR i = 0; i < model.nfaces(); i++)
         {
             VAL& face = model.face(i);
@@ -299,10 +307,12 @@ namespace ax
                 VAL y0 = static_cast<int>((v0.y + 1.0f) * height / 2.0f);
                 VAL x1 = static_cast<int>((v1.x + 1.0f) * width / 2.0f);
                 VAL y1 = static_cast<int>((v1.y + 1.0f) * height / 2.0f);
-                image.draw_line(x0, y0, x1, y1, ax::color(255, 255, 255, 255));
+                render_target.draw_line(x0, y0, x1, y1, ax::color(255, 255, 255, 255));
             }
         }
-        image.write_tga_file("../../../../data/image.tga");
+
+        // write render target to file
+        render_target.write_tga_file(image_file_path);
     }
 }
 

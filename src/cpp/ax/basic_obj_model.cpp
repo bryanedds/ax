@@ -51,12 +51,14 @@ namespace ax
                 else if (!line.compare(0, 2, "f "))
                 {
                     std::vector<ax::v3i> f;
-                    ax::v3i tmp;
+                    int a, b, c;
                     iss >> trash;
-                    while (iss >> tmp[0] >> trash >> tmp[1] >> trash >> tmp[2])
+                    while (iss >> a >> trash >> b >> trash >> c)
                     {
-                        for (int i = 0; i < 3; i++) tmp[i]--; // in wavefront obj all indices start at 1, not zero
-                        f.push_back(tmp);
+                        --a;
+                        --b;
+                        --c;
+                        f.push_back(ax::v3i(a, b, c));
                     }
                     faces.push_back(f);
                 }
@@ -70,7 +72,7 @@ namespace ax
             try_load_texture(file_name, "_spec.tga", specular_map);
             return;
         }
-        throw std::runtime_error("Invalid model file.");
+        throw std::runtime_error("Invalid model file '"_s + file_name + "'.");
     }
 
     basic_obj_model::~basic_obj_model() { }

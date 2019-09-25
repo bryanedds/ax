@@ -13,7 +13,7 @@ namespace ax
 {
     tga_image::tga_image() : tga_image(0, 0) { }
 
-    tga_image::tga_image(int w, int h) : data(), width(w), height(h), bytespp(RGBA)
+    tga_image::tga_image(int w, int h) : data(), width(w), height(h), bytespp(BGRA)
     {
         uint32_t nbytes = width * height * bytespp;
         data = new uint8_t[nbytes];
@@ -60,7 +60,7 @@ namespace ax
     bool tga_image::set_point(int x, int y, const ax::color& color)
     {
         if (x < 0 || y < 0 || x >= width || y >= height) return false;
-        VAL tga_color = ax::tga_color(color.r, color.g, color.b, color.a);
+        VAL tga_color = ax::tga_color(color.b, color.g, color.r, color.a);
         memcpy(data + (x + y * width) * bytespp, tga_color.raw, bytespp);
         return true;
     }
@@ -109,9 +109,15 @@ namespace ax
         }
     }
 
-    void tga_image::clear()
+    void tga_image::clear(const ax::color& color)
     {
-        std::memset(data, 0, width * height * bytespp);
+        VAL length = width * height;
+        VAL colori = (color.b << 24) + (color.g << 16) + (color.r << 8) + color.a;
+        VAL datai = reinterpret_cast<int*>(data);
+        for (VAR i = 0; i < length; ++i)
+        {
+            datai[i] = colori;
+        }
     }
 
     bool tga_image::read_tga_file(const char* file_name)
@@ -137,7 +143,7 @@ namespace ax
         width = header.width;
         height = header.height;
         bytespp = header.bitsperpixel >> 3;
-        if (width <= 0 || height <= 0 || bytespp != RGBA)
+        if (width <= 0 || height <= 0 || bytespp != BGRA)
         {
             in.close();
             std::cerr << "bad bpp (or width/height) value\n";
