@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\cpp\ax\address.cpp" />
+    <ClCompile Include="..\..\src\cpp\ax\basic_buffer_ops.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\field.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\basic_obj_model.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\reflectable.cpp" />
