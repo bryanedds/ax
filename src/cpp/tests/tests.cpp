@@ -5,9 +5,9 @@
 #include "../../hpp/ax/impl/ax.hpp"
 
 #include "../../hpp/ax/impl/system.hpp"
+#include "../../hpp/ax/impl/basic_buffer.hpp"
+#include "../../hpp/ax/impl/basic_buffer_ops.hpp"
 #include "../../hpp/ax/impl/basic_obj_model.hpp"
-#include "../../hpp/ax/impl/buffer.hpp"
-#include "../../hpp/ax/impl/buffer_ops.hpp"
 
 namespace ax
 {
@@ -294,15 +294,15 @@ namespace ax
         VAL width = 800;
         VAL height = 800;
         VAL image_file_path = "../../data/image.tga";
-        ax::tga_image render_target(width, height);
+        ax::basic_buffer render_target(width, height);
         render_target.clear(ax::color(0, 0, 0, 255));
 
         // render wire mesh to target
         VAL color = ax::color(255, 255, 255, 255);
-        ax::draw_basic_obj_model_wireframe(color, model, render_target);
+        ax::draw_wireframe_ortho(color, model, render_target);
 
         // write render target to file
-        render_target.write_tga_file(image_file_path);
+        render_target.write_to_tga_file(image_file_path);
     }
 }
 

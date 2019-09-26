@@ -8,7 +8,7 @@
 
 namespace ax
 {
-    basic_obj_model::basic_obj_model(const char *file_name) :
+    basic_obj_model::basic_obj_model(const char *file_path) :
         faces(),
         verts(),
         norms(),
@@ -18,7 +18,7 @@ namespace ax
         normal_map(),
         specular_map()
     {
-        std::ifstream in(file_name, std::ifstream::in);
+        std::ifstream in(file_path, std::ifstream::in);
         if (!in.fail())
         {
             std::string line;
@@ -67,12 +67,12 @@ namespace ax
             // TODO: use the map_XX parses instead of hard-coding like this.
             // TODO: check results.
             // https://en.wikipedia.org/wiki/Wavefront_.obj_file#Texture_maps
-            try_load_texture(file_name, "_diffuse.tga", diffuse_map);
-            try_load_texture(file_name, "_nm_tangent.tga", normal_map);
-            try_load_texture(file_name, "_spec.tga", specular_map);
+            try_load_texture(file_path, "_diffuse.tga", diffuse_map);
+            try_load_texture(file_path, "_nm_tangent.tga", normal_map);
+            try_load_texture(file_path, "_spec.tga", specular_map);
             return;
         }
-        throw std::runtime_error("Invalid model file '"_s + file_name + "'.");
+        throw std::runtime_error("Invalid model file '"_s + file_path + "'.");
     }
 
     basic_obj_model::~basic_obj_model() { }
@@ -104,14 +104,14 @@ namespace ax
         return verts[faces[iface][nthvert][0]];
     }
 
-    bool basic_obj_model::try_load_texture(std::string file_name, const char* suffix, tga_image& img)
+    bool basic_obj_model::try_load_texture(std::string file_path, const char* suffix, basic_buffer& img)
     {
-        std::string texfile(file_name);
+        std::string texfile(file_path);
         size_t dot = texfile.find_last_of(".");
         if (dot != std::string::npos)
         {
             texfile = texfile.substr(0, dot) + std::string(suffix);
-            return img.read_tga_file(texfile.c_str());
+            return img.read_from_tga_file(texfile.c_str());
         }
         return false;
     }

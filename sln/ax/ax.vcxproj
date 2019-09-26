@@ -23,7 +23,8 @@
     <ClInclude Include="..\..\src\hpp\ax\impl\address.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\addressable.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\ax.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\buffer.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\impl\basic_buffer.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\impl\basic_buffer_ops.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\castable.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\choice.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\choice4.hpp" />
@@ -62,7 +63,6 @@
     <ClInclude Include="..\..\src\hpp\ax\impl\vector.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\symbol.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\system.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\tga.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\vector.hpp" />
     <ClInclude Include="..\..\src\hpp\blah\blah.hpp" />
     <ClInclude Include="..\..\src\hpp\crossguid\Guid.hpp" />
@@ -90,7 +90,7 @@
     <ClCompile Include="..\..\src\cpp\ax\parser.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\string.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\system.cpp" />
-    <ClCompile Include="..\..\src\cpp\ax\tga.cpp" />
+    <ClCompile Include="..\..\src\cpp\ax\basic_buffer.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\type.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\type_descriptor.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\type_descriptors.cpp" />

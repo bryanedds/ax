@@ -5,6 +5,8 @@
 #include "assimp/vector2.inl"
 #include "assimp/vector3.inl"
 
+#include "prelude.hpp"
+
 namespace ax
 {
     using color = aiColor4t<uint8_t>;

@@ -208,9 +208,6 @@
     <ClInclude Include="..\..\src\hpp\ax\impl\tga.hpp">
       <Filter>Header Files\ax\impl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\hpp\ax\tga.hpp">
-      <Filter>Header Files\ax</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\impl\basic_obj_model.hpp">
       <Filter>Header Files\ax\impl</Filter>
     </ClInclude>
@@ -220,7 +217,10 @@
     <ClInclude Include="..\..\src\hpp\ax\impl\buffer_ops.hpp">
       <Filter>Header Files\ax\impl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\hpp\ax\impl\buffer.hpp">
+    <ClInclude Include="..\..\src\hpp\ax\impl\basic_buffer.hpp">
+      <Filter>Header Files\ax\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\hpp\ax\impl\basic_buffer_ops.hpp">
       <Filter>Header Files\ax\impl</Filter>
     </ClInclude>
   </ItemGroup>
@@ -267,10 +267,10 @@
     <ClCompile Include="..\..\src\cpp\crossguid\Guid.cpp">
       <Filter>Source Files\crossguid</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\cpp\ax\tga.cpp">
+    <ClCompile Include="..\..\src\cpp\ax\basic_obj_model.cpp">
       <Filter>Source Files\ax</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\cpp\ax\basic_obj_model.cpp">
+    <ClCompile Include="..\..\src\cpp\ax\basic_buffer.cpp">
       <Filter>Source Files\ax</Filter>
     </ClCompile>
   </ItemGroup>

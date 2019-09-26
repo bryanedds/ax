@@ -8,6 +8,7 @@
 // due to the small size of this library and its dependencies.
 
 #include <cstddef>
+#include <cinttypes>
 #include <type_traits>
 
 // Variable shadowing is a good thing when doing functional-style programming.

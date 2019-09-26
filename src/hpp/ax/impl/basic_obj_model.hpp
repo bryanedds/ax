@@ -7,7 +7,7 @@
 
 #include "math.hpp"
 #include "option.hpp"
-#include "tga.hpp"
+#include "basic_buffer.hpp"
 
 namespace ax
 {
@@ -22,7 +22,7 @@ namespace ax
     {
     public:
 
-        basic_obj_model(const char *file_name);
+        basic_obj_model(const char *file_path);
         ~basic_obj_model();
 
         int nverts() const;
@@ -38,16 +38,16 @@ namespace ax
 
     private:
 
-        bool try_load_texture(std::string file_name, const char *suffix, ax::tga_image &img);
+        bool try_load_texture(std::string file_path, const char *suffix, ax::basic_buffer &img);
 
         std::vector<std::vector<ax::v3i>> faces; // NOTE: this v3i means vertex/uv/normal. TODO: make it mean vertex/normal/uv instead.
         std::vector<ax::v3> verts;
         std::vector<ax::v3> norms;
         std::vector<ax::v2> uvs;
         ax::option<std::vector<ax::basic_vert>> stream_opt;
-        ax::tga_image diffuse_map;
-        ax::tga_image normal_map;
-        ax::tga_image specular_map;
+        ax::basic_buffer diffuse_map;
+        ax::basic_buffer normal_map;
+        ax::basic_buffer specular_map;
     };
 }
 
