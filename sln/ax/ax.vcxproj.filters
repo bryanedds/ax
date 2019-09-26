@@ -214,9 +214,6 @@
     <ClInclude Include="..\..\src\hpp\ax\impl\math.hpp">
       <Filter>Header Files\ax\impl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\hpp\ax\impl\buffer_ops.hpp">
-      <Filter>Header Files\ax\impl</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\impl\basic_buffer.hpp">
       <Filter>Header Files\ax\impl</Filter>
     </ClInclude>

@@ -47,7 +47,6 @@
     <ClInclude Include="..\..\src\hpp\ax\impl\prelude.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\propertied.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\property.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\buffer_ops.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\stream.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\string.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\impl\subscription.hpp" />
