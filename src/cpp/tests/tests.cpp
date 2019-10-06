@@ -299,7 +299,7 @@ namespace ax
 
         // render wire mesh to target
         VAL color = ax::color(255, 255, 255, 255);
-        ax::draw_wireframe_ortho(color, model, render_target);
+        ax::draw_wire_ortho(color, model, render_target);
 
         // write render target to file
         render_target.write_to_tga_file(image_file_path);

@@ -10,6 +10,7 @@
 #include <cstddef>
 #include <cinttypes>
 #include <type_traits>
+#include <tuple>
 
 // Variable shadowing is a good thing when doing functional-style programming.
 #if defined(_MSC_VER)

@@ -2,13 +2,64 @@
 
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 #include <functional>
 #include <string>
-#include <math.h>
+#include <cmath>
 
 namespace ax
 {
-    void draw_line(int x, int y, int x2, int y2, const ax::color& color, ax::basic_buffer& buffer)
+    ax::box2 get_bounds(const ax::triangle2& tri)
+    {
+        VAL left = std::min(
+            std::get<0>(tri).x,
+            std::min(std::get<1>(tri).x, std::get<2>(tri).x));
+        VAL right = std::max(
+            std::get<0>(tri).x,
+            std::max(std::get<1>(tri).x, std::get<2>(tri).x));
+        VAL bottom = std::min(
+            std::get<0>(tri).y,
+            std::min(std::get<1>(tri).y, std::get<2>(tri).y));
+        VAL top = std::max(
+            std::get<0>(tri).y,
+            std::max(std::get<1>(tri).y, std::get<2>(tri).y));
+        return
+            { {left, bottom},
+              {right, top} };
+    }
+
+    ax::box2 get_intersection(const ax::box2& box, const ax::box2& box2)
+    {
+        return
+            { {std::min(box.first.x, box2.first.x),
+               std::min(box.first.y, box2.first.y)},
+              {std::max(box.second.x, box2.second.x),
+               std::max(box.second.y, box2.second.y)} };
+    }
+
+    ax::v3 get_barycentric_coords(ax::v2 point, const ax::triangle2& tri)
+    {
+        VAL& a = ax::v3(std::get<2>(tri).x - std::get<0>(tri).x, std::get<1>(tri).x - std::get<0>(tri).x, std::get<0>(tri).x - point.x);
+        VAL& b = ax::v3(std::get<2>(tri).y - std::get<0>(tri).y, std::get<1>(tri).y - std::get<0>(tri).y, std::get<0>(tri).y - point.y);
+        VAL& u = a ^ b;
+        if (std::abs(u.z) < 1.0f)
+        {
+            // we have a degenerate triangle
+            return ax::v3(-1.0f, 1.0f, 1.0f);
+        }
+        return ax::v3(
+            1.0f - (u.x + u.y) / u.z,
+            u.y / u.z,
+            u.x / u.z);
+    }
+
+    bool get_in_bounds(const ax::v2& point, const ax::triangle2& tri)
+    {
+        VAL& coords = ax::get_barycentric_coords(point, tri);
+        return coords.x >= 0 && coords.y >= 0 && coords.z >= 0;
+    }
+
+    void draw_wire(const ax::color& color, int x, int y, int x2, int y2, ax::basic_buffer& buffer)
     {
         // local functions
         struct local
@@ -52,27 +103,69 @@ namespace ax
         }
     }
 
-    void draw_wireframe_ortho(const ax::color& color, const ax::basic_obj_model& model, ax::basic_buffer& buffer)
+    void draw_wire_ortho(const ax::color& color, const ax::line2& line, ax::basic_buffer& buffer)
     {
-        // draw faces
-        VAL center = ax::v2(
+        VAL& center = ax::v2(
             static_cast<float>(buffer.get_width()),
             static_cast<float>(buffer.get_height())) *
             0.5f;
+        VAL x = static_cast<int>((line.first.x + 1.0f) * center.x);
+        VAL y = static_cast<int>((line.first.y + 1.0f) * center.y);
+        VAL x2 = static_cast<int>((line.second.x + 1.0f) * center.x);
+        VAL y2 = static_cast<int>((line.second.y + 1.0f) * center.y);
+        ax::draw_wire(color, x, y, x2, y2, buffer);
+    }
+
+    void draw_wire_ortho(const ax::color& color, const ax::triangle2& tri, ax::basic_buffer& buffer)
+    {
+        ax::draw_wire_ortho(color, ax::line2(std::get<0>(tri), std::get<1>(tri)), buffer);
+        ax::draw_wire_ortho(color, ax::line2(std::get<1>(tri), std::get<2>(tri)), buffer);
+        ax::draw_wire_ortho(color, ax::line2(std::get<2>(tri), std::get<0>(tri)), buffer);
+    }
+
+    void draw_filled_ortho(const ax::color& color, const ax::line2& line, ax::basic_buffer& buffer)
+    {
+        ax::draw_wire_ortho(color, line, buffer);
+    }
+
+    void draw_filled_ortho(const ax::color& color, const ax::triangle2& tri, ax::basic_buffer& buffer)
+    {
+        VAL& bounds = ax::get_bounds(tri);
+        for (VAR i = bounds.first.x; i <= bounds.second.x; ++i)
+        {
+            for (VAR j = bounds.first.y; j <= bounds.second.y; ++j)
+            {
+                if (ax::get_in_bounds(ax::v2(i, j), tri))
+                {
+                    buffer.set_point(static_cast<int>(i), static_cast<int>(j), color);
+                }
+            }
+        }
+    }
+
+    void draw_wire_ortho(const ax::color& color, const ax::basic_obj_model& model, ax::basic_buffer& buffer)
+    {
         for (VAR i = 0; i < model.nfaces(); i++)
         {
-            // draw face edges
             VAL& face = model.face(i);
-            for (VAR j = 0; j < 3; j++)
-            {
-                ax::v3 v = model.vert(face[j]);
-                ax::v3 v2 = model.vert(face[(j + 1) % 3]);
-                VAL x = static_cast<int>((v.x + 1.0f) * center.x);
-                VAL y = static_cast<int>((v.y + 1.0f) * center.y);
-                VAL x2 = static_cast<int>((v2.x + 1.0f) * center.x);
-                VAL y2 = static_cast<int>((v2.y + 1.0f) * center.y);
-                draw_line(x, y, x2, y2, color, buffer);
-            }
+            VAL& a = model.vert(face[0]);
+            VAL& b = model.vert(face[1]);
+            VAL& c = model.vert(face[2]);
+            VAL& tri = ax::triangle2(ax::v2(a.x, a.y), ax::v2(b.x, b.y), ax::v2(c.x, c.y));
+            draw_wire_ortho(color, tri, buffer);
+        }
+    }
+
+    void draw_filled_ortho(const ax::color& color, const ax::basic_obj_model& model, ax::basic_buffer& buffer)
+    {
+        for (VAR i = 0; i < model.nfaces(); i++)
+        {
+            VAL& face = model.face(i);
+            VAL& a = model.vert(face[0]);
+            VAL& b = model.vert(face[1]);
+            VAL& c = model.vert(face[2]);
+            VAL& tri = ax::triangle2(ax::v2(a.x, a.y), ax::v2(b.x, b.y), ax::v2(c.x, c.y));
+            draw_filled_ortho(color, tri, buffer);
         }
     }
 }
