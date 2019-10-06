@@ -27,7 +27,7 @@
 #endif
 
 // Short-hand for immutable auto.
-#define VAL auto const
+#define VAL const auto
 
 // Short-hand for mutable auto.
 #define VAR auto

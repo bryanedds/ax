@@ -42,11 +42,13 @@ namespace ax
         VAL& a = ax::v3(std::get<2>(tri).x - std::get<0>(tri).x, std::get<1>(tri).x - std::get<0>(tri).x, std::get<0>(tri).x - point.x);
         VAL& b = ax::v3(std::get<2>(tri).y - std::get<0>(tri).y, std::get<1>(tri).y - std::get<0>(tri).y, std::get<0>(tri).y - point.y);
         VAL& u = a ^ b;
-        //if (std::abs(u.z) < 1.0f)
-        //{
-        //    // we have a degenerate triangle
-        //    return ax::v3(-1.0f, 1.0f, 1.0f);
-        //}
+        if (std::abs(u.z) < 1.0f)
+        {
+            // we have a degenerate triangle
+            // NOTE: I don't have high confidence in the math here being correct. It was converted from
+            // integer math and I suspect I thereby lost something.
+            return ax::v3(-1.0f, 1.0f, 1.0f);
+        }
         return ax::v3(
             1.0f - (u.x + u.y) / u.z,
             u.y / u.z,
@@ -157,13 +159,15 @@ namespace ax
             (std::get<1>(tri) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
             (std::get<2>(tri) + ax::v2(1.0f, 1.0f)).SymMul(center_screen));
         VAL& bounds_screen = ax::get_bounds(tri_screen);
-        for(VAR i = static_cast<int>(bounds_screen.first.x); i <= bounds_screen.second.x; ++i)
+        VAL width = static_cast<int>(bounds_screen.second.x);
+        VAL height = static_cast<int>(bounds_screen.second.y);
+        for (VAR i = static_cast<int>(bounds_screen.first.x); i <= width; ++i)
         {
-            for(VAR j = static_cast<int>(bounds_screen.first.y); j <= bounds_screen.second.y; ++j)
+            for(VAR j = static_cast<int>(bounds_screen.first.y); j <= height; ++j)
             {
                 if (ax::get_in_bounds(ax::v2(static_cast<float>(i), static_cast<float>(j)), tri_screen))
                 {
-                    buffer.set_point(static_cast<int>(i), static_cast<int>(j), color);
+                    buffer.set_point(i, j, color);
                 }
             }
         }
