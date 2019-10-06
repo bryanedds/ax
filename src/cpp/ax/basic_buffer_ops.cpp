@@ -42,11 +42,11 @@ namespace ax
         VAL& a = ax::v3(std::get<2>(tri).x - std::get<0>(tri).x, std::get<1>(tri).x - std::get<0>(tri).x, std::get<0>(tri).x - point.x);
         VAL& b = ax::v3(std::get<2>(tri).y - std::get<0>(tri).y, std::get<1>(tri).y - std::get<0>(tri).y, std::get<0>(tri).y - point.y);
         VAL& u = a ^ b;
-        if (std::abs(u.z) < 1.0f)
-        {
-            // we have a degenerate triangle
-            return ax::v3(-1.0f, 1.0f, 1.0f);
-        }
+        //if (std::abs(u.z) < 1.0f)
+        //{
+        //    // we have a degenerate triangle
+        //    return ax::v3(-1.0f, 1.0f, 1.0f);
+        //}
         return ax::v3(
             1.0f - (u.x + u.y) / u.z,
             u.y / u.z,
@@ -59,7 +59,12 @@ namespace ax
         return coords.x >= 0 && coords.y >= 0 && coords.z >= 0;
     }
 
-    void draw_wire(const ax::color& color, int x, int y, int x2, int y2, ax::basic_buffer& buffer)
+    void draw_dot(const ax::color& color, int x, int y, ax::basic_buffer& buffer)
+    {
+        buffer.set_point(x, y, color);
+    }
+
+    void draw_line(const ax::color& color, int x, int y, int x2, int y2, ax::basic_buffer& buffer)
     {
         // local functions
         struct local
@@ -113,7 +118,7 @@ namespace ax
         VAL y = static_cast<int>((line.first.y + 1.0f) * center.y);
         VAL x2 = static_cast<int>((line.second.x + 1.0f) * center.x);
         VAL y2 = static_cast<int>((line.second.y + 1.0f) * center.y);
-        ax::draw_wire(color, x, y, x2, y2, buffer);
+        ax::draw_line(color, x, y, x2, y2, buffer);
     }
 
     void draw_wire_ortho(const ax::color& color, const ax::triangle2& tri, ax::basic_buffer& buffer)
@@ -121,26 +126,6 @@ namespace ax
         ax::draw_wire_ortho(color, ax::line2(std::get<0>(tri), std::get<1>(tri)), buffer);
         ax::draw_wire_ortho(color, ax::line2(std::get<1>(tri), std::get<2>(tri)), buffer);
         ax::draw_wire_ortho(color, ax::line2(std::get<2>(tri), std::get<0>(tri)), buffer);
-    }
-
-    void draw_filled_ortho(const ax::color& color, const ax::line2& line, ax::basic_buffer& buffer)
-    {
-        ax::draw_wire_ortho(color, line, buffer);
-    }
-
-    void draw_filled_ortho(const ax::color& color, const ax::triangle2& tri, ax::basic_buffer& buffer)
-    {
-        VAL& bounds = ax::get_bounds(tri);
-        for (VAR i = bounds.first.x; i <= bounds.second.x; ++i)
-        {
-            for (VAR j = bounds.first.y; j <= bounds.second.y; ++j)
-            {
-                if (ax::get_in_bounds(ax::v2(i, j), tri))
-                {
-                    buffer.set_point(static_cast<int>(i), static_cast<int>(j), color);
-                }
-            }
-        }
     }
 
     void draw_wire_ortho(const ax::color& color, const ax::basic_obj_model& model, ax::basic_buffer& buffer)
@@ -156,6 +141,34 @@ namespace ax
         }
     }
 
+    void draw_filled_ortho(const ax::color& color, const ax::line2& line, ax::basic_buffer& buffer)
+    {
+        ax::draw_wire_ortho(color, line, buffer);
+    }
+
+    void draw_filled_ortho(const ax::color& color, const ax::triangle2& tri, ax::basic_buffer& buffer)
+    {
+        VAL& center_screen = ax::v2(
+            static_cast<float>(buffer.get_width()),
+            static_cast<float>(buffer.get_height())) *
+            0.5f;
+        VAL& tri_screen = ax::triangle2(
+            (std::get<0>(tri) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
+            (std::get<1>(tri) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
+            (std::get<2>(tri) + ax::v2(1.0f, 1.0f)).SymMul(center_screen));
+        VAL& bounds_screen = ax::get_bounds(tri_screen);
+        for(VAR i = static_cast<int>(bounds_screen.first.x); i <= bounds_screen.second.x; ++i)
+        {
+            for(VAR j = static_cast<int>(bounds_screen.first.y); j <= bounds_screen.second.y; ++j)
+            {
+                if (ax::get_in_bounds(ax::v2(static_cast<float>(i), static_cast<float>(j)), tri_screen))
+                {
+                    buffer.set_point(static_cast<int>(i), static_cast<int>(j), color);
+                }
+            }
+        }
+    }
+
     void draw_filled_ortho(const ax::color& color, const ax::basic_obj_model& model, ax::basic_buffer& buffer)
     {
         for (VAR i = 0; i < model.nfaces(); i++)
@@ -165,7 +178,20 @@ namespace ax
             VAL& b = model.vert(face[1]);
             VAL& c = model.vert(face[2]);
             VAL& tri = ax::triangle2(ax::v2(a.x, a.y), ax::v2(b.x, b.y), ax::v2(c.x, c.y));
-            draw_filled_ortho(color, tri, buffer);
+            VAL& normal = ((b - a) ^ (c - a)).NormalizeSafe();
+            VAL& forward = ax::v3(0.0f, 0.0f, 1.0f);
+            VAL backface = normal * forward <= 0;
+            if (!backface)
+            {
+                VAL& light = ax::v3(0.0f, 0.0f, -1.0f);
+                VAL intensity = normal * light;
+                VAL& color2 = ax::color(
+                    static_cast<uint8_t>(color.r * intensity),
+                    static_cast<uint8_t>(color.g * intensity),
+                    static_cast<uint8_t>(color.b * intensity),
+                    color.a);
+                draw_filled_ortho(color2, tri, buffer);
+            }
         }
     }
 }
