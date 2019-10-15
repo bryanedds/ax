@@ -295,7 +295,7 @@ namespace ax
         VAL height = 800;
         VAL image_file_path = "../../data/image.tga";
         ax::basic_buffer render_target(width, height);
-        render_target.clear(ax::color(0, 0, 0, 255));
+        render_target.flood(ax::basic_cell(std::numeric_limits<float>::lowest(), { 0, 0, 0, 255 }));
 
         // render wire mesh to target
         VAL color = ax::color(255, 255, 255, 255);

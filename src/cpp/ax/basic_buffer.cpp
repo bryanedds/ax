@@ -13,7 +13,7 @@ namespace ax
 {
     basic_buffer::basic_buffer() : basic_buffer(0, 0) { }
 
-    basic_buffer::basic_buffer(int w, int h) : data(), width(w), height(h), bytespp(BUFFER_RGBA)
+    basic_buffer::basic_buffer(int w, int h) : data(), width(w), height(h), bytespp(BUFFER_DRGBA)
     {
         uint32_t nbytes = width * height * bytespp;
         data = new uint8_t[nbytes];
@@ -50,29 +50,29 @@ namespace ax
         return *this;
     }
 
-    ax::color basic_buffer::get_point(int x, int y) const
+    ax::basic_cell basic_buffer::get_cell(int x, int y) const
     {
         if (x < 0 || y < 0 || x >= width || y >= height) throw std::out_of_range("basic_buffer point index out of range.");
-        VAL* color = reinterpret_cast<ax::color*>(data + ((x + (height - y) * width) * bytespp));
-        return *color;
+        VAL* cell = reinterpret_cast<ax::basic_cell*>(data + ((x + (height - y) * width) * bytespp));
+        return *cell;
     }
 
-    bool basic_buffer::set_point(int x, int y, const ax::color& color)
+    bool basic_buffer::set_point(int x, int y, const ax::basic_cell& cell)
     {
         if (x < 0 || y < 0 || x >= width || y >= height) return false;
-        memcpy(data + (x + (height - y) * width) * bytespp, &color, bytespp);
+        VAL& cell_current = get_cell(x, y);
+        if (cell_current.depth > cell.depth) return false;
+        memcpy(data + (x + (height - y) * width) * bytespp, &cell, bytespp);
         return true;
     }
 
-    void basic_buffer::clear(const ax::color& color)
+    void basic_buffer::flood(const ax::basic_cell& cell)
     {
         VAL length = width * height * bytespp;
         for (VAR i = 0; i < length; i += bytespp)
         {
-            data[i] = color.b;
-            data[i+1] = color.g;
-            data[i+2] = color.r;
-            data[i+3] = color.a;
+            VAR* cell_in_place = reinterpret_cast<ax::basic_cell*>(data[i]);
+            *cell_in_place = cell;
         }
     }
 
@@ -110,6 +110,13 @@ namespace ax
         data = new uint8_t[nbytes]; // TODO: make this a local var then swap contents with field on success
         if (3 == header.datatypecode || 2 == header.datatypecode)
         {
+            VAL length = width * height * bytespp;
+            for (VAR i = 0; i < length; i += bytespp)
+            {
+                VAR* cell_in_place = reinterpret_cast<ax::basic_cell*>(data[i]);
+                cell_in_place->depth = std::numeric_limits<float>::lowest();
+                in.read((char*)&cell_in_place->color, sizeof(ax::color));
+            }
             in.read((char*)data, nbytes);
             if (!in.good())
             {
@@ -172,10 +179,10 @@ namespace ax
         VAL nbytes = width * height * bytespp;
         for (VAR i = 0; i < nbytes; i += bytespp)
         {
-            VAR* r = data + i;
-            VAR* g = data + i + 1;
-            VAR* b = data + i + 2;
-            VAR* a = data + i + 3;
+            VAR* r = data + i + 1;
+            VAR* g = data + i + 2;
+            VAR* b = data + i + 3;
+            VAR* a = data + i + 4;
             out.write((char*)b, 1);
             out.write((char*)g, 1);
             out.write((char*)r, 1);

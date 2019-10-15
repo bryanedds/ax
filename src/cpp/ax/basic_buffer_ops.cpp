@@ -63,7 +63,7 @@ namespace ax
 
     void draw_dot(const ax::color& color, int x, int y, ax::basic_buffer& buffer)
     {
-        buffer.set_point(x, y, color);
+        buffer.set_point(x, y, { 0.0f, color });
     }
 
     void draw_line(const ax::color& color, int x, int y, int x2, int y2, ax::basic_buffer& buffer)
@@ -71,8 +71,8 @@ namespace ax
         // local functions
         struct local
         {
-            static void set_point_normal(int x, int y, const ax::color& c, ax::basic_buffer& buffer) { buffer.set_point(x, y, c); }
-            static void set_point_swapped(int x, int y, const ax::color& c, ax::basic_buffer& buffer) { buffer.set_point(y, x, c); }
+            static void set_point_normal(int x, int y, float z, const ax::color& c, ax::basic_buffer& buffer) { buffer.set_point(x, y, { z, c }); }
+            static void set_point_swapped(int x, int y, float z, const ax::color& c, ax::basic_buffer& buffer) { buffer.set_point(y, x, { z, c }); }
         };
 
         // determine steepness
@@ -100,7 +100,7 @@ namespace ax
         VAL set_point_local = steep ? &local::set_point_swapped : &local::set_point_normal;
         for (VAR error = 0, i = x, j = y; i < x2; ++i)
         {
-            set_point_local(i, j, color, buffer);
+            set_point_local(i, j, 0.0f, color, buffer);
             error += error_delta;
             if (error > x_delta)
             {
@@ -167,7 +167,7 @@ namespace ax
             {
                 if (ax::get_in_bounds(ax::v2(static_cast<float>(i), static_cast<float>(j)), tri_screen))
                 {
-                    buffer.set_point(i, j, color);
+                    buffer.set_point(i, j, { 0.0f, color });
                 }
             }
         }

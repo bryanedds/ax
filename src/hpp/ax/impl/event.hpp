@@ -10,6 +10,7 @@
 namespace ax
 {
     // The event type.
+    // TODO: consider if this should contain the addresses rather than the addressables...
     template<typename T>
     struct event final
     {

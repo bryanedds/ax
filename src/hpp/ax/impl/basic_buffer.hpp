@@ -9,7 +9,18 @@ namespace ax
 {
     enum buffer_format
     {
-        BUFFER_RGBA = 4
+        BUFFER_DRGBA = 5
+    };
+
+    struct basic_cell
+    {
+    public:
+        basic_cell(float depth, const ax::color& color) : depth(depth), color(color) { }
+        basic_cell() = default;
+        ~basic_cell() = default;
+        basic_cell& operator=(const basic_cell&) = default;
+        float depth;
+        ax::color color;
     };
 
     struct basic_buffer
@@ -26,9 +37,9 @@ namespace ax
         inline int get_bytespp() const { return bytespp; }
         int get_width() const { return width; };
         int get_height() const { return height; };
-        ax::color get_point(int x, int y) const;
-        bool set_point(int x, int y, const ax::color& color);
-        void clear(const ax::color& color);
+        ax::basic_cell get_cell(int x, int y) const;
+        bool set_point(int x, int y, const ax::basic_cell& cell);
+        void flood(const ax::basic_cell& cell);
 
         bool read_from_tga_file(const char *filename);
         bool write_to_tga_file(const char *filename) const;
