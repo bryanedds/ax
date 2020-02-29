@@ -194,6 +194,9 @@ FakesAssemblies/
 # Visual Studio 6 workspace options file
 *.opt
 
+# Clang build files
+*.o
+
 # ionide
 .ionide/symbolCache.db
 
