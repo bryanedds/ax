@@ -194,5 +194,8 @@ FakesAssemblies/
 # Visual Studio 6 workspace options file
 *.opt
 
+# ionide
+.ionide/symbolCache.db
+
 # Assimp Source
 assimp-4.1.0
