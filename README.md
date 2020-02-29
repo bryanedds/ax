@@ -1,4 +1,4 @@
-# Ax - The Axiomatic Core C++ Library. [![Build Status](https://travis-ci.org/bryanedds/ax.svg?branch=master)](https://travis-ci.org/bryanedds/ax) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bryanedds/ax/blob/master/LICENSE.md) 
+# Ax - The Axiomatic Core C++ Library. [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bryanedds/ax/blob/master/LICENSE.md) 
 
 ## Features
 
