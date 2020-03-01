@@ -44,7 +44,7 @@ namespace ax
         CONSTRAIN(W, ax::eventable<W>);
         VAL& subscribe = [event_address](W& w)
         {
-            VAL& global_participant = w.get_global_participant();
+            VAL& global_addressable = w.get_global_addressable();
             VAL& subscription_key = xg::newGuid();
             VAL& subscription_address = ax::address(ax::name(std::to_string(subscription_key)));
             VAL& unsubscribe = [](W& w) { return w.unsubscribe<W>(subscription_key); };
@@ -54,9 +54,9 @@ namespace ax
                 // TODO: subscription sorting
                 // TODO: allow wildcard flag (default false)
                 // TODO: event cascading (default cascade)
-                w.publish_event<T>(evt.data, subscription_address, global_participant);
+                w.publish_event<T>(evt.data, subscription_address, global_addressable);
             };
-            w.subscribe_event<T>(subscription_key, event_address, global_participant, subscription);
+            w.subscribe_event<T>(subscription_key, event_address, global_addressable, subscription);
             return ax::subscribe<W>{ subscription_address, unsubscribe };
         };
         return ax::stream<T, W>{ subscribe };

@@ -15,7 +15,7 @@ namespace ax
 {
     using names = std::vector<ax::name>;
 
-    // The address of an event or a participant.
+    // The address of an event or an addressable reference.
     struct address
     {
     public:
