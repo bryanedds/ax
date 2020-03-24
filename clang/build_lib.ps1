@@ -1,5 +1,7 @@
+Import-Module "Microsoft.PowerShell.Archive"
 cd $PSScriptRoot
-$CPP_FILES =
+if (!(Test-Path "../include/assimp-4.1.0")) { Expand-Archive -Path "../include/assimp-4.1.0.zip" -DestinationPath "../include" }
+$CppFiles =
    ("../src/cpp/blah/blah.cpp",
     "../src/cpp/tom/tom.cpp",
     "../src/cpp/ax/reflectable.cpp",
@@ -17,8 +19,8 @@ if (!(Test-Path "bin")) { mkdir -p bin }
 clang++ `
     -std=c++17 -Wall -Wextra -pedantic -g -O2 -pthread -march=native `
     -D BLAH_NO_THREAD_SUPPORT `
-    -I ../include ../source/hpp `
-    -c $CPP_FILES
+    -I ../include -I ../src/hpp `
+    -c $CppFiles
 mv *.o bin
 llvm-ar rcs bin/libax.a bin/*.o
 rm bin/*.o

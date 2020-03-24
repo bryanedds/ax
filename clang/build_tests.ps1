@@ -1,10 +1,9 @@
 cd $PSScriptRoot
-$CPP_FILES = ("../src/cpp/tests/tests.cpp")
-if (!(Test-Path "./bin")) { mkdir -p ./bin }
+$CppFiles = ("../src/cpp/tests/tests.cpp")
 clang++ `
     -std=c++17 -Wall -Wextra -pedantic -g -O2 -pthread -march=native `
     -D BLAH_NO_THREAD_SUPPORT `
-    -I ../include ../source/hpp `
+    -I ../include -I ../src/hpp `
     -o bin/ax_tests.exe `
-    $CPP_FILES `
+    $CppFiles `
     bin/libax.a
