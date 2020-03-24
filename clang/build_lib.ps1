@@ -4,16 +4,19 @@ if (!(Test-Path "../include/assimp-4.1.0")) { Expand-Archive -Path "../include/a
 $CppFiles =
    ("../src/cpp/blah/blah.cpp",
     "../src/cpp/tom/tom.cpp",
-    "../src/cpp/ax/reflectable.cpp",
-    "../src/cpp/ax/field.cpp",
-    "../src/cpp/ax/type_descriptor.cpp",
-    "../src/cpp/ax/parser.cpp",
     "../src/cpp/ax/address.cpp",
-    "../src/cpp/ax/type.cpp",
+    "../src/cpp/ax/basic_buffer_ops.cpp",
+    "../src/cpp/ax/basic_buffer.cpp",
+    "../src/cpp/ax/basic_obj_model.cpp",
+    "../src/cpp/ax/field.cpp",
     "../src/cpp/ax/name.cpp",
+    "../src/cpp/ax/parser.cpp",
+    "../src/cpp/ax/reflectable.cpp",
     "../src/cpp/ax/string.cpp",
     "../src/cpp/ax/system.cpp",
+    "../src/cpp/ax/type_descriptor.cpp",
     "../src/cpp/ax/type_descriptors.cpp",
+    "../src/cpp/ax/type.cpp",
     "../src/cpp/ax/unparser.cpp")
 if (!(Test-Path "bin")) { mkdir -p bin }
 clang++ `
