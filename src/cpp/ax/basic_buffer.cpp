@@ -13,9 +13,9 @@ namespace ax
 {
     basic_buffer::basic_buffer() : basic_buffer(0, 0) { }
 
-    basic_buffer::basic_buffer(int w, int h) : data(), width(w), height(h), bytespp(BUFFER_DRGBA)
+    basic_buffer::basic_buffer(int w, int h) : data(), width(w), height(h)
     {
-        uint32_t nbytes = width * height * bytespp;
+        uint32_t nbytes = width * height * get_bytespp();
         data = new uint8_t[nbytes];
         std::memset(data, 0, nbytes);
     }
@@ -24,8 +24,7 @@ namespace ax
     {
         width = img.width;
         height = img.height;
-        bytespp = img.bytespp;
-        uint32_t nbytes = width * height * bytespp;
+        uint32_t nbytes = width * height * get_bytespp();
         data = new uint8_t[nbytes];
         memcpy(data, img.data, nbytes);
     }
@@ -42,8 +41,7 @@ namespace ax
             if (data) delete[] data;
             width = img.width;
             height = img.height;
-            bytespp = img.bytespp;
-            uint32_t nbytes = width * height * bytespp;
+            uint32_t nbytes = width * height * get_bytespp();
             data = new uint8_t[nbytes];
             memcpy(data, img.data, nbytes);
         }
@@ -53,7 +51,7 @@ namespace ax
     ax::basic_cell basic_buffer::get_cell(int x, int y) const
     {
         if (x < 0 || y < 0 || x >= width || y >= height) throw std::out_of_range("basic_buffer point index out of range.");
-        VAL* cell = reinterpret_cast<ax::basic_cell*>(data + ((x + (height - y) * width) * bytespp));
+        VAL* cell = reinterpret_cast<ax::basic_cell*>(data + ((x + (height - y) * width) * get_bytespp()));
         return *cell;
     }
 
@@ -62,17 +60,18 @@ namespace ax
         if (x < 0 || y < 0 || x >= width || y >= height) return false;
         VAL& cell_current = get_cell(x, y);
         if (cell_current.depth > cell.depth) return false;
-        memcpy(data + (x + (height - y) * width) * bytespp, &cell, bytespp);
+        memcpy(data + (x + (height - y) * width) * get_bytespp(), &cell, get_bytespp());
         return true;
     }
 
     void basic_buffer::flood(const ax::basic_cell& cell)
     {
+		VAL bytespp = get_bytespp();
         VAL length = width * height * bytespp;
         for (VAR i = 0; i < length; i += bytespp)
         {
-            VAR* cell_in_place = reinterpret_cast<ax::basic_cell*>(data[i]);
-            *cell_in_place = cell;
+            VAR& cell_in_place = reinterpret_cast<ax::basic_cell&>(data[i]);
+            cell_in_place = cell;
         }
     }
 
@@ -99,7 +98,7 @@ namespace ax
         }
         width = header.width;
         height = header.height;
-        bytespp = header.bitsperpixel >> 3;
+        VAL bytespp = header.bitsperpixel >> 3;
         if (width <= 0 || height <= 0 || bytespp != TGA_BGRA)
         {
             in.close();
@@ -113,9 +112,10 @@ namespace ax
             VAL length = width * height * bytespp;
             for (VAR i = 0; i < length; i += bytespp)
             {
-                VAR* cell_in_place = reinterpret_cast<ax::basic_cell*>(data[i]);
-                cell_in_place->depth = std::numeric_limits<float>::lowest();
-                in.read((char*)&cell_in_place->color, sizeof(ax::color));
+                VAR& cell_in_place = reinterpret_cast<ax::basic_cell&>(data[i]);
+                cell_in_place.depth = std::numeric_limits<float>::lowest();
+				cell_in_place.normal = ax::zero<ax::v3>();
+                in.read((char*)&cell_in_place.color, sizeof(ax::color));
             }
             in.read((char*)data, nbytes);
             if (!in.good())
@@ -164,7 +164,7 @@ namespace ax
         }
         tga_header header;
         std::memset((void*)&header, 0, sizeof(header));
-        header.bitsperpixel = static_cast<char>(bytespp << 3);
+        header.bitsperpixel = static_cast<char>(32);
         header.width = static_cast<short>(width);
         header.height = static_cast<short>(height);
         header.datatypecode = 2;
@@ -176,13 +176,14 @@ namespace ax
             std::cerr << "can't dump the tga file\n";
             return false;
         }
+		VAL bytespp = get_bytespp();
         VAL nbytes = width * height * bytespp;
         for (VAR i = 0; i < nbytes; i += bytespp)
         {
-            VAR* r = data + i + 1;
-            VAR* g = data + i + 2;
-            VAR* b = data + i + 3;
-            VAR* a = data + i + 4;
+            VAR* r = data + i + 16;
+            VAR* g = data + i + 17;
+            VAR* b = data + i + 18;
+            VAR* a = data + i + 19;
             out.write((char*)b, 1);
             out.write((char*)g, 1);
             out.write((char*)r, 1);

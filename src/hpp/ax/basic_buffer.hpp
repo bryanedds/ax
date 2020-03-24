@@ -7,20 +7,16 @@
 
 namespace ax
 {
-    enum buffer_format
-    {
-        BUFFER_DRGBA = 5
-    };
-
     struct basic_cell
     {
     public:
-        basic_cell(float depth, const ax::color& color) : depth(depth), color(color) { }
+        basic_cell(float depth, const ax::v3& normal, const ax::color& color) : depth(depth), normal(normal), color(color) { }
         basic_cell() = default;
         ~basic_cell() = default;
         basic_cell& operator=(const basic_cell&) = default;
-        float depth;
-        ax::color color;
+		float depth;
+		ax::v3 normal;
+        ax::color color; // RGBA
     };
 
     struct basic_buffer
@@ -34,7 +30,7 @@ namespace ax
 
         basic_buffer& operator=(const basic_buffer& img);
 
-        inline int get_bytespp() const { return bytespp; }
+        constexpr int get_bytespp() const { return sizeof(ax::basic_cell); }
         int get_width() const { return width; };
         int get_height() const { return height; };
         ax::basic_cell get_cell(int x, int y) const;
@@ -49,7 +45,6 @@ namespace ax
         uint8_t* data;
         int width;
         int height;
-        int bytespp;
     };
 }
 

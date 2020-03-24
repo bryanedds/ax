@@ -63,7 +63,7 @@ namespace ax
 
     void draw_dot(const ax::color& color, int x, int y, ax::basic_buffer& buffer)
     {
-        buffer.set_point(x, y, { 0.0f, color });
+        buffer.set_point(x, y, { 0.0f, ax::zero<ax::v3>(), color });
     }
 
     void draw_line(const ax::color& color, int x, int y, int x2, int y2, ax::basic_buffer& buffer)
@@ -71,8 +71,8 @@ namespace ax
         // local functions
         struct local
         {
-            static void set_point_normal(int x, int y, float z, const ax::color& c, ax::basic_buffer& buffer) { buffer.set_point(x, y, { z, c }); }
-            static void set_point_swapped(int x, int y, float z, const ax::color& c, ax::basic_buffer& buffer) { buffer.set_point(y, x, { z, c }); }
+            static void set_point_normal(int x, int y, float z, const ax::color& c, ax::basic_buffer& buffer) { buffer.set_point(x, y, { z, ax::zero<ax::v3>(), c }); }
+            static void set_point_swapped(int x, int y, float z, const ax::color& c, ax::basic_buffer& buffer) { buffer.set_point(y, x, { z, ax::zero<ax::v3>(), c }); }
         };
 
         // determine steepness
@@ -167,7 +167,7 @@ namespace ax
             {
                 if (ax::get_in_bounds(ax::v2(static_cast<float>(i), static_cast<float>(j)), tri_screen))
                 {
-                    buffer.set_point(i, j, { 0.0f, color });
+                    buffer.set_point(i, j, { 0.0f, ax::zero<ax::v3>(), color });
                 }
             }
         }
