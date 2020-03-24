@@ -3,7 +3,7 @@ $CppFiles = ("../src/cpp/tests/tests.cpp")
 clang++ `
     -std=c++17 -Wall -Wextra -pedantic -g -O2 -pthread -march=native `
     -D BLAH_NO_THREAD_SUPPORT `
-    -I ../include -I ../src/hpp `
+    -I ../include -I ../include/assimp-4.1.0/include -I ../src/hpp `
     -o bin/ax_tests.exe `
     $CppFiles `
     bin/libax.a
