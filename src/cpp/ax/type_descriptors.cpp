@@ -2,18 +2,18 @@
 #include <string>
 #include <vector>
 
-#include "../../hpp/ax/impl/type_descriptors.hpp"
+#include "ax/type_descriptors.hpp"
 
-#include "../../hpp/ax/impl/string.hpp"
-#include "../../hpp/ax/impl/record.hpp"
-#include "../../hpp/ax/impl/record4.hpp"
-#include "../../hpp/ax/impl/record5.hpp"
-#include "../../hpp/ax/impl/choice.hpp"
-#include "../../hpp/ax/impl/choice4.hpp"
-#include "../../hpp/ax/impl/choice5.hpp"
-#include "../../hpp/ax/impl/functional.hpp"
-#include "../../hpp/ax/impl/name.hpp"
-#include "../../hpp/ax/impl/address.hpp"
+#include "ax/string.hpp"
+#include "ax/record.hpp"
+#include "ax/record4.hpp"
+#include "ax/record5.hpp"
+#include "ax/choice.hpp"
+#include "ax/choice4.hpp"
+#include "ax/choice5.hpp"
+#include "ax/functional.hpp"
+#include "ax/name.hpp"
+#include "ax/address.hpp"
 
 namespace ax
 {

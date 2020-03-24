@@ -1,13 +1,13 @@
-#include "../../hpp/ax/impl/basic_buffer.hpp"
-
 #include <iostream>
 #include <fstream>
 #include <functional>
 #include <string>
 #include <math.h>
 
-#include "../../hpp/ax/impl/prelude.hpp"
-#include "../../hpp/ax/impl/basic_obj_model.hpp"
+#include "ax/basic_buffer.hpp"
+
+#include "ax/prelude.hpp"
+#include "ax/basic_obj_model.hpp"
 
 namespace ax
 {

@@ -1,4 +1,4 @@
-#include "../../hpp/ax/impl/reflectable.hpp"
+#include "ax/reflectable.hpp"
 
 namespace ax
 {

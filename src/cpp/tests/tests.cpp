@@ -1,13 +1,17 @@
 #include <iostream>
 
-#include "../../hpp/tom/tom.hpp"
+#include "tom/tom.hpp"
 
-#include "../../hpp/ax/impl/ax.hpp"
-
-#include "../../hpp/ax/impl/system.hpp"
-#include "../../hpp/ax/impl/basic_buffer.hpp"
-#include "../../hpp/ax/impl/basic_buffer_ops.hpp"
-#include "../../hpp/ax/impl/basic_obj_model.hpp"
+#include "ax/utility.hpp"
+#include "ax/algebraic.hpp"
+#include "ax/casting.hpp"
+#include "ax/properties.hpp"
+#include "ax/reflection.hpp"
+#include "ax/serialization.hpp"
+#include "ax/system.hpp"
+#include "ax/basic_buffer.hpp"
+#include "ax/basic_buffer_ops.hpp"
+#include "ax/basic_obj_model.hpp"
 
 namespace ax
 {

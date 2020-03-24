@@ -1,11 +1,11 @@
 #ifndef AX_UTILITY_HPP
 #define AX_UTILITY_HPP
 
-#include "../../hpp/ax/impl/prelude.hpp"
-#include "../../hpp/ax/impl/hash.hpp"
-#include "../../hpp/ax/impl/string.hpp"
-#include "../../hpp/ax/impl/id.hpp"
-#include "../../hpp/ax/impl/option.hpp"
-#include "../../hpp/ax/impl/name.hpp"
+#include "prelude.hpp"
+#include "hash.hpp"
+#include "string.hpp"
+#include "id.hpp"
+#include "option.hpp"
+#include "name.hpp"
 
 #endif

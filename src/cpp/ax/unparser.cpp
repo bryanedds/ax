@@ -1,8 +1,8 @@
 #include <istream>
 
-#include "../../hpp/ax/impl/unparser.hpp"
+#include "ax/unparser.hpp"
 
-#include "../../hpp/ax/impl/functional.hpp"
+#include "ax/functional.hpp"
 
 namespace ax
 {

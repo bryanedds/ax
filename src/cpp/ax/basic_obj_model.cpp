@@ -1,10 +1,10 @@
-#include "../../hpp/ax/impl/basic_obj_model.hpp"
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
-#include "../../hpp/ax/impl/string.hpp"
+#include "ax/basic_obj_model.hpp"
+
+#include "ax/string.hpp"
 
 namespace ax
 {

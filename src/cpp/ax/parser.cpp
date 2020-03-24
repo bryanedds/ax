@@ -3,7 +3,7 @@
 
 #include "../../hpp/rxml/rapidxml.hpp"
 
-#include "../../hpp/ax/impl/parser.hpp"
+#include "ax/parser.hpp"
 
 namespace ax
 {

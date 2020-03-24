@@ -1,9 +1,9 @@
 #include <exception>
 #include <stdexcept>
 
-#include "../../hpp/ax/impl/type.hpp"
+#include "ax/type.hpp"
 
-#include "../../hpp/ax/impl/string.hpp"
+#include "ax/string.hpp"
 
 namespace ax
 {

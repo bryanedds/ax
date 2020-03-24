@@ -20,48 +20,50 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\hpp\ax\address.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\address.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\addressable.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\ax.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\basic_buffer.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\basic_buffer_ops.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\castable.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\choice.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\choice4.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\choice5.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\either.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\event.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\eventable.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\field.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\hash.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\id.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\basic_obj_model.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\math.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\record4.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\record5.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\reflectable.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\name.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\option.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\pair.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\parser.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\prelude.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\propertied.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\property.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\stream.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\string.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\subscription.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\symbol.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\record.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\system.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\tga.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\type.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\type_descriptor.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\type_descriptors.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\unparser.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\functional.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\impl\vector.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\addressable.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\algebraic.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\basic_buffer.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\basic_buffer_ops.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\basic_obj_model.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\castable.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\casting.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\choice.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\choice4.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\choice5.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\either.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\event.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\eventable.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\field.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\functional.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\hash.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\id.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\math.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\name.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\option.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\pair.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\parser.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\prelude.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\propertied.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\properties.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\property.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\record.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\record4.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\record5.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\reflectable.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\reflection.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\serialization.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\stream.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\string.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\subscription.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\symbol.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\symbolics.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\system.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\tga.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\type.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\type_descriptor.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\type_descriptors.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\unparser.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\utility.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\vector.hpp" />
     <ClInclude Include="..\..\src\hpp\blah\blah.hpp" />
     <ClInclude Include="..\..\src\hpp\crossguid\Guid.hpp" />
@@ -70,15 +72,6 @@
     <ClInclude Include="..\..\src\hpp\rxml\rapidxml_print.hpp" />
     <ClInclude Include="..\..\src\hpp\rxml\rapidxml_utils.hpp" />
     <ClInclude Include="..\..\src\hpp\tom\tom.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\algebraic.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\casting.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\utility.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\events.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\reflection.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\properties.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\serialization.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\symbolics.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\functional.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\cpp\ax\address.cpp" />
@@ -173,6 +166,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\src\hpp;$(SolutionDir)..\include\assimp-4.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -187,7 +181,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\include\assimp-4.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\src\hpp;$(SolutionDir)..\include\assimp-4.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
     </ClCompile>
@@ -209,6 +203,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\src\hpp;$(SolutionDir)..\include\assimp-4.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -227,7 +222,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\include\assimp-4.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\src\hpp;$(SolutionDir)..\include\assimp-4.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
     </ClCompile>

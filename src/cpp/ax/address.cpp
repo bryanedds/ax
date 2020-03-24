@@ -1,8 +1,8 @@
-#include "../../hpp/ax/impl/address.hpp"
+#include "ax/address.hpp"
 
-#include "../../hpp/ax/impl/hash.hpp"
-#include "../../hpp/ax/impl/string.hpp"
-#include "../../hpp/ax/impl/vector.hpp"
+#include "ax/hash.hpp"
+#include "ax/string.hpp"
+#include "ax/vector.hpp"
 
 namespace ax
 {

@@ -1,8 +1,8 @@
 #include <vector>
 
-#include "../../hpp/ax/impl/type_descriptor.hpp"
+#include "ax/type_descriptor.hpp"
 
-#include "../../hpp/ax/impl/string.hpp"
+#include "ax/string.hpp"
 
 namespace ax
 {
