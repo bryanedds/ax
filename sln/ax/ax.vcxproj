@@ -22,11 +22,12 @@
     <ClInclude Include="..\..\src\hpp\ax\address.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\addressable.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\algebraic.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\ax.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\basic_buffer.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\basic_buffer_ops.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\basic_obj_model.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\cast.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\castable.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\casting.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\choice.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\choice4.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\choice5.hpp" />

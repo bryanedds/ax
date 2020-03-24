@@ -1,6 +1,6 @@
 #include "ax/system.hpp"
 
-#include "ax/casting.hpp"
+#include "ax/cast.hpp"
 
 namespace ax
 {
