@@ -67,6 +67,9 @@
     <ClInclude Include="..\..\src\hpp\ax\algebraic.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\hpp\ax\ax.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\basic_buffer.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
@@ -74,6 +77,9 @@
       <Filter>Header Files\ax</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\basic_obj_model.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\hpp\ax\cast.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\castable.hpp">
@@ -128,6 +134,9 @@
       <Filter>Header Files\ax</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\propertied.hpp">
+      <Filter>Header Files\ax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\hpp\ax\properties.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\property.hpp">
@@ -188,12 +197,6 @@
       <Filter>Header Files\ax</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\vector.hpp">
-      <Filter>Header Files\ax</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\hpp\ax\casting.hpp">
-      <Filter>Header Files\ax</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\hpp\ax\properties.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
   </ItemGroup>
