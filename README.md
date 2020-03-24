@@ -11,7 +11,7 @@
 - Functional operations map, filter, and fold (with more coming soon!) in **"functional.hpp"**
 - Algebraic data types including option, either, choice, pair and record, w/ macros for automatic derivation, and a type-safe pattern matching system in **"algebraic.hpp"**
 - An entity-component-system prototype in **"system.hpp"**
-- A couple other odds and ends in **"core.hpp"**
+- Several other odds and ends.
 
 This library makes a good base for non-trivial projects like renderers, game engines, and other projects that absolutely *need* to be built with good programming semantics.
 

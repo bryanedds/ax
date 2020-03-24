@@ -193,9 +193,6 @@
     <ClInclude Include="..\..\src\hpp\ax\unparser.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\hpp\ax\core.hpp">
-      <Filter>Header Files\ax</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\vector.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>

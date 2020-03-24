@@ -64,7 +64,6 @@
     <ClInclude Include="..\..\src\hpp\ax\type_descriptor.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\type_descriptors.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\unparser.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\core.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\vector.hpp" />
     <ClInclude Include="..\..\src\hpp\blah\blah.hpp" />
     <ClInclude Include="..\..\src\hpp\crossguid\Guid.hpp" />
