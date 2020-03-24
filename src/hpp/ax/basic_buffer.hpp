@@ -7,13 +7,13 @@
 
 namespace ax
 {
-    struct basic_cell
+    struct basic_pixel
     {
     public:
-        basic_cell(float depth, const ax::v3& normal, const ax::color& color) : depth(depth), normal(normal), color(color) { }
-        basic_cell() = default;
-        ~basic_cell() = default;
-        basic_cell& operator=(const basic_cell&) = default;
+        basic_pixel(float depth, const ax::v3& normal, const ax::color& color) : depth(depth), normal(normal), color(color) { }
+        basic_pixel() = default;
+        ~basic_pixel() = default;
+        basic_pixel& operator=(const basic_pixel&) = default;
 		float depth;
 		ax::v3 normal;
         ax::color color;
@@ -30,12 +30,12 @@ namespace ax
 
         basic_buffer& operator=(const basic_buffer& img);
 
-        constexpr int get_bytespp() const { return sizeof(ax::basic_cell); }
+        constexpr int get_bytespp() const { return sizeof(ax::basic_pixel); }
         int get_width() const { return width; };
         int get_height() const { return height; };
-        ax::basic_cell get_cell(int x, int y) const;
-        bool set_point(int x, int y, const ax::basic_cell& cell);
-        void flood(const ax::basic_cell& cell);
+        ax::basic_pixel get_pixel(int x, int y) const;
+        bool set_point(int x, int y, const ax::basic_pixel& pixel);
+        void flood(const ax::basic_pixel& pixel);
 
         bool read_from_tga_file(const char *filename);
         bool write_to_tga_file(const char *filename) const;

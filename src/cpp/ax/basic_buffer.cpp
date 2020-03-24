@@ -48,30 +48,30 @@ namespace ax
         return *this;
     }
 
-    ax::basic_cell basic_buffer::get_cell(int x, int y) const
+    ax::basic_pixel basic_buffer::get_pixel(int x, int y) const
     {
         if (x < 0 || y < 0 || x >= width || y >= height) throw std::out_of_range("basic_buffer point index out of range.");
-        VAL* cell = reinterpret_cast<ax::basic_cell*>(data + ((x + (height - y) * width) * get_bytespp()));
-        return *cell;
+        VAL* pixel = reinterpret_cast<ax::basic_pixel*>(data + ((x + (height - y) * width) * get_bytespp()));
+        return *pixel;
     }
 
-    bool basic_buffer::set_point(int x, int y, const ax::basic_cell& cell)
+    bool basic_buffer::set_point(int x, int y, const ax::basic_pixel& pixel)
     {
         if (x < 0 || y < 0 || x >= width || y >= height) return false;
-        VAL& cell_current = get_cell(x, y);
-        if (cell_current.depth > cell.depth) return false;
-        memcpy(data + (x + (height - y) * width) * get_bytespp(), &cell, get_bytespp());
+        VAL& pixel_current = get_pixel(x, y);
+        if (pixel_current.depth > pixel.depth) return false;
+        memcpy(data + (x + (height - y) * width) * get_bytespp(), &pixel, get_bytespp());
         return true;
     }
 
-    void basic_buffer::flood(const ax::basic_cell& cell)
+    void basic_buffer::flood(const ax::basic_pixel& pixel)
     {
 		VAL bytespp = get_bytespp();
         VAL length = width * height * bytespp;
         for (VAR i = 0; i < length; i += bytespp)
         {
-            VAR& cell_in_place = reinterpret_cast<ax::basic_cell&>(data[i]);
-            cell_in_place = cell;
+            VAR& pixel_in_place = reinterpret_cast<ax::basic_pixel&>(data[i]);
+            pixel_in_place = pixel;
         }
     }
 
@@ -112,10 +112,10 @@ namespace ax
             VAL length = width * height * bytespp;
             for (VAR i = 0; i < length; i += bytespp)
             {
-                VAR& cell_in_place = reinterpret_cast<ax::basic_cell&>(data[i]);
-                cell_in_place.depth = std::numeric_limits<float>::lowest();
-				cell_in_place.normal = ax::zero<ax::v3>();
-                in.read((char*)&cell_in_place.color, sizeof(ax::color));
+                VAR& pixel_in_place = reinterpret_cast<ax::basic_pixel&>(data[i]);
+                pixel_in_place.depth = std::numeric_limits<float>::lowest();
+				pixel_in_place.normal = ax::zero<ax::v3>();
+                in.read((char*)&pixel_in_place.color, sizeof(ax::color));
             }
             in.read((char*)data, nbytes);
             if (!in.good())

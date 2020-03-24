@@ -132,12 +132,12 @@ namespace ax
 
     void draw_wire_ortho(const ax::color& color, const ax::basic_obj_model& model, ax::basic_buffer& buffer)
     {
-        for (VAR i = 0; i < model.nfaces(); i++)
+        for (VAR i = 0; i < model.get_face_count(); i++)
         {
-            VAL& face = model.face(i);
-            VAL& a = model.vert(face[0]);
-            VAL& b = model.vert(face[1]);
-            VAL& c = model.vert(face[2]);
+            VAL& face = model.get_face(i);
+            VAL& a = model.get_vertex(face[0]);
+            VAL& b = model.get_vertex(face[1]);
+            VAL& c = model.get_vertex(face[2]);
             VAL& tri = ax::triangle2(ax::v2(a.x, a.y), ax::v2(b.x, b.y), ax::v2(c.x, c.y));
             draw_wire_ortho(color, tri, buffer);
         }
@@ -175,12 +175,12 @@ namespace ax
 
     void draw_filled_ortho(const ax::color& color, const ax::basic_obj_model& model, ax::basic_buffer& buffer)
     {
-        for (VAR i = 0; i < model.nfaces(); i++)
+        for (VAR i = 0; i < model.get_face_count(); i++)
         {
-            VAL& face = model.face(i);
-            VAL& a = model.vert(face[0]);
-            VAL& b = model.vert(face[1]);
-            VAL& c = model.vert(face[2]);
+            VAL& face = model.get_face(i);
+            VAL& a = model.get_vertex(face[0]);
+            VAL& b = model.get_vertex(face[1]);
+            VAL& c = model.get_vertex(face[2]);
             VAL& tri = ax::triangle2(ax::v2(a.x, a.y), ax::v2(b.x, b.y), ax::v2(c.x, c.y));
             VAL& normal = ((b - a) ^ (c - a)).NormalizeSafe();
             VAL& forward = ax::v3(0.0f, 0.0f, 1.0f);

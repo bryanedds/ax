@@ -11,6 +11,7 @@
 #include <queue>
 
 #include "prelude.hpp"
+#include "math.hpp"
 #include "string.hpp"
 #include "vector.hpp"
 #include "option.hpp"
@@ -53,13 +54,11 @@ namespace ax
     };
 
     // The component common to all entities.
-    // NOTE: of course, we'd instead use math library types in here.
     struct entity_core_component : public ax::component
     {
         std::unordered_map<ax::name, ax::component*> components;
-        float x_pos;
-        float y_pos;
-        float rotation;
+        ax::v3 position;
+        ax::v3 rotation;
         int dirty_flags;
     };
 
@@ -456,6 +455,7 @@ namespace ax
         ax::property_map* try_get_behavior_properties();
         const ax::property_map& get_behavior_properties() const;
         ax::property_map& get_behavior_properties();
+        
         std::shared_ptr<const ax::entity_behavior> try_get_behavior() const;
         std::shared_ptr<ax::entity_behavior> try_get_behavior();
         const ax::entity_behavior& get_behavior() const;
@@ -465,12 +465,15 @@ namespace ax
         ax::entity_core_component* try_get_entity_core();
         const ax::entity_core_component& get_entity_core() const;
         ax::entity_core_component& get_entity_core();
-        float get_x_pos() const { return get_entity_core().x_pos; }
-        float set_x_pos(float value) { return get_entity_core().x_pos = value; }
-        float get_y_pos() const { return get_entity_core().y_pos; }
-        float set_y_pos(float value) { return get_entity_core().y_pos = value; }
-        float get_rotation() const { return get_entity_core().rotation; }
-        float set_rotation(float value) { return get_entity_core().rotation = value; }
+
+        const ax::v3& get_position() const { return get_entity_core().position; }
+        ax::v3 get_position() { return get_entity_core().position; }
+        ax::v3 set_position(const ax::v3& value) { return get_entity_core().position = value; } // TODO: set dirty_flags
+
+        const ax::v3& get_rotation() const { return get_entity_core().rotation; }
+        ax::v3 get_rotation() { return get_entity_core().rotation; }
+        ax::v3 set_rotation(const ax::v3& value) { return get_entity_core().rotation = value; } // TODO: set dirty_flags
+
         bool exists() const;
 
     private:

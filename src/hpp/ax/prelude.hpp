@@ -1,12 +1,6 @@
 #ifndef AX_PRELUDE_HPP
 #define AX_PRELUDE_HPP
 
-// General Note: This library target C++14-conformant (or near-conformant) compilers.
-//
-// The newer C++ features from which this library would greatly benefit are that of Concepts,
-// Uniform Call Syntax, and Filesystem. Modules would also be beneficiary, but to a limited extent
-// due to the small size of this library and its dependencies.
-
 #include <cstddef>
 #include <cinttypes>
 #include <type_traits>

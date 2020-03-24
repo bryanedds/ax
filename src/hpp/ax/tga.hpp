@@ -19,8 +19,8 @@ namespace ax
         short colormaporigin;
         short colormaplength;
         char colormapdepth;
-        short x_origin;
-        short y_origin;
+        short xorigin;
+        short yorigin;
         short width;
         short height;
         char bitsperpixel;

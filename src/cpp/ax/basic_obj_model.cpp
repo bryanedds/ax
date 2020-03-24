@@ -10,8 +10,8 @@ namespace ax
 {
     basic_obj_model::basic_obj_model(const char *file_path) :
         faces(),
-        verts(),
-        norms(),
+        vertices(),
+        normals(),
         uvs(),
         stream_opt(),
         diffuse_map(),
@@ -32,14 +32,14 @@ namespace ax
                     iss >> trash;
                     ax::v3 v;
                     for (int i = 0; i < 3; i++) iss >> v[i];
-                    verts.push_back(v);
+                    vertices.push_back(v);
                 }
                 else if (!line.compare(0, 3, "vn "))
                 {
                     iss >> trash >> trash;
                     ax::v3 n;
                     for (int i = 0; i < 3; i++) iss >> n[i];
-                    norms.push_back(n);
+                    normals.push_back(n);
                 }
                 else if (!line.compare(0, 3, "vt "))
                 {
@@ -77,31 +77,31 @@ namespace ax
 
     basic_obj_model::~basic_obj_model() { }
 
-    int basic_obj_model::nverts() const
+    int basic_obj_model::get_vertex_count() const
     {
-        return (int)verts.size();
+        return (int)vertices.size();
     }
 
-    int basic_obj_model::nfaces() const
+    int basic_obj_model::get_face_count() const
     {
         return (int)faces.size();
     }
 
-    std::vector<int> basic_obj_model::face(int idx) const
+    std::vector<int> basic_obj_model::get_face(int idx) const
     {
         std::vector<int> face;
         for (int i = 0; i < (int)faces[idx].size(); i++) face.push_back(faces[idx][i][0]);
         return face;
     }
 
-    ax::v3 basic_obj_model::vert(int i) const
+    ax::v3 basic_obj_model::get_vertex(int i) const
     {
-        return verts[i];
+        return vertices[i];
     }
 
-    ax::v3 basic_obj_model::vert(int iface, int nthvert) const
+    ax::v3 basic_obj_model::get_vertex(int iface, int nthvert) const
     {
-        return verts[faces[iface][nthvert][0]];
+        return vertices[faces[iface][nthvert][0]];
     }
 
     bool basic_obj_model::try_load_texture(std::string file_path, const char* suffix, basic_buffer& img)
@@ -116,42 +116,42 @@ namespace ax
         return false;
     }
 
-    ax::color basic_obj_model::diffuse(ax::v2 uvf) const
+    ax::color basic_obj_model::get_color_diffuse(ax::v2 uvf) const
     {
         ax::v2i uv(
             static_cast<int>(uvf[0] * diffuse_map.get_width()),
             static_cast<int>(uvf[1] * diffuse_map.get_height()));
-        return diffuse_map.get_cell(uv[0], uv[1]).color;
+        return diffuse_map.get_pixel(uv[0], uv[1]).color;
     }
 
-    ax::v3 basic_obj_model::normal(ax::v2 uvf) const
+    ax::v3 basic_obj_model::get_normal(ax::v2 uvf) const
     {
         ax::v2i uv(
             static_cast<int>(uvf[0] * normal_map.get_width()),
             static_cast<int>(uvf[1] * normal_map.get_height()));
-        ax::color c = normal_map.get_cell(uv[0], uv[1]).color;
+        ax::color c = normal_map.get_pixel(uv[0], uv[1]).color;
         ax::v3 res;
         for (int i = 0; i < 3; i++) res[2 - i] = (float)c[i] / 255.f * 2.f - 1.f;
         return res;
     }
 
-    ax::v2 basic_obj_model::uv(int iface, int nthvert) const
+    ax::v2 basic_obj_model::get_uv(int iface, int nthvert) const
     {
         return uvs[faces[iface][nthvert][1]];
     }
 
-    float basic_obj_model::specular(ax::v2 uvf) const
+    float basic_obj_model::get_specularity(ax::v2 uvf) const
     {
         ax::v2i uv(
             static_cast<int>(uvf[0] * specular_map.get_width()),
             static_cast<int>(uvf[1] * specular_map.get_height()));
-        return specular_map.get_cell(uv[0], uv[1]).color[0] / 1.f;
+        return specular_map.get_pixel(uv[0], uv[1]).color[0] / 1.f;
     }
 
-    ax::v3 basic_obj_model::normal(int iface, int nthvert) const
+    ax::v3 basic_obj_model::get_normal(int iface, int nthvert) const
     {
         int idx = faces[iface][nthvert][2];
-        ax::v3 v = norms[idx];
+        ax::v3 v = normals[idx];
         return v.NormalizeSafe();
     }
 }
