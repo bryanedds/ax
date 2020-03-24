@@ -31,10 +31,10 @@ namespace ax
     ax::box2 get_intersection(const ax::box2& box, const ax::box2& box2)
     {
         return
-            { {std::min(box.first.x, box2.first.x),
-               std::min(box.first.y, box2.first.y)},
-              {std::max(box.second.x, box2.second.x),
-               std::max(box.second.y, box2.second.y)} };
+            {{std::min(box.first.x, box2.first.x),
+              std::min(box.first.y, box2.first.y)},
+             {std::max(box.second.x, box2.second.x),
+              std::max(box.second.y, box2.second.y)}};
     }
 
     ax::v3 get_barycentric_coords(ax::v2 point, const ax::triangle2& tri)

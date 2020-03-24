@@ -25,7 +25,6 @@
 #include "parser.hpp"
 #include "prelude.hpp"
 #include "propertied.hpp"
-#include "properties.hpp"
 #include "property.hpp"
 #include "record.hpp"
 #include "record4.hpp"

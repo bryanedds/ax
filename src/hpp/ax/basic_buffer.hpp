@@ -16,7 +16,7 @@ namespace ax
         basic_cell& operator=(const basic_cell&) = default;
 		float depth;
 		ax::v3 normal;
-        ax::color color; // RGBA
+        ax::color color;
     };
 
     struct basic_buffer

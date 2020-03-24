@@ -4,17 +4,6 @@
 
 #include "ax/ax.hpp"
 
-#include "ax/utility.hpp"
-#include "ax/algebraic.hpp"
-#include "ax/cast.hpp"
-#include "ax/properties.hpp"
-#include "ax/reflection.hpp"
-#include "ax/serialization.hpp"
-#include "ax/system.hpp"
-#include "ax/basic_buffer.hpp"
-#include "ax/basic_buffer_ops.hpp"
-#include "ax/basic_obj_model.hpp"
-
 namespace ax
 {
     // A trivial type to demonstrate the castable type.

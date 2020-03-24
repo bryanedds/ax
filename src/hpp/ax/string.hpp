@@ -6,7 +6,7 @@
 #include "prelude.hpp"
 #include "vector.hpp"
 
-// Implemente std::string literal.
+// Implements std::string literal.
 inline std::string operator ""_s(const char *str, std::size_t len)
 {
     return std::string(str, len);
