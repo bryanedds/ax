@@ -102,9 +102,6 @@ namespace ax
             VAL not_back_face = normal * forward > 0;
             if (not_back_face)
             {
-                VAL& uvs = ax::triangle2(model.get_uv(i, 0), model.get_uv(i, 1), model.get_uv(i, 2));
-                VAL& light = ax::v3(0.0f, 0.0f, -1.0f);
-                VAL intensity = normal * light;
                 VAL& center_screen = ax::v2(static_cast<float>(buffer.get_width()), static_cast<float>(buffer.get_height())) * 0.5f;
                 VAL& triangle_ortho = ax::get_ortho(triangle);
                 VAL& triangle_screen = ax::triangle2(
@@ -112,6 +109,9 @@ namespace ax
                     (std::get<1>(triangle_ortho) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
                     (std::get<2>(triangle_ortho) + ax::v2(1.0f, 1.0f)).SymMul(center_screen));
                 VAL& bounds_screen = ax::get_bounds(triangle_screen);
+                VAL& uvs = ax::triangle2(model.get_uv(i, 0), model.get_uv(i, 1), model.get_uv(i, 2));
+                VAL& light = ax::v3(0.0f, 0.0f, 1.0f);
+                VAL intensity = std::abs(normal * light);
                 VAL width = static_cast<int>(bounds_screen.second.x);
                 VAL height = static_cast<int>(bounds_screen.second.y);
                 for (VAR i = static_cast<int>(bounds_screen.first.x); i <= width; ++i)
@@ -120,13 +120,20 @@ namespace ax
                     {
                         if (ax::get_in_bounds(ax::v2(static_cast<float>(i), static_cast<float>(j)), triangle_screen))
                         {
-                            VAL& point = ax::v2(static_cast<float>(i), static_cast<float>(j));
-                            VAL depth = ax::get_depth(point, triangle);
                             VAR& pixel_in_place = buffer.get_pixel_in_place(i, j);
+                            VAL& point_screen = ax::v2(static_cast<float>(i), static_cast<float>(j));
+							VAL& coords_screen = ax::get_barycentric_coords(point_screen, triangle_screen);
+							VAL depth =
+								std::get<0>(triangle).z * coords_screen.x +
+								std::get<1>(triangle).z * coords_screen.y +
+								std::get<2>(triangle).z * coords_screen.z;
                             if (depth >= pixel_in_place.depth)
                             {
-                                VAL& uv = ax::get_interpolation(point, uvs);
-								VAL& color_diffuse = ax::color(255, 255, 255, 255); // model.get_diffuse_map().sample_as_diffuse(uv);
+								VAL uv =
+									std::get<0>(uvs) * coords_screen.x +
+									std::get<1>(uvs) * coords_screen.y +
+									std::get<2>(uvs) * coords_screen.z;
+								VAL& color_diffuse = model.get_diffuse_map().sample_diffuse(uv);
 								VAL& color = ax::color(
 									static_cast<uint8_t>(color_diffuse.r * intensity),
 									static_cast<uint8_t>(color_diffuse.g * intensity),

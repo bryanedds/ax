@@ -79,14 +79,14 @@ namespace ax
         }
     }
 
-    ax::color basic_buffer::sample_as_diffuse(const ax::v2& position) const
+    ax::color basic_buffer::sample_diffuse(const ax::v2& position) const
     {
         VAL& positionI = ax::v2i(static_cast<int>(position.x * width), static_cast<int>(position.y * height));
         VAL& color = get_pixel(positionI.x, positionI.y).color;
 		return color;
     }
 
-    ax::v3 basic_buffer::sample_as_normal(const ax::v2& position) const
+    ax::v3 basic_buffer::sample_normal(const ax::v2& position) const
     {
         VAL& positionI = ax::v2i(static_cast<int>(position.x * width), static_cast<int>(position.y * height));
         VAL& color = get_pixel(positionI.x, positionI.y).color;
@@ -99,7 +99,7 @@ namespace ax
         return normal;
     }
 
-    float basic_buffer::sample_as_specular(const ax::v2& position) const
+    float basic_buffer::sample_specular(const ax::v2& position) const
     {
 		VAL& positionI = ax::v2i(static_cast<int>(position.x * width), static_cast<int>(position.y * height));
         VAL& specular = get_pixel(positionI.x, positionI.y).color.r / 1.0f;
