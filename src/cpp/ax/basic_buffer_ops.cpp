@@ -28,6 +28,16 @@ namespace ax
               {right, top} };
     }
 
+    float get_depth(const ax::v2& point, const ax::triangle2 tri)
+    {
+        VAL& coords_screen = ax::get_barycentric_coords(point, tri);
+        VAL depth =
+            std::get<0>(tri)[2] * coords_screen[0] +
+            std::get<1>(tri)[2] * coords_screen[1] +
+            std::get<2>(tri)[2] * coords_screen[2];
+        return depth;
+    }
+
     ax::box2 get_intersection(const ax::box2& box, const ax::box2& box2)
     {
         return
@@ -63,7 +73,7 @@ namespace ax
 
     void draw_dot(const ax::color& color, int x, int y, ax::basic_buffer& buffer)
     {
-        buffer.set_point(x, y, { 0.0f, ax::zero<ax::v3>(), color });
+        buffer.set_pixel(x, y, { 0.0f, ax::zero<ax::v3>(), color });
     }
 
     void draw_line(const ax::color& color, int x, int y, int x2, int y2, ax::basic_buffer& buffer)
@@ -71,8 +81,8 @@ namespace ax
         // local functions
         struct local
         {
-            static void set_point_normal(int x, int y, float z, const ax::color& c, ax::basic_buffer& buffer) { buffer.set_point(x, y, { z, ax::zero<ax::v3>(), c }); }
-            static void set_point_swapped(int x, int y, float z, const ax::color& c, ax::basic_buffer& buffer) { buffer.set_point(y, x, { z, ax::zero<ax::v3>(), c }); }
+            static void set_point_normal(int x, int y, float z, const ax::color& c, ax::basic_buffer& buffer) { buffer.set_pixel(x, y, { z, ax::zero<ax::v3>(), c }); }
+            static void set_point_swapped(int x, int y, float z, const ax::color& c, ax::basic_buffer& buffer) { buffer.set_pixel(y, x, { z, ax::zero<ax::v3>(), c }); }
         };
 
         // determine steepness
@@ -163,11 +173,18 @@ namespace ax
         VAL height = static_cast<int>(bounds_screen.second.y);
         for (VAR i = static_cast<int>(bounds_screen.first.x); i <= width; ++i)
         {
-            for(VAR j = static_cast<int>(bounds_screen.first.y); j <= height; ++j)
+            for (VAR j = static_cast<int>(bounds_screen.first.y); j <= height; ++j)
             {
                 if (ax::get_in_bounds(ax::v2(static_cast<float>(i), static_cast<float>(j)), tri_screen))
                 {
-                    buffer.set_point(i, j, { 0.0f, ax::zero<ax::v3>(), color });
+                    VAR& pixel_in_place = buffer.get_pixel_in_place(i, j);
+                    VAL& point = ax::v2(static_cast<float>(i), static_cast<float>(j));
+                    VAL depth = ax::get_depth(point, tri);
+                    if (depth > pixel_in_place.depth)
+                    {
+                        pixel_in_place.depth = depth;
+                        pixel_in_place.color = color;
+                    }
                 }
             }
         }

@@ -8,6 +8,7 @@
 
 namespace ax
 {
+    float get_depth(const ax::v2& point, const ax::triangle2 tri); // TODO: move to math.hpp
     ax::box2 get_bounds(const ax::triangle2& tri); // TODO: move to math.hpp
     ax::box2 get_intersection(const ax::box2& box, const ax::box2& box2); // TODO: move to math.hpp
     bool get_in_bounds(const ax::v2& point, const ax::triangle2& tri); // TODO: move to math.hpp

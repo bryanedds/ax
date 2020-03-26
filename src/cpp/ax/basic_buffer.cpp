@@ -48,17 +48,27 @@ namespace ax
         return *this;
     }
 
-    ax::basic_pixel basic_buffer::get_pixel(int x, int y) const
+    const ax::basic_pixel& basic_buffer::get_pixel_in_place(int x, int y) const
+    {
+        return const_cast<basic_buffer*>(this)->get_pixel_in_place(x, y);
+    }
+
+    ax::basic_pixel& basic_buffer::get_pixel_in_place(int x, int y)
     {
         if (x < 0 || y < 0 || x >= width || y >= height) throw std::out_of_range("basic_buffer point index out of range.");
-        VAL* pixel = reinterpret_cast<ax::basic_pixel*>(data + ((x + (height - y) * width) * get_bytespp()));
+        VAR* pixel = reinterpret_cast<ax::basic_pixel*>(data + ((x + (height - y) * width) * get_bytespp()));
         return *pixel;
     }
 
-    bool basic_buffer::set_point(int x, int y, const ax::basic_pixel& pixel)
+    ax::basic_pixel basic_buffer::get_pixel(int x, int y) const
+    {
+        return get_pixel_in_place(x, y);
+    }
+
+    bool basic_buffer::set_pixel(int x, int y, const ax::basic_pixel& pixel)
     {
         if (x < 0 || y < 0 || x >= width || y >= height) return false;
-        VAL& pixel_current = get_pixel(x, y);
+        VAL& pixel_current = get_pixel_in_place(x, y);
         if (pixel_current.depth > pixel.depth) return false;
         memcpy(data + (x + (height - y) * width) * get_bytespp(), &pixel, get_bytespp());
         return true;

@@ -121,7 +121,7 @@ namespace ax
         ax::v2i uv(
             static_cast<int>(uvf[0] * diffuse_map.get_width()),
             static_cast<int>(uvf[1] * diffuse_map.get_height()));
-        return diffuse_map.get_pixel(uv[0], uv[1]).color;
+        return diffuse_map.get_pixel_in_place(uv[0], uv[1]).color;
     }
 
     ax::v3 basic_obj_model::get_normal(ax::v2 uvf) const
@@ -129,7 +129,7 @@ namespace ax
         ax::v2i uv(
             static_cast<int>(uvf[0] * normal_map.get_width()),
             static_cast<int>(uvf[1] * normal_map.get_height()));
-        ax::color c = normal_map.get_pixel(uv[0], uv[1]).color;
+        ax::color c = normal_map.get_pixel_in_place(uv[0], uv[1]).color;
         ax::v3 res;
         for (int i = 0; i < 3; i++) res[2 - i] = (float)c[i] / 255.f * 2.f - 1.f;
         return res;
@@ -145,7 +145,7 @@ namespace ax
         ax::v2i uv(
             static_cast<int>(uvf[0] * specular_map.get_width()),
             static_cast<int>(uvf[1] * specular_map.get_height()));
-        return specular_map.get_pixel(uv[0], uv[1]).color[0] / 1.f;
+        return specular_map.get_pixel_in_place(uv[0], uv[1]).color[0] / 1.f;
     }
 
     ax::v3 basic_obj_model::get_normal(int iface, int nthvert) const
