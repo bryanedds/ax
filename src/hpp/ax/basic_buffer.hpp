@@ -38,14 +38,14 @@ namespace ax
         const ax::basic_pixel& get_pixel(int x, int y) const;
         bool set_pixel(int x, int y, const ax::basic_pixel& pixel);
         void flood(const ax::basic_pixel& pixel);
-		void flip();
+		void flip_horizontal();
 
         ax::color sample_diffuse(const ax::v2& position) const;
         ax::v3 sample_normal(const ax::v2& position) const;
         float sample_specular(const ax::v2& position) const;
 
         bool read_from_tga_file(const char *filename);
-        bool write_to_tga_file(const char *filename, bool flip = false) const;
+        bool write_to_tga_file(const char *filename);
 
     private:
 

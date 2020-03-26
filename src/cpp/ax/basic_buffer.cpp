@@ -79,7 +79,7 @@ namespace ax
         }
     }
 
-	void basic_buffer::flip()
+	void basic_buffer::flip_horizontal()
 	{
 		// TODO: make this allocation exception-safe!
 		VAL line_size = sizeof(ax::basic_pixel) * width;
@@ -190,15 +190,16 @@ namespace ax
             std::cerr << "unknown file format " << (int)header.datatypecode << "\n";
             return false;
         }
-		flip();
+		flip_horizontal();
         std::cerr << width << "x" << height << "/" << inbytespp * 8 << "\n";
         in.close();
         return true;
     }
 
 	// TODO: clean up this code. it's terrible and not exception-safe!
-	bool basic_buffer::write_to_tga_file(const char *file_path, bool flip) const
+	bool basic_buffer::write_to_tga_file(const char *file_path)
     {
+        flip_horizontal();
         uint8_t developer_area_ref[4] = { 0, 0, 0, 0 };
         uint8_t extension_area_ref[4] = { 0, 0, 0, 0 };
         uint8_t footer[18] = { 'T','R','U','E','V','I','S','I','O','N','-','X','F','I','L','E','.','\0' };
@@ -208,6 +209,7 @@ namespace ax
         {
             std::cerr << "can't open file " << file_path << "\n";
             out.close();
+            flip_horizontal();
             return false;
         }
         tga_header header;
@@ -216,12 +218,13 @@ namespace ax
         header.width = static_cast<short>(width);
         header.height = static_cast<short>(height);
         header.datatypecode = 2;
-        header.imagedescriptor = flip ? 0x20 : 0x0;
+        header.imagedescriptor = 0x0;
         out.write((char*)&header, sizeof(header));
         if (!out.good())
         {
-            out.close();
             std::cerr << "can't dump the tga file\n";
+            out.close();
+            flip_horizontal();
             return false;
         }
 		VAL bytespp = get_bytespp();
@@ -241,6 +244,7 @@ namespace ax
         {
             std::cerr << "can't dump raw data\n";
             out.close();
+            flip_horizontal();
             return false;
         }
         out.write((char*)developer_area_ref, sizeof(developer_area_ref));
@@ -248,6 +252,7 @@ namespace ax
         {
             std::cerr << "can't dump the tga file\n";
             out.close();
+            flip_horizontal();
             return false;
         }
         out.write((char*)extension_area_ref, sizeof(extension_area_ref));
@@ -255,6 +260,7 @@ namespace ax
         {
             std::cerr << "can't dump the tga file\n";
             out.close();
+            flip_horizontal();
             return false;
         }
         out.write((char*)footer, sizeof(footer));
@@ -262,9 +268,11 @@ namespace ax
         {
             std::cerr << "can't dump the tga file\n";
             out.close();
+            flip_horizontal();
             return false;
         }
         out.close();
+        flip_horizontal();
         return true;
     }
 
