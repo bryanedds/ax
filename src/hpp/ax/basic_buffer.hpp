@@ -39,9 +39,11 @@ namespace ax
         void flood(const ax::basic_pixel& pixel);
 
         bool read_from_tga_file(const char *filename);
-        bool write_to_tga_file(const char *filename) const;
+        bool write_to_tga_file(const char *filename, bool flip = false) const;
 
     private:
+
+		bool load_rle_data(int inbytespp, std::ifstream& in);
 
         uint8_t* data;
         int width;

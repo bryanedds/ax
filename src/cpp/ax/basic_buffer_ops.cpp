@@ -91,44 +91,7 @@ namespace ax
         }
     }
 
-    void draw_filled_ortho(const ax::color& color, const ax::line2& line, ax::basic_buffer& buffer)
-    {
-        ax::draw_wire_ortho(color, line, buffer);
-    }
-
-    void draw_filled_ortho(const ax::color& color, const ax::triangle2& tri, ax::basic_buffer& buffer)
-    {
-        VAL& center_screen = ax::v2(
-            static_cast<float>(buffer.get_width()),
-            static_cast<float>(buffer.get_height())) *
-            0.5f;
-        VAL& tri_screen = ax::triangle2(
-            (std::get<0>(tri) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
-            (std::get<1>(tri) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
-            (std::get<2>(tri) + ax::v2(1.0f, 1.0f)).SymMul(center_screen));
-        VAL& bounds_screen = ax::get_bounds(tri_screen);
-        VAL width = static_cast<int>(bounds_screen.second.x);
-        VAL height = static_cast<int>(bounds_screen.second.y);
-        for (VAR i = static_cast<int>(bounds_screen.first.x); i <= width; ++i)
-        {
-            for (VAR j = static_cast<int>(bounds_screen.first.y); j <= height; ++j)
-            {
-                if (ax::get_in_bounds(ax::v2(static_cast<float>(i), static_cast<float>(j)), tri_screen))
-                {
-                    VAR& pixel_in_place = buffer.get_pixel_in_place(i, j);
-                    VAL& point = ax::v2(static_cast<float>(i), static_cast<float>(j));
-                    VAL depth = ax::get_depth(point, tri);
-                    if (depth >= pixel_in_place.depth)
-                    {
-                        pixel_in_place.depth = depth;
-                        pixel_in_place.color = color;
-                    }
-                }
-            }
-        }
-    }
-
-    void draw_filled_ortho(const ax::color& color, const ax::basic_obj_model& model, ax::basic_buffer& buffer)
+    void draw_filled_ortho(const ax::basic_obj_model& model, ax::basic_buffer& buffer)
     {
         for (VAR i = 0; i < model.get_face_count(); i++)
         {
@@ -140,16 +103,45 @@ namespace ax
             VAL& normal = ((b - a) ^ (c - a)).NormalizeSafe();
             VAL& forward = ax::v3(0.0f, 0.0f, 1.0f);
             VAL backface = normal * forward <= 0;
+            VAL& uvs = ax::triangle2(model.get_uv(i, 0), model.get_uv(i, 1), model.get_uv(i, 2));
             if (!backface)
             {
                 VAL& light = ax::v3(0.0f, 0.0f, -1.0f);
                 VAL intensity = normal * light;
-                VAL& color2 = ax::color(
-                    static_cast<uint8_t>(color.r * intensity),
-                    static_cast<uint8_t>(color.g * intensity),
-                    static_cast<uint8_t>(color.b * intensity),
-                    color.a);
-                draw_filled_ortho(color2, tri, buffer);
+                VAL& center_screen = ax::v2(
+                    static_cast<float>(buffer.get_width()),
+                    static_cast<float>(buffer.get_height())) *
+                    0.5f;
+                VAL& tri_screen = ax::triangle2(
+                    (std::get<0>(tri) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
+                    (std::get<1>(tri) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
+                    (std::get<2>(tri) + ax::v2(1.0f, 1.0f)).SymMul(center_screen));
+                VAL& bounds_screen = ax::get_bounds(tri_screen);
+                VAL width = static_cast<int>(bounds_screen.second.x);
+                VAL height = static_cast<int>(bounds_screen.second.y);
+                for (VAR i = static_cast<int>(bounds_screen.first.x); i <= width; ++i)
+                {
+                    for (VAR j = static_cast<int>(bounds_screen.first.y); j <= height; ++j)
+                    {
+                        if (ax::get_in_bounds(ax::v2(static_cast<float>(i), static_cast<float>(j)), tri_screen))
+                        {
+                            VAL& point = ax::v2(static_cast<float>(i), static_cast<float>(j));
+                            VAL depth = ax::get_depth(point, tri);
+                            VAR& pixel_in_place = buffer.get_pixel_in_place(i, j);
+                            if (depth >= pixel_in_place.depth)
+                            {
+								VAL& color_diffuse = model.get_color_diffuse(std::get<0>(uvs));
+								VAL& color = ax::color(
+									static_cast<uint8_t>(color_diffuse.r * intensity),
+									static_cast<uint8_t>(color_diffuse.g * intensity),
+									static_cast<uint8_t>(color_diffuse.b * intensity),
+									color_diffuse.a);
+                                pixel_in_place.depth = depth;
+                                pixel_in_place.color = color;
+                            }
+                        }
+                    }
+                }
             }
         }
     }

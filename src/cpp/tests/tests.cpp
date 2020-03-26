@@ -292,12 +292,11 @@ namespace ax
         ax::basic_buffer render_target(width, height);
         render_target.flood(ax::basic_pixel(std::numeric_limits<float>::lowest(), ax::zero<ax::v3>(), { 0, 0, 0, 255 }));
 
-        // render wire mesh to target
-        VAL color = ax::color(255, 255, 255, 255);
-        ax::draw_filled_ortho(color, model, render_target);
+        // render model to target
+        ax::draw_filled_ortho(model, render_target);
 
-        // write render target to file
-        render_target.write_to_tga_file(image_file_path);
+        // write render target as flipped to file
+        render_target.write_to_tga_file(image_file_path, true);
     }
 }
 

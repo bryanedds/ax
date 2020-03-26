@@ -21,17 +21,17 @@ namespace ax
             std::get<0>(tri).y,
             std::max(std::get<1>(tri).y, std::get<2>(tri).y));
         return
-            { {left, bottom},
-              {right, top} };
+            {{ left, bottom },
+             { right, top }};
     }
 
     float get_depth(const ax::v2& point, const ax::triangle2 tri)
     {
-        VAL& coords_screen = ax::get_barycentric_coords(point, tri);
+        VAL& coords = ax::get_barycentric_coords(point, tri);
         VAL depth =
-            std::get<0>(tri)[2] * coords_screen[0] +
-            std::get<1>(tri)[2] * coords_screen[1] +
-            std::get<2>(tri)[2] * coords_screen[2];
+            std::get<0>(tri)[2] * coords[0] +
+            std::get<1>(tri)[2] * coords[1] +
+            std::get<2>(tri)[2] * coords[2];
         return depth;
     }
 

@@ -5,11 +5,6 @@
 
 namespace ax
 {
-    enum tga_format
-    {
-        TGA_BGRA = 4
-    };
-
     #pragma pack(push,1)
     struct tga_header
     {

@@ -67,7 +67,7 @@ namespace ax
             // TODO: use the map_XX parses instead of hard-coding like this.
             // TODO: check results.
             // https://en.wikipedia.org/wiki/Wavefront_.obj_file#Texture_maps
-            try_load_texture(file_path, "_diffuse.tga", diffuse_map);
+			try_load_texture(file_path, "_diffuse.tga", diffuse_map);
             try_load_texture(file_path, "_nm_tangent.tga", normal_map);
             try_load_texture(file_path, "_spec.tga", specular_map);
             return;
@@ -121,7 +121,8 @@ namespace ax
         ax::v2i uv(
             static_cast<int>(uvf[0] * diffuse_map.get_width()),
             static_cast<int>(uvf[1] * diffuse_map.get_height()));
-        return diffuse_map.get_pixel(uv[0], uv[1]).color;
+        VAL& color = diffuse_map.get_pixel(uv[0], uv[1]).color;
+		return color;
     }
 
     ax::v3 basic_obj_model::get_normal(ax::v2 uvf) const

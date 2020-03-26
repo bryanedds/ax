@@ -13,9 +13,7 @@ namespace ax
     void draw_wire_ortho(const ax::color& color, const ax::line2& line, ax::basic_buffer& buffer);
     void draw_wire_ortho(const ax::color& color, const ax::triangle2& tri, ax::basic_buffer& buffer);
     void draw_wire_ortho(const ax::color& color, const ax::basic_obj_model& model, ax::basic_buffer& buffer);
-    void draw_filled_ortho(const ax::color& color, const ax::line2& line, ax::basic_buffer& buffer);
-    void draw_filled_ortho(const ax::color& color, const ax::triangle2& tri, ax::basic_buffer& buffer);
-    void draw_filled_ortho(const ax::color& color, const ax::basic_obj_model& model, ax::basic_buffer& buffer);
+    void draw_filled_ortho(const ax::basic_obj_model& model, ax::basic_buffer& buffer);
 }
 
 #endif

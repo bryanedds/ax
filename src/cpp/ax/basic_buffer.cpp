@@ -79,9 +79,9 @@ namespace ax
         }
     }
 
+    // TODO: clean up this code. it's terrible and not exception-safe!
     bool basic_buffer::read_from_tga_file(const char* file_path)
     {
-        // TODO: clean up this code. it's terrible and not exception-safe!
         if (data) delete[] data;
         data = nullptr;
         std::ifstream in;
@@ -102,44 +102,44 @@ namespace ax
         }
         width = header.width;
         height = header.height;
-        VAL bytespp = header.bitsperpixel >> 3;
-        if (width <= 0 || height <= 0 || bytespp != TGA_BGRA)
+        VAL inbytespp = header.bitsperpixel >> 3;
+        if (width <= 0 || height <= 0 || (inbytespp != 1 && inbytespp != 3 && inbytespp != 4))
         {
             in.close();
-            std::cerr << "bad bpp (or width/height) value\n";
+            std::cerr << "bad width, height, or bpp value\n";
             return false;
         }
-        uint32_t nbytes = width * height * bytespp;
-        data = new uint8_t[nbytes]; // TODO: make this a local var then swap contents with field on success
-        if (3 == header.datatypecode || 2 == header.datatypecode)
+        data = new uint8_t[width * height * get_bytespp()];
+        if (header.datatypecode == 2 || header.datatypecode == 3)
         {
-            VAL length = width * height * bytespp;
-            for (VAR i = 0; i < length; i += bytespp)
-            {
-                VAR& pixel_in_place = reinterpret_cast<ax::basic_pixel&>(data[i]);
-                pixel_in_place.depth = std::numeric_limits<float>::lowest();
-				pixel_in_place.normal = ax::zero<ax::v3>();
-                in.read((char*)&pixel_in_place.color, sizeof(ax::color));
-            }
-            in.read((char*)data, nbytes);
+			for (VAR j = 0; j < height; ++j)
+			{
+				for (VAR i = 0; i < width; ++i)
+				{
+					VAR& pixel_in_place = reinterpret_cast<ax::basic_pixel&>(data[j * width + i]);
+					pixel_in_place.depth = std::numeric_limits<float>::lowest();
+					pixel_in_place.normal = ax::zero<ax::v3>();
+					in.read((char*)&pixel_in_place.color, sizeof(ax::color));
+					if (inbytespp < 3) pixel_in_place.color.g = pixel_in_place.color.b = pixel_in_place.color.r;
+					if (inbytespp < 4) pixel_in_place.color.a = 255;
+					std::swap(pixel_in_place.color.r, pixel_in_place.color.b);
+				}
+			}
             if (!in.good())
             {
                 in.close();
                 std::cerr << "an error occured while reading the data\n";
                 return false;
             }
-            for (VAR i = 0u; i < nbytes; i += bytespp)
-            {
-                VAR* zero = data + i;
-                VAR* two = data + i + 2;
-                std::swap(*zero, *two);
-            }
         }
-        else if (10 == header.datatypecode || 11 == header.datatypecode)
+        else if (header.datatypecode == 10 || header.datatypecode == 11)
         {
-            in.close();
-            std::cerr << "rle not supported\n";
-            return false;
+			if (!load_rle_data(inbytespp, in))
+			{
+				in.close();
+				std::cerr << "an error occured while reading the data\n";
+				return false;
+			}
         }
         else
         {
@@ -147,14 +147,14 @@ namespace ax
             std::cerr << "unknown file format " << (int)header.datatypecode << "\n";
             return false;
         }
-        std::cerr << width << "x" << height << "/" << bytespp * 8 << "\n";
+        std::cerr << width << "x" << height << "/" << inbytespp * 8 << "\n";
         in.close();
         return true;
     }
 
-    bool basic_buffer::write_to_tga_file(const char *file_path) const
+	// TODO: clean up this code. it's terrible and not exception-safe!
+	bool basic_buffer::write_to_tga_file(const char *file_path, bool flip) const
     {
-        // TODO: clean up this code. it's terrible.
         uint8_t developer_area_ref[4] = { 0, 0, 0, 0 };
         uint8_t extension_area_ref[4] = { 0, 0, 0, 0 };
         uint8_t footer[18] = { 'T','R','U','E','V','I','S','I','O','N','-','X','F','I','L','E','.','\0' };
@@ -172,7 +172,7 @@ namespace ax
         header.width = static_cast<short>(width);
         header.height = static_cast<short>(height);
         header.datatypecode = 2;
-        header.imagedescriptor = 0x20; // top-left origin
+        header.imagedescriptor = flip ? 0x20 : 0x0;
         out.write((char*)&header, sizeof(header));
         if (!out.good())
         {
@@ -223,4 +223,70 @@ namespace ax
         out.close();
         return true;
     }
+
+	// TODO: clean up this code.
+	bool basic_buffer::load_rle_data(int inbytespp, std::ifstream& in)
+	{
+		VAL dataLength = width * height * get_bytespp();
+		for (VAR i = 0; i < dataLength; i)
+		{
+			VAR chunkheader = static_cast<unsigned char>(in.get());
+			if (!in.good())
+			{
+				std::cerr << "an error occured while reading the data\n";
+				return false;
+			}
+			if (chunkheader < 128)
+			{
+				++chunkheader;
+				for (int j = 0; j < chunkheader; ++j)
+				{
+					ax::color color;
+					in.read((char*)&color, inbytespp);
+					if (inbytespp < 3) color.g = color.b = color.r;
+					if (inbytespp < 4) color.a = 255;
+					std::swap(color.r, color.b);
+					if (!in.good())
+					{
+						std::cerr << "an error occured while reading the header\n";
+						return false;
+					}
+					else
+					{
+						VAR& pixel_in_place = reinterpret_cast<ax::basic_pixel&>(data[i]);
+						pixel_in_place.depth = std::numeric_limits<float>::lowest();
+						pixel_in_place.normal = ax::zero<ax::v3>();
+						pixel_in_place.color = color;
+						i += get_bytespp();
+					}
+				}
+			}
+			else
+			{
+				chunkheader -= 127;
+				ax::color color;
+				in.read((char*)&color, inbytespp);
+				if (inbytespp < 3) color.g = color.b = color.r;
+				if (inbytespp < 4) color.a = 255;
+				std::swap(color.r, color.b);
+				if (!in.good())
+				{
+					std::cerr << "an error occured while reading the header\n";
+					return false;
+				}
+				else
+				{
+					for (int j = 0; j < chunkheader; ++j)
+					{
+						VAR& pixel_in_place = reinterpret_cast<ax::basic_pixel&>(data[i]);
+						pixel_in_place.depth = std::numeric_limits<float>::lowest();
+						pixel_in_place.normal = ax::zero<ax::v3>();
+						pixel_in_place.color = color;
+						i += get_bytespp();
+					}
+				}
+			}
+		}
+		return true;
+	}
 }
