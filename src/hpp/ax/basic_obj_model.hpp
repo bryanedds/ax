@@ -27,14 +27,17 @@ namespace ax
 
         int get_vertex_count() const;
         int get_face_count() const;
-        ax::v3 get_normal(int iface, int nthvert) const;
-        ax::v3 get_normal(ax::v2 uv) const;
+        ax::v3 get_normal(int iface, int nthvert) const; // TODO: move this to math.hpp?
+        ax::v3 get_normal(ax::v2 uv) const; // TODO: move this to math.hpp?
         ax::v3 get_vertex(int i) const;
-        ax::v3 get_vertex(int iface, int nthvert) const;
-        ax::v2 get_uv(int iface, int nthvert) const;
-        ax::color get_color_diffuse(ax::v2 uv) const;
-        float get_specularity(ax::v2 uv) const;
+        ax::v3 get_vertex(int iface, int nthvert) const; // TODO: move this to math.hpp?
+        ax::v2 get_uv(int iface, int nthvert) const; // TODO: move this to math.hpp?
+        ax::color get_color_diffuse(ax::v2 uv) const; // TODO: move this to math.hpp
+        float get_specularity(ax::v2 uv) const; // TODO: move this to math.hpp
         std::vector<int> get_face(int idx) const;
+		const ax::basic_buffer& get_diffuse_map() const { return diffuse_map; }
+		const ax::basic_buffer& get_normal_map() const { return normal_map; }
+		const ax::basic_buffer& get_specular_map() const { return specular_map; }
 
     private:
 
