@@ -96,26 +96,21 @@ namespace ax
         for (VAR i = 0; i < model.get_face_count(); i++)
         {
             VAL& face = model.get_face(i);
-            VAL& a = model.get_vertex(face[0]);
-            VAL& b = model.get_vertex(face[1]);
-            VAL& c = model.get_vertex(face[2]);
-            VAL& triangle = ax::triangle2(ax::v2(a.x, a.y), ax::v2(b.x, b.y), ax::v2(c.x, c.y));
-            VAL& normal = ((b - a) ^ (c - a)).NormalizeSafe();
+            VAL& triangle = ax::triangle3(model.get_vertex(face[0]), model.get_vertex(face[1]), model.get_vertex(face[2]));
+            VAL& normal = ax::get_normal(triangle);
             VAL& forward = ax::v3(0.0f, 0.0f, 1.0f);
-            VAL backface = normal * forward <= 0;
-            VAL& uvs = ax::triangle2(model.get_uv(i, 0), model.get_uv(i, 1), model.get_uv(i, 2));
-            if (!backface)
+            VAL not_back_face = normal * forward > 0;
+            if (not_back_face)
             {
+                VAL& uvs = ax::triangle2(model.get_uv(i, 0), model.get_uv(i, 1), model.get_uv(i, 2));
                 VAL& light = ax::v3(0.0f, 0.0f, -1.0f);
                 VAL intensity = normal * light;
-                VAL& center_screen = ax::v2(
-                    static_cast<float>(buffer.get_width()),
-                    static_cast<float>(buffer.get_height())) *
-                    0.5f;
+                VAL& center_screen = ax::v2(static_cast<float>(buffer.get_width()), static_cast<float>(buffer.get_height())) * 0.5f;
+                VAL& triangle_ortho = ax::get_ortho(triangle);
                 VAL& triangle_screen = ax::triangle2(
-                    (std::get<0>(triangle) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
-                    (std::get<1>(triangle) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
-                    (std::get<2>(triangle) + ax::v2(1.0f, 1.0f)).SymMul(center_screen));
+                    (std::get<0>(triangle_ortho) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
+                    (std::get<1>(triangle_ortho) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
+                    (std::get<2>(triangle_ortho) + ax::v2(1.0f, 1.0f)).SymMul(center_screen));
                 VAL& bounds_screen = ax::get_bounds(triangle_screen);
                 VAL width = static_cast<int>(bounds_screen.second.x);
                 VAL height = static_cast<int>(bounds_screen.second.y);
@@ -131,7 +126,7 @@ namespace ax
                             if (depth >= pixel_in_place.depth)
                             {
                                 VAL& uv = ax::get_interpolation(point, uvs);
-								VAL& color_diffuse = ax::color(100, 100, 100, 255); // model.get_diffuse_map().sample_as_diffuse(uv);
+								VAL& color_diffuse = ax::color(255, 255, 255, 255); // model.get_diffuse_map().sample_as_diffuse(uv);
 								VAL& color = ax::color(
 									static_cast<uint8_t>(color_diffuse.r * intensity),
 									static_cast<uint8_t>(color_diffuse.g * intensity),

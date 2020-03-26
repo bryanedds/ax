@@ -21,8 +21,12 @@ namespace ax
     using line3 = std::pair<v3, v3>;
     using triangle3 = std::tuple<v3, v3, v3>;
 
-    float get_depth(const ax::v2& point, const ax::triangle2 triangle);
-    ax::v2 get_interpolation(const ax::v2& point, const ax::triangle2 uvs);
+    ax::v2 get_ortho(const ax::v3& vector);
+    ax::line2 get_ortho(const ax::line3& line);
+    ax::triangle2 get_ortho(const ax::triangle3& triangle);
+    float get_depth(const ax::v2& point, const ax::triangle3& triangle);
+    ax::v2 get_interpolation(const ax::v2& point, const ax::triangle2& uvs);
+    ax::v3 get_normal(const ax::triangle3& triangle);
     ax::box2 get_bounds(const ax::triangle2& triangle);
     ax::box2 get_intersection(const ax::box2& box, const ax::box2& box2);
     bool get_in_bounds(const ax::v2& point, const ax::triangle2& triangle);

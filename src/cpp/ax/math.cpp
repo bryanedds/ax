@@ -6,6 +6,55 @@
 
 namespace ax
 {
+    ax::v2 get_ortho(const ax::v3& vector)
+    {
+        return ax::v2(vector.x, vector.y);
+    }
+
+    ax::line2 get_ortho(const ax::line3& line)
+    {
+        VAL& line_ortho = ax::line2(
+            ax::v2(std::get<0>(line).x, std::get<0>(line).y),
+            ax::v2(std::get<1>(line).x, std::get<1>(line).y));
+        return line_ortho;
+    }
+
+    ax::triangle2 get_ortho(const ax::triangle3& triangle)
+    {
+        VAL& triangle_ortho = ax::triangle2(
+            ax::v2(std::get<0>(triangle).x, std::get<0>(triangle).y),
+            ax::v2(std::get<1>(triangle).x, std::get<1>(triangle).y),
+            ax::v2(std::get<2>(triangle).x, std::get<2>(triangle).y));
+        return triangle_ortho;
+    }
+
+    float get_depth(const ax::v2& point, const ax::triangle3& triangle)
+    {
+        VAL& triangle_ortho = ax::get_ortho(triangle);
+        VAL& coords = ax::get_barycentric_coords(point, triangle_ortho);
+        VAL depth =
+            std::get<0>(triangle).z * coords.x +
+            std::get<1>(triangle).z * coords.y +
+            std::get<2>(triangle).z * coords.z;
+        return depth;
+    }
+
+    ax::v2 get_interpolation(const ax::v2& point, const ax::triangle2& triangle)
+    {
+        VAL& coords = ax::get_barycentric_coords(point, triangle);
+        VAL interpolation =
+            std::get<0>(triangle) * coords.x +
+            std::get<1>(triangle) * coords.y +
+            std::get<2>(triangle) * coords.z;
+        return interpolation;
+    }
+
+    ax::v3 get_normal(const ax::triangle3& triangle)
+    {
+        VAR cross_product = (std::get<1>(triangle) - std::get<0>(triangle)) ^ (std::get<2>(triangle) - std::get<0>(triangle));
+		return cross_product.NormalizeSafe();
+    }
+    
     ax::box2 get_bounds(const ax::triangle2& triangle)
     {
         VAL left = std::min(
@@ -23,26 +72,6 @@ namespace ax
         return
             {{ left, bottom },
              { right, top }};
-    }
-
-    float get_depth(const ax::v2& point, const ax::triangle2 triangle)
-    {
-        VAL& coords = ax::get_barycentric_coords(point, triangle);
-        VAL depth =
-            std::get<0>(triangle).y * coords.x +
-            std::get<1>(triangle).y * coords.y +
-            std::get<2>(triangle).y * coords.z;
-        return depth;
-    }
-
-    ax::v2 get_interpolation(const ax::v2& point, const ax::triangle2 triangle)
-    {
-        VAL& coords = ax::get_barycentric_coords(point, triangle);
-        VAL interpolation =
-            std::get<0>(triangle) * coords.x +
-            std::get<1>(triangle) * coords.y +
-            std::get<2>(triangle) * coords.z;
-        return interpolation;
     }
 
     ax::box2 get_intersection(const ax::box2& box, const ax::box2& box2)
