@@ -60,10 +60,7 @@ namespace ax
 
     void draw_wire_ortho(const ax::color& color, const ax::line2& line, ax::basic_buffer& buffer)
     {
-        VAL& center = ax::v2(
-            static_cast<float>(buffer.get_width()),
-            static_cast<float>(buffer.get_height())) *
-            0.5f;
+        VAL& center = ax::v2(static_cast<float>(buffer.get_width()), static_cast<float>(buffer.get_height())) * 0.5f;
         VAL x = static_cast<int>((line.first.x + 1.0f) * center.x);
         VAL y = static_cast<int>((line.first.y + 1.0f) * center.y);
         VAL x2 = static_cast<int>((line.second.x + 1.0f) * center.x);
@@ -93,6 +90,7 @@ namespace ax
 
     void draw_filled_ortho(const ax::basic_obj_model& model, ax::basic_buffer& buffer)
     {
+        // TODO: refactor this code.
         for (VAR i = 0; i < model.get_face_count(); i++)
         {
             VAL& face = model.get_face(i);

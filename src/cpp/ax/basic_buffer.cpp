@@ -122,9 +122,9 @@ namespace ax
         return specular;
     }
 
-    // TODO: clean up this code. it's terrible and not exception-safe!
     bool basic_buffer::read_from_tga_file(const char* file_path)
     {
+        // TODO: clean up this code. it's terrible and not exception-safe!
         if (data) delete[] data;
         data = nullptr;
         std::ifstream in;
@@ -196,9 +196,9 @@ namespace ax
         return true;
     }
 
-	// TODO: clean up this code. it's terrible and not exception-safe!
 	bool basic_buffer::write_to_tga_file(const char *file_path)
     {
+	    // TODO: clean up this code. it's terrible and not exception-safe!
         flip_horizontal();
         uint8_t developer_area_ref[4] = { 0, 0, 0, 0 };
         uint8_t extension_area_ref[4] = { 0, 0, 0, 0 };
@@ -276,9 +276,9 @@ namespace ax
         return true;
     }
 
-	// TODO: clean up this code.
 	bool basic_buffer::load_rle_data(int inbytespp, std::ifstream& in)
 	{
+	    // TODO: clean up this code.
 		VAL dataLength = width * height * get_bytespp();
 		for (VAR i = 0; i < dataLength; i)
 		{

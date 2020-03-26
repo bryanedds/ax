@@ -18,6 +18,7 @@ namespace ax
         normal_map(),
         specular_map()
     {
+        // TODO: clean up this code, extracting out the loading, at least.
         std::ifstream in(file_path, std::ifstream::in);
         if (!in.fail())
         {
