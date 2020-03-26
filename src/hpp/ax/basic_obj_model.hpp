@@ -13,7 +13,7 @@ namespace ax
 {
     struct basic_vertex
     {
-        ax::v3 vertex;
+        ax::v3 position;
         ax::v3 normal;
         ax::v2 uv;
     };
@@ -43,7 +43,7 @@ namespace ax
 
         bool try_load_texture(std::string file_path, const char *suffix, ax::basic_buffer &img);
 
-        std::vector<std::vector<ax::v3i>> faces; // NOTE: this v3i means vertex/uv/normal. TODO: make it mean vertex/normal/uv instead.
+        std::vector<std::vector<ax::v3i>> faces; // NOTE: this v3i means position/uv/normal. TODO: make it mean position/normal/uv instead.
         std::vector<ax::v3> vertices;
         std::vector<ax::v3> normals;
         std::vector<ax::v2> uvs;
