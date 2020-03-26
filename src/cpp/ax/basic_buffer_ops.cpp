@@ -71,11 +71,11 @@ namespace ax
         ax::draw_line(color, x, y, x2, y2, buffer);
     }
 
-    void draw_wire_ortho(const ax::color& color, const ax::triangle2& tri, ax::basic_buffer& buffer)
+    void draw_wire_ortho(const ax::color& color, const ax::triangle2& triangle, ax::basic_buffer& buffer)
     {
-        ax::draw_wire_ortho(color, ax::line2(std::get<0>(tri), std::get<1>(tri)), buffer);
-        ax::draw_wire_ortho(color, ax::line2(std::get<1>(tri), std::get<2>(tri)), buffer);
-        ax::draw_wire_ortho(color, ax::line2(std::get<2>(tri), std::get<0>(tri)), buffer);
+        ax::draw_wire_ortho(color, ax::line2(std::get<0>(triangle), std::get<1>(triangle)), buffer);
+        ax::draw_wire_ortho(color, ax::line2(std::get<1>(triangle), std::get<2>(triangle)), buffer);
+        ax::draw_wire_ortho(color, ax::line2(std::get<2>(triangle), std::get<0>(triangle)), buffer);
     }
 
     void draw_wire_ortho(const ax::color& color, const ax::basic_obj_model& model, ax::basic_buffer& buffer)
@@ -86,8 +86,8 @@ namespace ax
             VAL& a = model.get_vertex(face[0]);
             VAL& b = model.get_vertex(face[1]);
             VAL& c = model.get_vertex(face[2]);
-            VAL& tri = ax::triangle2(ax::v2(a.x, a.y), ax::v2(b.x, b.y), ax::v2(c.x, c.y));
-            draw_wire_ortho(color, tri, buffer);
+            VAL& triangle = ax::triangle2(ax::v2(a.x, a.y), ax::v2(b.x, b.y), ax::v2(c.x, c.y));
+            draw_wire_ortho(color, triangle, buffer);
         }
     }
 
@@ -99,7 +99,7 @@ namespace ax
             VAL& a = model.get_vertex(face[0]);
             VAL& b = model.get_vertex(face[1]);
             VAL& c = model.get_vertex(face[2]);
-            VAL& tri = ax::triangle2(ax::v2(a.x, a.y), ax::v2(b.x, b.y), ax::v2(c.x, c.y));
+            VAL& triangle = ax::triangle2(ax::v2(a.x, a.y), ax::v2(b.x, b.y), ax::v2(c.x, c.y));
             VAL& normal = ((b - a) ^ (c - a)).NormalizeSafe();
             VAL& forward = ax::v3(0.0f, 0.0f, 1.0f);
             VAL backface = normal * forward <= 0;
@@ -112,25 +112,26 @@ namespace ax
                     static_cast<float>(buffer.get_width()),
                     static_cast<float>(buffer.get_height())) *
                     0.5f;
-                VAL& tri_screen = ax::triangle2(
-                    (std::get<0>(tri) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
-                    (std::get<1>(tri) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
-                    (std::get<2>(tri) + ax::v2(1.0f, 1.0f)).SymMul(center_screen));
-                VAL& bounds_screen = ax::get_bounds(tri_screen);
+                VAL& triangle_screen = ax::triangle2(
+                    (std::get<0>(triangle) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
+                    (std::get<1>(triangle) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
+                    (std::get<2>(triangle) + ax::v2(1.0f, 1.0f)).SymMul(center_screen));
+                VAL& bounds_screen = ax::get_bounds(triangle_screen);
                 VAL width = static_cast<int>(bounds_screen.second.x);
                 VAL height = static_cast<int>(bounds_screen.second.y);
                 for (VAR i = static_cast<int>(bounds_screen.first.x); i <= width; ++i)
                 {
                     for (VAR j = static_cast<int>(bounds_screen.first.y); j <= height; ++j)
                     {
-                        if (ax::get_in_bounds(ax::v2(static_cast<float>(i), static_cast<float>(j)), tri_screen))
+                        if (ax::get_in_bounds(ax::v2(static_cast<float>(i), static_cast<float>(j)), triangle_screen))
                         {
                             VAL& point = ax::v2(static_cast<float>(i), static_cast<float>(j));
-                            VAL depth = ax::get_depth(point, tri);
+                            VAL depth = ax::get_depth(point, triangle);
                             VAR& pixel_in_place = buffer.get_pixel_in_place(i, j);
                             if (depth >= pixel_in_place.depth)
                             {
-								VAL& color_diffuse = model.get_color_diffuse(std::get<0>(uvs));
+                                VAL& uv = ax::get_interpolation(point, uvs);
+								VAL& color_diffuse = ax::color(100, 100, 100, 255); // model.get_diffuse_map().sample_as_diffuse(uv);
 								VAL& color = ax::color(
 									static_cast<uint8_t>(color_diffuse.r * intensity),
 									static_cast<uint8_t>(color_diffuse.g * intensity),

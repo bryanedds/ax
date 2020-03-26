@@ -79,6 +79,33 @@ namespace ax
         }
     }
 
+    ax::color basic_buffer::sample_as_diffuse(const ax::v2& position) const
+    {
+        VAL& positionI = ax::v2i(static_cast<int>(position.x * width), static_cast<int>(position.y * height));
+        VAL& color = get_pixel(positionI.x, positionI.y).color;
+		return color;
+    }
+
+    ax::v3 basic_buffer::sample_as_normal(const ax::v2& position) const
+    {
+        VAL& positionI = ax::v2i(static_cast<int>(position.x * width), static_cast<int>(position.y * height));
+        VAL& color = get_pixel(positionI.x, positionI.y).color;
+        ax::v3 normal;
+        for (int i = 0; i < 3; i++)
+        {
+            VAL scalar = static_cast<float>(color[i]) / 255.f * 2.0f - 1.0f;
+            normal[2 - i] = scalar;
+        }
+        return normal;
+    }
+
+    float basic_buffer::sample_as_specular(const ax::v2& position) const
+    {
+		VAL& positionI = ax::v2i(static_cast<int>(position.x * width), static_cast<int>(position.y * height));
+        VAL& specular = get_pixel(positionI.x, positionI.y).color.r / 1.0f;
+        return specular;
+    }
+
     // TODO: clean up this code. it's terrible and not exception-safe!
     bool basic_buffer::read_from_tga_file(const char* file_path)
     {

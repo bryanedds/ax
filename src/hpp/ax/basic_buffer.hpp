@@ -33,10 +33,15 @@ namespace ax
         constexpr int get_bytespp() const { return sizeof(ax::basic_pixel); }
         int get_width() const { return width; };
         int get_height() const { return height; };
+
         ax::basic_pixel& get_pixel_in_place(int x, int y);
         const ax::basic_pixel& get_pixel(int x, int y) const;
         bool set_pixel(int x, int y, const ax::basic_pixel& pixel);
         void flood(const ax::basic_pixel& pixel);
+
+        ax::color sample_as_diffuse(const ax::v2& position) const;
+        ax::v3 sample_as_normal(const ax::v2& position) const;
+        float sample_as_specular(const ax::v2& position) const;
 
         bool read_from_tga_file(const char *filename);
         bool write_to_tga_file(const char *filename, bool flip = false) const;

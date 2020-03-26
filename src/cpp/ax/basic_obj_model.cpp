@@ -104,6 +104,18 @@ namespace ax
         return vertices[faces[iface][nthvert][0]];
     }
 
+    ax::v3 basic_obj_model::get_normal(int iface, int nthvert) const
+    {
+        int idx = faces[iface][nthvert][2];
+        ax::v3 v = normals[idx];
+        return v.NormalizeSafe();
+    }
+
+    ax::v2 basic_obj_model::get_uv(int iface, int nthvert) const
+    {
+        return uvs[faces[iface][nthvert][1]];
+    }
+
     bool basic_obj_model::try_load_texture(std::string file_path, const char* suffix, basic_buffer& img)
     {
         std::string texfile(file_path);
@@ -114,45 +126,5 @@ namespace ax
             return img.read_from_tga_file(texfile.c_str());
         }
         return false;
-    }
-
-    ax::color basic_obj_model::get_color_diffuse(ax::v2 uvf) const
-    {
-        ax::v2i uv(
-            static_cast<int>(uvf[0] * diffuse_map.get_width()),
-            static_cast<int>(uvf[1] * diffuse_map.get_height()));
-        VAL& color = diffuse_map.get_pixel(uv[0], uv[1]).color;
-		return color;
-    }
-
-    ax::v3 basic_obj_model::get_normal(ax::v2 uvf) const
-    {
-        ax::v2i uv(
-            static_cast<int>(uvf[0] * normal_map.get_width()),
-            static_cast<int>(uvf[1] * normal_map.get_height()));
-        ax::color c = normal_map.get_pixel(uv[0], uv[1]).color;
-        ax::v3 res;
-        for (int i = 0; i < 3; i++) res[2 - i] = (float)c[i] / 255.f * 2.f - 1.f;
-        return res;
-    }
-
-    ax::v2 basic_obj_model::get_uv(int iface, int nthvert) const
-    {
-        return uvs[faces[iface][nthvert][1]];
-    }
-
-    float basic_obj_model::get_specularity(ax::v2 uvf) const
-    {
-        ax::v2i uv(
-            static_cast<int>(uvf[0] * specular_map.get_width()),
-            static_cast<int>(uvf[1] * specular_map.get_height()));
-        return specular_map.get_pixel(uv[0], uv[1]).color[0] / 1.f;
-    }
-
-    ax::v3 basic_obj_model::get_normal(int iface, int nthvert) const
-    {
-        int idx = faces[iface][nthvert][2];
-        ax::v3 v = normals[idx];
-        return v.NormalizeSafe();
     }
 }
