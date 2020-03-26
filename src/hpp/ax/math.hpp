@@ -20,6 +20,12 @@ namespace ax
     using box3 = std::pair<v3, v3>;
     using line3 = std::pair<v3, v3>;
     using triangle3 = std::tuple<v3, v3, v3>;
+
+    float get_depth(const ax::v2& point, const ax::triangle2 tri);
+    ax::box2 get_bounds(const ax::triangle2& tri);
+    ax::box2 get_intersection(const ax::box2& box, const ax::box2& box2);
+    bool get_in_bounds(const ax::v2& point, const ax::triangle2& tri);
+    ax::v3 get_barycentric_coords(ax::v2 point, const ax::triangle2& tri);
 }
 
 #endif

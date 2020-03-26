@@ -9,6 +9,7 @@ $CppFiles =
     "../src/cpp/ax/basic_buffer.cpp",
     "../src/cpp/ax/basic_obj_model.cpp",
     "../src/cpp/ax/field.cpp",
+    "../src/cpp/ax/math.cpp",
     "../src/cpp/ax/name.cpp",
     "../src/cpp/ax/parser.cpp",
     "../src/cpp/ax/reflectable.cpp",

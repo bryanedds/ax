@@ -249,5 +249,8 @@
     <ClCompile Include="..\..\src\cpp\ax\basic_buffer_ops.cpp">
       <Filter>Source Files\ax</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\cpp\ax\math.cpp">
+      <Filter>Source Files\ax</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

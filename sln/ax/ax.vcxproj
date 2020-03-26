@@ -78,6 +78,7 @@
     <ClCompile Include="..\..\src\cpp\ax\basic_buffer_ops.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\field.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\basic_obj_model.cpp" />
+    <ClCompile Include="..\..\src\cpp\ax\math.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\reflectable.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\name.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\parser.cpp" />

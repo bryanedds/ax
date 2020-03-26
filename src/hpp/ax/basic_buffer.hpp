@@ -33,9 +33,8 @@ namespace ax
         constexpr int get_bytespp() const { return sizeof(ax::basic_pixel); }
         int get_width() const { return width; };
         int get_height() const { return height; };
-        const ax::basic_pixel& get_pixel_in_place(int x, int y) const;
         ax::basic_pixel& get_pixel_in_place(int x, int y);
-        ax::basic_pixel get_pixel(int x, int y) const;
+        const ax::basic_pixel& get_pixel(int x, int y) const;
         bool set_pixel(int x, int y, const ax::basic_pixel& pixel);
         void flood(const ax::basic_pixel& pixel);
 
