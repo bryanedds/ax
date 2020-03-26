@@ -38,6 +38,7 @@ namespace ax
         const ax::basic_pixel& get_pixel(int x, int y) const;
         bool set_pixel(int x, int y, const ax::basic_pixel& pixel);
         void flood(const ax::basic_pixel& pixel);
+		void flip();
 
         ax::color sample_diffuse(const ax::v2& position) const;
         ax::v3 sample_normal(const ax::v2& position) const;

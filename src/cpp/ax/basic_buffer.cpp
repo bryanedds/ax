@@ -79,6 +79,22 @@ namespace ax
         }
     }
 
+	void basic_buffer::flip()
+	{
+		// TODO: make this allocation exception-safe!
+		VAL line_size = sizeof(ax::basic_pixel) * width;
+		VAL size = height * line_size;
+		VAR* line = new char[line_size];
+		for (int j = 0; j < height / 2; ++j)
+		{
+			VAL cursor = j * line_size;
+			std::memcpy(line, &data[cursor], line_size);
+			std::memcpy(&data[cursor], &data[size - line_size - cursor], line_size);
+			std::memcpy(&data[size - line_size - cursor], line, line_size);
+		}
+		delete[] line;
+	}
+
     ax::color basic_buffer::sample_diffuse(const ax::v2& position) const
     {
         VAL& positionI = ax::v2i(static_cast<int>(position.x * width), static_cast<int>(position.y * height));
@@ -174,6 +190,7 @@ namespace ax
             std::cerr << "unknown file format " << (int)header.datatypecode << "\n";
             return false;
         }
+		flip();
         std::cerr << width << "x" << height << "/" << inbytespp * 8 << "\n";
         in.close();
         return true;
