@@ -34,7 +34,7 @@ namespace ax
 
     private:
 
-        bool try_load_texture(std::string file_path, const char *suffix, ax::basic_buffer &buffer);
+        bool try_load_from_tga(std::string file_path, const char *suffix, ax::basic_buffer &buffer);
 
         ax::basic_buffer diffuse_map;
         ax::basic_buffer normal_map;

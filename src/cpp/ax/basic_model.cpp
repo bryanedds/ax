@@ -27,19 +27,19 @@ namespace ax
     {
         // TODO: use the map_XX parses instead of hard-coding like this.
         // https://en.wikipedia.org/wiki/Wavefront_.obj_file#Texture_maps
-        try_load_texture(file_path, "_diffuse.tga", diffuse_map);
-        try_load_texture(file_path, "_nm_tangent.tga", normal_map);
-        try_load_texture(file_path, "_spec.tga", specular_map);
+        try_load_from_tga(file_path, "_diffuse.tga", diffuse_map);
+        try_load_from_tga(file_path, "_nm_tangent.tga", normal_map);
+        try_load_from_tga(file_path, "_spec.tga", specular_map);
     }
 
-    bool basic_surface::try_load_texture(std::string file_path, const char* suffix, basic_buffer& buffer)
+    bool basic_surface::try_load_from_tga(std::string file_path, const char* suffix, basic_buffer& buffer)
     {
         std::string texfile(file_path);
         size_t dot = texfile.find_last_of(".");
         if (dot != std::string::npos)
         {
             texfile = texfile.substr(0, dot) + std::string(suffix);
-            return buffer.read_from_tga_file(texfile.c_str());
+            return buffer.load_from_tga(texfile.c_str());
         }
         return false;
     }

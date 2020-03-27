@@ -43,8 +43,8 @@ namespace ax
         ax::v3 sample_normal(const ax::v2& position) const;
         float sample_specular(const ax::v2& position) const;
 
-        bool read_from_tga_file(const char *filename);
-        bool write_to_tga_file(const char *filename);
+        bool load_from_tga(const char *filename);
+        bool save_to_tga(const char *filename);
 
     private:
 

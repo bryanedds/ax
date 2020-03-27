@@ -133,7 +133,7 @@ namespace ax
         return specular;
     }
 
-    bool basic_buffer::read_from_tga_file(const char* file_path)
+    bool basic_buffer::load_from_tga(const char* file_path)
     {
         // TODO: P1: clean up this code. it's terrible and not exception-safe!
         std::ifstream in;
@@ -207,7 +207,7 @@ namespace ax
         return true;
     }
 
-	bool basic_buffer::write_to_tga_file(const char *file_path)
+	bool basic_buffer::save_to_tga(const char *file_path)
     {
 	    // TODO: P1: clean up this code. it's terrible and not exception-safe!
         flip_horizontal();

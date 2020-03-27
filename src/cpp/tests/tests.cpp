@@ -298,7 +298,7 @@ namespace ax
         ax::draw_textured_ortho(light, model, render_target);
 
         // write render target as flipped to file
-        render_target.write_to_tga_file(image_file_path);
+        render_target.save_to_tga(image_file_path);
     }
 }
 
