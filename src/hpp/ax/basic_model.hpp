@@ -29,7 +29,7 @@ namespace ax
 		const ax::basic_buffer& get_normal_map() const { return normal_map; }
 		const ax::basic_buffer& get_specular_map() const { return specular_map; }
 
-        void load_from_obj(const char* file_path);
+        void load_from_obj(const char* file_path); // TODO: P1: return optional error
         void clear();
 
     private:
@@ -62,7 +62,7 @@ namespace ax
         const std::vector<ax::v3>& get_normals() const { return normals; }
 		const ax::basic_surface& get_surface() const { return surface; }
 
-        void load_from_obj(const char* file_path);
+        void load_from_obj(const char* file_path); // TODO: P1: make this return an optional error.
         void clear();
 
     private:
