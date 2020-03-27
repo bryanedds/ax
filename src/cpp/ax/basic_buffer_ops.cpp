@@ -95,35 +95,35 @@ namespace ax
             (std::get<1>(triangle_ortho) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
             (std::get<2>(triangle_ortho) + ax::v2(1.0f, 1.0f)).SymMul(center_screen));
         VAL& bounds_screen = ax::get_bounds(triangle_screen);
-        VAL width = static_cast<int>(bounds_screen.second.x);
-        VAL height = static_cast<int>(bounds_screen.second.y);
-        for (VAR i = static_cast<int>(bounds_screen.first.x); i <= width; ++i)
+        VAL width_screen = static_cast<int>(bounds_screen.second.x);
+        VAL height_screen = static_cast<int>(bounds_screen.second.y);
+        for (VAR j = static_cast<int>(bounds_screen.first.y); j <= height_screen; ++j)
         {
-            for (VAR j = static_cast<int>(bounds_screen.first.y); j <= height; ++j)
+            for (VAR i = static_cast<int>(bounds_screen.first.x); i <= width_screen; ++i)
             {
                 if (ax::get_in_bounds(ax::v2(static_cast<float>(i), static_cast<float>(j)), triangle_screen))
                 {
                     VAR& pixel_in_place = buffer.get_pixel_in_place(i, j);
                     VAL& point_screen = ax::v2(static_cast<float>(i), static_cast<float>(j));
                     VAL& coords_screen = ax::get_barycentric_coords(point_screen, triangle_screen);
-                    VAL depth =
+                    VAL depth_screen =
                         std::get<0>(triangle).z * coords_screen.x +
                         std::get<1>(triangle).z * coords_screen.y +
                         std::get<2>(triangle).z * coords_screen.z;
-                    if (depth >= pixel_in_place.depth)
+                    if (depth_screen >= pixel_in_place.depth)
                     {
-                        VAL uv =
+                        VAL uv_screen =
                             std::get<0>(uvs) * coords_screen.x +
                             std::get<1>(uvs) * coords_screen.y +
                             std::get<2>(uvs) * coords_screen.z;
-                        VAL& color_diffuse = surface.get_diffuse_map().sample_diffuse(uv);
-                        VAL& color = ax::color(
+                        VAL& color_diffuse = surface.get_diffuse_map().sample_diffuse(uv_screen);
+                        VAL& color_screen = ax::color(
                             static_cast<uint8_t>(color_diffuse.r * light),
                             static_cast<uint8_t>(color_diffuse.g * light),
                             static_cast<uint8_t>(color_diffuse.b * light),
                             color_diffuse.a);
-                        pixel_in_place.depth = depth;
-                        pixel_in_place.color = color;
+                        pixel_in_place.depth = depth_screen;
+                        pixel_in_place.color = color_screen;
                     }
                 }
             }
