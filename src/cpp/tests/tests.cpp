@@ -294,7 +294,8 @@ namespace ax
         render_target.flood(ax::basic_pixel(std::numeric_limits<float>::lowest(), ax::zero<ax::v3>(), { 0, 0, 0, 255 }));
 
         // render model to target
-        ax::draw_filled_ortho(model, render_target);
+		VAL& light = ax::v3(0.0f, 0.0f, 1.0f);
+        ax::draw_textured_ortho(light, model, render_target);
 
         // write render target as flipped to file
         render_target.write_to_tga_file(image_file_path);

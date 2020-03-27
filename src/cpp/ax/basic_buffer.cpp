@@ -105,6 +105,7 @@ namespace ax
 
     ax::color basic_buffer::sample_diffuse(const ax::v2& position) const
     {
+        if (width < 1 || height < 1) return ax::color(255, 0, 0, 255);
         VAL& positionI = ax::v2i(static_cast<int>(position.x * width), static_cast<int>(position.y * height));
         VAL& color = get_pixel(positionI.x, positionI.y).color;
 		return color;
@@ -112,6 +113,7 @@ namespace ax
 
     ax::v3 basic_buffer::sample_normal(const ax::v2& position) const
     {
+        if (width < 1 || height < 1) return ax::v3(0.0f, 0.0f, -1.0f); // TODO: make sure this is forward
         VAL& positionI = ax::v2i(static_cast<int>(position.x * width), static_cast<int>(position.y * height));
         VAL& color = get_pixel(positionI.x, positionI.y).color;
         ax::v3 normal;
@@ -125,6 +127,7 @@ namespace ax
 
     float basic_buffer::sample_specular(const ax::v2& position) const
     {
+        if (width < 1 || height < 1) return 0.5f;
 		VAL& positionI = ax::v2i(static_cast<int>(position.x * width), static_cast<int>(position.y * height));
         VAL& specular = get_pixel(positionI.x, positionI.y).color.r / 1.0f;
         return specular;

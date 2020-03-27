@@ -58,7 +58,7 @@ namespace ax
         }
     }
 
-    void draw_wire_ortho(const ax::color& color, const ax::line2& line, ax::basic_buffer& buffer)
+    void draw_wired_ortho(const ax::color& color, const ax::line2& line, ax::basic_buffer& buffer)
     {
         VAL& center = ax::v2(static_cast<float>(buffer.get_width()), static_cast<float>(buffer.get_height())) * 0.5f;
         VAL x = static_cast<int>((line.first.x + 1.0f) * center.x);
@@ -68,79 +68,94 @@ namespace ax
         ax::draw_line(color, x, y, x2, y2, buffer);
     }
 
-    void draw_wire_ortho(const ax::color& color, const ax::triangle2& triangle, ax::basic_buffer& buffer)
+    void draw_wired_ortho(const ax::color& color, const ax::triangle2& triangle, ax::basic_buffer& buffer)
     {
-        ax::draw_wire_ortho(color, ax::line2(std::get<0>(triangle), std::get<1>(triangle)), buffer);
-        ax::draw_wire_ortho(color, ax::line2(std::get<1>(triangle), std::get<2>(triangle)), buffer);
-        ax::draw_wire_ortho(color, ax::line2(std::get<2>(triangle), std::get<0>(triangle)), buffer);
+        ax::draw_wired_ortho(color, ax::line2(std::get<0>(triangle), std::get<1>(triangle)), buffer);
+        ax::draw_wired_ortho(color, ax::line2(std::get<1>(triangle), std::get<2>(triangle)), buffer);
+        ax::draw_wired_ortho(color, ax::line2(std::get<2>(triangle), std::get<0>(triangle)), buffer);
     }
 
-    void draw_wire_ortho(const ax::color& color, const ax::basic_model& model, ax::basic_buffer& buffer)
+    void draw_wired_ortho(const ax::color& color, const ax::basic_model& model, ax::basic_buffer& buffer)
     {
         for (VAR i = 0; i < model.get_faces().size(); i++)
         {
             VAL& face = model.get_face(i);
 			VAL& triangle = ax::triangle3(model.get_position(face[0]), model.get_position(face[1]), model.get_position(face[2]));
             VAL& triangle_ortho = ax::get_ortho(triangle);
-            draw_wire_ortho(color, triangle_ortho, buffer);
+            draw_wired_ortho(color, triangle_ortho, buffer);
         }
     }
 
-    void draw_filled_ortho(const ax::basic_model& model, ax::basic_buffer& buffer)
+    void draw_textured_ortho(
+        const ax::triangle3& triangle,
+        const ax::triangle2& uvs,
+        const ax::basic_buffer& diffuse_map,
+        const ax::basic_buffer& normal_map,
+        const ax::basic_buffer& specular_map,
+        float intensity,
+        ax::basic_buffer& buffer)
     {
-        // TODO: refactor this code.
+        VAL& center_screen = ax::v2(static_cast<float>(buffer.get_width()), static_cast<float>(buffer.get_height())) * 0.5f;
+        VAL& triangle_ortho = ax::get_ortho(triangle);
+        VAL& triangle_screen = ax::triangle2(
+            (std::get<0>(triangle_ortho) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
+            (std::get<1>(triangle_ortho) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
+            (std::get<2>(triangle_ortho) + ax::v2(1.0f, 1.0f)).SymMul(center_screen));
+        VAL& bounds_screen = ax::get_bounds(triangle_screen);
+        VAL width = static_cast<int>(bounds_screen.second.x);
+        VAL height = static_cast<int>(bounds_screen.second.y);
+        for (VAR i = static_cast<int>(bounds_screen.first.x); i <= width; ++i)
+        {
+            for (VAR j = static_cast<int>(bounds_screen.first.y); j <= height; ++j)
+            {
+                if (ax::get_in_bounds(ax::v2(static_cast<float>(i), static_cast<float>(j)), triangle_screen))
+                {
+                    VAR& pixel_in_place = buffer.get_pixel_in_place(i, j);
+                    VAL& point_screen = ax::v2(static_cast<float>(i), static_cast<float>(j));
+                    VAL& coords_screen = ax::get_barycentric_coords(point_screen, triangle_screen);
+                    VAL depth =
+                        std::get<0>(triangle).z * coords_screen.x +
+                        std::get<1>(triangle).z * coords_screen.y +
+                        std::get<2>(triangle).z * coords_screen.z;
+                    if (depth >= pixel_in_place.depth)
+                    {
+                        VAL uv =
+                            std::get<0>(uvs) * coords_screen.x +
+                            std::get<1>(uvs) * coords_screen.y +
+                            std::get<2>(uvs) * coords_screen.z;
+                        VAL& color_diffuse = diffuse_map.sample_diffuse(uv);
+                        VAL& color = ax::color(
+                            static_cast<uint8_t>(color_diffuse.r * intensity),
+                            static_cast<uint8_t>(color_diffuse.g * intensity),
+                            static_cast<uint8_t>(color_diffuse.b * intensity),
+                            color_diffuse.a);
+                        pixel_in_place.depth = depth;
+                        pixel_in_place.color = color;
+                    }
+                }
+            }
+        }
+    }
+
+    void draw_textured_ortho(const ax::v3& light, const ax::basic_model& model, ax::basic_buffer& buffer)
+    {
+        VAL& forward = ax::v3(0.0f, 0.0f, 1.0f);
         for (VAR i = 0; i < model.get_faces().size(); i++)
         {
             VAL& face = model.get_face(i);
             VAL& triangle = ax::triangle3(model.get_position(face[0]), model.get_position(face[1]), model.get_position(face[2]));
             VAL& normal = ax::get_normal(triangle);
-            VAL& forward = ax::v3(0.0f, 0.0f, 1.0f);
             VAL not_back_face = normal * forward > 0;
             if (not_back_face)
             {
-                VAL& center_screen = ax::v2(static_cast<float>(buffer.get_width()), static_cast<float>(buffer.get_height())) * 0.5f;
-                VAL& triangle_ortho = ax::get_ortho(triangle);
-                VAL& triangle_screen = ax::triangle2(
-                    (std::get<0>(triangle_ortho) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
-                    (std::get<1>(triangle_ortho) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
-                    (std::get<2>(triangle_ortho) + ax::v2(1.0f, 1.0f)).SymMul(center_screen));
-                VAL& bounds_screen = ax::get_bounds(triangle_screen);
-                VAL& uvs = ax::triangle2(model.get_uv(i, 0), model.get_uv(i, 1), model.get_uv(i, 2));
-                VAL& light = ax::v3(0.0f, 0.0f, 1.0f);
-                VAL intensity = std::abs(normal * light);
-                VAL width = static_cast<int>(bounds_screen.second.x);
-                VAL height = static_cast<int>(bounds_screen.second.y);
-                for (VAR i = static_cast<int>(bounds_screen.first.x); i <= width; ++i)
-                {
-                    for (VAR j = static_cast<int>(bounds_screen.first.y); j <= height; ++j)
-                    {
-                        if (ax::get_in_bounds(ax::v2(static_cast<float>(i), static_cast<float>(j)), triangle_screen))
-                        {
-                            VAR& pixel_in_place = buffer.get_pixel_in_place(i, j);
-                            VAL& point_screen = ax::v2(static_cast<float>(i), static_cast<float>(j));
-							VAL& coords_screen = ax::get_barycentric_coords(point_screen, triangle_screen);
-							VAL depth =
-								std::get<0>(triangle).z * coords_screen.x +
-								std::get<1>(triangle).z * coords_screen.y +
-								std::get<2>(triangle).z * coords_screen.z;
-                            if (depth >= pixel_in_place.depth)
-                            {
-								VAL uv =
-									std::get<0>(uvs) * coords_screen.x +
-									std::get<1>(uvs) * coords_screen.y +
-									std::get<2>(uvs) * coords_screen.z;
-								VAL& color_diffuse = model.get_diffuse_map().sample_diffuse(uv);
-								VAL& color = ax::color(
-									static_cast<uint8_t>(color_diffuse.r * intensity),
-									static_cast<uint8_t>(color_diffuse.g * intensity),
-									static_cast<uint8_t>(color_diffuse.b * intensity),
-									color_diffuse.a);
-                                pixel_in_place.depth = depth;
-                                pixel_in_place.color = color;
-                            }
-                        }
-                    }
-                }
+                draw_textured_ortho(
+                    triangle,
+                    ax::triangle2(model.get_uv(i, 0), model.get_uv(i, 1), model.get_uv(i, 2)),
+                    model.get_diffuse_map(),
+                    model.get_normal_map(),
+                    model.get_specular_map(),
+                    std::abs(normal * light),
+                    buffer);
             }
         }
     }

@@ -10,10 +10,24 @@ namespace ax
 {
     void draw_dot(const ax::color& color, int x, int y, ax::basic_buffer& buffer);
     void draw_line(const ax::color& color, int x, int y, int x2, int y2, ax::basic_buffer& buffer);
-    void draw_wire_ortho(const ax::color& color, const ax::line2& line, ax::basic_buffer& buffer);
-    void draw_wire_ortho(const ax::color& color, const ax::triangle2& triangle, ax::basic_buffer& buffer);
-    void draw_wire_ortho(const ax::color& color, const ax::basic_model& model, ax::basic_buffer& buffer);
-    void draw_filled_ortho(const ax::basic_model& model, ax::basic_buffer& buffer);
+
+    void draw_wired_ortho(const ax::color& color, const ax::line2& line, ax::basic_buffer& buffer);
+    void draw_wired_ortho(const ax::color& color, const ax::triangle2& triangle, ax::basic_buffer& buffer);
+    void draw_wired_ortho(const ax::color& color, const ax::basic_model& model, ax::basic_buffer& buffer);
+
+    void draw_textured_ortho(
+        const ax::triangle3& triangle,
+        const ax::triangle2& uvs,
+        const ax::basic_buffer& diffuse_map,
+        const ax::basic_buffer& normal_map,
+        const ax::basic_buffer& specular_map,
+        float intensity,
+        ax::basic_buffer& buffer);
+
+    void draw_textured_ortho(
+        const ax::v3& light,
+        const ax::basic_model& model,
+        ax::basic_buffer& buffer);
 }
 
 #endif
