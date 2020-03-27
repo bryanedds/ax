@@ -291,7 +291,7 @@ namespace ax
         VAL height = 800;
         VAL image_file_path = "../../data/image.tga";
         ax::basic_buffer render_target(width, height);
-        render_target.flood(ax::basic_pixel(std::numeric_limits<float>::lowest(), ax::zero<ax::v3>(), { 0, 0, 0, 255 }));
+        render_target.fill(ax::basic_pixel(std::numeric_limits<float>::lowest(), ax::zero<ax::v3>(), { 0, 0, 0, 255 }));
 
         // render model to target
 		VAL& light = ax::v3(0.0f, 0.0f, 1.0f);

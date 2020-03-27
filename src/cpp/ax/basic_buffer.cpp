@@ -20,13 +20,13 @@ namespace ax
         std::memset(data, 0, nbytes);
     }
 
-    basic_buffer::basic_buffer(const basic_buffer& img)
+    basic_buffer::basic_buffer(const basic_buffer& image)
     {
-        width = img.width;
-        height = img.height;
+        width = image.width;
+        height = image.height;
         uint32_t nbytes = width * height * get_bytespp();
         data = new uint8_t[nbytes];
-        memcpy(data, img.data, nbytes);
+        memcpy(data, image.data, nbytes);
     }
 
     basic_buffer::~basic_buffer()
@@ -34,16 +34,16 @@ namespace ax
         delete[] data;
     }
 
-    basic_buffer& basic_buffer::operator=(const basic_buffer& img)
+    basic_buffer& basic_buffer::operator=(const basic_buffer& image)
     {
-        if (this != &img)
+        if (this != &image)
         {
             delete[] data;
-            width = img.width;
-            height = img.height;
+            width = image.width;
+            height = image.height;
             uint32_t nbytes = width * height * get_bytespp();
             data = new uint8_t[nbytes];
-            memcpy(data, img.data, nbytes);
+            memcpy(data, image.data, nbytes);
         }
         return *this;
     }
@@ -68,7 +68,7 @@ namespace ax
         return true;
     }
 
-    void basic_buffer::flood(const ax::basic_pixel& pixel)
+    void basic_buffer::fill(const ax::basic_pixel& pixel)
     {
 		VAL bytespp = get_bytespp();
         VAL length = width * height * bytespp;
@@ -81,7 +81,7 @@ namespace ax
 
 	void basic_buffer::flip_horizontal()
 	{
-		// TODO: make this allocation exception-safe!
+		// TODO: P1: make this allocation exception-safe!
 		VAL line_size = sizeof(ax::basic_pixel) * width;
 		VAL size = height * line_size;
 		VAR* line = new char[line_size];
@@ -135,7 +135,7 @@ namespace ax
 
     bool basic_buffer::read_from_tga_file(const char* file_path)
     {
-        // TODO: clean up this code. it's terrible and not exception-safe!
+        // TODO: P1: clean up this code. it's terrible and not exception-safe!
         std::ifstream in;
         in.open(file_path, std::ios::binary);
         if (!in.is_open())
@@ -203,14 +203,13 @@ namespace ax
             return false;
         }
 		flip_horizontal();
-        std::cerr << width << "x" << height << "/" << inbytespp * 8 << "\n";
         in.close();
         return true;
     }
 
 	bool basic_buffer::write_to_tga_file(const char *file_path)
     {
-	    // TODO: clean up this code. it's terrible and not exception-safe!
+	    // TODO: P1: clean up this code. it's terrible and not exception-safe!
         flip_horizontal();
         uint8_t developer_area_ref[4] = { 0, 0, 0, 0 };
         uint8_t extension_area_ref[4] = { 0, 0, 0, 0 };
@@ -290,7 +289,7 @@ namespace ax
 
 	bool basic_buffer::load_rle_data(int inbytespp, std::ifstream& in)
 	{
-	    // TODO: clean up this code.
+	    // TODO: P1: clean up this code.
 		VAL dataLength = width * height * get_bytespp();
 		for (VAR i = 0; i < dataLength; i)
 		{

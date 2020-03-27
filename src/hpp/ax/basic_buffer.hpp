@@ -25,19 +25,17 @@ namespace ax
 
         basic_buffer();
         basic_buffer(int w, int h);
-        basic_buffer(const basic_buffer& img);
+        basic_buffer(const basic_buffer& image);
         ~basic_buffer();
+        basic_buffer& operator=(const basic_buffer& image);
 
-        basic_buffer& operator=(const basic_buffer& img);
-
-        constexpr int get_bytespp() const { return sizeof(ax::basic_pixel); }
         int get_width() const { return width; };
         int get_height() const { return height; };
-
+        constexpr int get_bytespp() const { return sizeof(ax::basic_pixel); }
         ax::basic_pixel& get_pixel_in_place(int x, int y);
         const ax::basic_pixel& get_pixel(int x, int y) const;
         bool set_pixel(int x, int y, const ax::basic_pixel& pixel);
-        void flood(const ax::basic_pixel& pixel);
+        void fill(const ax::basic_pixel& pixel);
 		void flip_horizontal();
         void clear();
 
@@ -52,7 +50,7 @@ namespace ax
 
 		bool load_rle_data(int inbytespp, std::ifstream& in);
 
-        uint8_t* data;
+        uint8_t* data; // TODO: P1: use a smart ptr here.
         int width;
         int height;
     };

@@ -95,6 +95,7 @@ namespace ax
 
     void basic_model::load_from_obj(const char *file_path)
     {
+        // TODO: P1: P1: make this return an optional error.
         clear();
         std::ifstream in(file_path, std::ifstream::in);
         if (!in.fail())
