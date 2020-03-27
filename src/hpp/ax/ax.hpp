@@ -6,7 +6,7 @@
 #include "algebraic.hpp"
 #include "basic_buffer_ops.hpp"
 #include "basic_buffer.hpp"
-#include "basic_obj_model.hpp"
+#include "basic_model.hpp"
 #include "castable.hpp"
 #include "cast.hpp"
 #include "choice.hpp"

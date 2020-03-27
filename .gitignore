@@ -200,5 +200,8 @@ FakesAssemblies/
 # ionide
 .ionide/symbolCache.db
 
+# vscode
+.vscode/
+
 # Assimp Source
 assimp-4.1.0

@@ -4,7 +4,7 @@
 #include "prelude.hpp"
 #include "math.hpp"
 #include "basic_buffer.hpp"
-#include "basic_obj_model.hpp"
+#include "basic_model.hpp"
 
 namespace ax
 {
@@ -12,8 +12,8 @@ namespace ax
     void draw_line(const ax::color& color, int x, int y, int x2, int y2, ax::basic_buffer& buffer);
     void draw_wire_ortho(const ax::color& color, const ax::line2& line, ax::basic_buffer& buffer);
     void draw_wire_ortho(const ax::color& color, const ax::triangle2& triangle, ax::basic_buffer& buffer);
-    void draw_wire_ortho(const ax::color& color, const ax::basic_obj_model& model, ax::basic_buffer& buffer);
-    void draw_filled_ortho(const ax::basic_obj_model& model, ax::basic_buffer& buffer);
+    void draw_wire_ortho(const ax::color& color, const ax::basic_model& model, ax::basic_buffer& buffer);
+    void draw_filled_ortho(const ax::basic_model& model, ax::basic_buffer& buffer);
 }
 
 #endif

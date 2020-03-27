@@ -25,7 +25,7 @@
     <ClInclude Include="..\..\src\hpp\ax\ax.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\basic_buffer.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\basic_buffer_ops.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\basic_obj_model.hpp" />
+    <ClInclude Include="..\..\src\hpp\ax\basic_model.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\cast.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\castable.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\choice.hpp" />
@@ -77,7 +77,7 @@
     <ClCompile Include="..\..\src\cpp\ax\address.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\basic_buffer_ops.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\field.cpp" />
-    <ClCompile Include="..\..\src\cpp\ax\basic_obj_model.cpp" />
+    <ClCompile Include="..\..\src\cpp\ax\basic_model.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\math.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\reflectable.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\name.cpp" />

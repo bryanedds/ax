@@ -283,7 +283,8 @@ namespace ax
     {
         // open model
         VAL model_file_path = "../../data/model.obj";
-        ax::basic_obj_model model(model_file_path);
+        ax::basic_model model;
+		model.load_from_obj(model_file_path);
 
         // create render target
         VAL width = 800;

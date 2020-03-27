@@ -7,7 +7,7 @@
 #include "ax/basic_buffer.hpp"
 
 #include "ax/prelude.hpp"
-#include "ax/basic_obj_model.hpp"
+#include "ax/basic_model.hpp"
 
 namespace ax
 {
@@ -31,14 +31,14 @@ namespace ax
 
     basic_buffer::~basic_buffer()
     {
-        if (data) delete[] data;
+        delete[] data;
     }
 
     basic_buffer& basic_buffer::operator=(const basic_buffer& img)
     {
         if (this != &img)
         {
-            if (data) delete[] data;
+            delete[] data;
             width = img.width;
             height = img.height;
             uint32_t nbytes = width * height * get_bytespp();
@@ -95,6 +95,14 @@ namespace ax
 		delete[] line;
 	}
 
+    void basic_buffer::clear()
+    {
+        delete[] data;
+        data = new uint8_t[0];
+        width = 0;
+        height = 0;
+    }
+
     ax::color basic_buffer::sample_diffuse(const ax::v2& position) const
     {
         VAL& positionI = ax::v2i(static_cast<int>(position.x * width), static_cast<int>(position.y * height));
@@ -125,8 +133,6 @@ namespace ax
     bool basic_buffer::read_from_tga_file(const char* file_path)
     {
         // TODO: clean up this code. it's terrible and not exception-safe!
-        if (data) delete[] data;
-        data = nullptr;
         std::ifstream in;
         in.open(file_path, std::ios::binary);
         if (!in.is_open())
@@ -143,8 +149,8 @@ namespace ax
             std::cerr << "an error occured while reading the header\n";
             return false;
         }
-        width = header.width;
-        height = header.height;
+        VAL width = header.width;
+        VAL height = header.height;
         VAL inbytespp = header.bitsperpixel >> 3;
         if (width <= 0 || height <= 0 || (inbytespp != 1 && inbytespp != 3 && inbytespp != 4))
         {
@@ -152,7 +158,10 @@ namespace ax
             std::cerr << "bad width, height, or bpp value\n";
             return false;
         }
-        data = new uint8_t[width * height * get_bytespp()];
+        delete[] this->data;
+        this->data = new uint8_t[width * height * get_bytespp()];
+        this->width = width;
+        this->height = height;
         if (header.datatypecode == 2 || header.datatypecode == 3)
         {
 			for (VAR j = 0; j < height; ++j)

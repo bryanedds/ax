@@ -75,26 +75,24 @@ namespace ax
         ax::draw_wire_ortho(color, ax::line2(std::get<2>(triangle), std::get<0>(triangle)), buffer);
     }
 
-    void draw_wire_ortho(const ax::color& color, const ax::basic_obj_model& model, ax::basic_buffer& buffer)
+    void draw_wire_ortho(const ax::color& color, const ax::basic_model& model, ax::basic_buffer& buffer)
     {
-        for (VAR i = 0; i < model.get_face_count(); i++)
+        for (VAR i = 0; i < model.get_faces().size(); i++)
         {
             VAL& face = model.get_face(i);
-            VAL& a = model.get_vertex(face[0]);
-            VAL& b = model.get_vertex(face[1]);
-            VAL& c = model.get_vertex(face[2]);
-            VAL& triangle = ax::triangle2(ax::v2(a.x, a.y), ax::v2(b.x, b.y), ax::v2(c.x, c.y));
-            draw_wire_ortho(color, triangle, buffer);
+			VAL& triangle = ax::triangle3(model.get_position(face[0]), model.get_position(face[1]), model.get_position(face[2]));
+            VAL& triangle_ortho = ax::get_ortho(triangle);
+            draw_wire_ortho(color, triangle_ortho, buffer);
         }
     }
 
-    void draw_filled_ortho(const ax::basic_obj_model& model, ax::basic_buffer& buffer)
+    void draw_filled_ortho(const ax::basic_model& model, ax::basic_buffer& buffer)
     {
         // TODO: refactor this code.
-        for (VAR i = 0; i < model.get_face_count(); i++)
+        for (VAR i = 0; i < model.get_faces().size(); i++)
         {
             VAL& face = model.get_face(i);
-            VAL& triangle = ax::triangle3(model.get_vertex(face[0]), model.get_vertex(face[1]), model.get_vertex(face[2]));
+            VAL& triangle = ax::triangle3(model.get_position(face[0]), model.get_position(face[1]), model.get_position(face[2]));
             VAL& normal = ax::get_normal(triangle);
             VAL& forward = ax::v3(0.0f, 0.0f, 1.0f);
             VAL not_back_face = normal * forward > 0;

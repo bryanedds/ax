@@ -76,7 +76,7 @@
     <ClInclude Include="..\..\src\hpp\ax\basic_buffer_ops.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\hpp\ax\basic_obj_model.hpp">
+    <ClInclude Include="..\..\src\hpp\ax\basic_model.hpp">
       <Filter>Header Files\ax</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\hpp\ax\cast.hpp">
@@ -240,7 +240,7 @@
     <ClCompile Include="..\..\src\cpp\crossguid\Guid.cpp">
       <Filter>Source Files\crossguid</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\cpp\ax\basic_obj_model.cpp">
+    <ClCompile Include="..\..\src\cpp\ax\basic_model.cpp">
       <Filter>Source Files\ax</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\cpp\ax\basic_buffer.cpp">

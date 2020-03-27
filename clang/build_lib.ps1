@@ -7,7 +7,7 @@ $CppFiles =
     "../src/cpp/ax/address.cpp",
     "../src/cpp/ax/basic_buffer_ops.cpp",
     "../src/cpp/ax/basic_buffer.cpp",
-    "../src/cpp/ax/basic_obj_model.cpp",
+    "../src/cpp/ax/basic_model.cpp",
     "../src/cpp/ax/field.cpp",
     "../src/cpp/ax/math.cpp",
     "../src/cpp/ax/name.cpp",
