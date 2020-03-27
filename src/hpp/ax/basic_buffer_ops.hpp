@@ -15,19 +15,8 @@ namespace ax
     void draw_wired_ortho(const ax::color& color, const ax::triangle2& triangle, ax::basic_buffer& buffer);
     void draw_wired_ortho(const ax::color& color, const ax::basic_model& model, ax::basic_buffer& buffer);
 
-    void draw_textured_ortho(
-        const ax::triangle3& triangle,
-        const ax::triangle2& uvs,
-        const ax::basic_buffer& diffuse_map,
-        const ax::basic_buffer& normal_map,
-        const ax::basic_buffer& specular_map,
-        float intensity,
-        ax::basic_buffer& buffer);
-
-    void draw_textured_ortho(
-        const ax::v3& light,
-        const ax::basic_model& model,
-        ax::basic_buffer& buffer);
+    void draw_textured_ortho(float light, const ax::basic_surface& surface, const ax::triangle2& uvs, const ax::triangle3& triangle, ax::basic_buffer& buffer);
+    void draw_textured_ortho(const ax::v3& light, const ax::basic_model& model, ax::basic_buffer& buffer);
 }
 
 #endif

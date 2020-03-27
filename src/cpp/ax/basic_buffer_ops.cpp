@@ -86,14 +86,7 @@ namespace ax
         }
     }
 
-    void draw_textured_ortho(
-        const ax::triangle3& triangle,
-        const ax::triangle2& uvs,
-        const ax::basic_buffer& diffuse_map,
-        const ax::basic_buffer& normal_map,
-        const ax::basic_buffer& specular_map,
-        float intensity,
-        ax::basic_buffer& buffer)
+    void draw_textured_ortho(float light, const ax::basic_surface& surface, const ax::triangle2& uvs, const ax::triangle3& triangle, ax::basic_buffer& buffer)
     {
         VAL& center_screen = ax::v2(static_cast<float>(buffer.get_width()), static_cast<float>(buffer.get_height())) * 0.5f;
         VAL& triangle_ortho = ax::get_ortho(triangle);
@@ -123,11 +116,11 @@ namespace ax
                             std::get<0>(uvs) * coords_screen.x +
                             std::get<1>(uvs) * coords_screen.y +
                             std::get<2>(uvs) * coords_screen.z;
-                        VAL& color_diffuse = diffuse_map.sample_diffuse(uv);
+                        VAL& color_diffuse = surface.get_diffuse_map().sample_diffuse(uv);
                         VAL& color = ax::color(
-                            static_cast<uint8_t>(color_diffuse.r * intensity),
-                            static_cast<uint8_t>(color_diffuse.g * intensity),
-                            static_cast<uint8_t>(color_diffuse.b * intensity),
+                            static_cast<uint8_t>(color_diffuse.r * light),
+                            static_cast<uint8_t>(color_diffuse.g * light),
+                            static_cast<uint8_t>(color_diffuse.b * light),
                             color_diffuse.a);
                         pixel_in_place.depth = depth;
                         pixel_in_place.color = color;
@@ -149,12 +142,10 @@ namespace ax
             if (not_back_face)
             {
                 draw_textured_ortho(
-                    triangle,
-                    ax::triangle2(model.get_uv(i, 0), model.get_uv(i, 1), model.get_uv(i, 2)),
-                    model.get_diffuse_map(),
-                    model.get_normal_map(),
-                    model.get_specular_map(),
                     std::abs(normal * light),
+                    model.get_surface(),
+                    ax::triangle2(model.get_uv(i, 0), model.get_uv(i, 1), model.get_uv(i, 2)),
+                    triangle,
                     buffer);
             }
         }

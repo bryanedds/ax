@@ -8,14 +8,48 @@
 
 namespace ax
 {
+    basic_surface::basic_surface() :
+        diffuse_map(),
+        normal_map(),
+        specular_map()
+    { }
+
+    basic_surface::~basic_surface() { }
+
+    void basic_surface::clear()
+    {
+        diffuse_map.clear();
+        normal_map.clear();
+        specular_map.clear();
+    }
+
+    void basic_surface::load_from_obj(const char* file_path)
+    {
+        // TODO: use the map_XX parses instead of hard-coding like this.
+        // https://en.wikipedia.org/wiki/Wavefront_.obj_file#Texture_maps
+        try_load_texture(file_path, "_diffuse.tga", diffuse_map);
+        try_load_texture(file_path, "_nm_tangent.tga", normal_map);
+        try_load_texture(file_path, "_spec.tga", specular_map);
+    }
+
+    bool basic_surface::try_load_texture(std::string file_path, const char* suffix, basic_buffer& buffer)
+    {
+        std::string texfile(file_path);
+        size_t dot = texfile.find_last_of(".");
+        if (dot != std::string::npos)
+        {
+            texfile = texfile.substr(0, dot) + std::string(suffix);
+            return buffer.read_from_tga_file(texfile.c_str());
+        }
+        return false;
+    }
+
     basic_model::basic_model() :
         faces(),
         positions(),
         uvs(),
         normals(),
-        diffuse_map(),
-        normal_map(),
-        specular_map()
+        surface()
     { }
 
     basic_model::~basic_model() { }
@@ -57,18 +91,6 @@ namespace ax
     ax::v3 basic_model::get_normal(int index) const
     {
         return normals[index];
-    }
-
-    bool basic_model::try_load_texture(std::string file_path, const char* suffix, basic_buffer& buffer)
-    {
-        std::string texfile(file_path);
-        size_t dot = texfile.find_last_of(".");
-        if (dot != std::string::npos)
-        {
-            texfile = texfile.substr(0, dot) + std::string(suffix);
-            return buffer.read_from_tga_file(texfile.c_str());
-        }
-        return false;
     }
 
     void basic_model::load_from_obj(const char *file_path)
@@ -113,12 +135,7 @@ namespace ax
                     faces.push_back(f);
                 }
             }
-
-            // TODO: use the map_XX parses instead of hard-coding like this.
-            // https://en.wikipedia.org/wiki/Wavefront_.obj_file#Texture_maps
-			try_load_texture(file_path, "_diffuse.tga", diffuse_map);
-            try_load_texture(file_path, "_nm_tangent.tga", normal_map);
-            try_load_texture(file_path, "_spec.tga", specular_map);
+            surface.load_from_obj(file_path);
             return;
         }
         throw std::runtime_error("Invalid model file '"_s + file_path + "'.");
@@ -130,8 +147,6 @@ namespace ax
         positions.clear();
         uvs.clear();
         normals.clear();
-        diffuse_map.clear();
-        normal_map.clear();
-        specular_map.clear();
+        surface.clear();
     }
 }
