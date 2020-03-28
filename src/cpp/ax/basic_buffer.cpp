@@ -201,7 +201,7 @@ namespace ax
 
 	ax::option<std::string> basic_buffer::try_save_to_tga(const char *file_path) const
     {
-	    // TODO: P1: clean up this code. it's terrible and not exception-safe!
+	    // TODO: P1: clean up this code. it's terrible and not exception-safe - and not even const-safe!
         const_cast<basic_buffer*>(this)->flip_horizontal();
         uint8_t developer_area_ref[4] = { 0, 0, 0, 0 };
         uint8_t extension_area_ref[4] = { 0, 0, 0, 0 };
