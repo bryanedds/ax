@@ -3,6 +3,7 @@
 
 #include "prelude.hpp"
 #include "math.hpp"
+#include "option.hpp"
 #include "tga.hpp"
 
 namespace ax
@@ -43,14 +44,14 @@ namespace ax
         ax::v3 sample_normal(const ax::v2& position) const;
         float sample_specular(const ax::v2& position) const;
 
-        bool load_from_tga(const char *filename);
-        bool save_to_tga(const char *filename);
+        ax::option<std::string> try_save_to_tga(const char* filename) const;
+        ax::option<std::string> try_load_from_tga(const char* filename);
 
     private:
 
-		bool load_rle_data(int inbytespp, std::ifstream& in);
+		ax::option<std::string> try_load_rle_data(int inbytespp, std::ifstream& in);
 
-        uint8_t* data; // TODO: P1: use a smart ptr here.
+        std::unique_ptr<uint8_t> data;
         int width;
         int height;
     };

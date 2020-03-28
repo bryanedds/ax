@@ -106,4 +106,30 @@ namespace ax
         VAL& coords = ax::get_barycentric_coords(point, triangle);
         return coords.x >= 0 && coords.y >= 0 && coords.z >= 0;
     }
+
+    bool get_in_bounds(const ax::v2& point, const ax::box2& box)
+    {
+        VAL result =
+            point.x >= std::get<0>(box).x && point.y >= std::get<0>(box).y &&
+            point.x <  std::get<1>(box).x && point.y <  std::get<1>(box).y;
+        return result;
+    }
+
+    bool get_in_bounds(const ax::v2i& point, const ax::box2i& box)
+    {
+        VAL result =
+            point.x >= std::get<0>(box).x && point.y >= std::get<0>(box).y &&
+            point.x <  std::get<1>(box).x && point.y <  std::get<1>(box).y;
+        return result;
+    }
+
+    bool get_in_bounds(const ax::v2& point, const ax::v2& size)
+    {
+        return ax::get_in_bounds(point, ax::box2(ax::zero<ax::v2>(), size));
+    }
+
+    bool get_in_bounds(const ax::v2i& point, const ax::v2i& size)
+    {
+        return ax::get_in_bounds(point, ax::box2i(ax::zero<ax::v2i>(), size));
+    }
 }

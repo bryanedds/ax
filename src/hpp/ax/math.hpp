@@ -15,6 +15,7 @@ namespace ax
     using v2i = aiVector2t<int>;
     using v3i = aiVector3t<int>;
     using box2 = std::pair<v2, v2>;
+    using box2i = std::pair<v2i, v2i>;
     using line2 = std::pair<v2, v2>;
     using triangle2 = std::tuple<v2, v2, v2>;
     using box3 = std::pair<v3, v3>;
@@ -29,8 +30,12 @@ namespace ax
     ax::v3 get_normal(const ax::triangle3& triangle);
     ax::box2 get_bounds(const ax::triangle2& triangle);
     ax::box2 get_intersection(const ax::box2& box, const ax::box2& box2);
-    bool get_in_bounds(const ax::v2& point, const ax::triangle2& triangle);
     ax::v3 get_barycentric_coords(ax::v2 point, const ax::triangle2& triangle);
+    bool get_in_bounds(const ax::v2& point, const ax::triangle2& triangle);
+    bool get_in_bounds(const ax::v2& point, const ax::box2& box);
+    bool get_in_bounds(const ax::v2i& point, const ax::box2i& box);
+    bool get_in_bounds(const ax::v2& point, const ax::v2& size);
+    bool get_in_bounds(const ax::v2i& point, const ax::v2i& size);
 }
 
 #endif

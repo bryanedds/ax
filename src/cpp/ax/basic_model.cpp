@@ -27,19 +27,20 @@ namespace ax
     {
         // TODO: use the map_XX parses instead of hard-coding like this.
         // https://en.wikipedia.org/wiki/Wavefront_.obj_file#Texture_maps
-        try_load_from_tga(file_path, "_diffuse.tga", diffuse_map);
-        try_load_from_tga(file_path, "_nm_tangent.tga", normal_map);
-        try_load_from_tga(file_path, "_spec.tga", specular_map);
+        try_load_buffer_from_tga(file_path, "_diffuse.tga", diffuse_map);
+        try_load_buffer_from_tga(file_path, "_nm_tangent.tga", normal_map);
+        try_load_buffer_from_tga(file_path, "_spec.tga", specular_map);
     }
 
-    bool basic_surface::try_load_from_tga(std::string file_path, const char* suffix, basic_buffer& buffer)
+    bool basic_surface::try_load_buffer_from_tga(std::string file_path, const char* suffix, basic_buffer& buffer)
     {
         std::string texfile(file_path);
         size_t dot = texfile.find_last_of(".");
         if (dot != std::string::npos)
         {
             texfile = texfile.substr(0, dot) + std::string(suffix);
-            return buffer.load_from_tga(texfile.c_str());
+            buffer.try_load_from_tga(texfile.c_str());
+            return true;
         }
         return false;
     }
@@ -93,7 +94,7 @@ namespace ax
         return normals[index];
     }
 
-    void basic_model::load_from_obj(const char *file_path)
+    ax::option<std::string> basic_model::try_load_from_obj(const char *file_path)
     {
         clear();
         std::ifstream in(file_path, std::ifstream::in);
@@ -136,9 +137,9 @@ namespace ax
                 }
             }
             surface.load_from_obj(file_path);
-            return;
+            return ax::none<std::string>();
         }
-        throw std::runtime_error("Invalid model file '"_s + file_path + "'.");
+        return ax::some("Invalid model file '"_s + file_path + "'.");
     }
 
     void basic_model::clear()
