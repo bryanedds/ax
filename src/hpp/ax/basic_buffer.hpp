@@ -17,8 +17,8 @@ namespace ax
         ~basic_pixel() = default;
         basic_pixel& operator=(const basic_pixel&) = default;
 
-		float depth;
-		ax::v3 normal;
+        float depth;
+        ax::v3 normal;
         ax::color color;
     };
 
@@ -39,7 +39,7 @@ namespace ax
         const ax::basic_pixel& get_pixel(int x, int y) const;
         bool set_pixel(int x, int y, const ax::basic_pixel& pixel);
         void fill(const ax::basic_pixel& pixel);
-		void flip_vertical();
+        void flip_vertical();
         void clear();
 
         ax::color sample_diffuse(const ax::v2& position) const;
@@ -51,8 +51,8 @@ namespace ax
 
     private:
 
-		ax::option<std::string> try_read_data_raw(int inbytespp, std::ifstream& in);
-		ax::option<std::string> try_read_data_rle(int inbytespp, std::ifstream& in);
+        ax::option<std::string> try_read_data_raw(int inbytespp, std::ifstream& in);
+        ax::option<std::string> try_read_data_rle(int inbytespp, std::ifstream& in);
         void color_from_tga(int inbytespp, ax::color& color) const;
         void color_to_tga(ax::color& color) const;
 

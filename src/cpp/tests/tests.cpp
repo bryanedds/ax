@@ -284,7 +284,7 @@ namespace ax
         // open model
         VAL model_file_path = "../../data/model.obj";
         ax::basic_model model;
-		model.try_read_from_obj(model_file_path);
+        model.try_read_from_obj(model_file_path);
 
         // create render target
         VAL width = 800;
@@ -294,7 +294,7 @@ namespace ax
         render_target.fill(ax::basic_pixel(std::numeric_limits<float>::lowest(), ax::zero<ax::v3>(), { 0, 0, 0, 255 }));
 
         // render model to target
-		VAL& light = ax::v3(0.0f, 0.0f, 1.0f);
+        VAL& light = ax::v3(0.0f, 0.0f, 1.0f);
         ax::draw_textured_ortho(light, model, render_target);
 
         // write render target as flipped to file

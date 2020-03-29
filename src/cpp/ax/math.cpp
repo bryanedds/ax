@@ -52,7 +52,7 @@ namespace ax
     ax::v3 get_normal(const ax::triangle3& triangle)
     {
         VAR cross_product = (std::get<1>(triangle) - std::get<0>(triangle)) ^ (std::get<2>(triangle) - std::get<0>(triangle));
-		return cross_product.NormalizeSafe();
+        return cross_product.NormalizeSafe();
     }
     
     ax::box2 get_bounds(const ax::triangle2& triangle)

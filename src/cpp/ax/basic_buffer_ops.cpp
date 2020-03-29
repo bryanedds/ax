@@ -80,7 +80,7 @@ namespace ax
         for (VAR i = 0; i < model.get_faces().size(); i++)
         {
             VAL& face = model.get_face(i);
-			VAL& triangle = ax::triangle3(model.get_position(face[0]), model.get_position(face[1]), model.get_position(face[2]));
+            VAL& triangle = ax::triangle3(model.get_position(face[0]), model.get_position(face[1]), model.get_position(face[2]));
             VAL& triangle_ortho = ax::get_ortho(triangle);
             draw_wired_ortho(color, triangle_ortho, buffer);
         }

@@ -25,9 +25,9 @@ namespace ax
         basic_surface();
         ~basic_surface();
 
-		const ax::basic_buffer& get_diffuse_map() const { return diffuse_map; }
-		const ax::basic_buffer& get_normal_map() const { return normal_map; }
-		const ax::basic_buffer& get_specular_map() const { return specular_map; }
+        const ax::basic_buffer& get_diffuse_map() const { return diffuse_map; }
+        const ax::basic_buffer& get_normal_map() const { return normal_map; }
+        const ax::basic_buffer& get_specular_map() const { return specular_map; }
 
         void read_from_obj(const char* file_path);
         void clear();
@@ -60,7 +60,7 @@ namespace ax
         const std::vector<ax::v3>& get_positions() const { return positions; }
         const std::vector<ax::v2>& get_uvs() const { return uvs; }
         const std::vector<ax::v3>& get_normals() const { return normals; }
-		const ax::basic_surface& get_surface() const { return surface; }
+        const ax::basic_surface& get_surface() const { return surface; }
 
         ax::option<std::string> try_read_from_obj(const char* file_path);
         void clear();

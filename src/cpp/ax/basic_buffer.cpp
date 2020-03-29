@@ -66,7 +66,7 @@ namespace ax
 
     void basic_buffer::fill(const ax::basic_pixel& pixel)
     {
-		VAL bytespp = get_bytespp();
+        VAL bytespp = get_bytespp();
         VAL length = width * height * bytespp;
         for (VAR i = 0; i < length; i += bytespp)
         {
@@ -75,19 +75,19 @@ namespace ax
         }
     }
 
-	void basic_buffer::flip_vertical()
-	{
-		VAL line_size = sizeof(ax::basic_pixel) * width;
-		VAL full_size = height * line_size;
-		VAL& line = std::unique_ptr<char[]>(new char[line_size]);
-		for (int j = 0; j < height / 2; ++j)
-		{
-			VAL cursor = j * line_size;
-			std::memcpy(line.get(), &data.get()[cursor], line_size);
-			std::memcpy(&data.get()[cursor], &data.get()[full_size - line_size - cursor], line_size);
-			std::memcpy(&data.get()[full_size - line_size - cursor], line.get(), line_size);
-		}
-	}
+    void basic_buffer::flip_vertical()
+    {
+        VAL line_size = sizeof(ax::basic_pixel) * width;
+        VAL full_size = height * line_size;
+        VAL& line = std::unique_ptr<char[]>(new char[line_size]);
+        for (int j = 0; j < height / 2; ++j)
+        {
+            VAL cursor = j * line_size;
+            std::memcpy(line.get(), &data.get()[cursor], line_size);
+            std::memcpy(&data.get()[cursor], &data.get()[full_size - line_size - cursor], line_size);
+            std::memcpy(&data.get()[full_size - line_size - cursor], line.get(), line_size);
+        }
+    }
 
     void basic_buffer::clear()
     {
@@ -102,7 +102,7 @@ namespace ax
         VAL& positionI = ax::v2i(static_cast<int>(position.x * width), static_cast<int>(position.y * height));
         if (!ax::get_in_bounds(positionI, ax::v2i(width, height))) return ax::color(255, 0, 0, 255);
         VAL& color = get_pixel(positionI.x, positionI.y).color;
-		return color;
+        return color;
     }
 
     ax::v3 basic_buffer::sample_normal(const ax::v2& position) const
@@ -123,7 +123,7 @@ namespace ax
     float basic_buffer::sample_specular(const ax::v2& position) const
     {
         if (width < 1 || height < 1) return 0.5f;
-		VAL& positionI = ax::v2i(static_cast<int>(position.x * width), static_cast<int>(position.y * height));
+        VAL& positionI = ax::v2i(static_cast<int>(position.x * width), static_cast<int>(position.y * height));
         if (!ax::get_in_bounds(positionI, ax::v2i(width, height))) return 0.5f;
         VAL& specular = get_pixel(positionI.x, positionI.y).color.r / 1.0f;
         return specular;
@@ -156,23 +156,23 @@ namespace ax
         if (header.datatypecode == 2 || header.datatypecode == 3)
         {
             VAL& error_opt = try_read_data_raw(inbytespp, in);
-			if (error_opt) return error_opt;
+            if (error_opt) return error_opt;
         }
         else if (header.datatypecode == 10 || header.datatypecode == 11)
         {
             VAL& error_opt = try_read_data_rle(inbytespp, in);
-			if (error_opt) return error_opt;
+            if (error_opt) return error_opt;
         }
         else return ax::some("Unknown tga data type code "_s + header.datatypecode + ".");
 
         // always flip after read due to buffer layout expectations (upside-down)
-		flip_vertical();
+        flip_vertical();
 
         // fin
         return ax::none<std::string>();
     }
 
-	ax::option<std::string> basic_buffer::try_write_to_tga(const char *file_path) const
+    ax::option<std::string> basic_buffer::try_write_to_tga(const char *file_path) const
     {
         // flip self because buffer always has image upside-down
         const_cast<basic_buffer*>(this)->flip_vertical();
@@ -201,7 +201,7 @@ namespace ax
         }
 
         // write content
-		VAL bytespp = get_bytespp();
+        VAL bytespp = get_bytespp();
         VAL nbytes = width * height * bytespp;
         for (VAR i = 0; i < nbytes; i += bytespp)
         {
@@ -250,7 +250,7 @@ namespace ax
         return ax::none<std::string>();
     }
 
-	ax::option<std::string> basic_buffer::try_read_data_raw(int inbytespp, std::ifstream& in)
+    ax::option<std::string> basic_buffer::try_read_data_raw(int inbytespp, std::ifstream& in)
     {
         for (VAR j = 0; j < height; ++j)
         {
@@ -264,36 +264,36 @@ namespace ax
                 pixel_in_place = ax::basic_pixel(std::numeric_limits<float>::lowest(), ax::zero<ax::v3>(), color);
             }
         }
-		return ax::none<std::string>();
+        return ax::none<std::string>();
     }
 
-	ax::option<std::string> basic_buffer::try_read_data_rle(int inbytespp, std::ifstream& in)
-	{
-		VAL dataLength = width * height * get_bytespp();
-		for (VAR i = 0; i < dataLength; i)
-		{
-			VAR chunkheader = static_cast<uint8_t>(in.get());
-			if (!in.good()) return ax::some("An error occured while reading tga rle data."_s);
-			if (chunkheader < 128)
-			{
-				++chunkheader;
-				for (int j = 0; j < chunkheader; ++j)
-				{
-					ax::color color;
-					in.read(reinterpret_cast<char*>(&color), inbytespp);
-					if (!in.good()) return ax::some("An error occured while reading tga rle color."_s);
+    ax::option<std::string> basic_buffer::try_read_data_rle(int inbytespp, std::ifstream& in)
+    {
+        VAL dataLength = width * height * get_bytespp();
+        for (VAR i = 0; i < dataLength; i)
+        {
+            VAR chunkheader = static_cast<uint8_t>(in.get());
+            if (!in.good()) return ax::some("An error occured while reading tga rle data."_s);
+            if (chunkheader < 128)
+            {
+                ++chunkheader;
+                for (int j = 0; j < chunkheader; ++j)
+                {
+                    ax::color color;
+                    in.read(reinterpret_cast<char*>(&color), inbytespp);
+                    if (!in.good()) return ax::some("An error occured while reading tga rle color."_s);
                     color_from_tga(inbytespp, color);
                     VAR& pixel_in_place = reinterpret_cast<ax::basic_pixel&>(data.get()[i]);
                     pixel_in_place = ax::basic_pixel(std::numeric_limits<float>::lowest(), ax::zero<ax::v3>(), color);
                     i += get_bytespp();
-				}
-			}
-			else
-			{
-				chunkheader -= 127;
-				ax::color color;
-				in.read(reinterpret_cast<char*>(&color), inbytespp);
-				if (!in.good()) return ax::some("An error occured while reading tga rle color."_s);
+                }
+            }
+            else
+            {
+                chunkheader -= 127;
+                ax::color color;
+                in.read(reinterpret_cast<char*>(&color), inbytespp);
+                if (!in.good()) return ax::some("An error occured while reading tga rle color."_s);
                 color_from_tga(inbytespp, color);
                 for (int j = 0; j < chunkheader; ++j)
                 {
@@ -301,10 +301,10 @@ namespace ax
                     pixel_in_place = ax::basic_pixel(std::numeric_limits<float>::lowest(), ax::zero<ax::v3>(), color);
                     i += get_bytespp();
                 }
-			}
-		}
-		return ax::none<std::string>();
-	}
+            }
+        }
+        return ax::none<std::string>();
+    }
 
     void basic_buffer::color_from_tga(int inbytespp, ax::color& color) const
     {
