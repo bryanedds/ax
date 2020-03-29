@@ -31,8 +31,6 @@ namespace ax
         memcpy(data.get(), image.data.get(), nbytes);
     }
 
-    basic_buffer::~basic_buffer() { }
-
     basic_buffer& basic_buffer::operator=(const basic_buffer& image)
     {
         if (this != &image)
@@ -77,7 +75,7 @@ namespace ax
         }
     }
 
-	void basic_buffer::flip_horizontal()
+	void basic_buffer::flip_vertical()
 	{
 		VAL line_size = sizeof(ax::basic_pixel) * width;
 		VAL full_size = height * line_size;
@@ -168,7 +166,7 @@ namespace ax
         else return ax::some("Unknown tga data type code "_s + header.datatypecode + ".");
 
         // always flip after read due to buffer layout expectations (upside-down)
-		flip_horizontal();
+		flip_vertical();
 
         // fin
         return ax::none<std::string>();
@@ -177,14 +175,14 @@ namespace ax
 	ax::option<std::string> basic_buffer::try_write_to_tga(const char *file_path) const
     {
         // flip self because buffer always has image upside-down
-        const_cast<basic_buffer*>(this)->flip_horizontal();
+        const_cast<basic_buffer*>(this)->flip_vertical();
 
         // open file for writing
         std::ofstream out;
         out.open(file_path, std::ios::binary);
         if (!out.is_open())
         {
-            const_cast<basic_buffer*>(this)->flip_horizontal();
+            const_cast<basic_buffer*>(this)->flip_vertical();
             return ax::some("Can't open tga file "_s + file_path + " for saving an ax::basic_buffer.");
         }
 
@@ -198,7 +196,7 @@ namespace ax
         out.write(reinterpret_cast<char*>(&header), sizeof(header));        
         if (!out.good())
         {
-            const_cast<basic_buffer*>(this)->flip_horizontal();
+            const_cast<basic_buffer*>(this)->flip_vertical();
             return ax::some("Failed to write tga header."_s);
         }
 
@@ -213,7 +211,7 @@ namespace ax
             out.write(reinterpret_cast<char*>(&color), sizeof(ax::color));
             if (!out.good())
             {
-                const_cast<basic_buffer*>(this)->flip_horizontal();
+                const_cast<basic_buffer*>(this)->flip_vertical();
                 return ax::some("Failed to write to ax::basic_buffer to "_s + file_path + ".");
             }
         }
@@ -223,7 +221,7 @@ namespace ax
         out.write(reinterpret_cast<char*>(developer_area_ref), sizeof(developer_area_ref));
         if (!out.good())
         {
-            const_cast<basic_buffer*>(this)->flip_horizontal();
+            const_cast<basic_buffer*>(this)->flip_vertical();
             return ax::some("Failed to write to ax::basic_buffer to "_s + file_path + ".");
         }
 
@@ -232,7 +230,7 @@ namespace ax
         out.write(reinterpret_cast<char*>(extension_area_ref), sizeof(extension_area_ref));
         if (!out.good())
         {
-            const_cast<basic_buffer*>(this)->flip_horizontal();
+            const_cast<basic_buffer*>(this)->flip_vertical();
             return ax::some("Failed to write to ax::basic_buffer to "_s + file_path + ".");
         }
 
@@ -241,12 +239,12 @@ namespace ax
         out.write(reinterpret_cast<char*>(footer), sizeof(footer));
         if (!out.good())
         {
-            const_cast<basic_buffer*>(this)->flip_horizontal();
+            const_cast<basic_buffer*>(this)->flip_vertical();
             return ax::some("Failed to write to ax::basic_buffer to "_s + file_path + ".");
         }
 
         // unflip
-        const_cast<basic_buffer*>(this)->flip_horizontal();
+        const_cast<basic_buffer*>(this)->flip_vertical();
 
         // success
         return ax::none<std::string>();

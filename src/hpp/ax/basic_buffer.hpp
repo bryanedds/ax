@@ -11,10 +11,12 @@ namespace ax
     struct basic_pixel
     {
     public:
+
         basic_pixel(float depth, const ax::v3& normal, const ax::color& color) : depth(depth), normal(normal), color(color) { }
         basic_pixel() = default;
         ~basic_pixel() = default;
         basic_pixel& operator=(const basic_pixel&) = default;
+
 		float depth;
 		ax::v3 normal;
         ax::color color;
@@ -27,7 +29,7 @@ namespace ax
         basic_buffer();
         basic_buffer(int w, int h);
         basic_buffer(const basic_buffer& image);
-        ~basic_buffer();
+        ~basic_buffer() = default;
         basic_buffer& operator=(const basic_buffer& image);
 
         int get_width() const { return width; };
@@ -37,7 +39,7 @@ namespace ax
         const ax::basic_pixel& get_pixel(int x, int y) const;
         bool set_pixel(int x, int y, const ax::basic_pixel& pixel);
         void fill(const ax::basic_pixel& pixel);
-		void flip_horizontal();
+		void flip_vertical();
         void clear();
 
         ax::color sample_diffuse(const ax::v2& position) const;
