@@ -23,23 +23,23 @@ namespace ax
         specular_map.clear();
     }
 
-    void basic_surface::load_from_obj(const char* file_path)
+    void basic_surface::read_from_obj(const char* file_path)
     {
         // TODO: use the map_XX parses instead of hard-coding like this.
         // https://en.wikipedia.org/wiki/Wavefront_.obj_file#Texture_maps
-        try_load_buffer_from_tga(file_path, "_diffuse.tga", diffuse_map);
-        try_load_buffer_from_tga(file_path, "_nm_tangent.tga", normal_map);
-        try_load_buffer_from_tga(file_path, "_spec.tga", specular_map);
+        try_read_buffer_from_tga(file_path, "_diffuse.tga", diffuse_map);
+        try_read_buffer_from_tga(file_path, "_nm_tangent.tga", normal_map);
+        try_read_buffer_from_tga(file_path, "_spec.tga", specular_map);
     }
 
-    bool basic_surface::try_load_buffer_from_tga(std::string file_path, const char* suffix, basic_buffer& buffer)
+    bool basic_surface::try_read_buffer_from_tga(std::string file_path, const char* suffix, basic_buffer& buffer)
     {
         std::string texfile(file_path);
         size_t dot = texfile.find_last_of(".");
         if (dot != std::string::npos)
         {
             texfile = texfile.substr(0, dot) + std::string(suffix);
-            buffer.try_load_from_tga(texfile.c_str());
+            buffer.try_read_from_tga(texfile.c_str());
             return true;
         }
         return false;
@@ -94,7 +94,7 @@ namespace ax
         return normals[index];
     }
 
-    ax::option<std::string> basic_model::try_load_from_obj(const char *file_path)
+    ax::option<std::string> basic_model::try_read_from_obj(const char *file_path)
     {
         clear();
         std::ifstream in(file_path, std::ifstream::in);
@@ -136,7 +136,7 @@ namespace ax
                     faces.push_back(f);
                 }
             }
-            surface.load_from_obj(file_path);
+            surface.read_from_obj(file_path);
             return ax::none<std::string>();
         }
         return ax::some("Invalid model file '"_s + file_path + "'.");

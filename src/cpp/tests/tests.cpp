@@ -284,7 +284,7 @@ namespace ax
         // open model
         VAL model_file_path = "../../data/model.obj";
         ax::basic_model model;
-		model.try_load_from_obj(model_file_path);
+		model.try_read_from_obj(model_file_path);
 
         // create render target
         VAL width = 800;
@@ -298,7 +298,7 @@ namespace ax
         ax::draw_textured_ortho(light, model, render_target);
 
         // write render target as flipped to file
-        render_target.try_save_to_tga(image_file_path);
+        render_target.try_write_to_tga(image_file_path);
     }
 }
 

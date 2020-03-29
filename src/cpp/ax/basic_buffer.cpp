@@ -131,171 +131,162 @@ namespace ax
         return specular;
     }
 
-    ax::option<std::string> basic_buffer::try_load_from_tga(const char* file_path)
+    ax::option<std::string> basic_buffer::try_read_from_tga(const char* file_path)
     {
-        // TODO: P1: clean up this code. it's terrible and not exception-safe!
+        // open tga file
         std::ifstream in;
         in.open(file_path, std::ios::binary);
-        if (!in.is_open())
-        {
-            in.close();
-            return ax::some("Can't open file "_s + file_path + ".");
-        }
+        if (!in.is_open()) return ax::some("Can't open tga file "_s + file_path + ".");
+        
+        // read tga header
         tga_header header;
-        in.read((char*)&header, sizeof(header));
-        if (!in.good())
-        {
-            in.close();
-            return ax::some("An error occured while reading the header."_s);
-        }
+        in.read(reinterpret_cast<char*>(&header), sizeof(header));
+        if (!in.good()) return ax::some("An error occured while reading tga header."_s);
+        
+        // read metadata
         VAL width = header.width;
         VAL height = header.height;
         VAL inbytespp = header.bitsperpixel >> 3;
-        if (width <= 0 || height <= 0 || (inbytespp != 1 && inbytespp != 3 && inbytespp != 4))
-        {
-            in.close();
-            return ax::some("Bad width, height, or bpp value."_s);
-        }
-        this->data.reset(new uint8_t[width * height * get_bytespp()]);
+        if (width <= 0 || height <= 0 || (inbytespp != 1 && inbytespp != 3 && inbytespp != 4)) return ax::some("Bad width, height, or bpp value."_s);
+        
+        // reset fields
         this->width = width;
         this->height = height;
+        this->data.reset(new uint8_t[width * height * get_bytespp()]);
+
+        // read content
         if (header.datatypecode == 2 || header.datatypecode == 3)
         {
-			for (VAR j = 0; j < height; ++j)
-			{
-				for (VAR i = 0; i < width; ++i)
-				{
-					VAR& pixel_in_place = reinterpret_cast<ax::basic_pixel&>(data.get()[j * width + i]);
-					pixel_in_place.depth = std::numeric_limits<float>::lowest();
-					pixel_in_place.normal = ax::zero<ax::v3>();
-					in.read((char*)&pixel_in_place.color, sizeof(ax::color));
-					if (inbytespp < 3) pixel_in_place.color.g = pixel_in_place.color.b = pixel_in_place.color.r;
-					if (inbytespp < 4) pixel_in_place.color.a = 255;
-					std::swap(pixel_in_place.color.r, pixel_in_place.color.b);
-				}
-			}
-            if (!in.good())
-            {
-                in.close();
-                return ax::some("An error occured while reading the data."_s);
-            }
+            VAL& error_opt = try_read_data_raw(inbytespp, in);
+			if (error_opt) return error_opt;
         }
         else if (header.datatypecode == 10 || header.datatypecode == 11)
         {
-            VAL& error_opt = try_load_rle_data(inbytespp, in);
-			if (ax::is_some(error_opt))
-			{
-				in.close();
-				return error_opt;
-			}
+            VAL& error_opt = try_read_data_rle(inbytespp, in);
+			if (error_opt) return error_opt;
         }
-        else
-        {
-            in.close();
-            return ax::some("Unknown file format "_s + header.datatypecode + ".");
-        }
+        else return ax::some("Unknown tga data type code "_s + header.datatypecode + ".");
+
+        // always flip after read due to buffer layout expectations (upside-down)
 		flip_horizontal();
-        in.close();
+
+        // fin
         return ax::none<std::string>();
     }
 
-	ax::option<std::string> basic_buffer::try_save_to_tga(const char *file_path) const
+	ax::option<std::string> basic_buffer::try_write_to_tga(const char *file_path) const
     {
-	    // TODO: P1: clean up this code. it's terrible and not exception-safe - and not even const-safe!
+        // flip self because buffer always has image upside-down
         const_cast<basic_buffer*>(this)->flip_horizontal();
-        uint8_t developer_area_ref[4] = { 0, 0, 0, 0 };
-        uint8_t extension_area_ref[4] = { 0, 0, 0, 0 };
-        uint8_t footer[18] = { 'T','R','U','E','V','I','S','I','O','N','-','X','F','I','L','E','.','\0' };
+
+        // open file for writing
         std::ofstream out;
         out.open(file_path, std::ios::binary);
         if (!out.is_open())
         {
-            out.close();
             const_cast<basic_buffer*>(this)->flip_horizontal();
-            return ax::some("Can't open file "_s + file_path + ".");
+            return ax::some("Can't open tga file "_s + file_path + " for saving an ax::basic_buffer.");
         }
+
+        // write header
         tga_header header;
-        std::memset((void*)&header, 0, sizeof(header));
+        std::memset(reinterpret_cast<char*>(&header), 0, sizeof(header));
         header.bitsperpixel = static_cast<char>(32);
         header.width = static_cast<short>(width);
         header.height = static_cast<short>(height);
         header.datatypecode = 2;
-        header.imagedescriptor = 0x0;
-        out.write((char*)&header, sizeof(header));
+        out.write(reinterpret_cast<char*>(&header), sizeof(header));        
         if (!out.good())
         {
-            out.close();
             const_cast<basic_buffer*>(this)->flip_horizontal();
-            return ax::some("Can't dump the tga file."_s);
+            return ax::some("Failed to write tga header."_s);
         }
+
+        // write content
 		VAL bytespp = get_bytespp();
         VAL nbytes = width * height * bytespp;
         for (VAR i = 0; i < nbytes; i += bytespp)
         {
-            VAR* r = data.get() + i + 16;
-            VAR* g = data.get() + i + 17;
-            VAR* b = data.get() + i + 18;
-            VAR* a = data.get() + i + 19;
-            out.write((char*)b, 1);
-            out.write((char*)g, 1);
-            out.write((char*)r, 1);
-            out.write((char*)a, 1);
+            ax::color color;
+            std::memcpy(&color, data.get() + i + 16, sizeof(ax::color));
+            color_to_tga(color);
+            out.write(reinterpret_cast<char*>(&color), sizeof(ax::color));
+            if (!out.good())
+            {
+                const_cast<basic_buffer*>(this)->flip_horizontal();
+                return ax::some("Failed to write to ax::basic_buffer to "_s + file_path + ".");
+            }
         }
+
+        // write dev area ref
+        uint8_t developer_area_ref[4] = { 0, 0, 0, 0 };
+        out.write(reinterpret_cast<char*>(developer_area_ref), sizeof(developer_area_ref));
         if (!out.good())
         {
-            out.close();
             const_cast<basic_buffer*>(this)->flip_horizontal();
-            return ax::some("Can't dump raw data."_s);
+            return ax::some("Failed to write to ax::basic_buffer to "_s + file_path + ".");
         }
-        out.write((char*)developer_area_ref, sizeof(developer_area_ref));
+
+        // write extension area ref
+        uint8_t extension_area_ref[4] = { 0, 0, 0, 0 };
+        out.write(reinterpret_cast<char*>(extension_area_ref), sizeof(extension_area_ref));
         if (!out.good())
         {
-            out.close();
             const_cast<basic_buffer*>(this)->flip_horizontal();
-            return ax::some("Can't dump the tga file."_s);
+            return ax::some("Failed to write to ax::basic_buffer to "_s + file_path + ".");
         }
-        out.write((char*)extension_area_ref, sizeof(extension_area_ref));
+
+        // write footer
+        uint8_t footer[18] = { 'T','R','U','E','V','I','S','I','O','N','-','X','F','I','L','E','.','\0' };
+        out.write(reinterpret_cast<char*>(footer), sizeof(footer));
         if (!out.good())
         {
-            out.close();
             const_cast<basic_buffer*>(this)->flip_horizontal();
-            return ax::some("Can't dump the tga file."_s);
+            return ax::some("Failed to write to ax::basic_buffer to "_s + file_path + ".");
         }
-        out.write((char*)footer, sizeof(footer));
-        if (!out.good())
-        {
-            out.close();
-            const_cast<basic_buffer*>(this)->flip_horizontal();
-            return ax::some("Can't dump the tga file."_s);
-        }
-        out.close();
+
+        // unflip
         const_cast<basic_buffer*>(this)->flip_horizontal();
+
+        // success
         return ax::none<std::string>();
     }
 
-	ax::option<std::string> basic_buffer::try_load_rle_data(int inbytespp, std::ifstream& in)
+	ax::option<std::string> basic_buffer::try_read_data_raw(int inbytespp, std::ifstream& in)
+    {
+        for (VAR j = 0; j < height; ++j)
+        {
+            for (VAR i = 0; i < width; ++i)
+            {
+                ax::color color;
+                in.read(reinterpret_cast<char*>(&color), inbytespp);
+                if (!in.good()) return ax::some("An error occured while reading tga data."_s);
+                color_from_tga(inbytespp, color);
+                VAR& pixel_in_place = reinterpret_cast<ax::basic_pixel&>(data.get()[j * width + i]);   
+                pixel_in_place = ax::basic_pixel(std::numeric_limits<float>::lowest(), ax::zero<ax::v3>(), color);
+            }
+        }
+		return ax::none<std::string>();
+    }
+
+	ax::option<std::string> basic_buffer::try_read_data_rle(int inbytespp, std::ifstream& in)
 	{
-	    // TODO: P1: clean up this code.
 		VAL dataLength = width * height * get_bytespp();
 		for (VAR i = 0; i < dataLength; i)
 		{
-			VAR chunkheader = static_cast<unsigned char>(in.get());
-			if (!in.good()) return ax::some("An error occured while reading the data."_s);
+			VAR chunkheader = static_cast<uint8_t>(in.get());
+			if (!in.good()) return ax::some("An error occured while reading tga rle data."_s);
 			if (chunkheader < 128)
 			{
 				++chunkheader;
 				for (int j = 0; j < chunkheader; ++j)
 				{
 					ax::color color;
-					in.read((char*)&color, inbytespp);
-					if (inbytespp < 3) color.g = color.b = color.r;
-					if (inbytespp < 4) color.a = 255;
-					std::swap(color.r, color.b);
-					if (!in.good()) return ax::some("An error occured while reading the header."_s);
+					in.read(reinterpret_cast<char*>(&color), inbytespp);
+					if (!in.good()) return ax::some("An error occured while reading tga rle color."_s);
+                    color_from_tga(inbytespp, color);
                     VAR& pixel_in_place = reinterpret_cast<ax::basic_pixel&>(data.get()[i]);
-                    pixel_in_place.depth = std::numeric_limits<float>::lowest();
-                    pixel_in_place.normal = ax::zero<ax::v3>();
-                    pixel_in_place.color = color;
+                    pixel_in_place = ax::basic_pixel(std::numeric_limits<float>::lowest(), ax::zero<ax::v3>(), color);
                     i += get_bytespp();
 				}
 			}
@@ -303,21 +294,29 @@ namespace ax
 			{
 				chunkheader -= 127;
 				ax::color color;
-				in.read((char*)&color, inbytespp);
-				if (inbytespp < 3) color.g = color.b = color.r;
-				if (inbytespp < 4) color.a = 255;
-				std::swap(color.r, color.b);
-				if (!in.good()) return ax::some("An error occured while reading the header."_s);
+				in.read(reinterpret_cast<char*>(&color), inbytespp);
+				if (!in.good()) return ax::some("An error occured while reading tga rle color."_s);
+                color_from_tga(inbytespp, color);
                 for (int j = 0; j < chunkheader; ++j)
                 {
                     VAR& pixel_in_place = reinterpret_cast<ax::basic_pixel&>(data.get()[i]);
-                    pixel_in_place.depth = std::numeric_limits<float>::lowest();
-                    pixel_in_place.normal = ax::zero<ax::v3>();
-                    pixel_in_place.color = color;
+                    pixel_in_place = ax::basic_pixel(std::numeric_limits<float>::lowest(), ax::zero<ax::v3>(), color);
                     i += get_bytespp();
                 }
 			}
 		}
 		return ax::none<std::string>();
 	}
+
+    void basic_buffer::color_from_tga(int inbytespp, ax::color& color) const
+    {
+        if (inbytespp < 3) color.g = color.b = color.r;
+        if (inbytespp < 4) color.a = 255;
+        std::swap(color.r, color.b);
+    }
+
+    void basic_buffer::color_to_tga(ax::color& color) const
+    {
+        std::swap(color.r, color.b);
+    }
 }

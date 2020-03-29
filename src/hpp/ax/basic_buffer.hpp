@@ -44,12 +44,15 @@ namespace ax
         ax::v3 sample_normal(const ax::v2& position) const;
         float sample_specular(const ax::v2& position) const;
 
-        ax::option<std::string> try_save_to_tga(const char* filename) const;
-        ax::option<std::string> try_load_from_tga(const char* filename);
+        ax::option<std::string> try_write_to_tga(const char* filename) const;
+        ax::option<std::string> try_read_from_tga(const char* filename);
 
     private:
 
-		ax::option<std::string> try_load_rle_data(int inbytespp, std::ifstream& in);
+		ax::option<std::string> try_read_data_raw(int inbytespp, std::ifstream& in);
+		ax::option<std::string> try_read_data_rle(int inbytespp, std::ifstream& in);
+        void color_from_tga(int inbytespp, ax::color& color) const;
+        void color_to_tga(ax::color& color) const;
 
         std::unique_ptr<uint8_t> data;
         int width;

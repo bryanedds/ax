@@ -29,12 +29,12 @@ namespace ax
 		const ax::basic_buffer& get_normal_map() const { return normal_map; }
 		const ax::basic_buffer& get_specular_map() const { return specular_map; }
 
-        void load_from_obj(const char* file_path);
+        void read_from_obj(const char* file_path);
         void clear();
 
     private:
 
-        bool try_load_buffer_from_tga(std::string file_path, const char *suffix, ax::basic_buffer &buffer);
+        bool try_read_buffer_from_tga(std::string file_path, const char *suffix, ax::basic_buffer &buffer);
 
         ax::basic_buffer diffuse_map;
         ax::basic_buffer normal_map;
@@ -62,7 +62,7 @@ namespace ax
         const std::vector<ax::v3>& get_normals() const { return normals; }
 		const ax::basic_surface& get_surface() const { return surface; }
 
-        ax::option<std::string> try_load_from_obj(const char* file_path);
+        ax::option<std::string> try_read_from_obj(const char* file_path);
         void clear();
 
     private:
