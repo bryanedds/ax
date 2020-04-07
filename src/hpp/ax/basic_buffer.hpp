@@ -1,6 +1,8 @@
 #ifndef AX_BASIC_BUFFER_HPP
 #define AX_BASIC_BUFFER_HPP
 
+#include <vector>
+
 #include "prelude.hpp"
 #include "math.hpp"
 #include "option.hpp"
@@ -34,7 +36,7 @@ namespace ax
 
         int get_width() const { return width; };
         int get_height() const { return height; };
-        constexpr int get_bytespp() const { return sizeof(ax::basic_pixel); }
+        constexpr int get_bytes_per_pixel() const { return sizeof(ax::basic_pixel); }
         ax::basic_pixel& get_pixel_in_place(int x, int y);
         const ax::basic_pixel& get_pixel(int x, int y) const;
         bool set_pixel(int x, int y, const ax::basic_pixel& pixel);
@@ -53,10 +55,10 @@ namespace ax
 
         ax::option<std::string> try_read_data_raw(int inbytespp, std::ifstream& in);
         ax::option<std::string> try_read_data_rle(int inbytespp, std::ifstream& in);
-        void color_from_tga(int inbytespp, ax::color& color) const;
-        void color_to_tga(ax::color& color) const;
+        ax::color color_from_tga(int inbytespp, const ax::color& color) const;
+        ax::color color_to_tga(const ax::color& color) const;
 
-        std::unique_ptr<uint8_t> data;
+        std::vector<ax::basic_pixel> pixels;
         int width;
         int height;
     };

@@ -77,7 +77,7 @@ namespace ax
 
     void draw_wired_ortho(const ax::color& color, const ax::basic_model& model, ax::basic_buffer& buffer)
     {
-        for (VAR i = 0; i < model.get_faces().size(); i++)
+        for (VAR i = 0_z; i < model.get_faces().size(); ++i)
         {
             VAL& face = model.get_face(i);
             VAL& triangle = ax::triangle3(model.get_position(face[0]), model.get_position(face[1]), model.get_position(face[2]));
@@ -133,7 +133,7 @@ namespace ax
     void draw_textured_ortho(const ax::v3& light, const ax::basic_model& model, ax::basic_buffer& buffer)
     {
         VAL& forward = ax::v3(0.0f, 0.0f, 1.0f);
-        for (VAR i = 0; i < model.get_faces().size(); i++)
+        for (VAR i = 0_z; i < model.get_faces().size(); ++i)
         {
             VAL& face = model.get_face(i);
             VAL& triangle = ax::triangle3(model.get_position(face[0]), model.get_position(face[1]), model.get_position(face[2]));

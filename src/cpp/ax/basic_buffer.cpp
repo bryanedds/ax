@@ -15,20 +15,14 @@ namespace ax
 {
     basic_buffer::basic_buffer() : basic_buffer(0, 0) { }
 
-    basic_buffer::basic_buffer(int w, int h) : data(), width(w), height(h)
+    basic_buffer::basic_buffer(int w, int h) : pixels(), width(w), height(h)
     {
-        uint32_t nbytes = width * height * get_bytespp();
-        data.reset(new uint8_t[nbytes]);
-        std::memset(data.get(), 0, nbytes);
+        pixels.resize(width * height);
     }
 
     basic_buffer::basic_buffer(const basic_buffer& image)
     {
-        width = image.width;
-        height = image.height;
-        uint32_t nbytes = width * height * get_bytespp();
-        data.reset(new uint8_t[nbytes]);
-        memcpy(data.get(), image.data.get(), nbytes);
+        *this = image;
     }
 
     basic_buffer& basic_buffer::operator=(const basic_buffer& image)
@@ -37,9 +31,7 @@ namespace ax
         {
             width = image.width;
             height = image.height;
-            uint32_t nbytes = width * height * get_bytespp();
-            data.reset(new uint8_t[nbytes]);
-            memcpy(data.get(), image.data.get(), nbytes);
+            pixels = image.pixels;
         }
         return *this;
     }
@@ -47,8 +39,7 @@ namespace ax
     ax::basic_pixel& basic_buffer::get_pixel_in_place(int x, int y)
     {
         if (x < 0 || y < 0 || x >= width || y >= height) throw std::out_of_range("basic_buffer point index out of range.");
-        VAR* pixel = reinterpret_cast<ax::basic_pixel*>(data.get() + ((x + (height - y) * width) * get_bytespp()));
-        return *pixel;
+        return pixels[x + y * width];
     }
 
     const ax::basic_pixel& basic_buffer::get_pixel(int x, int y) const
@@ -66,32 +57,26 @@ namespace ax
 
     void basic_buffer::fill(const ax::basic_pixel& pixel)
     {
-        VAL bytespp = get_bytespp();
-        VAL length = width * height * bytespp;
-        for (VAR i = 0; i < length; i += bytespp)
-        {
-            VAR& pixel_in_place = reinterpret_cast<ax::basic_pixel&>(data.get()[i]);
-            pixel_in_place = pixel;
-        }
+        VAL length = width * height;
+        for (VAR i = 0; i < length; ++i) pixels[i] = pixel;
     }
 
     void basic_buffer::flip_vertical()
     {
-        VAL line_size = sizeof(ax::basic_pixel) * width;
+        VAL line_size = width * get_bytes_per_pixel();
         VAL full_size = height * line_size;
         VAL& line = std::unique_ptr<char[]>(new char[line_size]);
         for (int j = 0; j < height / 2; ++j)
         {
-            VAL cursor = j * line_size;
-            std::memcpy(line.get(), &data.get()[cursor], line_size);
-            std::memcpy(&data.get()[cursor], &data.get()[full_size - line_size - cursor], line_size);
-            std::memcpy(&data.get()[full_size - line_size - cursor], line.get(), line_size);
+            std::memcpy(line.get(), &pixels[j], line_size);
+            std::memcpy(&pixels[j], &pixels[height - 1 - j], line_size);
+            std::memcpy(&pixels[height - 1 - j], line.get(), line_size);
         }
     }
 
     void basic_buffer::clear()
     {
-        data.reset(new uint8_t[0]);
+        pixels.resize(0);
         width = 0;
         height = 0;
     }
@@ -150,7 +135,7 @@ namespace ax
         // reset fields
         this->width = width;
         this->height = height;
-        this->data.reset(new uint8_t[width * height * get_bytespp()]);
+        this->pixels.resize(width * height);
 
         // read content
         if (header.datatypecode == 2 || header.datatypecode == 3)
@@ -201,13 +186,10 @@ namespace ax
         }
 
         // write content
-        VAL bytespp = get_bytespp();
-        VAL nbytes = width * height * bytespp;
-        for (VAR i = 0; i < nbytes; i += bytespp)
+        VAL length = width * height;
+        for (VAR i = 0; i < length; ++i)
         {
-            ax::color color;
-            std::memcpy(&color, data.get() + i + 16, sizeof(ax::color));
-            color_to_tga(color);
+            VAR color = color_to_tga(pixels[i].color);
             out.write(reinterpret_cast<char*>(&color), sizeof(ax::color));
             if (!out.good())
             {
@@ -259,9 +241,7 @@ namespace ax
                 ax::color color;
                 in.read(reinterpret_cast<char*>(&color), inbytespp);
                 if (!in.good()) return ax::some("An error occured while reading tga data."_s);
-                color_from_tga(inbytespp, color);
-                VAR& pixel_in_place = reinterpret_cast<ax::basic_pixel&>(data.get()[j * width + i]);   
-                pixel_in_place = ax::basic_pixel(std::numeric_limits<float>::lowest(), ax::zero<ax::v3>(), color);
+                get_pixel_in_place(i, j).color = color_from_tga(inbytespp, color);
             }
         }
         return ax::none<std::string>();
@@ -269,52 +249,52 @@ namespace ax
 
     ax::option<std::string> basic_buffer::try_read_data_rle(int inbytespp, std::ifstream& in)
     {
-        VAL dataLength = width * height * get_bytespp();
-        for (VAR i = 0; i < dataLength; i)
+        VAL data_length = width * height * get_bytes_per_pixel();
+        for (VAR i = 0; i < data_length; i)
         {
-            VAR chunkheader = static_cast<uint8_t>(in.get());
+            VAR chunk_header = static_cast<uint8_t>(in.get());
             if (!in.good()) return ax::some("An error occured while reading tga rle data."_s);
-            if (chunkheader < 128)
+            if (chunk_header < 128)
             {
-                ++chunkheader;
-                for (int j = 0; j < chunkheader; ++j)
+                ++chunk_header;
+                for (int j = 0; j < chunk_header; ++j)
                 {
                     ax::color color;
                     in.read(reinterpret_cast<char*>(&color), inbytespp);
                     if (!in.good()) return ax::some("An error occured while reading tga rle color."_s);
-                    color_from_tga(inbytespp, color);
-                    VAR& pixel_in_place = reinterpret_cast<ax::basic_pixel&>(data.get()[i]);
-                    pixel_in_place = ax::basic_pixel(std::numeric_limits<float>::lowest(), ax::zero<ax::v3>(), color);
-                    i += get_bytespp();
+                    pixels[i / get_bytes_per_pixel()].color = color_from_tga(inbytespp, color);
+                    i += get_bytes_per_pixel();
                 }
             }
             else
             {
-                chunkheader -= 127;
+                chunk_header -= 127;
                 ax::color color;
                 in.read(reinterpret_cast<char*>(&color), inbytespp);
                 if (!in.good()) return ax::some("An error occured while reading tga rle color."_s);
-                color_from_tga(inbytespp, color);
-                for (int j = 0; j < chunkheader; ++j)
+                for (int j = 0; j < chunk_header; ++j)
                 {
-                    VAR& pixel_in_place = reinterpret_cast<ax::basic_pixel&>(data.get()[i]);
-                    pixel_in_place = ax::basic_pixel(std::numeric_limits<float>::lowest(), ax::zero<ax::v3>(), color);
-                    i += get_bytespp();
+                    pixels[i / get_bytes_per_pixel()].color = color_from_tga(inbytespp, color);
+                    i += get_bytes_per_pixel();
                 }
             }
         }
         return ax::none<std::string>();
     }
 
-    void basic_buffer::color_from_tga(int inbytespp, ax::color& color) const
+    ax::color basic_buffer::color_from_tga(int inbytespp, const ax::color& color) const
     {
-        if (inbytespp < 3) color.g = color.b = color.r;
-        if (inbytespp < 4) color.a = 255;
-        std::swap(color.r, color.b);
+        VAR result = color;
+        if (inbytespp < 3) result.g = result.b = result.r;
+        if (inbytespp < 4) result.a = 255;
+        std::swap(result.r, result.b);
+        return result;
     }
 
-    void basic_buffer::color_to_tga(ax::color& color) const
+    ax::color basic_buffer::color_to_tga(const ax::color& color) const
     {
-        std::swap(color.r, color.b);
+        VAR result = color;
+        std::swap(result.r, result.b);
+        return result;
     }
 }
