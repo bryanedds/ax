@@ -4,6 +4,9 @@
 #include "assimp/color4.inl"
 #include "assimp/vector2.inl"
 #include "assimp/vector3.inl"
+#include "assimp/quaternion.inl"
+#include "assimp/matrix3x3.inl"
+#include "assimp/matrix4x4.inl"
 
 #include "prelude.hpp"
 
@@ -21,6 +24,9 @@ namespace ax
     using box3 = std::pair<v3, v3>;
     using line3 = std::pair<v3, v3>;
     using triangle3 = std::tuple<v3, v3, v3>;
+	using quaternion = aiQuaterniont<float>;
+	using matrix3 = aiMatrix3x3t<float>;
+	using matrix4 = aiMatrix4x4t<float>;
 
     ax::v2 get_ortho(const ax::v3& vector);
     ax::line2 get_ortho(const ax::line3& line);

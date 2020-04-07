@@ -38,7 +38,7 @@ namespace ax
 
     ax::basic_pixel& basic_buffer::get_pixel_in_place(int x, int y)
     {
-        if (x < 0 || y < 0 || x >= width || y >= height) throw std::out_of_range("basic_buffer point index out of range.");
+        if (x < 0 || y < 0 || x >= width || y >= height) throw std::out_of_range("ax::basic_buffer pixel index out of range.");
         return pixels[x + y * width];
     }
 
@@ -107,10 +107,10 @@ namespace ax
 
     float basic_buffer::sample_specular(const ax::v2& position) const
     {
-        if (width < 1 || height < 1) return 0.5f;
+        if (width < 1 || height < 1) return 1.0f;
         VAL& positionI = ax::v2i(static_cast<int>(position.x * width), static_cast<int>(position.y * height));
-        if (!ax::get_in_bounds(positionI, ax::v2i(width, height))) return 0.5f;
-        VAL& specular = get_pixel(positionI.x, positionI.y).color.r / 1.0f;
+        if (!ax::get_in_bounds(positionI, ax::v2i(width, height))) return 1.0f;
+        VAL& specular = get_pixel(positionI.x, positionI.y).color.r / 255.0f;
         return specular;
     }
 

@@ -13,7 +13,7 @@ namespace ax
     void draw_wired_ortho(const ax::color& color, const ax::line2& line, ax::basic_buffer& buffer);
     void draw_wired_ortho(const ax::color& color, const ax::triangle2& triangle, ax::basic_buffer& buffer);
     void draw_wired_ortho(const ax::color& color, const ax::basic_model& model, ax::basic_buffer& buffer);
-    void draw_textured_ortho(float light, const ax::basic_surface& surface, const ax::triangle2& uvs, const ax::triangle3& triangle, ax::basic_buffer& buffer);
+    void draw_textured_ortho(const ax::v3& light, const ax::basic_surface& surface, const ax::triangle2& uvs, const ax::triangle3& triangle, ax::basic_buffer& buffer);
     void draw_textured_ortho(const ax::v3& light, const ax::basic_model& model, ax::basic_buffer& buffer);
 }
 
