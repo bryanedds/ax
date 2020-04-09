@@ -94,9 +94,9 @@ namespace ax
         VAL& center_screen = ax::v2(static_cast<float>(buffer.get_width()), static_cast<float>(buffer.get_height())) * 0.5f;
         VAL& triangle_ortho = ax::get_ortho(triangle);
         VAL& triangle_screen = ax::triangle2(
-            (std::get<0>(triangle_ortho) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
-            (std::get<1>(triangle_ortho) + ax::v2(1.0f, 1.0f)).SymMul(center_screen),
-            (std::get<2>(triangle_ortho) + ax::v2(1.0f, 1.0f)).SymMul(center_screen));
+            (std::get<0>(triangle_ortho) + ax::one<ax::v2>()).SymMul(center_screen),
+            (std::get<1>(triangle_ortho) + ax::one<ax::v2>()).SymMul(center_screen),
+            (std::get<2>(triangle_ortho) + ax::one<ax::v2>()).SymMul(center_screen));
         VAL& bounds_screen = ax::get_bounds(triangle_screen);
         VAL width_screen = static_cast<int>(bounds_screen.second.x);
         VAL height_screen = static_cast<int>(bounds_screen.second.y);
