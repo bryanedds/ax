@@ -10,7 +10,7 @@ namespace ax
 {
     basic_surface::basic_surface() :
         diffuse_map(),
-        normal_map(),
+        tangent_map(),
         specular_map()
     { }
 
@@ -19,7 +19,7 @@ namespace ax
     void basic_surface::clear()
     {
         diffuse_map.clear();
-        normal_map.clear();
+        tangent_map.clear();
         specular_map.clear();
     }
 
@@ -28,7 +28,7 @@ namespace ax
         // TODO: use the map_XX parses instead of hard-coding like this.
         // https://en.wikipedia.org/wiki/Wavefront_.obj_file#Texture_maps
         try_read_buffer_from_tga(file_path, "_diffuse.tga", diffuse_map);
-        try_read_buffer_from_tga(file_path, "_nm_tangent.tga", normal_map);
+        try_read_buffer_from_tga(file_path, "_nm_tangent.tga", tangent_map);
         try_read_buffer_from_tga(file_path, "_spec.tga", specular_map);
     }
 

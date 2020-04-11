@@ -49,15 +49,15 @@ namespace ax
         return interpolation;
     }
 
+    ax::v3 get_tangent(const ax::triangle3& triangle)
+    {
+        return (std::get<1>(triangle) - std::get<0>(triangle)).NormalizeSafe();
+    }
+
     ax::v3 get_normal(const ax::triangle3& triangle)
     {
         VAR cross_product = (std::get<1>(triangle) - std::get<0>(triangle)) ^ (std::get<2>(triangle) - std::get<0>(triangle));
         return cross_product.NormalizeSafe();
-    }
-
-    ax::v3 get_tangent(const ax::triangle3& triangle)
-    {
-        return (std::get<1>(triangle) - std::get<0>(triangle)).NormalizeSafe();
     }
     
     ax::box2 get_bounds(const ax::triangle2& triangle)

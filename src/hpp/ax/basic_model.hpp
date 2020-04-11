@@ -26,7 +26,7 @@ namespace ax
         ~basic_surface();
 
         const ax::basic_buffer& get_diffuse_map() const { return diffuse_map; }
-        const ax::basic_buffer& get_normal_map() const { return normal_map; }
+        const ax::basic_buffer& get_tangent_map() const { return tangent_map; }
         const ax::basic_buffer& get_specular_map() const { return specular_map; }
 
         void read_from_obj(const char* file_path);
@@ -37,7 +37,7 @@ namespace ax
         bool try_read_buffer_from_tga(std::string file_path, const char *suffix, ax::basic_buffer &buffer);
 
         ax::basic_buffer diffuse_map;
-        ax::basic_buffer normal_map;
+        ax::basic_buffer tangent_map;
         ax::basic_buffer specular_map;
     };
 

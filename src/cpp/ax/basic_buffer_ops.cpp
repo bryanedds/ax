@@ -88,6 +88,7 @@ namespace ax
 
     void draw_textured_ortho(const ax::v3& light, const ax::basic_surface& surface, const ax::triangle2& uvs, const ax::triangle3& triangle, ax::basic_buffer& buffer)
     {
+        // compute triangle space (aka, tangent-space)
         VAL& triangle_tangent = ax::get_tangent(triangle);
         VAL& triangle_normal = ax::get_normal(triangle);
         VAL& triangle_binormal = triangle_tangent ^ triangle_normal;
@@ -97,50 +98,74 @@ namespace ax
             triangle_tangent.z,  triangle_binormal.z, triangle_normal.z,   0.0f,
             0.0f,                0.0f,                0.0f,                1.0f);
         VAL& triangle_space = ax::matrix4(triangle_space_inverse).Inverse();
+
+        // compute triangle in screen-space
         VAL& center_screen = ax::v2(static_cast<float>(buffer.get_width()), static_cast<float>(buffer.get_height())) * 0.5f;
         VAL& triangle_ortho = ax::get_ortho(triangle);
         VAL& triangle_screen = ax::triangle2(
             (std::get<0>(triangle_ortho) + ax::one<ax::v2>()).SymMul(center_screen),
             (std::get<1>(triangle_ortho) + ax::one<ax::v2>()).SymMul(center_screen),
             (std::get<2>(triangle_ortho) + ax::one<ax::v2>()).SymMul(center_screen));
+
+        // compute bounds in screen-space
         VAL& bounds_screen = ax::get_bounds(triangle_screen);
         VAL width_screen = static_cast<int>(bounds_screen.second.x);
         VAL height_screen = static_cast<int>(bounds_screen.second.y);
+
+        // render triangle pixels in the screen-space of the computed bounds
         for (VAR j = static_cast<int>(bounds_screen.first.y); j <= height_screen; ++j)
         {
             for (VAR i = static_cast<int>(bounds_screen.first.x); i <= width_screen; ++i)
             {
+                // check that pixel is inside triangle
                 if (ax::get_in_bounds(ax::v2(static_cast<float>(i), static_cast<float>(j)), triangle_screen))
                 {
+                    // get a reference to the current pixel
                     VAR& pixel_in_place = buffer.get_pixel_in_place(i, j);
+
+                    // compute the write-depth in screen-space
                     VAL& point_screen = ax::v2(static_cast<float>(i), static_cast<float>(j));
                     VAL& coords_screen = ax::get_barycentric_coords(point_screen, triangle_screen);
                     VAL depth_screen =
                         std::get<0>(triangle).z * coords_screen.x +
                         std::get<1>(triangle).z * coords_screen.y +
                         std::get<2>(triangle).z * coords_screen.z;
+
+                    // ensure write-depth is greater than depth of current pixel
                     if (depth_screen >= pixel_in_place.depth)
                     {
+                        // compute uv coordinate in screen-space
                         VAL uv_screen =
                             std::get<0>(uvs) * coords_screen.x +
                             std::get<1>(uvs) * coords_screen.y +
                             std::get<2>(uvs) * coords_screen.z;
+
+                        // sample the specularity map
                         VAL specular = surface.get_specular_map().sample_specular(uv_screen);
-                        VAL& tangent = surface.get_normal_map().sample_tangent(uv_screen);
+
+                        // sample the tangent map, computing its normal
+                        VAL& tangent = surface.get_tangent_map().sample_tangent(uv_screen);
                         VAR normal = tangent + ax::v3(0.5f);
                         if (normal.x > 1.0f) normal.x -= 1.0f;
                         if (normal.y > 1.0f) normal.y -= 1.0f;
                         if (normal.z > 1.0f) normal.z -= 1.0f;
+
+                        // sample the diffuse map
                         VAL& diffuse = surface.get_diffuse_map().sample_diffuse(uv_screen);
+
+                        // compute the light normal in triangle-space
                         VAL& normal_triangle = triangle_space * normal;
                         VAL light_normal_triangle = std::abs(light * normal_triangle);
+
+                        // compute the color in screen-space
                         VAL& color_screen = ax::color(
                             static_cast<uint8_t>(diffuse.r * light_normal_triangle * specular),
                             static_cast<uint8_t>(diffuse.g * light_normal_triangle * specular),
                             static_cast<uint8_t>(diffuse.b * light_normal_triangle * specular),
                             diffuse.a);
-                        pixel_in_place.depth = depth_screen;
-                        pixel_in_place.color = color_screen;
+
+                        // update the current pixel
+                        pixel_in_place = ax::basic_pixel(depth_screen, triangle_normal, color_screen);
                     }
                 }
             }
