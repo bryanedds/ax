@@ -159,9 +159,9 @@ namespace ax
 
                         // compute the color in screen-space
                         VAL& color_screen = ax::color(
-                            static_cast<uint8_t>(diffuse.r * light_normal_triangle * specular),
-                            static_cast<uint8_t>(diffuse.g * light_normal_triangle * specular),
-                            static_cast<uint8_t>(diffuse.b * light_normal_triangle * specular),
+                            static_cast<uint8_t>(diffuse.r * light_normal_triangle + diffuse.r * specular),
+                            static_cast<uint8_t>(diffuse.g * light_normal_triangle + diffuse.g * specular),
+                            static_cast<uint8_t>(diffuse.b * light_normal_triangle + diffuse.b * specular),
                             diffuse.a);
 
                         // update the current pixel
