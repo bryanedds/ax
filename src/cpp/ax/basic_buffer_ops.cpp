@@ -126,7 +126,11 @@ namespace ax
                             std::get<1>(uvs) * coords_screen.y +
                             std::get<2>(uvs) * coords_screen.z;
                         VAL specular = surface.get_specular_map().sample_specular(uv_screen);
-                        VAL& normal = surface.get_normal_map().sample_normal(uv_screen);
+                        VAL& tangent = surface.get_normal_map().sample_tangent(uv_screen);
+                        VAR normal = tangent + ax::v3(0.5f);
+                        if (normal.x > 1.0f) normal.x -= 1.0f;
+                        if (normal.y > 1.0f) normal.y -= 1.0f;
+                        if (normal.z > 1.0f) normal.z -= 1.0f;
                         VAL& diffuse = surface.get_diffuse_map().sample_diffuse(uv_screen);
                         VAL& normal_triangle = triangle_space * normal;
                         VAL light_normal_triangle = std::abs(light * normal_triangle);

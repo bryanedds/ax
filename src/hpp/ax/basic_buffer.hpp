@@ -45,7 +45,7 @@ namespace ax
         void clear();
 
         ax::color sample_diffuse(const ax::v2& position) const;
-        ax::v3 sample_normal(const ax::v2& position) const;
+        ax::v3 sample_tangent(const ax::v2& position) const;
         float sample_specular(const ax::v2& position) const;
 
         ax::option<std::string> try_write_to_tga(const char* filename) const;

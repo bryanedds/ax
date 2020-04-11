@@ -90,19 +90,19 @@ namespace ax
         return color;
     }
 
-    ax::v3 basic_buffer::sample_normal(const ax::v2& position) const
+    ax::v3 basic_buffer::sample_tangent(const ax::v2& position) const
     {
         if (width < 1 || height < 1) return ax::v3(0.0f, 0.0f, -1.0f); // TODO: make sure this is forward
         VAL& positionI = ax::v2i(static_cast<int>(position.x * width), static_cast<int>(position.y * height));
         if (!ax::get_in_bounds(positionI, ax::v2i(width, height))) return ax::v3(0.0f, 0.0f, -1.0f); // TODO: make sure this is forward
         VAL& color = get_pixel(positionI.x, positionI.y).color;
-        ax::v3 normal;
+        ax::v3 tangent;
         for (int i = 0; i < 3; i++)
         {
             VAL scalar = static_cast<float>(color[i]) / 255.f * 2.0f - 1.0f;
-            normal[2 - i] = scalar;
+            tangent[2 - i] = scalar;
         }
-        return normal;
+        return tangent;
     }
 
     float basic_buffer::sample_specular(const ax::v2& position) const
