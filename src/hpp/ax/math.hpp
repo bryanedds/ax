@@ -24,9 +24,9 @@ namespace ax
     using box3 = std::pair<v3, v3>;
     using line3 = std::pair<v3, v3>;
     using triangle3 = std::tuple<v3, v3, v3>;
-	using quaternion = aiQuaterniont<float>;
-	using matrix3 = aiMatrix3x3t<float>;
-	using matrix4 = aiMatrix4x4t<float>;
+    using quaternion = aiQuaterniont<float>;
+    using matrix3 = aiMatrix3x3t<float>;
+    using matrix4 = aiMatrix4x4t<float>;
 
     ax::v2 get_ortho(const ax::v3& vector);
     ax::line2 get_ortho(const ax::line3& line);
@@ -34,6 +34,7 @@ namespace ax
     float get_depth(const ax::v2& point, const ax::triangle3& triangle);
     ax::v2 get_interpolation(const ax::v2& point, const ax::triangle2& uvs);
     ax::v3 get_normal(const ax::triangle3& triangle);
+    ax::v3 get_tangent(const ax::triangle3& triangle);
     ax::box2 get_bounds(const ax::triangle2& triangle);
     ax::box2 get_intersection(const ax::box2& box, const ax::box2& box2);
     ax::v3 get_barycentric_coords(ax::v2 point, const ax::triangle2& triangle);

@@ -191,11 +191,13 @@ namespace ax
         {
             VAR color = color_to_tga(pixels[i].color);
             out.write(reinterpret_cast<char*>(&color), sizeof(ax::color));
-            if (!out.good())
-            {
-                const_cast<basic_buffer*>(this)->flip_vertical();
-                return ax::some("Failed to write to ax::basic_buffer to "_s + file_path + ".");
-            }
+        }
+
+        // check content
+        if (!out.good())
+        {
+            const_cast<basic_buffer*>(this)->flip_vertical();
+            return ax::some("Failed to write to ax::basic_buffer to "_s + file_path + ".");
         }
 
         // write dev area ref
@@ -240,9 +242,9 @@ namespace ax
             {
                 ax::color color;
                 in.read(reinterpret_cast<char*>(&color), inbytespp);
-                if (!in.good()) return ax::some("An error occured while reading tga data."_s);
                 get_pixel_in_place(i, j).color = color_from_tga(inbytespp, color);
             }
+            if (!in.good()) return ax::some("An error occured while reading tga data."_s);
         }
         return ax::none<std::string>();
     }
@@ -261,7 +263,6 @@ namespace ax
                 {
                     ax::color color;
                     in.read(reinterpret_cast<char*>(&color), inbytespp);
-                    if (!in.good()) return ax::some("An error occured while reading tga rle color."_s);
                     pixels[i / get_bytes_per_pixel()].color = color_from_tga(inbytespp, color);
                     i += get_bytes_per_pixel();
                 }
@@ -271,13 +272,13 @@ namespace ax
                 chunk_header -= 127;
                 ax::color color;
                 in.read(reinterpret_cast<char*>(&color), inbytespp);
-                if (!in.good()) return ax::some("An error occured while reading tga rle color."_s);
                 for (int j = 0; j < chunk_header; ++j)
                 {
                     pixels[i / get_bytes_per_pixel()].color = color_from_tga(inbytespp, color);
                     i += get_bytes_per_pixel();
                 }
             }
+            if (!in.good()) return ax::some("An error occured while reading tga rle color."_s);
         }
         return ax::none<std::string>();
     }

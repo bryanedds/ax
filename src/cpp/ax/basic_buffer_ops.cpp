@@ -88,9 +88,15 @@ namespace ax
 
     void draw_textured_ortho(const ax::v3& light, const ax::basic_surface& surface, const ax::triangle2& uvs, const ax::triangle3& triangle, ax::basic_buffer& buffer)
     {
-		VAL& triangle_normal = ax::get_normal(triangle);
-		VAL& triangle_rotation = ax::quaternion(triangle_normal.x, triangle_normal.y, triangle_normal.z).Normalize();
-		VAL& triangle_space = ax::matrix4(ax::one<ax::v3>(), triangle_rotation, ax::zero<ax::v3>());
+        VAL& triangle_tangent = ax::get_tangent(triangle);
+        VAL& triangle_normal = ax::get_normal(triangle);
+        VAL& triangle_binormal = triangle_tangent ^ triangle_normal;
+        VAL& triangle_space_inverse = ax::matrix4(
+            triangle_tangent.x,  triangle_binormal.x, triangle_normal.x,   0.0f,
+            triangle_tangent.y,  triangle_binormal.y, triangle_normal.y,   0.0f,
+            triangle_tangent.z,  triangle_binormal.z, triangle_normal.z,   0.0f,
+            0.0f,                0.0f,                0.0f,                1.0f);
+        VAL& triangle_space = ax::matrix4(triangle_space_inverse).Inverse();
         VAL& center_screen = ax::v2(static_cast<float>(buffer.get_width()), static_cast<float>(buffer.get_height())) * 0.5f;
         VAL& triangle_ortho = ax::get_ortho(triangle);
         VAL& triangle_screen = ax::triangle2(
@@ -122,8 +128,8 @@ namespace ax
                         VAL specular = surface.get_specular_map().sample_specular(uv_screen);
                         VAL& normal = surface.get_normal_map().sample_normal(uv_screen);
                         VAL& diffuse = surface.get_diffuse_map().sample_diffuse(uv_screen);
-						VAL& normal_triangle = triangle_space * normal;
-						VAL light_normal_triangle = std::abs(light * normal_triangle);
+                        VAL& normal_triangle = triangle_space * normal;
+                        VAL light_normal_triangle = std::abs(light * normal_triangle);
                         VAL& color_screen = ax::color(
                             static_cast<uint8_t>(diffuse.r * light_normal_triangle * specular),
                             static_cast<uint8_t>(diffuse.g * light_normal_triangle * specular),
@@ -140,7 +146,7 @@ namespace ax
     void draw_textured_ortho(const ax::v3& light, const ax::basic_model& model, ax::basic_buffer& buffer)
     {
         VAL& forward = ax::v3(0.0f, 0.0f, 1.0f);
-		VAL& surface = model.get_surface();
+        VAL& surface = model.get_surface();
         for (VAR i = 0_z; i < model.get_faces().size(); ++i)
         {
             VAL& face = model.get_face(i);
@@ -149,7 +155,7 @@ namespace ax
             VAL not_back_face = normal * forward > 0;
             if (not_back_face)
             {
-				VAL& uvs = ax::triangle2(model.get_uv(i, 0), model.get_uv(i, 1), model.get_uv(i, 2));
+                VAL& uvs = ax::triangle2(model.get_uv(i, 0), model.get_uv(i, 1), model.get_uv(i, 2));
                 draw_textured_ortho(light, surface, uvs, triangle, buffer);
             }
         }
