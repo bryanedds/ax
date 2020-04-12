@@ -6,6 +6,11 @@
 
 namespace ax
 {
+    float ax::saturate(float value, float max)
+    {
+        return std::max(0.0f, std::min(max, value));
+    }
+
     ax::v2 get_ortho(const ax::v3& vector)
     {
         return ax::v2(vector.x, vector.y);

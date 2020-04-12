@@ -28,6 +28,7 @@ namespace ax
     using matrix3 = aiMatrix3x3t<float>;
     using matrix4 = aiMatrix4x4t<float>;
 
+    float saturate(float value, float max = 1.0f);
     ax::v2 get_ortho(const ax::v3& vector);
     ax::line2 get_ortho(const ax::line3& line);
     ax::triangle2 get_ortho(const ax::triangle3& triangle);

@@ -89,15 +89,15 @@ namespace ax
     void draw_textured_ortho(const ax::v3& light, const ax::basic_surface& surface, const ax::triangle2& uvs, const ax::triangle3& triangle, ax::basic_buffer& buffer)
     {
         // compute triangle space (aka, tangent-space)
-        VAL& triangle_tangent = ax::get_tangent(triangle);
-        VAL& triangle_normal = ax::get_normal(triangle);
-        VAL& triangle_binormal = triangle_tangent ^ triangle_normal;
-        VAL& triangle_space_inverse = ax::matrix4(
-            triangle_tangent.x,  triangle_binormal.x, triangle_normal.x,   0.0f,
-            triangle_tangent.y,  triangle_binormal.y, triangle_normal.y,   0.0f,
-            triangle_tangent.z,  triangle_binormal.z, triangle_normal.z,   0.0f,
-            0.0f,                0.0f,                0.0f,                1.0f);
-        VAL& triangle_space = ax::matrix4(triangle_space_inverse).Inverse();
+        VAL& triangle_tangent = (std::get<1>(triangle) - std::get<0>(triangle)).NormalizeSafe();
+        VAL& triangle_tangent_2 = (std::get<2>(triangle) - std::get<0>(triangle)).NormalizeSafe();
+        VAL& triangle_normal = (triangle_tangent ^ triangle_tangent_2).NormalizeSafe();
+        VAL& triangle_binormal = (triangle_tangent ^ triangle_normal).NormalizeSafe();
+        VAL& triangle_space = ax::matrix4(
+            triangle_tangent.x,     triangle_tangent.y,     triangle_tangent.z,     0.0f,
+            triangle_binormal.x,    triangle_binormal.y,    triangle_binormal.z,    0.0f,
+            triangle_normal.x,      triangle_normal.y,      triangle_normal.z,      0.0f,
+            0.0f,                   0.0f,                   0.0f,                   1.0f);
 
         // compute triangle in screen-space
         VAL& center_screen = ax::v2(static_cast<float>(buffer.get_width()), static_cast<float>(buffer.get_height())) * 0.5f;
@@ -140,7 +140,7 @@ namespace ax
                             std::get<1>(uvs) * coords_screen.y +
                             std::get<2>(uvs) * coords_screen.z;
 
-                        // sample the specularity map
+                        // sample the specular map
                         VAL specular = surface.get_specular_map().sample_specular(uv_screen);
 
                         // sample the tangent map, computing its normal
@@ -159,9 +159,9 @@ namespace ax
 
                         // compute the color in screen-space
                         VAL& color_screen = ax::color(
-                            static_cast<uint8_t>(diffuse.r * light_normal_triangle + diffuse.r * specular),
-                            static_cast<uint8_t>(diffuse.g * light_normal_triangle + diffuse.g * specular),
-                            static_cast<uint8_t>(diffuse.b * light_normal_triangle + diffuse.b * specular),
+                            static_cast<uint8_t>(ax::saturate(diffuse.r * light_normal_triangle + diffuse.r * specular, 255.0f)),
+                            static_cast<uint8_t>(ax::saturate(diffuse.g * light_normal_triangle + diffuse.g * specular, 255.0f)),
+                            static_cast<uint8_t>(ax::saturate(diffuse.b * light_normal_triangle + diffuse.b * specular, 255.0f)),
                             diffuse.a);
 
                         // update the current pixel
