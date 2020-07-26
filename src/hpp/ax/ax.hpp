@@ -37,7 +37,6 @@
 #include "subscription.hpp"
 #include "symbol.hpp"
 #include "symbolics.hpp"
-#include "system.hpp"
 #include "tga.hpp"
 #include "type_descriptor.hpp"
 #include "type_descriptors.hpp"
