@@ -58,7 +58,6 @@
     <ClInclude Include="..\..\src\hpp\ax\subscription.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\symbol.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\symbolics.hpp" />
-    <ClInclude Include="..\..\src\hpp\ax\system.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\tga.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\type.hpp" />
     <ClInclude Include="..\..\src\hpp\ax\type_descriptor.hpp" />
@@ -83,7 +82,6 @@
     <ClCompile Include="..\..\src\cpp\ax\name.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\parser.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\string.cpp" />
-    <ClCompile Include="..\..\src\cpp\ax\system.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\basic_buffer.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\type.cpp" />
     <ClCompile Include="..\..\src\cpp\ax\type_descriptor.cpp" />

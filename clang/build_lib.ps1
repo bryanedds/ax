@@ -14,7 +14,6 @@ $CppFiles =
     "../src/cpp/ax/parser.cpp",
     "../src/cpp/ax/reflectable.cpp",
     "../src/cpp/ax/string.cpp",
-    "../src/cpp/ax/system.cpp",
     "../src/cpp/ax/type_descriptor.cpp",
     "../src/cpp/ax/type_descriptors.cpp",
     "../src/cpp/ax/type.cpp",

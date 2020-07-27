@@ -276,7 +276,6 @@ namespace ax
         std::cout << std::to_string(sizeof(std::vector<std::size_t>)) << std::endl;
         std::cout << std::to_string(sizeof(ax::name)) << std::endl;
         std::cout << std::to_string(sizeof(ax::address)) << std::endl;
-        std::cout << std::to_string(sizeof(ax::entity)) << std::endl;
     }
 
     TEST("main")
